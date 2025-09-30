@@ -1,0 +1,20 @@
+# Dependencies
+/node_modules
+
+# Build output
+/.next/
+/out/
+/.firebase/
+
+# Local environment variables
+.env*.local
+
+# Logs
+npm-debug.log*
+yarn-error.log*
+yarn-debug.log*
+
+# Other
+.DS_Store
+*.pem
+next-env.d.ts

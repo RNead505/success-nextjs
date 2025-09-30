@@ -1,0 +1,16 @@
+/* This file will now have less code, as Header has its own styles */
+.mainContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  font-family: serif;
+}
+
+.footer {
+  text-align: center;
+  padding: 2rem 0;
+  border-top: 1px solid #eaeaea;
+  font-size: 0.9rem;
+  color: #666;
+  background-color: #f8f8f8;
+}
