@@ -5,7 +5,6 @@ import Trending from '../components/Trending';
 import styles from './Home.module.css';
 import { fetchWordPressData } from '../lib/wordpress';
 
-// ... (HomePageProps type definition is the same)
 type HomePageProps = {
   featuredPost: any;
   secondaryPosts: any[];
@@ -19,14 +18,11 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts }: HomePageProps
 
   return (
     <Layout>
-      {/* MagazineHero is now a direct child of Layout, allowing it to be full-width */}
-      <MagazineHero />
-
-      {/* This new container will constrain the article grid to the center */}
       <div className={styles.container}>
+        {/* Main content grid now comes first */}
         <div className={styles.homeLayout}>
           <div className={styles.featuredSection}>
-            <PostCard post={featuredPost} />
+            <PostCard post={featuredPost} isFeatured={true} />
           </div>
           <div className={styles.secondarySection}>
             {secondaryPosts.map((post: any) => (
@@ -38,10 +34,13 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts }: HomePageProps
           </div>
         </div>
       </div>
+
+      {/* The "Inside the Magazine" hero is now here, lower on the page */}
+      <MagazineHero />
     </Layout>
   );
 }
-// ... (getStaticProps is the same)
+
 export async function getStaticProps() {
   const posts = await fetchWordPressData('posts?_embed&per_page=10');
   
