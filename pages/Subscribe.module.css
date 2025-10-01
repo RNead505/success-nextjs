@@ -1,0 +1,266 @@
+.subscribe {
+  background-color: #fff;
+}
+
+.hero {
+  background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+  color: #fff;
+  padding: 5rem 1rem;
+  text-align: center;
+}
+
+.heroContent {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.heroTitle {
+  font-size: 4rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  margin: 0 0 1rem 0;
+}
+
+.heroSubtitle {
+  font-size: 1.5rem;
+  color: #ccc;
+}
+
+.section {
+  padding: 5rem 1rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.plansGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.plan {
+  background-color: #fff;
+  border: 2px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 2.5rem 2rem;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.plan:hover {
+  border-color: #000;
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.featured {
+  border-color: #000;
+  border-width: 3px;
+  transform: scale(1.05);
+}
+
+.featured:hover {
+  transform: scale(1.05) translateY(-4px);
+}
+
+.badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #d32f2f;
+  color: #fff;
+  padding: 0.375rem 1rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.planHeader {
+  text-align: center;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid #e5e5e5;
+  margin-bottom: 2rem;
+}
+
+.planName {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin: 0 0 1.5rem 0;
+}
+
+.planPrice {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.price {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #000;
+}
+
+.period {
+  font-size: 1rem;
+  color: #666;
+}
+
+.features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+}
+
+.features li {
+  padding: 0.75rem 0;
+  font-size: 0.9375rem;
+  color: #444;
+}
+
+.planButton,
+.planButtonFeatured {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid #000;
+  background-color: #fff;
+  color: #000;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.planButton:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+.planButtonFeatured {
+  background-color: #000;
+  color: #fff;
+}
+
+.planButtonFeatured:hover {
+  background-color: #333;
+}
+
+.guarantee {
+  text-align: center;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.guaranteeText {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0;
+  color: #000;
+}
+
+.faqSection {
+  padding: 5rem 1rem;
+  background-color: #f9f9f9;
+}
+
+.sectionTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 0 0 3rem 0;
+}
+
+.faqGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.faq {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+}
+
+.faqQuestion {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem 0;
+  color: #000;
+}
+
+.faqAnswer {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: #555;
+  margin: 0;
+}
+
+@media (max-width: 992px) {
+  .plansGrid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .featured {
+    transform: scale(1);
+  }
+
+  .featured:hover {
+    transform: translateY(-4px);
+  }
+
+  .faqGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: 3rem;
+  }
+
+  .section {
+    padding: 3rem 1rem;
+  }
+
+  .sectionTitle {
+    font-size: 2rem;
+  }
+
+  .plan {
+    padding: 2rem 1.5rem;
+  }
+
+  .price {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .heroTitle {
+    font-size: 2.5rem;
+  }
+
+  .heroSubtitle {
+    font-size: 1.125rem;
+  }
+
+  .plan {
+    padding: 1.5rem 1rem;
+  }
+}

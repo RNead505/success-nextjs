@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nUpdate UI to mirror SUCCESS.com WordPress site\n\n- Update Header with black nav bar and white top bar\n- Add hamburger menu and search icon with mobile responsive design\n- Update Footer with dark theme, social icons, and newsletter signup\n- Modernize PostCard styling with clean design\n- Update Trending sidebar with gray background\n- Improve homepage layout with better spacing\n- Update MagazineHero styling\n- Add global layout styles\n- Create category/archive page template\n- Create single post/article page with author bio and share buttons\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git push:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

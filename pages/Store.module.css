@@ -1,0 +1,169 @@
+.store {
+  background-color: #fff;
+}
+
+.hero {
+  background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+  color: #fff;
+  padding: 5rem 1rem;
+  text-align: center;
+}
+
+.heroContent {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.heroTitle {
+  font-size: 4rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  margin: 0 0 1rem 0;
+}
+
+.heroSubtitle {
+  font-size: 1.5rem;
+  color: #ccc;
+}
+
+.section {
+  padding: 5rem 1rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.comingSoon {
+  text-align: center;
+  padding: 4rem 2rem;
+  margin-bottom: 4rem;
+}
+
+.icon {
+  font-size: 5rem;
+  margin-bottom: 2rem;
+}
+
+.comingSoonTitle {
+  font-size: 3rem;
+  font-weight: 900;
+  margin: 0 0 1rem 0;
+}
+
+.comingSoonText {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: #555;
+  max-width: 600px;
+  margin: 0 auto 2rem;
+}
+
+.notify {
+  display: flex;
+  max-width: 500px;
+  margin: 0 auto;
+  gap: 1rem;
+}
+
+.emailInput {
+  flex: 1;
+  padding: 1rem 1.5rem;
+  border: 2px solid #e5e5e5;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.emailInput:focus {
+  outline: none;
+  border-color: #000;
+}
+
+.notifyButton {
+  padding: 1rem 2rem;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.notifyButton:hover {
+  background-color: #333;
+}
+
+.categories {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.categoriesTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 0 0 2rem 0;
+}
+
+.categoriesGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.category {
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.category h4 {
+  font-size: 1.25rem;
+  margin: 0 0 0.75rem 0;
+}
+
+.category p {
+  font-size: 0.9375rem;
+  color: #666;
+  margin: 0;
+}
+
+@media (max-width: 992px) {
+  .categoriesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: 3rem;
+  }
+
+  .comingSoonTitle {
+    font-size: 2.5rem;
+  }
+
+  .notify {
+    flex-direction: column;
+  }
+
+  .categoriesGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .heroTitle {
+    font-size: 2.5rem;
+  }
+
+  .comingSoonTitle {
+    font-size: 2rem;
+  }
+}

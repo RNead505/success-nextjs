@@ -1,0 +1,288 @@
+.magazine {
+  background-color: #fff;
+}
+
+.hero {
+  background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+  color: #fff;
+  padding: 5rem 1rem;
+  text-align: center;
+}
+
+.heroContent {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.heroTitle {
+  font-size: 4rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  margin: 0 0 1rem 0;
+}
+
+.heroSubtitle {
+  font-size: 1.5rem;
+  color: #ccc;
+}
+
+.section {
+  padding: 5rem 1rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.sectionTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 0 0 3rem 0;
+}
+
+.currentIssue {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.coverImage {
+  position: sticky;
+  top: 140px;
+}
+
+.cover {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.issueDetails {
+  padding-top: 2rem;
+}
+
+.issueDate {
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #d32f2f;
+}
+
+.issueTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 1rem 0;
+}
+
+.issueDescription {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: #444;
+  margin-bottom: 2rem;
+}
+
+.features {
+  margin-bottom: 2rem;
+}
+
+.featuresTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+}
+
+.featuresList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.featuresList li {
+  padding: 0.75rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 1rem;
+  color: #555;
+}
+
+.featuresList li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #d32f2f;
+  font-weight: 700;
+}
+
+.subscribeButton {
+  display: inline-block;
+  padding: 1rem 3rem;
+  background-color: #000;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.subscribeButton:hover {
+  background-color: #333;
+  transform: translateY(-2px);
+}
+
+.benefitsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.benefit {
+  text-align: center;
+  padding: 2rem;
+}
+
+.benefitIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.benefitTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem 0;
+}
+
+.benefitText {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: #555;
+}
+
+.archiveGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 2rem;
+}
+
+.archiveItem {
+  text-align: center;
+}
+
+.archiveCover {
+  aspect-ratio: 3/4;
+  background: linear-gradient(135deg, #e0e0e0, #f5f5f5);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  transition: transform 0.2s;
+}
+
+.archiveItem:hover .archiveCover {
+  transform: translateY(-4px);
+}
+
+.archiveMonth {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #666;
+}
+
+.archiveTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.viewMore {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+.viewMoreButton {
+  display: inline-block;
+  padding: 0.875rem 2.5rem;
+  border: 2px solid #000;
+  color: #000;
+  text-decoration: none;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.viewMoreButton:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+@media (max-width: 992px) {
+  .currentIssue {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .coverImage {
+    max-width: 400px;
+    margin: 0 auto;
+    position: static;
+  }
+
+  .benefitsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .archiveGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: 3rem;
+  }
+
+  .section {
+    padding: 3rem 1rem;
+  }
+
+  .sectionTitle {
+    font-size: 2rem;
+  }
+
+  .issueTitle {
+    font-size: 2rem;
+  }
+
+  .benefitsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .archiveGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .heroTitle {
+    font-size: 2.5rem;
+  }
+
+  .issueTitle {
+    font-size: 1.75rem;
+  }
+
+  .archiveGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}

@@ -1,0 +1,307 @@
+.about {
+  background-color: #fff;
+}
+
+/* Hero Section */
+.hero {
+  background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+  color: #fff;
+  padding: 6rem 1rem;
+  text-align: center;
+}
+
+.heroContent {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.heroTitle {
+  font-size: 4rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  margin: 0 0 1rem 0;
+  line-height: 1;
+}
+
+.heroSubtitle {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #ccc;
+  margin: 0;
+}
+
+/* Section */
+.section {
+  padding: 5rem 1rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.sectionTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 0 0 3rem 0;
+  color: #000;
+}
+
+.text {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: #444;
+  margin: 0 0 1.5rem 0;
+}
+
+/* Mission Grid */
+.missionGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.missionContent {
+  max-width: 600px;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.stat {
+  text-align: center;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.statNumber {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #000;
+  margin-bottom: 0.5rem;
+}
+
+.statLabel {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #666;
+}
+
+/* Topics Grid */
+.topicsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.topic {
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 8px;
+  border: 2px solid #e5e5e5;
+  transition: all 0.3s;
+}
+
+.topic:hover {
+  border-color: #000;
+  transform: translateY(-4px);
+}
+
+.topicTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  color: #000;
+}
+
+.topicDescription {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: #555;
+  margin: 0;
+}
+
+/* Timeline */
+.timeline {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.timelineItem {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 2rem;
+  padding: 2rem 0;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.timelineItem:last-child {
+  border-bottom: none;
+}
+
+.timelineYear {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #d32f2f;
+}
+
+.timelineTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem 0;
+  color: #000;
+}
+
+.timelineText {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #555;
+  margin: 0;
+}
+
+/* CTA Section */
+.cta {
+  background-color: #000;
+  color: #fff;
+  padding: 5rem 1rem;
+  text-align: center;
+}
+
+.ctaTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+}
+
+.ctaText {
+  font-size: 1.25rem;
+  color: #ccc;
+  margin: 0 0 2rem 0;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ctaButton {
+  display: inline-block;
+  padding: 1rem 3rem;
+  background-color: #fff;
+  color: #000;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.ctaButton:hover {
+  background-color: #e5e5e5;
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .missionGrid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .statsGrid {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .topicsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .timelineItem {
+    grid-template-columns: 100px 1fr;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: 3rem;
+  }
+
+  .heroSubtitle {
+    font-size: 1.25rem;
+  }
+
+  .section {
+    padding: 3rem 1rem;
+  }
+
+  .sectionTitle {
+    font-size: 2rem;
+  }
+
+  .topicsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .stat {
+    padding: 1.5rem;
+  }
+
+  .statNumber {
+    font-size: 2.5rem;
+  }
+
+  .timelineItem {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .timelineYear {
+    font-size: 1.75rem;
+  }
+
+  .ctaTitle {
+    font-size: 2rem;
+  }
+
+  .ctaText {
+    font-size: 1.125rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .heroTitle {
+    font-size: 2.5rem;
+  }
+
+  .heroSubtitle {
+    font-size: 1.125rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.75rem;
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .topic {
+    padding: 1.5rem;
+  }
+}

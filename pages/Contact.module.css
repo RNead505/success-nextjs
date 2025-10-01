@@ -1,0 +1,297 @@
+.contact {
+  background-color: #fff;
+}
+
+/* Hero Section */
+.hero {
+  background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+  color: #fff;
+  padding: 5rem 1rem;
+  text-align: center;
+}
+
+.heroContent {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.heroTitle {
+  font-size: 4rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  margin: 0 0 1rem 0;
+  line-height: 1;
+}
+
+.heroSubtitle {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #ccc;
+  margin: 0;
+}
+
+/* Section */
+.section {
+  padding: 5rem 1rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 4rem;
+}
+
+/* Contact Info */
+.info {
+  padding-right: 2rem;
+}
+
+.infoTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  color: #000;
+}
+
+.infoText {
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: #555;
+  margin: 0 0 3rem 0;
+}
+
+.contactDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.detail {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.detailIcon {
+  width: 48px;
+  height: 48px;
+  background-color: #000;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.detailTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  color: #000;
+}
+
+.detailText {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: #555;
+  margin: 0;
+}
+
+.social {
+  padding-top: 2rem;
+  border-top: 1px solid #e5e5e5;
+}
+
+.socialTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  color: #000;
+}
+
+.socialIcons {
+  display: flex;
+  gap: 1rem;
+}
+
+.socialIcon {
+  width: 44px;
+  height: 44px;
+  background-color: #000;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.socialIcon:hover {
+  background-color: #333;
+  transform: translateY(-2px);
+}
+
+/* Form */
+.formWrapper {
+  background-color: #f9f9f9;
+  padding: 3rem;
+  border-radius: 8px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.input,
+.textarea {
+  padding: 0.875rem 1rem;
+  border: 2px solid #e5e5e5;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.2s;
+  background-color: #fff;
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: #000;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.submitButton {
+  padding: 1rem 2rem;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.submitButton:hover {
+  background-color: #333;
+  transform: translateY(-2px);
+}
+
+.submitButton:active {
+  transform: translateY(0);
+}
+
+/* Success Message */
+.successMessage {
+  text-align: center;
+  padding: 3rem;
+}
+
+.successMessage svg {
+  color: #4caf50;
+  margin-bottom: 1.5rem;
+}
+
+.successMessage h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  color: #000;
+}
+
+.successMessage p {
+  font-size: 1.125rem;
+  color: #555;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .contentGrid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .info {
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: 3rem;
+  }
+
+  .heroSubtitle {
+    font-size: 1.25rem;
+  }
+
+  .section {
+    padding: 3rem 1rem;
+  }
+
+  .formWrapper {
+    padding: 2rem;
+  }
+
+  .contactDetails {
+    gap: 1.5rem;
+  }
+
+  .detail {
+    gap: 1rem;
+  }
+
+  .detailIcon {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .heroTitle {
+    font-size: 2.5rem;
+  }
+
+  .heroSubtitle {
+    font-size: 1.125rem;
+  }
+
+  .formWrapper {
+    padding: 1.5rem;
+  }
+
+  .socialIcons {
+    flex-wrap: wrap;
+  }
+}
