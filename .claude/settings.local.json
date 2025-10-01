@@ -19,7 +19,10 @@
       "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/posts?categories=5&_embed&per_page=3\")",
       "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/pages?per_page=20\")",
       "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/users?per_page=10\")",
-      "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/categories?search=money\")"
+      "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/categories?search=money\")",
+      "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/videos?per_page=10\")",
+      "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/podcasts?per_page=10\")",
+      "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/magazines?per_page=10\")"
     ],
     "deny": [],
     "ask": []

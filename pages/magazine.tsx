@@ -1,7 +1,13 @@
 import Layout from '../components/Layout';
 import styles from './Magazine.module.css';
+import { fetchWordPressData } from '../lib/wordpress';
 
-export default function MagazinePage() {
+type MagazinePageProps = {
+  currentIssue: any;
+  pastIssues: any[];
+};
+
+export default function MagazinePage({ currentIssue, pastIssues }: MagazinePageProps) {
   return (
     <Layout>
       <div className={styles.magazine}>
@@ -16,41 +22,34 @@ export default function MagazinePage() {
         </section>
 
         {/* Current Issue */}
-        <section className={styles.section}>
-          <div className={styles.container}>
-            <h2 className={styles.sectionTitle}>Current Issue</h2>
-            <div className={styles.currentIssue}>
-              <div className={styles.coverImage}>
-                <img
-                  src="https://www.success.com/wp-content/uploads/2023/09/Jesse-Itzler-SUCCESS-Magazine-Cover-Story.jpg"
-                  alt="Current Issue Cover"
-                  className={styles.cover}
-                />
-              </div>
-              <div className={styles.issueDetails}>
-                <span className={styles.issueDate}>September 2025</span>
-                <h3 className={styles.issueTitle}>The Entrepreneurial Mindset</h3>
-                <p className={styles.issueDescription}>
-                  Discover the secrets of successful entrepreneurs and learn how to
-                  develop the mindset that drives innovation, resilience, and growth
-                  in today's competitive business landscape.
-                </p>
-                <div className={styles.features}>
-                  <h4 className={styles.featuresTitle}>Featured Articles</h4>
-                  <ul className={styles.featuresList}>
-                    <li>The Future of Remote Work and Hybrid Teams</li>
-                    <li>Building Wealth Through Strategic Investing</li>
-                    <li>Leadership in Times of Change</li>
-                    <li>Balancing Ambition with Well-Being</li>
-                  </ul>
+        {currentIssue && (
+          <section className={styles.section}>
+            <div className={styles.container}>
+              <h2 className={styles.sectionTitle}>Current Issue</h2>
+              <div className={styles.currentIssue}>
+                <div className={styles.coverImage}>
+                  {currentIssue._embedded?.['wp:featuredmedia']?.[0]?.source_url && (
+                    <img
+                      src={currentIssue._embedded['wp:featuredmedia'][0].source_url}
+                      alt={currentIssue.title.rendered}
+                      className={styles.cover}
+                    />
+                  )}
                 </div>
-                <a href="/subscribe" className={styles.subscribeButton}>
-                  Subscribe Now
-                </a>
+                <div className={styles.issueDetails}>
+                  <h3 className={styles.issueTitle}>{currentIssue.title.rendered}</h3>
+                  <div
+                    className={styles.issueDescription}
+                    dangerouslySetInnerHTML={{ __html: currentIssue.content.rendered || currentIssue.excerpt.rendered }}
+                  />
+                  <a href="/subscribe" className={styles.subscribeButton}>
+                    Subscribe Now
+                  </a>
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* Why Subscribe */}
         <section className={styles.section} style={{ backgroundColor: '#f9f9f9' }}>
@@ -94,30 +93,38 @@ export default function MagazinePage() {
           <div className={styles.container}>
             <h2 className={styles.sectionTitle}>Past Issues</h2>
             <div className={styles.archiveGrid}>
-              {[
-                { month: 'August 2025', title: 'Leadership Excellence' },
-                { month: 'July 2025', title: 'Digital Transformation' },
-                { month: 'June 2025', title: 'Wellness & Success' },
-                { month: 'May 2025', title: 'The Future of AI' },
-                { month: 'April 2025', title: 'Financial Freedom' },
-                { month: 'March 2025', title: 'Personal Branding' },
-              ].map((issue, index) => (
-                <div key={index} className={styles.archiveItem}>
+              {pastIssues.map((issue: any) => (
+                <div key={issue.id} className={styles.archiveItem}>
                   <div className={styles.archiveCover}>
-                    <span className={styles.archiveMonth}>{issue.month}</span>
+                    {issue._embedded?.['wp:featuredmedia']?.[0]?.source_url && (
+                      <img
+                        src={issue._embedded['wp:featuredmedia'][0].source_url}
+                        alt={issue.title.rendered}
+                        className={styles.archiveCoverImage}
+                      />
+                    )}
                   </div>
-                  <h4 className={styles.archiveTitle}>{issue.title}</h4>
+                  <h4 className={styles.archiveTitle}>{issue.title.rendered}</h4>
                 </div>
               ))}
-            </div>
-            <div className={styles.viewMore}>
-              <a href="/magazine/archive" className={styles.viewMoreButton}>
-                View Full Archive
-              </a>
             </div>
           </div>
         </section>
       </div>
     </Layout>
   );
+}
+
+export async function getStaticProps() {
+  const magazines = await fetchWordPressData('magazines?per_page=10&_embed');
+  const currentIssue = magazines[0];
+  const pastIssues = magazines.slice(1);
+
+  return {
+    props: {
+      currentIssue,
+      pastIssues,
+    },
+    revalidate: 600,
+  };
 }

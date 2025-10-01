@@ -183,6 +183,13 @@
   justify-content: center;
   margin-bottom: 1rem;
   transition: transform 0.2s;
+  overflow: hidden;
+}
+
+.archiveCoverImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .archiveItem:hover .archiveCover {

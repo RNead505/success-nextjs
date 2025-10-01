@@ -1,24 +1,13 @@
 import Layout from '../components/Layout';
+import PostCard from '../components/PostCard';
 import styles from './Podcasts.module.css';
+import { fetchWordPressData } from '../lib/wordpress';
 
-export default function PodcastsPage() {
-  const podcasts = [
-    {
-      title: "The Daily Coach",
-      description: "Quick daily insights from top coaches and mentors",
-      image: "https://via.placeholder.com/400x400/000/fff?text=Daily+Coach"
-    },
-    {
-      title: "SUCCESS Stories",
-      description: "In-depth interviews with successful entrepreneurs",
-      image: "https://via.placeholder.com/400x400/000/fff?text=SUCCESS+Stories"
-    },
-    {
-      title: "Future of Work",
-      description: "Exploring trends shaping tomorrow's workplace",
-      image: "https://via.placeholder.com/400x400/000/fff?text=Future+of+Work"
-    }
-  ];
+type PodcastsPageProps = {
+  podcasts: any[];
+};
+
+export default function PodcastsPage({ podcasts }: PodcastsPageProps) {
 
   return (
     <Layout>
@@ -34,15 +23,10 @@ export default function PodcastsPage() {
 
         <section className={styles.section}>
           <div className={styles.container}>
-            <h2 className={styles.sectionTitle}>Featured Shows</h2>
+            <h2 className={styles.sectionTitle}>Latest Episodes</h2>
             <div className={styles.podcastsGrid}>
-              {podcasts.map((podcast, index) => (
-                <div key={index} className={styles.podcastCard}>
-                  <img src={podcast.image} alt={podcast.title} className={styles.podcastImage} />
-                  <h3 className={styles.podcastTitle}>{podcast.title}</h3>
-                  <p className={styles.podcastDescription}>{podcast.description}</p>
-                  <a href="#" className={styles.listenButton}>Listen Now</a>
-                </div>
+              {podcasts.map((podcast: any) => (
+                <PostCard key={podcast.id} post={podcast} />
               ))}
             </div>
           </div>
@@ -62,4 +46,15 @@ export default function PodcastsPage() {
       </div>
     </Layout>
   );
+}
+
+export async function getStaticProps() {
+  const podcasts = await fetchWordPressData('podcasts?per_page=20&_embed');
+
+  return {
+    props: {
+      podcasts,
+    },
+    revalidate: 600,
+  };
 }
