@@ -1,7 +1,6 @@
 import Head from 'next/head';
-import styles from './Layout.module.css';
 import Header from './Header';
-import Footer from './Footer'; // 1. Import the new Footer
+import Footer from './Footer';
 
 export default function Layout({ children }) {
   return (
@@ -14,11 +13,11 @@ export default function Layout({ children }) {
 
       <Header />
 
-      <main className={styles.mainContent}>
+      <main>
         {children}
       </main>
 
-      <Footer /> {/* 2. Use the Footer component */}
+      <Footer />
     </div>
   );
 }

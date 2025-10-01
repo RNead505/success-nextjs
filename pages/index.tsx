@@ -19,7 +19,7 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts }: HomePageProps
   return (
     <Layout>
       <div className={styles.container}>
-        {/* Main content grid now comes first */}
+        {/* Main content grid comes first */}
         <div className={styles.homeLayout}>
           <div className={styles.featuredSection}>
             <PostCard post={featuredPost} isFeatured={true} />
@@ -35,7 +35,7 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts }: HomePageProps
         </div>
       </div>
 
-      {/* The "Inside the Magazine" hero is now here, lower on the page */}
+      {/* "Inside the Magazine" hero is lower on the page */}
       <MagazineHero />
     </Layout>
   );
