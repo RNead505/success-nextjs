@@ -17,7 +17,8 @@
       "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/posts?categories=14059&_embed&per_page=3\")",
       "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/posts?categories=14061&_embed&per_page=3\")",
       "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/posts?categories=5&_embed&per_page=3\")",
-      "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/pages?per_page=20\")"
+      "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/pages?per_page=20\")",
+      "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/users?per_page=10\")"
     ],
     "deny": [],
     "ask": []

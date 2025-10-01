@@ -1,0 +1,152 @@
+.searchPage {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem 4rem;
+}
+
+.searchHeader {
+  background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+  color: #fff;
+  padding: 4rem 1rem;
+  margin: 0 -1rem 4rem;
+  text-align: center;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 2rem 0;
+}
+
+.searchForm {
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  gap: 1rem;
+}
+
+.searchInput {
+  flex: 1;
+  padding: 1rem 1.5rem;
+  font-size: 1.1rem;
+  border: 2px solid #fff;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.searchInput:focus {
+  border-color: #ccc;
+}
+
+.searchButton {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background: #fff;
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.searchButton:hover {
+  background: #f0f0f0;
+  transform: translateY(-2px);
+}
+
+.searchButton:active {
+  transform: translateY(0);
+}
+
+.loading {
+  text-align: center;
+  padding: 4rem 1rem;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.resultsTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  color: #333;
+}
+
+.resultsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5rem;
+}
+
+.noResults {
+  text-align: center;
+  padding: 4rem 1rem;
+}
+
+.noResults p {
+  font-size: 1.2rem;
+  color: #666;
+  margin: 0.5rem 0;
+}
+
+.suggestion {
+  font-size: 1rem;
+  color: #999;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .resultsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .searchHeader {
+    padding: 3rem 1rem;
+  }
+
+  .searchForm {
+    flex-direction: column;
+  }
+
+  .searchInput,
+  .searchButton {
+    width: 100%;
+  }
+
+  .resultsGrid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+
+  .resultsTitle {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .searchHeader {
+    padding: 2rem 1rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .searchInput,
+  .searchButton {
+    font-size: 1rem;
+    padding: 0.875rem 1.25rem;
+  }
+}
