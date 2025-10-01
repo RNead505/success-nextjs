@@ -27,6 +27,126 @@
   top: 120px;
 }
 
+/* Latest Articles Section */
+.latestSection {
+  padding: 5rem 1rem;
+  background-color: #fff;
+}
+
+.sectionContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.sectionTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 3rem 0;
+  text-align: center;
+}
+
+.postsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5rem;
+}
+
+.viewMoreWrapper {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+.viewMore {
+  display: inline-block;
+  padding: 1rem 3rem;
+  background-color: #000;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.viewMore:hover {
+  background-color: #333;
+  transform: translateY(-2px);
+}
+
+/* Category Sections */
+.categorySection {
+  padding: 5rem 1rem;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+
+.sectionHeader .sectionTitle {
+  margin: 0;
+  text-align: left;
+}
+
+.viewAllLink {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #000;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.viewAllLink:hover {
+  opacity: 0.7;
+}
+
+/* Newsletter CTA */
+.newsletterCTA {
+  padding: 5rem 1rem;
+  background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+  text-align: center;
+}
+
+.ctaContent {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.ctaTitle {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #fff;
+  margin: 0 0 1rem 0;
+}
+
+.ctaText {
+  font-size: 1.25rem;
+  color: #ccc;
+  margin: 0 0 2rem 0;
+  line-height: 1.6;
+}
+
+.ctaButton {
+  display: inline-block;
+  padding: 1rem 3rem;
+  background-color: #fff;
+  color: #000;
+  text-decoration: none;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.ctaButton:hover {
+  background-color: #e5e5e5;
+  transform: translateY(-2px);
+}
+
 /* Responsive Styles */
 @media (max-width: 992px) {
   .homeLayout {
@@ -37,6 +157,11 @@
   .trendingSection {
     grid-column: 1 / -1;
     position: static;
+  }
+
+  .postsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
   }
 }
 
@@ -49,5 +174,43 @@
 
   .secondarySection {
     gap: 2rem;
+  }
+
+  .latestSection,
+  .categorySection,
+  .newsletterCTA {
+    padding: 3rem 1rem;
+  }
+
+  .sectionTitle {
+    font-size: 2rem;
+  }
+
+  .postsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .sectionHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .ctaTitle {
+    font-size: 2.5rem;
+  }
+
+  .ctaText {
+    font-size: 1.125rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .sectionTitle {
+    font-size: 1.75rem;
+  }
+
+  .ctaTitle {
+    font-size: 2rem;
   }
 }

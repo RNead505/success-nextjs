@@ -10,7 +10,8 @@
       "Bash(git commit:*)",
       "Bash(curl -s https://www.success.com/sitemap.xml)",
       "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/pages?per_page=100\")",
-      "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/categories?per_page=50\")"
+      "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/categories?per_page=50\")",
+      "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/posts?_embed&per_page=20\")"
     ],
     "deny": [],
     "ask": []
