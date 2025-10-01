@@ -12,9 +12,11 @@ type HomePageProps = {
   latestPosts: any[];
   businessPosts: any[];
   lifestylePosts: any[];
+  futureOfWorkPosts: any[];
+  healthPosts: any[];
 };
 
-function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, businessPosts, lifestylePosts }: HomePageProps) {
+function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, businessPosts, lifestylePosts, futureOfWorkPosts, healthPosts }: HomePageProps) {
   if (!featuredPost) {
     return <Layout><p>Loading...</p></Layout>;
   }
@@ -86,6 +88,36 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, bu
         </div>
       </section>
 
+      {/* Future of Work Section */}
+      <section className={styles.categorySection}>
+        <div className={styles.sectionContainer}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Future of Work</h2>
+            <a href="/category/future-of-work" className={styles.viewAllLink}>View All →</a>
+          </div>
+          <div className={styles.postsGrid}>
+            {futureOfWorkPosts.map((post: any) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Health & Wellness Section */}
+      <section className={styles.categorySection} style={{ backgroundColor: '#f9f9f9' }}>
+        <div className={styles.sectionContainer}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Health & Wellness</h2>
+            <a href="/category/health" className={styles.viewAllLink}>View All →</a>
+          </div>
+          <div className={styles.postsGrid}>
+            {healthPosts.map((post: any) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Newsletter CTA */}
       <section className={styles.newsletterCTA}>
         <div className={styles.ctaContent}>
@@ -111,6 +143,8 @@ export async function getStaticProps() {
   // Fetch category-specific posts
   const businessPosts = await fetchWordPressData('posts?categories=4&_embed&per_page=3');
   const lifestylePosts = await fetchWordPressData('posts?categories=14056&_embed&per_page=3');
+  const futureOfWorkPosts = await fetchWordPressData('posts?categories=14061&_embed&per_page=3');
+  const healthPosts = await fetchWordPressData('posts?categories=14059&_embed&per_page=3');
 
   return {
     props: {
@@ -120,6 +154,8 @@ export async function getStaticProps() {
       latestPosts,
       businessPosts,
       lifestylePosts,
+      futureOfWorkPosts,
+      healthPosts,
     },
     revalidate: 600,
   };
