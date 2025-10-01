@@ -12,11 +12,12 @@ type HomePageProps = {
   latestPosts: any[];
   businessPosts: any[];
   lifestylePosts: any[];
+  moneyPosts: any[];
   futureOfWorkPosts: any[];
   healthPosts: any[];
 };
 
-function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, businessPosts, lifestylePosts, futureOfWorkPosts, healthPosts }: HomePageProps) {
+function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, businessPosts, lifestylePosts, moneyPosts, futureOfWorkPosts, healthPosts }: HomePageProps) {
   if (!featuredPost) {
     return <Layout><p>Loading...</p></Layout>;
   }
@@ -88,8 +89,23 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, bu
         </div>
       </section>
 
-      {/* Future of Work Section */}
+      {/* Money Section */}
       <section className={styles.categorySection}>
+        <div className={styles.sectionContainer}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Money</h2>
+            <a href="/category/money" className={styles.viewAllLink}>View All →</a>
+          </div>
+          <div className={styles.postsGrid}>
+            {moneyPosts.map((post: any) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Future of Work Section */}
+      <section className={styles.categorySection} style={{ backgroundColor: '#f9f9f9' }}>
         <div className={styles.sectionContainer}>
           <div className={styles.sectionHeader}>
             <h2 className={styles.sectionTitle}>Future of Work</h2>
@@ -104,7 +120,7 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, bu
       </section>
 
       {/* Health & Wellness Section */}
-      <section className={styles.categorySection} style={{ backgroundColor: '#f9f9f9' }}>
+      <section className={styles.categorySection}>
         <div className={styles.sectionContainer}>
           <div className={styles.sectionHeader}>
             <h2 className={styles.sectionTitle}>Health & Wellness</h2>
@@ -143,6 +159,7 @@ export async function getStaticProps() {
   // Fetch category-specific posts
   const businessPosts = await fetchWordPressData('posts?categories=4&_embed&per_page=3');
   const lifestylePosts = await fetchWordPressData('posts?categories=14056&_embed&per_page=3');
+  const moneyPosts = await fetchWordPressData('posts?categories=14060&_embed&per_page=3');
   const futureOfWorkPosts = await fetchWordPressData('posts?categories=14061&_embed&per_page=3');
   const healthPosts = await fetchWordPressData('posts?categories=14059&_embed&per_page=3');
 
@@ -154,6 +171,7 @@ export async function getStaticProps() {
       latestPosts,
       businessPosts,
       lifestylePosts,
+      moneyPosts,
       futureOfWorkPosts,
       healthPosts,
     },
