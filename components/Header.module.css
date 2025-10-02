@@ -79,8 +79,8 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1rem;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 150px 1fr 150px;
   align-items: center;
   gap: 2rem;
 }
@@ -92,10 +92,10 @@
   text-decoration: none;
   color: #fff;
   text-transform: uppercase;
+  justify-self: start;
 }
 
 .nav {
-  flex: 1;
   display: flex;
   justify-content: center;
 }
@@ -151,7 +151,7 @@
   padding: 0.5rem;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   transition: color 0.2s;
 }
 
