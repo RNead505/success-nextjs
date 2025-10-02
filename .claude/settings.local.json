@@ -25,7 +25,9 @@
       "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/magazines?per_page=10\")",
       "Bash(npm run build:*)",
       "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/categories?search=entertainment\")",
-      "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/pages?slug=about\")"
+      "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/pages?slug=about\")",
+      "Bash(curl -s \"https://www.success.com\")",
+      "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/posts?_embed&per_page=3\")"
     ],
     "deny": [],
     "ask": []
