@@ -3,7 +3,7 @@ import Link from 'next/link';
 import styles from './Header.module.css';
 
 const navItems = [
-  { label: 'MAGAZINE', path: '/category/magazine' },
+  { label: 'MAGAZINE', path: '/magazine' },
   { label: 'SUCCESS+', path: '/success-plus' },
   { label: 'BUSINESS', path: '/category/business' },
   { label: 'MONEY', path: '/category/money' },
