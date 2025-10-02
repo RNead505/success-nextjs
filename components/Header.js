@@ -10,7 +10,7 @@ const navItems = [
   { label: 'LIFESTYLE', path: '/category/lifestyle' },
   { label: 'FUTURE OF WORK', path: '/category/future-of-work' },
   { label: 'PODCASTS', path: '/podcasts' },
-  { label: 'STORE', path: '/store' },
+  { label: 'STORE', path: 'https://mysuccessplus.com/shop', external: true },
 ];
 
 export default function Header() {
@@ -56,7 +56,13 @@ export default function Header() {
             <ul>
               {navItems.map((item) => (
                 <li key={item.label}>
-                  <Link href={item.path}>{item.label}</Link>
+                  {item.external ? (
+                    <a href={item.path} target="_blank" rel="noopener noreferrer">
+                      {item.label}
+                    </a>
+                  ) : (
+                    <Link href={item.path}>{item.label}</Link>
+                  )}
                 </li>
               ))}
             </ul>
