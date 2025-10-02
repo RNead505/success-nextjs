@@ -200,9 +200,9 @@ export async function getStaticProps() {
   const posts = await fetchWordPressData('posts?_embed&per_page=30');
 
   const featuredPost = posts[0];
-  const secondaryPosts = posts.slice(1, 4);
-  const trendingPosts = posts.slice(4, 7);
-  const latestPosts = posts.slice(7, 13); // 6 more posts
+  const secondaryPosts = posts.slice(1, 5); // 4 posts for 2x2 grid
+  const trendingPosts = posts.slice(5, 8);
+  const latestPosts = posts.slice(8, 14); // 6 more posts
 
   // Fetch category-specific posts
   const businessPosts = await fetchWordPressData('posts?categories=4&_embed&per_page=3');
