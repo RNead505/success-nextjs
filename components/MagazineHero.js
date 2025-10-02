@@ -1,7 +1,7 @@
 import styles from './MagazineHero.module.css'; // This line must be correct
 
 export default function MagazineHero() {
-  const heroImage = "https://www.success.com/wp-content/uploads/2023/09/Jesse-Itzler-SUCCESS-Magazine-Cover-Story.jpg";
+  const heroImage = "https://www.success.com/wp-content/uploads/2025/08/sd25-05-september-featured-scaled.jpg";
 
   return (
     // Make sure the `className` uses the `styles` object
