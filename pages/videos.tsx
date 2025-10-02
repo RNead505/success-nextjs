@@ -29,12 +29,21 @@ export default function VideosPage({ videos }: VideosPageProps) {
 }
 
 export async function getStaticProps() {
-  const videos = await fetchWordPressData('videos?per_page=20&_embed');
+  try {
+    const videos = await fetchWordPressData('videos?per_page=20&_embed');
 
-  return {
-    props: {
-      videos,
-    },
-    revalidate: 600,
-  };
+    return {
+      props: {
+        videos: videos || [],
+      },
+      revalidate: 600,
+    };
+  } catch (error) {
+    return {
+      props: {
+        videos: [],
+      },
+      revalidate: 600,
+    };
+  }
 }

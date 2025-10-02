@@ -49,12 +49,21 @@ export default function PodcastsPage({ podcasts }: PodcastsPageProps) {
 }
 
 export async function getStaticProps() {
-  const podcasts = await fetchWordPressData('podcasts?per_page=20&_embed');
+  try {
+    const podcasts = await fetchWordPressData('podcasts?per_page=20&_embed');
 
-  return {
-    props: {
-      podcasts,
-    },
-    revalidate: 600,
-  };
+    return {
+      props: {
+        podcasts: podcasts || [],
+      },
+      revalidate: 600,
+    };
+  } catch (error) {
+    return {
+      props: {
+        podcasts: [],
+      },
+      revalidate: 600,
+    };
+  }
 }

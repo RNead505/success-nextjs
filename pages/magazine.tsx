@@ -37,11 +37,17 @@ export default function MagazinePage({ currentIssue, pastIssues }: MagazinePageP
                   )}
                 </div>
                 <div className={styles.issueDetails}>
-                  <h3 className={styles.issueTitle}>{currentIssue.title.rendered}</h3>
-                  <div
-                    className={styles.issueDescription}
-                    dangerouslySetInnerHTML={{ __html: currentIssue.content.rendered || currentIssue.excerpt.rendered }}
-                  />
+                  <h3 className={styles.issueTitle}>
+                    {currentIssue.title?.rendered || 'Current Issue'}
+                  </h3>
+                  {(currentIssue.content?.rendered || currentIssue.excerpt?.rendered) && (
+                    <div
+                      className={styles.issueDescription}
+                      dangerouslySetInnerHTML={{
+                        __html: currentIssue.content?.rendered || currentIssue.excerpt?.rendered || ''
+                      }}
+                    />
+                  )}
                   <a href="/subscribe" className={styles.subscribeButton}>
                     Subscribe Now
                   </a>
@@ -99,12 +105,14 @@ export default function MagazinePage({ currentIssue, pastIssues }: MagazinePageP
                     {issue._embedded?.['wp:featuredmedia']?.[0]?.source_url && (
                       <img
                         src={issue._embedded['wp:featuredmedia'][0].source_url}
-                        alt={issue.title.rendered}
+                        alt={issue.title?.rendered || 'Magazine Issue'}
                         className={styles.archiveCoverImage}
                       />
                     )}
                   </div>
-                  <h4 className={styles.archiveTitle}>{issue.title.rendered}</h4>
+                  <h4 className={styles.archiveTitle}>
+                    {issue.title?.rendered || 'Magazine Issue'}
+                  </h4>
                 </div>
               ))}
             </div>
@@ -116,15 +124,25 @@ export default function MagazinePage({ currentIssue, pastIssues }: MagazinePageP
 }
 
 export async function getStaticProps() {
-  const magazines = await fetchWordPressData('magazines?per_page=10&_embed');
-  const currentIssue = magazines[0];
-  const pastIssues = magazines.slice(1);
+  try {
+    const magazines = await fetchWordPressData('magazines?per_page=10&_embed');
+    const currentIssue = magazines && magazines.length > 0 ? magazines[0] : null;
+    const pastIssues = magazines && magazines.length > 1 ? magazines.slice(1) : [];
 
-  return {
-    props: {
-      currentIssue,
-      pastIssues,
-    },
-    revalidate: 600,
-  };
+    return {
+      props: {
+        currentIssue,
+        pastIssues,
+      },
+      revalidate: 600,
+    };
+  } catch (error) {
+    return {
+      props: {
+        currentIssue: null,
+        pastIssues: [],
+      },
+      revalidate: 600,
+    };
+  }
 }
