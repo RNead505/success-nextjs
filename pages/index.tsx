@@ -15,9 +15,12 @@ type HomePageProps = {
   moneyPosts: any[];
   futureOfWorkPosts: any[];
   healthPosts: any[];
+  entertainmentPosts: any[];
+  videos: any[];
+  podcasts: any[];
 };
 
-function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, businessPosts, lifestylePosts, moneyPosts, futureOfWorkPosts, healthPosts }: HomePageProps) {
+function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, businessPosts, lifestylePosts, moneyPosts, futureOfWorkPosts, healthPosts, entertainmentPosts, videos, podcasts }: HomePageProps) {
   if (!featuredPost) {
     return <Layout><p>Loading...</p></Layout>;
   }
@@ -134,6 +137,51 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, bu
         </div>
       </section>
 
+      {/* Entertainment Section */}
+      <section className={styles.categorySection} style={{ backgroundColor: '#f9f9f9' }}>
+        <div className={styles.sectionContainer}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Entertainment</h2>
+            <a href="/category/entertainment" className={styles.viewAllLink}>View All →</a>
+          </div>
+          <div className={styles.postsGrid}>
+            {entertainmentPosts.map((post: any) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Videos Section */}
+      <section className={styles.categorySection}>
+        <div className={styles.sectionContainer}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Latest Videos</h2>
+            <a href="/videos" className={styles.viewAllLink}>View All →</a>
+          </div>
+          <div className={styles.postsGrid}>
+            {videos.slice(0, 3).map((video: any) => (
+              <PostCard key={video.id} post={video} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Podcasts Section */}
+      <section className={styles.categorySection} style={{ backgroundColor: '#f9f9f9' }}>
+        <div className={styles.sectionContainer}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Latest Podcasts</h2>
+            <a href="/podcasts" className={styles.viewAllLink}>View All →</a>
+          </div>
+          <div className={styles.postsGrid}>
+            {podcasts.slice(0, 3).map((podcast: any) => (
+              <PostCard key={podcast.id} post={podcast} />
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Newsletter CTA */}
       <section className={styles.newsletterCTA}>
         <div className={styles.ctaContent}>
@@ -162,6 +210,11 @@ export async function getStaticProps() {
   const moneyPosts = await fetchWordPressData('posts?categories=14060&_embed&per_page=3');
   const futureOfWorkPosts = await fetchWordPressData('posts?categories=14061&_embed&per_page=3');
   const healthPosts = await fetchWordPressData('posts?categories=14059&_embed&per_page=3');
+  const entertainmentPosts = await fetchWordPressData('posts?categories=14382&_embed&per_page=3');
+
+  // Fetch custom post types
+  const videos = await fetchWordPressData('videos?_embed&per_page=3');
+  const podcasts = await fetchWordPressData('podcasts?_embed&per_page=3');
 
   return {
     props: {
@@ -174,6 +227,9 @@ export async function getStaticProps() {
       moneyPosts,
       futureOfWorkPosts,
       healthPosts,
+      entertainmentPosts,
+      videos: videos || [],
+      podcasts: podcasts || [],
     },
     revalidate: 600,
   };
