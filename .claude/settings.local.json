@@ -29,7 +29,18 @@
       "Bash(curl -s \"https://www.success.com\")",
       "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/posts?_embed&per_page=3\")",
       "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/magazines?per_page=1&_embed\")",
-      "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/pages?slug=about-us\")"
+      "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/pages?slug=about-us\")",
+      "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/pages?slug=privacy-policy\")",
+      "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/pages?slug=terms-of-service\")",
+      "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/pages?slug=careers\")",
+      "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/pages?slug=press\")",
+      "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/pages?slug=terms\")",
+      "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/pages?slug=terms-of-use\")",
+      "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/pages?slug=accessibility\")",
+      "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/pages?slug=advertise\")",
+      "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/pages?slug=help\")",
+      "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/magazines?per_page=20&_embed\")",
+      "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/categories?per_page=20\")"
     ],
     "deny": [],
     "ask": []

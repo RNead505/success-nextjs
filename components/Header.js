@@ -10,7 +10,7 @@ const navItems = [
   { label: 'LIFESTYLE', path: '/category/lifestyle' },
   { label: 'FUTURE OF WORK', path: '/category/future-of-work' },
   { label: 'PODCASTS', path: '/podcasts' },
-  { label: 'STORE', path: 'https://mysuccessplus.com/shop', external: true },
+  { label: 'STORE', path: '/store' },
 ];
 
 export default function Header() {
@@ -68,11 +68,11 @@ export default function Header() {
             </ul>
           </nav>
 
-          <a href="/search" className={styles.searchButton} aria-label="Search">
+          <Link href="/search" className={styles.searchButton} aria-label="Search">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M9 17A8 8 0 1 0 9 1a8 8 0 0 0 0 16zM19 19l-4.35-4.35" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-          </a>
+          </Link>
         </div>
       </div>
 

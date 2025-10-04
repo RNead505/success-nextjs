@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import Layout from '../../components/Layout';
+import SEO from '../../components/SEO';
 import styles from './Post.module.css';
 import { fetchWordPressData } from '../../lib/wordpress';
 
@@ -26,8 +27,70 @@ export default function PostPage({ post, relatedPosts }: PostPageProps) {
     day: 'numeric',
   });
 
+  // Calculate read time
+  const calculateReadTime = (content: string) => {
+    const wordsPerMinute = 200;
+    const textContent = content.replace(/<[^>]*>/g, '');
+    const wordCount = textContent.split(/\s+/).length;
+    const readTime = Math.ceil(wordCount / wordsPerMinute);
+    return `${readTime} min read`;
+  };
+
+  const readTime = post.content?.rendered ? calculateReadTime(post.content.rendered) : '5 min read';
+
+  // Extract plain text from excerpt for SEO
+  const getPlainText = (html: string) => {
+    return html?.replace(/<[^>]*>/g, '').trim() || '';
+  };
+
+  const seoDescription = post.excerpt?.rendered
+    ? getPlainText(post.excerpt.rendered)
+    : getPlainText(post.content?.rendered?.substring(0, 300) || '');
+
+  // Structured data for article
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title.rendered,
+    description: seoDescription,
+    image: featuredImage?.source_url,
+    datePublished: post.date,
+    dateModified: post.modified,
+    author: {
+      '@type': 'Person',
+      name: author?.name,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'SUCCESS',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://www.success.com/wp-content/uploads/2024/03/success-logo.png',
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://www.success.com/blog/${post.slug}`,
+    },
+  };
+
   return (
     <Layout>
+      <SEO
+        title={post.title.rendered}
+        description={seoDescription}
+        image={featuredImage?.source_url}
+        url={`https://www.success.com/blog/${post.slug}`}
+        type="article"
+        publishedTime={post.date}
+        modifiedTime={post.modified}
+        author={author?.name}
+        keywords={category?.name}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
       <article className={styles.article}>
         {/* Article Header */}
         <header className={styles.header}>
@@ -44,7 +107,7 @@ export default function PostPage({ post, relatedPosts }: PostPageProps) {
                 <span className={styles.author}>By {author.name}</span>
               )}
               <span className={styles.date}>{postDate}</span>
-              <span className={styles.readTime}>5 min read</span>
+              <span className={styles.readTime}>{readTime}</span>
             </div>
 
             {post.excerpt?.rendered && (

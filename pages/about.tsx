@@ -145,7 +145,7 @@ export async function getStaticProps() {
   const teamMembers: TeamMember[] = [
     {
       name: 'Kerrie Lee Brown',
-      title: 'Vice President of Publishing, Editor-in-Chief',
+      title: 'Chief Content Officer & Editor-in-Chief',
       image: 'https://www.success.com/wp-content/uploads/2024/03/staff_kerrie-lee-brown-2023.jpg',
       image2: 'https://www.success.com/wp-content/uploads/2024/04/image-101.png',
       dreamCareer: 'Doing what I\'m doing',
@@ -184,8 +184,170 @@ export async function getStaticProps() {
       title: 'Business Admin & Customer Support Specialist',
       image: 'https://www.success.com/wp-content/uploads/2024/03/staff_shawana-crayton.jpg',
       image2: 'https://www.success.com/wp-content/uploads/2024/04/image-90.png',
-      dreamCareer: 'TV show host',
-      bio: 'Shawana is a dynamic business administrator and customer support specialist with a proven track record of optimizing operations and delivering exceptional service. With years of experience in business administration, she ensures seamless workflows and fosters strong client relationships.',
+      dreamCareer: 'News Anchor',
+      bio: 'Shawana has been with Success Enterprises for three years. With over 20 years of customer service experience, she finds joy in assisting others.',
+      linkedin: ''
+    },
+    {
+      name: 'Brianna Diaz',
+      title: 'Social Media Assistant',
+      image: 'https://www.success.com/wp-content/uploads/2025/03/Brianna-Diaz.jpg',
+      image2: 'https://www.success.com/wp-content/uploads/2025/03/Brianna-Diaz-1.jpg',
+      dreamCareer: 'A director, bringing stories to life through compelling visuals and storytelling',
+      bio: 'Brianna is a creative professional with experience in production assistance, script reading, video editing, and social media management. She brings strong organizational and creative skills to support projects across preproduction, production, and postproduction.',
+      linkedin: ''
+    },
+    {
+      name: 'Kathryn Giuffrida',
+      title: 'Marketing Content & SEO Manager',
+      image: 'https://www.success.com/wp-content/uploads/2025/03/Kathryn-Giuffrida.jpg',
+      image2: 'https://www.success.com/wp-content/uploads/2025/03/Kathryn-Giuffrida-1.jpg',
+      dreamCareer: 'Homesteading mom of many',
+      bio: 'As associate marketing editor at SUCCESS®, Kathryn oversees and assists with all SEO and partner content initiatives. She collaborates closely with our talented team of writers, editors, fact-checkers, uploaders, and SEO strategists to produce high-quality content that resonates with our audience. She has over six years of experience in SEO content production and has achieved multiple first-page rankings on Google, demonstrating her ability to create content that is both engaging and highly discoverable.',
+      linkedin: ''
+    },
+    {
+      name: 'Emily Holombek',
+      title: 'E-Learning & Enrichment Content Specialist',
+      image: 'https://www.success.com/wp-content/uploads/2025/03/Emily-Holombek.jpg',
+      image2: 'https://www.success.com/wp-content/uploads/2025/03/Emily-Holombek-1.jpg',
+      dreamCareer: 'Therapy dog handler',
+      bio: 'Emily has a diverse background in startups, teaching, coaching, and curriculum development, with a strong focus on course design and implementation. Passionate about innovation, she thrives on creating engaging learning experiences and enhancing educational content that drives success and makes a meaningful impact.',
+      linkedin: ''
+    },
+    {
+      name: 'Elly Kang',
+      title: 'Marketing Operations Assistant',
+      image: 'https://www.success.com/wp-content/uploads/2025/03/Elly-Kang.jpg',
+      image2: 'https://www.success.com/wp-content/uploads/2025/03/Elly-Kang-1.jpg',
+      dreamCareer: 'Kindergarten teacher',
+      bio: 'Driven by a passion for visual communication, Elly, who grew up in Korea, studied studio art at the University of Texas at Austin. With a strong interest in design and storytelling, she joined SUCCESS® as a marketing operations assistant, where she contributes to creative projects and brand engagement.',
+      linkedin: ''
+    },
+    {
+      name: 'Lauren Kerrigan',
+      title: 'Creative Director',
+      image: 'https://www.success.com/wp-content/uploads/2024/03/staff_lauren-kerrigan-2023.jpg',
+      image2: 'https://www.success.com/wp-content/uploads/2024/04/image-96.png',
+      dreamCareer: 'Touring master sommelier',
+      bio: 'Lauren is the wrangler and creator of branding and graphic assets for all business divisions across SUCCESS® Enterprises. She is driven to make SUCCESS beautiful!',
+      linkedin: ''
+    },
+    {
+      name: 'Maya Korogodsky',
+      title: 'Senior Marketing Manager',
+      image: 'https://www.success.com/wp-content/uploads/2025/03/Maya-Korogodsky.jpg',
+      image2: 'https://www.success.com/wp-content/uploads/2025/03/Maya-Korogodsky-1.jpg',
+      dreamCareer: 'Fashion Designer',
+      bio: 'Maya, a driven professional with a BBA in Marketing from the University of Michigan, has gained experience at SoulCycle, HBO, and Meta. Thriving in diverse global environments, Maya excels in collaboration and growth, possessing proficiency in English, Russian, and Hebrew. She is eager to contribute her skills and passion for driving results to dynamic teams.',
+      linkedin: ''
+    },
+    {
+      name: 'Virginia Le',
+      title: 'Senior Production Manager',
+      image: 'https://www.success.com/wp-content/uploads/2024/03/staff_virginia-le-2023.jpg',
+      image2: 'https://www.success.com/wp-content/uploads/2024/04/image-97.png',
+      dreamCareer: 'Chocolate consultant who travels the world',
+      bio: 'Virginia is a detail-oriented individual responsible for overseeing numerous aspects, both significant and minor, in her role. Joining SUCCESS magazine\'s print production team in 2018, she ensures the Editorial Team stays on track, coordinates with printers, bulk customers, advertisers, vendors, and consultants to ensure timely magazine production.',
+      linkedin: ''
+    },
+    {
+      name: 'Ava Leach',
+      title: 'Social Media Manager',
+      image: 'https://www.success.com/wp-content/uploads/2025/03/Ava-Leach.jpg',
+      image2: 'https://www.success.com/wp-content/uploads/2025/03/Ava-Leach-1.jpg',
+      dreamCareer: 'Formula 1 Driver',
+      bio: 'Ava is a seasoned social media manager with over six years of industry experience. She specializes in driving engagement and brand visibility across diverse platforms, leveraging her expertise to create impactful digital strategies.',
+      linkedin: ''
+    },
+    {
+      name: 'Denise Long',
+      title: 'QC and Fact Checker',
+      image: 'https://www.success.com/wp-content/uploads/2025/03/Denise-Long.jpg',
+      image2: 'https://www.success.com/wp-content/uploads/2025/03/Denise-Long-1.jpg',
+      dreamCareer: 'Book reviewer',
+      bio: 'With over 20 years of professional experience in copy editing, writing, and fact-checking, Denise has worked with a variety of industries from news media and tech startups to academic institutions and nonprofits. At SUCCESS®, she is a vigilant extra set of eyes for style and accuracy.',
+      linkedin: ''
+    },
+    {
+      name: 'Jamie Lyons',
+      title: 'Executive & Team Assistant',
+      image: 'https://www.success.com/wp-content/uploads/2025/03/Jamie-Lyons.jpg',
+      image2: 'https://www.success.com/wp-content/uploads/2025/03/Jamie-Lyons-1.jpg',
+      dreamCareer: 'Operate my own bed and breakfast',
+      bio: 'Jamie has a wealth of experience in executive support, operations, and project management with a strong background in startup environments, where she\'s worn many hats beyond the traditional executive assistant role.',
+      linkedin: ''
+    },
+    {
+      name: 'Rena Machani',
+      title: 'Editorial Assistant',
+      image: 'https://www.success.com/wp-content/uploads/2025/03/Rena-Machani.jpg',
+      image2: 'https://www.success.com/wp-content/uploads/2025/03/Rena-Machani-1.jpg',
+      dreamCareer: 'Author',
+      bio: 'Rena grew up in Colorado, graduated from The University of Colorado Boulder in English, and pursed media and journalism. She recently joined SUCCESS magazine as their editorial assistant.',
+      linkedin: ''
+    },
+    {
+      name: 'Hugh Murphy',
+      title: 'Product Development & Marketing Manager',
+      image: 'https://www.success.com/wp-content/uploads/2024/03/staff_hugh-murphy-2023.jpg',
+      image2: 'https://www.success.com/wp-content/uploads/2024/04/image-98.png',
+      dreamCareer: 'Leftfielder for the Texas Rangers',
+      bio: 'Hugh is a marketing professional with extensive career experience in the publishing and advertising industries.',
+      linkedin: ''
+    },
+    {
+      name: 'Shannon Nigut',
+      title: 'Social Media Specialist',
+      image: 'https://www.success.com/wp-content/uploads/2025/03/Shannon-Nigut.jpg',
+      image2: 'https://www.success.com/wp-content/uploads/2025/03/Shannon-Nigut-1.jpg',
+      dreamCareer: 'Artist',
+      bio: 'Shannon has nearly a decade of experience in social media, having worked both in agencies and in-house for clients. She specializes in content ideation, strategy, production, and reporting. As a freelancer and consultant, she partners with brands to elevate their digital presence and achieve measurable results.',
+      linkedin: ''
+    },
+    {
+      name: 'Emily O\'Brien',
+      title: 'Print Managing Editor',
+      image: 'https://www.success.com/wp-content/uploads/2024/03/staff_emily-obrien.jpg',
+      image2: 'https://www.success.com/wp-content/uploads/2024/04/image-99.png',
+      dreamCareer: 'THIS.',
+      bio: 'Emily is the associate editor of SUCCESS magazine. She has contributed to more than 30 print and digital publications, focusing on architecture, wellness, travel, and lifestyle topics. She resides in Raleigh, North Carolina.',
+      linkedin: ''
+    },
+    {
+      name: 'Beth Shea',
+      title: 'Online Managing Editor',
+      image: 'https://www.success.com/wp-content/uploads/2025/03/Beth-Shea.jpg',
+      image2: 'https://www.success.com/wp-content/uploads/2025/03/Beth-Shea-1.jpg',
+      dreamCareer: 'To be a wildlife warrior for the Steve Irwin Wildlife Reserve',
+      bio: 'Beth has over 20 years of experience as a writer and editor of digital content and has worked with online publications including Hearst Newspapers, Forbes, Business Insider and American Express. She is the digital associate editor at SUCCESS®, where she sources the most engaging and inspiring stories to keep readers informed about current events.',
+      linkedin: ''
+    },
+    {
+      name: 'Kristen Tribe',
+      title: 'Digital Magazine Editor',
+      image: 'https://www.success.com/wp-content/uploads/2025/03/Kristen-Tribe.jpg',
+      image2: 'https://www.success.com/wp-content/uploads/2025/03/Kristen-Tribe-1.jpg',
+      dreamCareer: 'Novelist with an antique/vintage store side hustle',
+      bio: 'Kristen is a multitalented journalist with more than 20 years of experience writing and editing for award-winning newspapers and magazines. She\'s happiest when chasing a good story.',
+      linkedin: ''
+    },
+    {
+      name: 'Emily Tvelia',
+      title: 'Marketing Operations Specialist',
+      image: 'https://www.success.com/wp-content/uploads/2025/03/Emily-Tvelia.jpg',
+      image2: 'https://www.success.com/wp-content/uploads/2025/03/Emily-Tvelia-1.jpg',
+      dreamCareer: 'Professional chef',
+      bio: 'Emily has diverse marketing and project management knowledge with experience using various platforms to build brands, improve engagement, and optimize marketing technology. She\'s passionate about learning something new every day and eager to help solve problems that increase marketing efficiency.',
+      linkedin: ''
+    },
+    {
+      name: 'Pablo Urdiales Antelo',
+      title: 'News Writer',
+      image: 'https://www.success.com/wp-content/uploads/2025/03/Pablo-Urdiales-Antelo.jpg',
+      image2: 'https://www.success.com/wp-content/uploads/2025/03/Pablo-Urdiales-Antelo-1.jpg',
+      dreamCareer: 'Rock Star',
+      bio: 'As news writer at SUCCESS®, Pablo explores how AI, emerging technologies, and today\'s strategic choices are shaping the way we live, work, and build the future. He translates complex innovations into clear insights that help leaders and professionals anticipate tomorrow\'s opportunities.',
       linkedin: ''
     }
   ];

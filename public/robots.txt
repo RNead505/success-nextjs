@@ -1,0 +1,12 @@
+# robots.txt for SUCCESS Magazine
+
+User-agent: *
+Allow: /
+
+# Disallow admin and private pages
+Disallow: /api/
+Disallow: /admin/
+Disallow: /_next/
+
+# Sitemap location
+Sitemap: https://www.success.com/sitemap.xml

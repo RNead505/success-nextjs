@@ -1,4 +1,5 @@
 import Layout from '../components/Layout';
+import SEO from '../components/SEO';
 import MagazineHero from '../components/MagazineHero';
 import PostCard from '../components/PostCard';
 import Trending from '../components/Trending';
@@ -27,6 +28,12 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, bu
 
   return (
     <Layout>
+      <SEO
+        title="SUCCESS - Your Trusted Guide to the Future of Work"
+        description="SUCCESS is the leading source of inspiration, motivation, and practical advice for entrepreneurs, business leaders, and professionals seeking personal and professional growth."
+        url="https://www.success.com"
+        type="website"
+      />
       <div className={styles.container}>
         {/* Main content grid comes first */}
         <div className={styles.homeLayout}>
