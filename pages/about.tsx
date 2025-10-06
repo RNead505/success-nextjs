@@ -236,8 +236,8 @@ export async function getStaticProps() {
     {
       name: 'Maya Korogodsky',
       title: 'Senior Marketing Manager',
-      image: 'https://www.success.com/wp-content/uploads/2025/03/Maya-Korogodsky.jpg',
-      image2: 'https://www.success.com/wp-content/uploads/2025/03/Maya-Korogodsky-1.jpg',
+      image: 'https://www.success.com/wp-content/uploads/2024/03/staff_maya-korogodsky.jpg',
+      image2: 'https://www.success.com/wp-content/uploads/2024/04/image-102.png',
       dreamCareer: 'Fashion Designer',
       bio: 'Maya, a driven professional with a BBA in Marketing from the University of Michigan, has gained experience at SoulCycle, HBO, and Meta. Thriving in diverse global environments, Maya excels in collaboration and growth, possessing proficiency in English, Russian, and Hebrew. She is eager to contribute her skills and passion for driving results to dynamic teams.',
       linkedin: ''
@@ -254,8 +254,8 @@ export async function getStaticProps() {
     {
       name: 'Ava Leach',
       title: 'Social Media Manager',
-      image: 'https://www.success.com/wp-content/uploads/2025/03/Ava-Leach.jpg',
-      image2: 'https://www.success.com/wp-content/uploads/2025/03/Ava-Leach-1.jpg',
+      image: 'https://www.success.com/wp-content/uploads/2024/03/staff_ava-leach.jpg',
+      image2: 'https://www.success.com/wp-content/uploads/2024/04/image-103.png',
       dreamCareer: 'Formula 1 Driver',
       bio: 'Ava is a seasoned social media manager with over six years of industry experience. She specializes in driving engagement and brand visibility across diverse platforms, leveraging her expertise to create impactful digital strategies.',
       linkedin: ''
@@ -281,8 +281,8 @@ export async function getStaticProps() {
     {
       name: 'Rena Machani',
       title: 'Editorial Assistant',
-      image: 'https://www.success.com/wp-content/uploads/2025/03/Rena-Machani.jpg',
-      image2: 'https://www.success.com/wp-content/uploads/2025/03/Rena-Machani-1.jpg',
+      image: 'https://www.success.com/wp-content/uploads/2024/03/staff_rena-machani.jpg',
+      image2: 'https://www.success.com/wp-content/uploads/2024/04/image-104.png',
       dreamCareer: 'Author',
       bio: 'Rena grew up in Colorado, graduated from The University of Colorado Boulder in English, and pursed media and journalism. She recently joined SUCCESS magazine as their editorial assistant.',
       linkedin: ''
@@ -344,8 +344,8 @@ export async function getStaticProps() {
     {
       name: 'Pablo Urdiales Antelo',
       title: 'News Writer',
-      image: 'https://www.success.com/wp-content/uploads/2025/03/Pablo-Urdiales-Antelo.jpg',
-      image2: 'https://www.success.com/wp-content/uploads/2025/03/Pablo-Urdiales-Antelo-1.jpg',
+      image: 'https://www.success.com/wp-content/uploads/2024/03/staff_pablo-urdiales-antelo.jpg',
+      image2: 'https://www.success.com/wp-content/uploads/2024/04/image-105.png',
       dreamCareer: 'Rock Star',
       bio: 'As news writer at SUCCESS®, Pablo explores how AI, emerging technologies, and today\'s strategic choices are shaping the way we live, work, and build the future. He translates complex innovations into clear insights that help leaders and professionals anticipate tomorrow\'s opportunities.',
       linkedin: ''

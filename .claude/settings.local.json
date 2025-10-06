@@ -40,7 +40,12 @@
       "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/pages?slug=advertise\")",
       "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/pages?slug=help\")",
       "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/magazines?per_page=20&_embed\")",
-      "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/categories?per_page=20\")"
+      "Bash(curl -s \"https://www.success.com/wp-json/wp/v2/categories?per_page=20\")",
+      "Bash(curl -I \"https://www.success.com/wp-content/uploads/2025/03/Maya-Korogodsky.jpg\")",
+      "Bash(curl -I \"https://www.success.com/wp-content/uploads/2025/03/Ava-Leach.jpg\")",
+      "Bash(curl -I \"https://www.success.com/wp-content/uploads/2025/03/Rena-Machani.jpg\")",
+      "Bash(curl -I \"https://www.success.com/wp-content/uploads/2025/03/Pablo-Urdiales-Antelo.jpg\")",
+      "Bash(curl:*)"
     ],
     "deny": [],
     "ask": []
