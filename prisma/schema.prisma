@@ -1,0 +1,167 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// User model for admin authentication
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  password      String
+  role          UserRole  @default(EDITOR)
+  bio           String?
+  avatar        String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  posts         Post[]
+
+  @@map("users")
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  EDITOR
+  AUTHOR
+}
+
+// Post model (articles/blog posts)
+model Post {
+  id                String      @id @default(cuid())
+  title             String
+  slug              String      @unique
+  content           String
+  excerpt           String?
+  featuredImage     String?
+  featuredImageAlt  String?
+  status            PostStatus  @default(DRAFT)
+  authorId          String
+  author            User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  categories        Category[]  @relation("PostCategories")
+  tags              Tag[]       @relation("PostTags")
+  publishedAt       DateTime?
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  seoTitle          String?
+  seoDescription    String?
+  readTime          Int?        // in minutes
+  views             Int         @default(0)
+
+  @@map("posts")
+  @@index([slug])
+  @@index([status])
+  @@index([publishedAt])
+}
+
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+// Category model
+model Category {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?
+  posts       Post[]    @relation("PostCategories")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("categories")
+  @@index([slug])
+}
+
+// Tag model
+model Tag {
+  id        String    @id @default(cuid())
+  name      String
+  slug      String    @unique
+  posts     Post[]    @relation("PostTags")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("tags")
+  @@index([slug])
+}
+
+// Media library
+model Media {
+  id        String      @id @default(cuid())
+  filename  String
+  url       String
+  mimeType  String
+  size      Int         // in bytes
+  width     Int?
+  height    Int?
+  alt       String?
+  uploadedBy String
+  createdAt DateTime    @default(now())
+
+  @@map("media")
+}
+
+// Static pages (About, Magazine, etc.)
+model Page {
+  id          String      @id @default(cuid())
+  title       String
+  slug        String      @unique
+  content     String
+  status      PostStatus  @default(DRAFT)
+  publishedAt DateTime?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  seoTitle    String?
+  seoDescription String?
+
+  @@map("pages")
+  @@index([slug])
+}
+
+// Videos
+model Video {
+  id          String      @id @default(cuid())
+  title       String
+  slug        String      @unique
+  description String?
+  videoUrl    String
+  thumbnail   String?
+  duration    Int?        // in seconds
+  status      PostStatus  @default(DRAFT)
+  publishedAt DateTime?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@map("videos")
+  @@index([slug])
+}
+
+// Podcasts
+model Podcast {
+  id          String      @id @default(cuid())
+  title       String
+  slug        String      @unique
+  description String?
+  audioUrl    String
+  thumbnail   String?
+  duration    Int?        // in seconds
+  status      PostStatus  @default(DRAFT)
+  publishedAt DateTime?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@map("podcasts")
+  @@index([slug])
+}

@@ -45,7 +45,12 @@
       "Bash(curl -I \"https://www.success.com/wp-content/uploads/2025/03/Ava-Leach.jpg\")",
       "Bash(curl -I \"https://www.success.com/wp-content/uploads/2025/03/Rena-Machani.jpg\")",
       "Bash(curl -I \"https://www.success.com/wp-content/uploads/2025/03/Pablo-Urdiales-Antelo.jpg\")",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(git rm:*)",
+      "Bash(npm install:*)",
+      "Bash(npx prisma:*)",
+      "Bash(npm run dev:*)",
+      "WebFetch(domain:www.success.com)"
     ],
     "deny": [],
     "ask": []

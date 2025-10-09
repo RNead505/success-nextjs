@@ -1,7 +1,52 @@
+import { useState } from 'react';
+import { signIn, useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import Layout from '../components/Layout';
 import styles from './SignIn.module.css';
 
 export default function SignInPage() {
+  const router = useRouter();
+  const { data: session } = useSession();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  // Redirect if already logged in
+  if (session?.user) {
+    // Check if user is admin
+    const userRole = session.user.role;
+    if (userRole && ['SUPER_ADMIN', 'ADMIN', 'EDITOR', 'AUTHOR'].includes(userRole)) {
+      router.push('/admin');
+      return null;
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    try {
+      const result = await signIn('credentials', {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        setError('Invalid email or password');
+        setLoading(false);
+      } else {
+        // Success - will redirect based on role
+        router.push('/admin');
+      }
+    } catch (err) {
+      setError('An error occurred. Please try again.');
+      setLoading(false);
+    }
+  };
+
   return (
     <Layout>
       <div className={styles.signInPage}>
@@ -11,7 +56,11 @@ export default function SignInPage() {
             Access your SUCCESS+ membership and exclusive content
           </p>
 
-          <form className={styles.signInForm}>
+          <form className={styles.signInForm} onSubmit={handleSubmit}>
+            {error && (
+              <div className={styles.error}>{error}</div>
+            )}
+
             <div className={styles.formGroup}>
               <label htmlFor="email" className={styles.label}>
                 Email Address
@@ -21,6 +70,8 @@ export default function SignInPage() {
                 id="email"
                 className={styles.input}
                 placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
@@ -34,6 +85,8 @@ export default function SignInPage() {
                 id="password"
                 className={styles.input}
                 placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>
@@ -48,8 +101,8 @@ export default function SignInPage() {
               </a>
             </div>
 
-            <button type="submit" className={styles.signInButton}>
-              Sign In
+            <button type="submit" className={styles.signInButton} disabled={loading}>
+              {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
 
