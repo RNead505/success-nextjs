@@ -24,11 +24,11 @@ export default function DashboardStats() {
       try {
         // Fetch counts from API
         const [postsRes, catsRes, usersRes, videosRes, podcastsRes] = await Promise.all([
-          fetch('/api/posts'),
-          fetch('/api/categories'),
-          fetch('/api/users'),
-          fetch('/api/videos'),
-          fetch('/api/podcasts'),
+          fetch('/api/posts').catch(e => ({ ok: false, headers: new Headers() })),
+          fetch('/api/categories').catch(e => ({ ok: false, headers: new Headers() })),
+          fetch('/api/users').catch(e => ({ ok: false, headers: new Headers() })),
+          fetch('/api/videos').catch(e => ({ ok: false, headers: new Headers() })),
+          fetch('/api/podcasts').catch(e => ({ ok: false, headers: new Headers() })),
         ]);
 
         setStats({
