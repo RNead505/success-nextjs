@@ -85,7 +85,7 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, bu
       </section>
 
       {/* Lifestyle Section */}
-      <section className={styles.categorySection} style={{ backgroundColor: '#f9f9f9' }}>
+      <section className={styles.categorySectionGray}>
         <div className={styles.sectionContainer}>
           <div className={styles.sectionHeader}>
             <h2 className={styles.sectionTitle}>Lifestyle</h2>
@@ -115,7 +115,7 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, bu
       </section>
 
       {/* Future of Work Section */}
-      <section className={styles.categorySection} style={{ backgroundColor: '#f9f9f9' }}>
+      <section className={styles.categorySectionGray}>
         <div className={styles.sectionContainer}>
           <div className={styles.sectionHeader}>
             <h2 className={styles.sectionTitle}>Future of Work</h2>
@@ -145,7 +145,7 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, bu
       </section>
 
       {/* Entertainment Section */}
-      <section className={styles.categorySection} style={{ backgroundColor: '#f9f9f9' }}>
+      <section className={styles.categorySectionGray}>
         <div className={styles.sectionContainer}>
           <div className={styles.sectionHeader}>
             <h2 className={styles.sectionTitle}>Entertainment</h2>
@@ -175,7 +175,7 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, bu
       </section>
 
       {/* Podcasts Section */}
-      <section className={styles.categorySection} style={{ backgroundColor: '#f9f9f9' }}>
+      <section className={styles.categorySectionGray}>
         <div className={styles.sectionContainer}>
           <div className={styles.sectionHeader}>
             <h2 className={styles.sectionTitle}>Latest Podcasts</h2>
