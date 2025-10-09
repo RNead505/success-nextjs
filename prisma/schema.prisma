@@ -9,8 +9,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 // User model for admin authentication
@@ -41,8 +41,8 @@ model Post {
   id                String      @id @default(cuid())
   title             String
   slug              String      @unique
-  content           String
-  excerpt           String?
+  content           String      @db.Text
+  excerpt           String?     @db.Text
   featuredImage     String?
   featuredImageAlt  String?
   status            PostStatus  @default(DRAFT)
@@ -75,7 +75,7 @@ model Category {
   id          String    @id @default(cuid())
   name        String
   slug        String    @unique
-  description String?
+  description String?   @db.Text
   posts       Post[]    @relation("PostCategories")
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -118,7 +118,7 @@ model Page {
   id          String      @id @default(cuid())
   title       String
   slug        String      @unique
-  content     String
+  content     String      @db.Text
   status      PostStatus  @default(DRAFT)
   publishedAt DateTime?
   createdAt   DateTime    @default(now())
@@ -135,7 +135,7 @@ model Video {
   id          String      @id @default(cuid())
   title       String
   slug        String      @unique
-  description String?
+  description String?     @db.Text
   videoUrl    String
   thumbnail   String?
   duration    Int?        // in seconds
@@ -153,7 +153,7 @@ model Podcast {
   id          String      @id @default(cuid())
   title       String
   slug        String      @unique
-  description String?
+  description String?     @db.Text
   audioUrl    String
   thumbnail   String?
   duration    Int?        // in seconds
