@@ -135,7 +135,7 @@
 .subscribeButton {
   display: inline-block;
   padding: 1rem 3rem;
-  background-color: #000;
+  background-color: #d32f2f;
   color: #fff;
   text-decoration: none;
   font-weight: 700;
@@ -146,6 +146,24 @@
 }
 
 .subscribeButton:hover {
+  background-color: #b71c1c;
+  transform: translateY(-2px);
+}
+
+.readButton {
+  display: inline-block;
+  padding: 1rem 3rem;
+  background-color: #000;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.readButton:hover {
   background-color: #333;
   transform: translateY(-2px);
 }
