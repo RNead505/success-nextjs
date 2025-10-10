@@ -87,6 +87,8 @@
 .featured .excerpt {
   font-size: 1.125rem;
   line-height: 1.7;
+  flex-grow: 0;
+  margin-bottom: 1.5rem;
 }
 
 .readMore {
