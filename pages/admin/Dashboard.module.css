@@ -1,0 +1,278 @@
+.dashboard {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.header h1 {
+  font-size: 2rem;
+  margin: 0 0 0.5rem 0;
+  color: #1a1a1a;
+}
+
+.subtitle {
+  color: #666;
+  margin: 0;
+}
+
+.headerActions {
+  display: flex;
+  gap: 1rem;
+}
+
+.primaryButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #667eea;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.primaryButton:hover {
+  background-color: #5568d3;
+}
+
+/* Quick Actions */
+.quickActionsSection {
+  margin: 3rem 0;
+}
+
+.quickActionsSection h2 {
+  font-size: 1.5rem;
+  margin: 0 0 1.5rem 0;
+  color: #1a1a1a;
+}
+
+.quickActions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.quickAction {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-left: 4px solid;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #1a1a1a;
+  transition: all 0.2s;
+}
+
+.quickAction:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.quickActionIcon {
+  font-size: 1.5rem;
+}
+
+.quickActionLabel {
+  font-weight: 600;
+}
+
+/* Content Grid */
+.contentGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.recentSection,
+.activitySection {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.sectionHeader h2 {
+  font-size: 1.25rem;
+  margin: 0;
+  color: #1a1a1a;
+}
+
+.viewAllLink {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.viewAllLink:hover {
+  text-decoration: underline;
+}
+
+.recentList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.recentItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #f9f9f9;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.recentItem:hover {
+  background: #f0f0f0;
+}
+
+.recentItemContent {
+  flex: 1;
+}
+
+.recentItemTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.25rem 0;
+  color: #1a1a1a;
+}
+
+.recentItemMeta {
+  font-size: 0.875rem;
+  color: #666;
+  margin: 0;
+}
+
+.editButton {
+  padding: 0.5rem 1rem;
+  background-color: #667eea;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.editButton:hover {
+  background-color: #5568d3;
+}
+
+.emptyState {
+  text-align: center;
+  color: #999;
+  padding: 2rem;
+}
+
+/* Site Health */
+.activitySection h2 {
+  font-size: 1.25rem;
+  margin: 0 0 1.5rem 0;
+  color: #1a1a1a;
+}
+
+.healthCards {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.healthCard {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f9f9f9;
+  border-radius: 6px;
+}
+
+.healthIcon {
+  font-size: 1.5rem;
+}
+
+.healthCard h3 {
+  font-size: 0.875rem;
+  margin: 0 0 0.25rem 0;
+  color: #1a1a1a;
+}
+
+.healthCard p {
+  font-size: 0.875rem;
+  margin: 0;
+  color: #667eea;
+  font-weight: 600;
+}
+
+.atAGlance {
+  padding-top: 1.5rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.atAGlance h3 {
+  font-size: 1rem;
+  margin: 0 0 1rem 0;
+  color: #1a1a1a;
+}
+
+.glanceList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.glanceList li {
+  color: #666;
+  font-size: 0.875rem;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .quickActions {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard {
+    padding: 1rem;
+  }
+
+  .quickActions {
+    grid-template-columns: 1fr;
+  }
+}
