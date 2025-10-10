@@ -1,6 +1,13 @@
 import Link from 'next/link';
 import styles from './PostCard.module.css';
 
+// Helper function to strip HTML and truncate text
+function stripHtmlAndTruncate(html: string, maxLength: number): string {
+  const text = html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
+  if (text.length <= maxLength) return text;
+  return text.substring(0, maxLength).trim() + '...';
+}
+
 // 1. Define the types for the component's props
 type PostCardProps = {
   post: any;
@@ -15,7 +22,13 @@ export default function PostCard({ post, isFeatured = false }: PostCardProps) {
   const featuredImageUrl = post._embedded?.['wp:featuredmedia']?.[0]?.source_url || null;
   const author = post._embedded?.author?.[0]?.name || 'SUCCESS Staff';
   const title = post.title?.rendered || post.title || 'Untitled';
-  const excerpt = post.excerpt?.rendered || post.content?.rendered?.substring(0, 150) || '';
+
+  // Limit excerpt length for non-featured articles (secondary articles on the right)
+  let excerpt = post.excerpt?.rendered || post.content?.rendered?.substring(0, 150) || '';
+  if (!isFeatured && excerpt) {
+    excerpt = stripHtmlAndTruncate(excerpt, 80);
+  }
+
   const slug = post.slug || '';
 
   const cardClassName = isFeatured ? `${styles.card} ${styles.featured}` : styles.card;
@@ -34,10 +47,14 @@ export default function PostCard({ post, isFeatured = false }: PostCardProps) {
         </Link>
         <p className={styles.author}>By {author}</p>
         {excerpt && (
-          <div
-            className={styles.excerpt}
-            dangerouslySetInnerHTML={{ __html: excerpt }}
-          />
+          isFeatured ? (
+            <div
+              className={styles.excerpt}
+              dangerouslySetInnerHTML={{ __html: excerpt }}
+            />
+          ) : (
+            <p className={styles.excerpt}>{excerpt}</p>
+          )
         )}
         <Link href={`/blog/${slug}`} className={styles.readMore}>
           Read More
