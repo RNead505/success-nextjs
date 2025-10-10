@@ -65,18 +65,32 @@
   padding-top: 2rem;
 }
 
-.issueDate {
+.publishDate {
   font-size: 0.875rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1.5px;
   color: #d32f2f;
+  margin: 0 0 0.5rem 0;
 }
 
 .issueTitle {
   font-size: 2.5rem;
   font-weight: 700;
+  margin: 0.5rem 0 1.5rem 0;
+}
+
+.featureHeading {
+  font-size: 1.25rem;
+  font-weight: 600;
   margin: 1rem 0;
+  color: #333;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
 }
 
 .issueDescription {

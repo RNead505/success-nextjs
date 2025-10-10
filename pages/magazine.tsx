@@ -37,20 +37,39 @@ export default function MagazinePage({ currentIssue, pastIssues }: MagazinePageP
                   )}
                 </div>
                 <div className={styles.issueDetails}>
+                  {currentIssue.meta_data?.['magazine-published-text']?.[0] && (
+                    <p className={styles.publishDate}>
+                      {currentIssue.meta_data['magazine-published-text'][0]}
+                    </p>
+                  )}
                   <h3 className={styles.issueTitle}>
                     {currentIssue.title?.rendered || 'Current Issue'}
                   </h3>
-                  {(currentIssue.content?.rendered || currentIssue.excerpt?.rendered) && (
-                    <div
-                      className={styles.issueDescription}
-                      dangerouslySetInnerHTML={{
-                        __html: currentIssue.content?.rendered || currentIssue.excerpt?.rendered || ''
-                      }}
-                    />
+                  {currentIssue.meta_data?.['magazine-banner-heading']?.[0] && (
+                    <p className={styles.featureHeading}>
+                      Featuring: {currentIssue.meta_data['magazine-banner-heading'][0]}
+                    </p>
                   )}
-                  <a href="/subscribe" className={styles.subscribeButton}>
-                    Subscribe Now
-                  </a>
+                  {currentIssue.meta_data?.['magazine-banner-description']?.[0] && (
+                    <p className={styles.issueDescription}>
+                      {currentIssue.meta_data['magazine-banner-description'][0]}
+                    </p>
+                  )}
+                  <div className={styles.buttonGroup}>
+                    <a href="/subscribe" className={styles.subscribeButton}>
+                      Subscribe Now
+                    </a>
+                    {currentIssue.meta_data?.['flip_version']?.[0] && (
+                      <a
+                        href={currentIssue.meta_data['flip_version'][0]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.readButton}
+                      >
+                        Read Digital Edition
+                      </a>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
