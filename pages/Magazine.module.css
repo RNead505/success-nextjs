@@ -27,6 +27,15 @@
   color: #ccc;
 }
 
+.introText {
+  max-width: 900px;
+  margin: 0 auto;
+  font-size: 1.125rem;
+  line-height: 1.8;
+  text-align: center;
+  color: #444;
+}
+
 .section {
   padding: 5rem 1rem;
 }

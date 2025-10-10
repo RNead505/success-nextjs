@@ -21,6 +21,18 @@ export default function MagazinePage({ currentIssue, pastIssues }: MagazinePageP
           </div>
         </section>
 
+        {/* Intro Text */}
+        <section className={styles.section}>
+          <div className={styles.container}>
+            <p className={styles.introText}>
+              Get proven life lessons from classic SUCCESS® magazine and topic-focused SUCCESS+ magazine.
+              Order single print issues for unique expert advice on money, business, lifestyle, and more—mailed
+              directly to your home. You can also become a SUCCESS+™ member to access the digital editions.
+              All integrated into one easy-to-use, exclusive personal growth content platform.
+            </p>
+          </div>
+        </section>
+
         {/* Current Issue */}
         {currentIssue && (
           <section className={styles.section}>
