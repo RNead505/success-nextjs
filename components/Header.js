@@ -10,7 +10,7 @@ const navItems = [
   { label: 'LIFESTYLE', path: '/category/lifestyle' },
   { label: 'FUTURE OF WORK', path: '/category/future-of-work' },
   { label: 'PODCASTS', path: '/podcasts' },
-  { label: 'STORE', path: 'https://mysuccessplus.com/shop', external: true },
+  { label: 'STORE', path: '/store' },
 ];
 
 export default function Header() {
