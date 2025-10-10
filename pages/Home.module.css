@@ -5,10 +5,10 @@
 .homeLayout {
   display: grid;
   grid-template-columns: 1.5fr 1fr;
-  gap: 2rem;
+  gap: 3rem;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 3rem 1rem;
+  padding: 4rem 1rem;
 }
 
 .featuredSection {
@@ -30,7 +30,7 @@
 
 /* Latest Articles Section */
 .latestSection {
-  padding: 5rem 1rem;
+  padding: 6rem 1rem;
   background-color: #fff;
 }
 
@@ -49,7 +49,7 @@
 .postsGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2.5rem;
+  gap: 3rem;
 }
 
 .viewMoreWrapper {
@@ -77,11 +77,11 @@
 
 /* Category Sections */
 .categorySection {
-  padding: 5rem 1rem;
+  padding: 6rem 1rem;
 }
 
 .categorySectionGray {
-  padding: 5rem 1rem;
+  padding: 6rem 1rem;
   background-color: #f9f9f9;
 }
 

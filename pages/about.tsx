@@ -69,7 +69,7 @@ export default function AboutPage({ teamMembers }: AboutPageProps) {
               <div className={styles.timelineItem}>
                 <h3 className={styles.timelineYear}>2008</h3>
                 <p className={styles.timelineText}>
-                  After an acquisition by VideoPlus (later renamed SUCCESS Partners), the magazine was completely relaunched, bolstered for the first time by SUCCESS.com.
+                  After an acquisition by VideoPlus (later renamed SUCCESS Partners), the magazine was completely relaunched, bolstered for the first time by <em>SUCCESS.com</em>.
                 </p>
               </div>
               <div className={styles.timelineItem}>
