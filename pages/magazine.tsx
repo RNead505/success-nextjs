@@ -40,9 +40,13 @@ export default function MagazinePage({ currentIssue, pastIssues }: MagazinePageP
               <h2 className={styles.sectionTitle}>Current Issue</h2>
               <div className={styles.currentIssue}>
                 <div className={styles.coverImage}>
-                  {currentIssue._embedded?.['wp:featuredmedia']?.[0]?.source_url && (
+                  {(currentIssue.meta_data?.['image-for-listing-page']?.[0] ||
+                    currentIssue._embedded?.['wp:featuredmedia']?.[0]?.source_url) && (
                     <img
-                      src={currentIssue._embedded['wp:featuredmedia'][0].source_url}
+                      src={
+                        currentIssue.meta_data?.['image-for-listing-page']?.[0] ||
+                        currentIssue._embedded['wp:featuredmedia'][0].source_url
+                      }
                       alt={currentIssue.title.rendered}
                       className={styles.cover}
                     />
@@ -130,22 +134,29 @@ export default function MagazinePage({ currentIssue, pastIssues }: MagazinePageP
           <div className={styles.container}>
             <h2 className={styles.sectionTitle}>Past Issues</h2>
             <div className={styles.archiveGrid}>
-              {pastIssues.map((issue: any) => (
-                <div key={issue.id} className={styles.archiveItem}>
-                  <div className={styles.archiveCover}>
-                    {issue._embedded?.['wp:featuredmedia']?.[0]?.source_url && (
-                      <img
-                        src={issue._embedded['wp:featuredmedia'][0].source_url}
-                        alt={issue.title?.rendered || 'Magazine Issue'}
-                        className={styles.archiveCoverImage}
-                      />
-                    )}
+              {pastIssues.map((issue: any) => {
+                // Prefer image-for-listing-page metadata over featured_media
+                const coverUrl =
+                  issue.meta_data?.['image-for-listing-page']?.[0] ||
+                  issue._embedded?.['wp:featuredmedia']?.[0]?.source_url;
+
+                return (
+                  <div key={issue.id} className={styles.archiveItem}>
+                    <div className={styles.archiveCover}>
+                      {coverUrl && (
+                        <img
+                          src={coverUrl}
+                          alt={issue.title?.rendered || 'Magazine Issue'}
+                          className={styles.archiveCoverImage}
+                        />
+                      )}
+                    </div>
+                    <h4 className={styles.archiveTitle}>
+                      {issue.title?.rendered || 'Magazine Issue'}
+                    </h4>
                   </div>
-                  <h4 className={styles.archiveTitle}>
-                    {issue.title?.rendered || 'Magazine Issue'}
-                  </h4>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </section>
