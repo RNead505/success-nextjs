@@ -1,11 +1,10 @@
 import { useEffect } from 'react';
-import { useRouter } from 'next/router';
-import Layout from '../components/Layout';
-import SEO from '../components/SEO';
-import styles from './Store.module.css';
 
 export default function StorePage() {
-  const router = useRouter();
+  useEffect(() => {
+    // Redirect to external SUCCESS+ shop
+    window.location.href = 'https://mysuccessplus.com/shop';
+  }, []);
 
   return (
     <Layout>
