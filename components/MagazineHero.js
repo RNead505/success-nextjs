@@ -1,10 +1,39 @@
-import styles from './MagazineHero.module.css'; // This line must be correct
+import styles from './MagazineHero.module.css';
 
-export default function MagazineHero() {
-  const heroImage = "https://www.success.com/wp-content/uploads/2025/08/sd25-05-september-featured-scaled.jpg";
+export default function MagazineHero({ magazine }) {
+  if (!magazine) {
+    return null;
+  }
+
+  const heroImage = magazine._embedded?.['wp:featuredmedia']?.[0]?.source_url ||
+                    magazine.meta_data?.['image-for-listing-page']?.[0] ||
+                    '';
+  const title = magazine.meta_data?.['magazine-banner-heading']?.[0] || magazine.title?.rendered || '';
+  const date = magazine.meta_data?.['magazine-published-text']?.[0] || '';
+  const description = magazine.meta_data?.['magazine-banner-description']?.[0] || '';
+
+  // Parse related articles if available
+  const relatedDataRaw = magazine.meta_data?.['magazine-banner-related-data']?.[0];
+  let sideFeatures = [];
+
+  if (relatedDataRaw) {
+    try {
+      // PHP serialized data - extract articles manually
+      const item0Match = relatedDataRaw.match(/item-0.*?banner-related-data-title";s:\d+:"([^"]+)".*?banner-related-data-description";s:\d+:"([^"]+)"/);
+      const item1Match = relatedDataRaw.match(/item-1.*?banner-related-data-title";s:\d+:"([^"]+)".*?banner-related-data-description";s:\d+:"([^"]+)"/);
+
+      if (item0Match) {
+        sideFeatures.push({ title: item0Match[1], description: item0Match[2] });
+      }
+      if (item1Match) {
+        sideFeatures.push({ title: item1Match[1], description: item1Match[2] });
+      }
+    } catch (e) {
+      console.error('Error parsing magazine related data:', e);
+    }
+  }
 
   return (
-    // Make sure the `className` uses the `styles` object
     <section className={styles.hero} style={{ backgroundImage: `url(${heroImage})` }}>
       <div className={styles.overlay}>
         <div className={styles.header}>
@@ -12,22 +41,18 @@ export default function MagazineHero() {
         </div>
         <div className={styles.contentGrid}>
           <div className={styles.mainFeature}>
-            <p className={styles.subheading}>The Startup Launch Guide</p>
-            <p className={styles.date}>September 2025</p>
-            <h1 className={styles.title}>Jesse Itzler</h1>
-            <p className={styles.description}>
-              With a robust business portfolio built entirely off instinct and dedication...
-            </p>
+            <p className={styles.subheading}>{magazine.slug?.replace(/-/g, ' ').toUpperCase() || 'The Legacy Issue'}</p>
+            <p className={styles.date}>{date}</p>
+            <h1 className={styles.title}>{title}</h1>
+            <p className={styles.description} dangerouslySetInnerHTML={{ __html: description }} />
           </div>
           <div className={styles.sideFeatures}>
-            <div className={styles.featureItem}>
-              <h3>Bring Your Vision To Life</h3>
-              <p>Don't skip these key business considerations when starting out</p>
-            </div>
-            <div className={styles.featureItem}>
-              <h3>Artificial Intelligence, Real Results</h3>
-              <p>How AI can save money and improve business operations</p>
-            </div>
+            {sideFeatures.map((feature, index) => (
+              <div key={index} className={styles.featureItem}>
+                <h3 dangerouslySetInnerHTML={{ __html: feature.title }} />
+                <p>{feature.description}</p>
+              </div>
+            ))}
             <p className={styles.subscribeText}>
               Subscribe now to enjoy these and other exclusive featured content!
             </p>

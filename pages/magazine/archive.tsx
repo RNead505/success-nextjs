@@ -65,7 +65,7 @@ export async function getStaticProps() {
       props: {
         magazines,
       },
-      revalidate: 600,
+      revalidate: 86400,
     };
   } catch (error) {
     console.error('Error fetching magazines:', error);
@@ -73,7 +73,7 @@ export async function getStaticProps() {
       props: {
         magazines: [],
       },
-      revalidate: 600,
+      revalidate: 86400,
     };
   }
 }

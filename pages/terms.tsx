@@ -38,7 +38,7 @@ export async function getStaticProps() {
       props: {
         page,
       },
-      revalidate: 600,
+      revalidate: 86400,
     };
   } catch (error) {
     console.error('Error fetching terms of use page:', error);

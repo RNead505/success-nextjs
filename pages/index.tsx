@@ -1,6 +1,7 @@
 import Layout from '../components/Layout';
 import SEO from '../components/SEO';
 import MagazineHero from '../components/MagazineHero';
+import Bestsellers from '../components/Bestsellers';
 import PostCard from '../components/PostCard';
 import Trending from '../components/Trending';
 import styles from './Home.module.css';
@@ -19,9 +20,11 @@ type HomePageProps = {
   entertainmentPosts: any[];
   videos: any[];
   podcasts: any[];
+  latestMagazine: any;
+  bestsellers: any[];
 };
 
-function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, businessPosts, lifestylePosts, moneyPosts, futureOfWorkPosts, healthPosts, entertainmentPosts, videos, podcasts }: HomePageProps) {
+function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, businessPosts, lifestylePosts, moneyPosts, futureOfWorkPosts, healthPosts, entertainmentPosts, videos, podcasts, latestMagazine, bestsellers }: HomePageProps) {
   if (!featuredPost) {
     return <Layout><p>Loading...</p></Layout>;
   }
@@ -52,7 +55,10 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, bu
       </div>
 
       {/* "Inside the Magazine" hero */}
-      <MagazineHero />
+      <MagazineHero magazine={latestMagazine} />
+
+      {/* Bestsellers Section */}
+      <Bestsellers books={bestsellers} />
 
       {/* Latest Articles Section */}
       <section className={styles.latestSection}>
@@ -223,6 +229,13 @@ export async function getStaticProps() {
   const videos = await fetchWordPressData('videos?_embed&per_page=3');
   const podcasts = await fetchWordPressData('podcasts?_embed&per_page=3');
 
+  // Fetch latest magazine issue
+  const magazines = await fetchWordPressData('magazines?per_page=1&_embed');
+  const latestMagazine = magazines?.[0] || null;
+
+  // Fetch bestsellers
+  const bestsellers = await fetchWordPressData('bestsellers?per_page=12&_embed');
+
   return {
     props: {
       featuredPost,
@@ -237,8 +250,10 @@ export async function getStaticProps() {
       entertainmentPosts,
       videos: videos || [],
       podcasts: podcasts || [],
+      latestMagazine,
+      bestsellers: bestsellers || [],
     },
-    revalidate: 600,
+    revalidate: 86400, // Revalidate daily (24 hours = 86400 seconds)
   };
 }
 

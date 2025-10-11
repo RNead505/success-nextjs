@@ -269,7 +269,7 @@ export async function getStaticProps({ params }: any) {
         post,
         relatedPosts,
       },
-      revalidate: 600,
+      revalidate: 86400,
     };
   } catch (error) {
     console.error('Error fetching post:', error);

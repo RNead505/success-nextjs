@@ -1,36 +1,40 @@
 .container {
   display: flex;
   min-height: 100vh;
-  background: #f5f5f5;
+  background: #f8f8f8;
 }
 
 .sidebar {
   width: 280px;
-  background: linear-gradient(180deg, #1a1a1a 0%, #2d2d2d 100%);
+  background: #000;
   color: white;
   display: flex;
   flex-direction: column;
   position: fixed;
   height: 100vh;
   overflow-y: auto;
+  border-right: 1px solid #1a1a1a;
 }
 
 .sidebarHeader {
   padding: 2rem 1.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid #1a1a1a;
 }
 
 .logo {
-  font-size: 1.75rem;
+  font-family: 'Bodoni Moda', Georgia, 'Times New Roman', serif;
+  font-size: 2rem;
   font-weight: 900;
   margin: 0;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
 }
 
 .subtitle {
   margin: 0.5rem 0 0 0;
   font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: #999;
+  font-weight: 500;
 }
 
 .nav {
@@ -42,21 +46,22 @@
   display: flex;
   align-items: center;
   padding: 1rem 1.5rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: #999;
   text-decoration: none;
   transition: all 0.2s;
   border-left: 3px solid transparent;
+  font-weight: 500;
 }
 
 .navItem:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
+  background: #1a1a1a;
+  color: #fff;
 }
 
 .navItemActive {
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
-  border-left-color: #667eea;
+  background: #1a1a1a;
+  color: #fff;
+  border-left-color: #d32f2f;
 }
 
 .navIcon {
@@ -66,7 +71,7 @@
 
 .sidebarFooter {
   padding: 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid #1a1a1a;
 }
 
 .userInfo {
@@ -80,7 +85,7 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #667eea;
+  background: #d32f2f;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -118,17 +123,19 @@
 .signOutButton {
   width: 100%;
   padding: 0.75rem;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #1a1a1a;
+  border: 1px solid #333;
   color: white;
   border-radius: 6px;
   cursor: pointer;
   font-size: 0.9rem;
+  font-weight: 500;
   transition: all 0.2s;
 }
 
 .signOutButton:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: #d32f2f;
+  border-color: #d32f2f;
 }
 
 .main {

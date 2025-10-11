@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import dynamic from 'next/dynamic';
+import { exportPostToPDF } from '../../lib/pdfExport';
 import styles from './PostEditor.module.css';
 
 // Dynamic import to avoid SSR issues with react-quill
@@ -87,6 +88,25 @@ export default function PostEditor({ postId }: PostEditorProps) {
     }
   };
 
+  const handleExportPDF = async () => {
+    if (!title || !content) {
+      alert('Please add title and content before exporting');
+      return;
+    }
+
+    try {
+      await exportPostToPDF(
+        title,
+        content,
+        session?.user?.name || 'Unknown Author',
+        new Date().toLocaleDateString()
+      );
+    } catch (error) {
+      console.error('Error exporting PDF:', error);
+      alert('Failed to export PDF');
+    }
+  };
+
   const handleSave = async (publishStatus: string) => {
     if (!title || !content) {
       alert('Title and content are required');
@@ -154,6 +174,13 @@ export default function PostEditor({ postId }: PostEditorProps) {
       <div className={styles.header}>
         <h1>{postId ? 'Edit Post' : 'Create New Post'}</h1>
         <div className={styles.actions}>
+          <button
+            onClick={handleExportPDF}
+            className={styles.exportButton}
+            type="button"
+          >
+            📄 Export PDF
+          </button>
           <button
             onClick={() => handleSave('DRAFT')}
             disabled={saving}

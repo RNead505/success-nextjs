@@ -50,7 +50,20 @@
       "Bash(npm install:*)",
       "Bash(npx prisma:*)",
       "Bash(npm run dev:*)",
-      "WebFetch(domain:www.success.com)"
+      "WebFetch(domain:www.success.com)",
+      "Bash(vercel:*)",
+      "mcp__ide__getDiagnostics",
+      "Bash(test:*)",
+      "Bash(pg_isready:*)",
+      "WebFetch(domain:success-nextjs.vercel.app)",
+      "WebSearch",
+      "WebFetch(domain:brandfetch.com)",
+      "WebFetch(domain:fonts.adobe.com)",
+      "WebFetch(domain:www.fontspring.com)",
+      "WebFetch(domain:mysuccessplus.com)",
+      "WebFetch(domain:success-nextjs-f3n23kg9k-rns-projects-2b157598.vercel.app)",
+      "Bash(python:*)",
+      "Bash(find:*)"
     ],
     "deny": [],
     "ask": []

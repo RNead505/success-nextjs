@@ -1,6 +1,7 @@
 import Layout from '../components/Layout';
 import styles from './Magazine.module.css';
 import { fetchWordPressData } from '../lib/wordpress';
+import { exportMagazineCoverToPDF } from '../lib/pdfExport';
 
 type MagazinePageProps = {
   currentIssue: any;
@@ -8,6 +9,30 @@ type MagazinePageProps = {
 };
 
 export default function MagazinePage({ currentIssue, pastIssues }: MagazinePageProps) {
+  const handleExportCover = async (issue: any) => {
+    const coverUrl = issue.meta_data?.['image-for-listing-page']?.[0] ||
+                     issue._embedded?.['wp:featuredmedia']?.[0]?.source_url;
+
+    if (!coverUrl) {
+      alert('No cover image available');
+      return;
+    }
+
+    const issueInfo = issue.meta_data?.['magazine-published-text']?.[0] ||
+                      new Date(issue.date).toLocaleDateString();
+
+    try {
+      await exportMagazineCoverToPDF(
+        coverUrl,
+        issue.title.rendered,
+        issueInfo
+      );
+    } catch (error) {
+      console.error('Error exporting cover:', error);
+      alert('Failed to export cover');
+    }
+  };
+
   return (
     <Layout>
       <div className={styles.magazine}>
@@ -85,6 +110,12 @@ export default function MagazinePage({ currentIssue, pastIssues }: MagazinePageP
                         Read Digital Edition
                       </a>
                     )}
+                    <button
+                      onClick={() => handleExportCover(currentIssue)}
+                      className={styles.exportButton}
+                    >
+                      📄 Download Cover PDF
+                    </button>
                   </div>
                 </div>
               </div>
@@ -176,7 +207,7 @@ export async function getStaticProps() {
         currentIssue,
         pastIssues,
       },
-      revalidate: 600,
+      revalidate: 86400,
     };
   } catch (error) {
     return {
@@ -184,7 +215,7 @@ export async function getStaticProps() {
         currentIssue: null,
         pastIssues: [],
       },
-      revalidate: 600,
+      revalidate: 86400,
     };
   }
 }

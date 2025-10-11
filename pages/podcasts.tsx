@@ -56,14 +56,14 @@ export async function getStaticProps() {
       props: {
         podcasts: podcasts || [],
       },
-      revalidate: 600,
+      revalidate: 86400,
     };
   } catch (error) {
     return {
       props: {
         podcasts: [],
       },
-      revalidate: 600,
+      revalidate: 86400,
     };
   }
 }

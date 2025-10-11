@@ -1,8 +1,7 @@
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import AdminLayout from '../../../components/admin/AdminLayout';
-import PostEditor from '../../../components/admin/PostEditor';
+import EnhancedPostEditor from '../../../components/admin/EnhancedPostEditor';
 
 export default function NewPost() {
   const { data: session, status } = useSession();
@@ -22,9 +21,5 @@ export default function NewPost() {
     return null;
   }
 
-  return (
-    <AdminLayout>
-      <PostEditor />
-    </AdminLayout>
-  );
+  return <EnhancedPostEditor />;
 }

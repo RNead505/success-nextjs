@@ -127,7 +127,7 @@ export async function getStaticProps({ params }: any) {
         podcast,
         relatedPodcasts: relatedPodcasts.filter((p: any) => p.id !== podcast.id).slice(0, 3),
       },
-      revalidate: 600,
+      revalidate: 86400,
     };
   } catch (error) {
     return {

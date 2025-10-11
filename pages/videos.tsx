@@ -36,14 +36,14 @@ export async function getStaticProps() {
       props: {
         videos: videos || [],
       },
-      revalidate: 600,
+      revalidate: 86400,
     };
   } catch (error) {
     return {
       props: {
         videos: [],
       },
-      revalidate: 600,
+      revalidate: 86400,
     };
   }
 }

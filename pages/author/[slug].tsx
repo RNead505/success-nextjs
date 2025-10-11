@@ -96,7 +96,7 @@ export async function getStaticProps({ params }: any) {
         author,
         posts,
       },
-      revalidate: 600,
+      revalidate: 86400,
     };
   } catch (error) {
     return {

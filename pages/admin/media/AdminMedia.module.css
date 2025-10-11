@@ -238,6 +238,25 @@
   gap: 0.5rem;
 }
 
+.exportButton {
+  width: 100%;
+  background: #fff;
+  color: #000;
+  border: 2px solid #e0e0e0;
+  padding: 0.875rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 0.75rem;
+}
+
+.exportButton:hover {
+  border-color: #d32f2f;
+  color: #d32f2f;
+}
+
 .deleteButton {
   width: 100%;
   background: #fee;

@@ -25,13 +25,24 @@
   gap: 1rem;
 }
 
-.draftButton, .publishButton {
+.draftButton, .publishButton, .exportButton {
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
   font-weight: 600;
   border: none;
   cursor: pointer;
   transition: all 0.2s;
+}
+
+.exportButton {
+  background: #fff;
+  color: #000;
+  border: 2px solid #e0e0e0;
+}
+
+.exportButton:hover {
+  border-color: #d32f2f;
+  color: #d32f2f;
 }
 
 .draftButton {
@@ -44,13 +55,14 @@
 }
 
 .publishButton {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #000;
   color: white;
 }
 
 .publishButton:hover:not(:disabled) {
+  background: #d32f2f;
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 12px rgba(211, 47, 47, 0.3);
 }
 
 .draftButton:disabled, .publishButton:disabled {
@@ -108,7 +120,7 @@
 
 .titleInput:focus, .input:focus, .textarea:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: #d32f2f;
 }
 
 .textarea {
@@ -180,7 +192,7 @@
 }
 
 .checkbox:hover {
-  background: rgba(102, 126, 234, 0.1);
+  background: rgba(211, 47, 47, 0.1);
 }
 
 .checkbox input[type="checkbox"] {

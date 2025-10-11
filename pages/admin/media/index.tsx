@@ -2,6 +2,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState, useRef } from 'react';
 import AdminLayout from '../../../components/admin/AdminLayout';
+import { exportImageToPDF } from '../../../lib/pdfExport';
 import styles from './AdminMedia.module.css';
 
 interface MediaItem {
@@ -109,6 +110,29 @@ export default function AdminMedia() {
   const copyToClipboard = (url: string) => {
     navigator.clipboard.writeText(url);
     alert('URL copied to clipboard!');
+  };
+
+  const handleExportPDF = async (item: MediaItem) => {
+    if (!item.mimeType.startsWith('image/')) {
+      alert('PDF export is only available for images');
+      return;
+    }
+
+    try {
+      await exportImageToPDF(
+        item.url,
+        item.filename,
+        {
+          'File Type': item.mimeType,
+          'Size': formatFileSize(item.size),
+          'Dimensions': item.width && item.height ? `${item.width} × ${item.height}` : 'N/A',
+          'Uploaded': new Date(item.createdAt).toLocaleDateString()
+        }
+      );
+    } catch (error) {
+      console.error('Error exporting PDF:', error);
+      alert('Failed to export PDF');
+    }
   };
 
   const formatFileSize = (bytes: number) => {
@@ -239,6 +263,11 @@ export default function AdminMedia() {
               </div>
 
               <div className={styles.actions}>
+                {selectedMedia.mimeType.startsWith('image/') && (
+                  <button onClick={() => handleExportPDF(selectedMedia)} className={styles.exportButton}>
+                    📄 Export PDF
+                  </button>
+                )}
                 <button onClick={() => handleDelete(selectedMedia.id)} className={styles.deleteButton}>
                   Delete Permanently
                 </button>
