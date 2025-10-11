@@ -41,7 +41,13 @@ export default function AdminPages() {
     setError(null);
     try {
       const wpApiUrl = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || 'https://www.success.com/wp-json/wp/v2';
-      const statusParam = filter === 'all' ? '' : `&status=${filter}`;
+      // Only fetch published pages by default, or specific status when filtered
+      let statusParam = '';
+      if (filter === 'all') {
+        statusParam = '&status=publish,draft,private';
+      } else {
+        statusParam = `&status=${filter}`;
+      }
       const res = await fetch(`${wpApiUrl}/pages?_embed&per_page=100${statusParam}`);
 
       if (!res.ok) {
@@ -96,10 +102,20 @@ export default function AdminPages() {
     <AdminLayout>
       <div className={styles.container}>
         <div className={styles.header}>
-          <h1>Pages</h1>
-          <Link href="/admin/pages/new" className={styles.addButton}>
-            + New Page
-          </Link>
+          <div>
+            <h1>Pages</h1>
+            <p style={{ color: '#666', fontSize: '0.875rem', marginTop: '0.5rem' }}>
+              Viewing pages from WordPress CMS. Only published pages appear on the live site.
+            </p>
+          </div>
+          <a
+            href="https://www.success.com/wp-admin/edit.php?post_type=page"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.addButton}
+          >
+            + Manage in WordPress
+          </a>
         </div>
 
         <div className={styles.filters}>
@@ -131,10 +147,15 @@ export default function AdminPages() {
 
         {pages.length === 0 ? (
           <div className={styles.empty}>
-            <p>No pages found.</p>
-            <Link href="/admin/pages/new" className={styles.addButton}>
-              + New Page
-            </Link>
+            <p>No pages found with the selected filter.</p>
+            <a
+              href="https://www.success.com/wp-admin/edit.php?post_type=page"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.addButton}
+            >
+              + Create in WordPress
+            </a>
           </div>
         ) : (
           <div className={styles.tableContainer}>
@@ -153,9 +174,13 @@ export default function AdminPages() {
                   <tr key={page.id}>
                     <td className={styles.titleCell}>
                       <div className={styles.titleContent}>
-                        <Link href={`/admin/pages/${page.id}/edit`}>
+                        <a
+                          href={`https://www.success.com/wp-admin/post.php?post=${page.id}&action=edit`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
                           <span dangerouslySetInnerHTML={{ __html: page.title.rendered }} />
-                        </Link>
+                        </a>
                         <span className={styles.slug}>/{page.slug}</span>
                       </div>
                     </td>
@@ -172,17 +197,24 @@ export default function AdminPages() {
                       </div>
                     </td>
                     <td className={styles.actions}>
-                      <Link href={`/admin/pages/${page.id}/edit`} className={styles.editButton}>
-                        Edit
-                      </Link>
                       <a
-                        href={page.link}
-                        className={styles.viewButton}
+                        href={`https://www.success.com/wp-admin/post.php?post=${page.id}&action=edit`}
+                        className={styles.editButton}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        View
+                        Edit in WP
                       </a>
+                      {page.status === 'publish' && (
+                        <a
+                          href={page.link}
+                          className={styles.viewButton}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          View Live
+                        </a>
+                      )}
                       <button onClick={() => handleDelete(page.id)} className={styles.deleteButton}>
                         Delete
                       </button>
