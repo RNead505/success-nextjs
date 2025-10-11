@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import AdminLayout from '../../components/admin/AdminLayout';
-import { exportMagazineCoverToPDF } from '../../lib/pdfExport';
+import { exportMagazineCoverToPDF, exportMagazinePrintPDF } from '../../lib/pdfExport';
 import styles from './MagazineManager.module.css';
 
 interface Magazine {
@@ -49,7 +49,7 @@ export default function MagazineManager() {
     }
   };
 
-  const handleDownloadPDF = async (magazine: Magazine) => {
+  const handleDownloadPDF = async (magazine: Magazine, printReady: boolean = false) => {
     const coverUrl = magazine.meta_data?.['image-for-listing-page']?.[0] ||
                      magazine._embedded?.['wp:featuredmedia']?.[0]?.source_url;
 
@@ -65,11 +65,37 @@ export default function MagazineManager() {
       await exportMagazineCoverToPDF(
         coverUrl,
         magazine.title.rendered,
-        issueInfo
+        issueInfo,
+        printReady
       );
     } catch (error) {
       console.error('Error exporting PDF:', error);
       alert('Failed to export PDF');
+    }
+  };
+
+  const handlePrintVersion = async (magazine: Magazine) => {
+    const coverUrl = magazine.meta_data?.['image-for-listing-page']?.[0] ||
+                     magazine._embedded?.['wp:featuredmedia']?.[0]?.source_url;
+
+    if (!coverUrl) {
+      alert('No cover image available');
+      return;
+    }
+
+    const issueDate = magazine.meta_data?.['magazine-published-text']?.[0] ||
+                      new Date(magazine.date).toLocaleDateString();
+
+    try {
+      await exportMagazinePrintPDF(
+        coverUrl,
+        magazine.title.rendered,
+        issueDate,
+        [] // Articles would come from WordPress if available
+      );
+    } catch (error) {
+      console.error('Error exporting print PDF:', error);
+      alert('Failed to export print PDF');
     }
   };
 
@@ -147,10 +173,18 @@ export default function MagazineManager() {
                         👁 Preview
                       </button>
                       <button
-                        onClick={() => handleDownloadPDF(magazine)}
+                        onClick={() => handleDownloadPDF(magazine, false)}
                         className={styles.downloadButton}
+                        title="Download digital PDF"
                       >
-                        📄 Download PDF
+                        📄 Digital PDF
+                      </button>
+                      <button
+                        onClick={() => handleDownloadPDF(magazine, true)}
+                        className={styles.printButton}
+                        title="Download print-ready PDF with bleed and crop marks"
+                      >
+                        🖨️ Print-Ready
                       </button>
                       {magazine.meta_data?.['flip_version']?.[0] && (
                         <a
@@ -215,10 +249,22 @@ export default function MagazineManager() {
 
                   <div className={styles.previewActions}>
                     <button
-                      onClick={() => handleDownloadPDF(selectedMagazine)}
+                      onClick={() => handleDownloadPDF(selectedMagazine, false)}
                       className={styles.downloadButtonLarge}
                     >
-                      📄 Download Cover as PDF
+                      📄 Digital PDF
+                    </button>
+                    <button
+                      onClick={() => handleDownloadPDF(selectedMagazine, true)}
+                      className={styles.printButtonLarge}
+                    >
+                      🖨️ Print-Ready PDF
+                    </button>
+                    <button
+                      onClick={() => handlePrintVersion(selectedMagazine)}
+                      className={styles.fullPrintButtonLarge}
+                    >
+                      📚 Full Print Package
                     </button>
                     {selectedMagazine.meta_data?.['flip_version']?.[0] && (
                       <a

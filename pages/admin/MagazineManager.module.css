@@ -118,7 +118,7 @@
   gap: 0.5rem;
 }
 
-.previewButton, .downloadButton, .flipButton {
+.previewButton, .downloadButton, .printButton, .flipButton {
   padding: 0.625rem 1rem;
   border-radius: 6px;
   font-size: 0.875rem;
@@ -147,6 +147,15 @@
 
 .downloadButton:hover {
   background: #d0d0d0;
+}
+
+.printButton {
+  background: #28a745;
+  color: white;
+}
+
+.printButton:hover {
+  background: #218838;
 }
 
 .flipButton {
@@ -246,7 +255,7 @@
   gap: 0.75rem;
 }
 
-.downloadButtonLarge, .flipButtonLarge {
+.downloadButtonLarge, .printButtonLarge, .fullPrintButtonLarge, .flipButtonLarge {
   padding: 1rem 1.5rem;
   border-radius: 8px;
   font-size: 1rem;
@@ -266,6 +275,24 @@
 
 .downloadButtonLarge:hover {
   background: #333;
+}
+
+.printButtonLarge {
+  background: #28a745;
+  color: white;
+}
+
+.printButtonLarge:hover {
+  background: #218838;
+}
+
+.fullPrintButtonLarge {
+  background: #17a2b8;
+  color: white;
+}
+
+.fullPrintButtonLarge:hover {
+  background: #138496;
 }
 
 .flipButtonLarge {
