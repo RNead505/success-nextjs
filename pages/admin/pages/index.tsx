@@ -41,29 +41,52 @@ export default function AdminPages() {
     setError(null);
     try {
       const wpApiUrl = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || 'https://www.success.com/wp-json/wp/v2';
-      // Only fetch published pages by default, or specific status when filtered
-      let statusParam = '';
-      if (filter === 'all') {
-        statusParam = '&status=publish,draft,private';
+
+      // WordPress API requires authentication to see draft/private content
+      // For now, only fetch published pages (public access)
+      // To see drafts/private, you'll need to authenticate with WordPress
+
+      let endpoint = `${wpApiUrl}/pages?_embed&per_page=100`;
+
+      // Only add status filter if it's 'publish' (public) or 'all' which defaults to publish
+      if (filter === 'publish' || filter === 'all') {
+        // No status param needed, defaults to published
       } else {
-        statusParam = `&status=${filter}`;
+        // For draft/private, show a message that WordPress auth is needed
+        setPages([]);
+        setError('Draft and private pages require WordPress admin authentication. Only published pages are shown.');
+        setLoading(false);
+        return;
       }
-      const res = await fetch(`${wpApiUrl}/pages?_embed&per_page=100${statusParam}`);
+
+      const res = await fetch(endpoint, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
       if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
+        const errorText = await res.text();
+        console.error('WordPress API Error:', res.status, errorText);
+        throw new Error(`Failed to fetch pages: ${res.status} ${res.statusText}`);
       }
 
       const data = await res.json();
 
       if (Array.isArray(data)) {
         setPages(data);
+        setError(null);
       } else {
         throw new Error('Invalid data format from API');
       }
     } catch (error) {
       console.error('Error fetching pages:', error);
-      setError(error instanceof Error ? error.message : 'Failed to fetch pages');
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        setError('Network error: Unable to connect to WordPress API. Check your internet connection.');
+      } else {
+        setError(error instanceof Error ? error.message : 'Failed to fetch pages');
+      }
     } finally {
       setLoading(false);
     }

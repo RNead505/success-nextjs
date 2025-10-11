@@ -32,39 +32,42 @@ export default function AdminPosts() {
 
   useEffect(() => {
     async function fetchPosts() {
-      console.log('Fetching posts...');
       try {
         setError(null);
-        // Fetch directly from WordPress API
         const wpApiUrl = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || 'https://www.success.com/wp-json/wp/v2';
-        console.log('API URL:', wpApiUrl);
 
-        const res = await fetch(`${wpApiUrl}/posts?_embed&per_page=50`);
-        console.log('Response status:', res.status);
+        const res = await fetch(`${wpApiUrl}/posts?_embed&per_page=50`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
 
         if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
+          const errorText = await res.text();
+          console.error('WordPress API Error:', res.status, errorText);
+          throw new Error(`Failed to fetch posts: ${res.status} ${res.statusText}`);
         }
 
         const data = await res.json();
-        console.log('Data received:', data.length, 'posts');
 
-        // Validate that data is an array
         if (Array.isArray(data)) {
           setPosts(data);
-          console.log('Posts set successfully');
         } else {
           throw new Error('Invalid data format from API');
         }
       } catch (error) {
         console.error('Error fetching posts:', error);
-        setError(error instanceof Error ? error.message : 'Failed to fetch posts');
+        if (error instanceof TypeError && error.message.includes('fetch')) {
+          setError('Network error: Unable to connect to WordPress API. Check your internet connection.');
+        } else {
+          setError(error instanceof Error ? error.message : 'Failed to fetch posts');
+        }
       } finally {
         setLoading(false);
       }
     }
 
-    // Fetch posts regardless of session for now
     fetchPosts();
   }, []);
 
