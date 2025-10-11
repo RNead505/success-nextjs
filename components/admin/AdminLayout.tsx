@@ -14,6 +14,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
   const navigation = [
     { name: 'Dashboard', href: '/admin', icon: '📊' },
+    { name: 'Analytics', href: '/admin/analytics', icon: '📈' },
     { name: 'Content Viewer', href: '/admin/content-viewer', icon: '👁' },
     { name: 'Magazine Manager', href: '/admin/magazine-manager', icon: '📚' },
     { name: 'Posts', href: '/admin/posts', icon: '📝' },
