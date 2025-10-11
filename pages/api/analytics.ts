@@ -7,9 +7,9 @@ export default async function handler(
   res: NextApiResponse
 ) {
   // Check authentication
-  const session = await getServerSession(req, res, authOptions);
+  const session: any = await getServerSession(req, res, authOptions as any);
 
-  if (!session || session.user.role !== 'ADMIN') {
+  if (!session || session.user?.role !== 'ADMIN') {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
