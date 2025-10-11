@@ -1,0 +1,314 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.hero {
+  background: linear-gradient(135deg, #000 0%, #333 100%);
+  color: white;
+  padding: 6rem 2rem;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 4rem;
+  font-weight: 900;
+  margin: 0 0 1.5rem 0;
+  letter-spacing: -2px;
+}
+
+.hero p {
+  font-size: 1.5rem;
+  color: #e0e0e0;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.section {
+  padding: 5rem 2rem;
+}
+
+.sectionAlt {
+  background: #f8f9fa;
+  padding: 5rem 2rem;
+}
+
+.sectionTitle {
+  font-size: 2.5rem;
+  font-weight: 900;
+  text-align: center;
+  margin: 0 0 1rem 0;
+  color: #1a1a1a;
+}
+
+.sectionSubtitle {
+  text-align: center;
+  font-size: 1.25rem;
+  color: #666;
+  max-width: 700px;
+  margin: 0 auto 4rem auto;
+  line-height: 1.6;
+}
+
+/* Stats Grid */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 3rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.statCard {
+  text-align: center;
+  padding: 2rem;
+}
+
+.statNumber {
+  font-size: 4rem;
+  font-weight: 900;
+  color: #000;
+  margin: 0;
+  line-height: 1;
+}
+
+.statLabel {
+  font-size: 1.125rem;
+  color: #666;
+  margin-top: 1rem;
+  font-weight: 600;
+}
+
+/* Audience Grid */
+.audienceGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.audienceCard {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.audienceCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+.audienceCard h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  color: #1a1a1a;
+}
+
+.audienceCard p {
+  color: #666;
+  font-size: 1rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* Opportunities */
+.opportunitiesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 3rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.opportunityCard {
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 3rem;
+  transition: all 0.3s;
+}
+
+.opportunityCard:hover {
+  border-color: #000;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.opportunityCard h3 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin: 0 0 1rem 0;
+  color: #1a1a1a;
+}
+
+.opportunityCard ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+}
+
+.opportunityCard li {
+  padding: 0.75rem 0;
+  color: #333;
+  font-size: 1rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.opportunityCard li:last-child {
+  border-bottom: none;
+}
+
+.opportunityCard li::before {
+  content: '✓';
+  color: #28a745;
+  font-weight: 900;
+  margin-right: 0.75rem;
+  font-size: 1.25rem;
+}
+
+/* CTA Section */
+.ctaSection {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 5rem 2rem;
+  text-align: center;
+}
+
+.ctaSection h2 {
+  font-size: 3rem;
+  font-weight: 900;
+  margin: 0 0 1.5rem 0;
+}
+
+.ctaSection p {
+  font-size: 1.25rem;
+  margin: 0 0 2.5rem 0;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ctaButtons {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.primaryButton, .secondaryButton {
+  padding: 1.25rem 3rem;
+  border-radius: 8px;
+  font-size: 1.125rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.3s;
+  display: inline-block;
+  border: 2px solid white;
+}
+
+.primaryButton {
+  background: white;
+  color: #667eea;
+}
+
+.primaryButton:hover {
+  background: #f8f9fa;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.3);
+}
+
+.secondaryButton {
+  background: transparent;
+  color: white;
+}
+
+.secondaryButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Contact Section */
+.contactSection {
+  padding: 4rem 2rem;
+  text-align: center;
+  background: #1a1a1a;
+  color: white;
+}
+
+.contactInfo {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.contactInfo h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem 0;
+}
+
+.contactInfo a {
+  color: #667eea;
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.contactInfo a:hover {
+  color: #5568d3;
+  text-decoration: underline;
+}
+
+.contactDetails {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.contactDetails p {
+  margin: 0.75rem 0;
+  color: #ccc;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero p {
+    font-size: 1.125rem;
+  }
+
+  .sectionTitle {
+    font-size: 2rem;
+  }
+
+  .statNumber {
+    font-size: 3rem;
+  }
+
+  .opportunitiesGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .ctaSection h2 {
+    font-size: 2rem;
+  }
+
+  .ctaButtons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .primaryButton, .secondaryButton {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+}
