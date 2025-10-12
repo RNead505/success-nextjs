@@ -81,6 +81,41 @@
   z-index: 1;
 }
 
+.demoBadge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0.5rem 0.875rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  z-index: 1;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+}
+
+.demoBadgeInline {
+  display: inline-block;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+  margin-left: 1rem;
+}
+
+.previewTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
 .coverImage {
   width: 100%;
   aspect-ratio: 2/3;

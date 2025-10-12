@@ -42,15 +42,30 @@
   padding: 1rem 0;
 }
 
+.navSection {
+  margin-bottom: 1.5rem;
+}
+
+.navSectionTitle {
+  padding: 0.5rem 1.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #666;
+  margin-bottom: 0.25rem;
+}
+
 .navItem {
   display: flex;
   align-items: center;
-  padding: 1rem 1.5rem;
+  padding: 0.875rem 1.5rem;
   color: #999;
   text-decoration: none;
   transition: all 0.2s;
   border-left: 3px solid transparent;
   font-weight: 500;
+  font-size: 0.9rem;
 }
 
 .navItem:hover {

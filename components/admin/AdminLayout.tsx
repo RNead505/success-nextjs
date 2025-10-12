@@ -12,20 +12,48 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   const { data: session } = useSession();
   const router = useRouter();
 
-  const navigation = [
-    { name: 'Dashboard', href: '/admin', icon: '📊' },
-    { name: 'Analytics', href: '/admin/analytics', icon: '📈' },
-    { name: 'Content Viewer', href: '/admin/content-viewer', icon: '👁' },
-    { name: 'Magazine Manager', href: '/admin/magazine-manager', icon: '📚' },
-    { name: 'Posts', href: '/admin/posts', icon: '📝' },
-    { name: 'Categories', href: '/admin/categories', icon: '📁' },
-    { name: 'Tags', href: '/admin/tags', icon: '🏷️' },
-    { name: 'Media', href: '/admin/media', icon: '🖼️' },
-    { name: 'Videos', href: '/admin/videos', icon: '🎥' },
-    { name: 'Podcasts', href: '/admin/podcasts', icon: '🎙️' },
-    { name: 'Pages', href: '/admin/pages', icon: '📄' },
-    { name: 'Users', href: '/admin/users', icon: '👥' },
-    { name: 'Settings', href: '/admin/settings', icon: '⚙️' },
+  const navigationSections = [
+    {
+      title: 'Overview',
+      items: [
+        { name: 'Dashboard', href: '/admin', icon: '📊' },
+        { name: 'Analytics', href: '/admin/analytics', icon: '📈' },
+      ]
+    },
+    {
+      title: 'Management',
+      items: [
+        { name: 'WordPress Sync', href: '/admin/wordpress-sync', icon: '🔄' },
+        { name: 'Site Monitor', href: '/admin/site-monitor', icon: '🔍' },
+        { name: 'Email Manager', href: '/admin/email-manager', icon: '✉️' },
+      ]
+    },
+    {
+      title: 'Content',
+      items: [
+        { name: 'Content Viewer', href: '/admin/content-viewer', icon: '👁' },
+        { name: 'Magazine Manager', href: '/admin/magazine-manager', icon: '📚' },
+        { name: 'Posts', href: '/admin/posts', icon: '📝' },
+        { name: 'Pages', href: '/admin/pages', icon: '📄' },
+        { name: 'Videos', href: '/admin/videos', icon: '🎥' },
+        { name: 'Podcasts', href: '/admin/podcasts', icon: '🎙️' },
+      ]
+    },
+    {
+      title: 'Organization',
+      items: [
+        { name: 'Categories', href: '/admin/categories', icon: '📁' },
+        { name: 'Tags', href: '/admin/tags', icon: '🏷️' },
+        { name: 'Media', href: '/admin/media', icon: '🖼️' },
+        { name: 'Users', href: '/admin/users', icon: '👥' },
+      ]
+    },
+    {
+      title: 'Configuration',
+      items: [
+        { name: 'Settings', href: '/admin/settings', icon: '⚙️' },
+      ]
+    }
   ];
 
   return (
@@ -38,19 +66,24 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         </div>
 
         <nav className={styles.nav}>
-          {navigation.map((item) => {
-            const isActive = router.pathname === item.href || router.pathname.startsWith(item.href + '/');
-            return (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={`${styles.navItem} ${isActive ? styles.navItemActive : ''}`}
-              >
-                <span className={styles.navIcon}>{item.icon}</span>
-                <span>{item.name}</span>
-              </Link>
-            );
-          })}
+          {navigationSections.map((section) => (
+            <div key={section.title} className={styles.navSection}>
+              <div className={styles.navSectionTitle}>{section.title}</div>
+              {section.items.map((item) => {
+                const isActive = router.pathname === item.href || router.pathname.startsWith(item.href + '/');
+                return (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className={`${styles.navItem} ${isActive ? styles.navItemActive : ''}`}
+                  >
+                    <span className={styles.navIcon}>{item.icon}</span>
+                    <span>{item.name}</span>
+                  </Link>
+                );
+              })}
+            </div>
+          ))}
         </nav>
 
         <div className={styles.sidebarFooter}>

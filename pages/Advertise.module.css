@@ -2,6 +2,7 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .hero {
@@ -198,6 +199,25 @@
   gap: 1.5rem;
   justify-content: center;
   flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.contactLink {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.contactLink a {
+  color: white;
+  font-size: 1rem;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  padding-bottom: 2px;
+  transition: border-color 0.3s;
+}
+
+.contactLink a:hover {
+  border-bottom-color: white;
 }
 
 .primaryButton, .secondaryButton {

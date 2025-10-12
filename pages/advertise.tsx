@@ -13,18 +13,13 @@ export default function AdvertisePage() {
       <div className={styles.container}>
         {/* Hero Section */}
         <section className={styles.hero}>
-          <h1>Advertise with SUCCESS</h1>
-          <p>
-            Reach millions of ambitious, growth-minded professionals across print, digital, and social media platforms
-          </p>
+          <h1>LOOKING TO GROW YOUR BUSINESS?</h1>
+          <h2 style={{ fontSize: '2rem', fontWeight: '400', marginTop: '1rem' }}>Advertise with SUCCESS</h2>
         </section>
 
         {/* Stats Section */}
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Our Reach in 2025</h2>
-          <p className={styles.sectionSubtitle}>
-            SUCCESS connects you with the most engaged audience of entrepreneurs, executives, and high-achievers
-          </p>
+          <h2 className={styles.sectionTitle}>SUCCESS in numbers</h2>
           <div className={styles.statsGrid}>
             <div className={styles.statCard}>
               <p className={styles.statNumber}>10M+</p>
@@ -84,42 +79,26 @@ export default function AdvertisePage() {
 
         {/* Advertising Opportunities */}
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>Advertising Opportunities</h2>
-          <p className={styles.sectionSubtitle}>
-            Multi-platform solutions designed to maximize your brand's visibility and impact
-          </p>
+          <h2 className={styles.sectionTitle}>Integration Opportunities</h2>
           <div className={styles.opportunitiesGrid}>
             <div className={styles.opportunityCard}>
-              <h3>📰 Print Magazine</h3>
-              <ul>
-                <li>Full-page, half-page, and custom placements</li>
-                <li>Premium positioning options</li>
-                <li>Insert and bind-in opportunities</li>
-                <li>Guaranteed circulation of 500,000+</li>
-                <li>Pass-along rate of 3.2 readers per copy</li>
-              </ul>
+              <h3>SUCCESS magazine</h3>
+              <p>A bimonthly print and digital publication featuring inspiring stories, exclusive interviews, and life-changing strategies to motivate readers to achieve their goals</p>
             </div>
 
             <div className={styles.opportunityCard}>
-              <h3>💻 Digital Media</h3>
-              <ul>
-                <li>Display advertising & native content</li>
-                <li>Sponsored articles & thought leadership</li>
-                <li>Email newsletter sponsorships</li>
-                <li>Video pre-roll & mid-roll ads</li>
-                <li>Podcast sponsorships</li>
-              </ul>
+              <h3>SUCCESS+ magazine</h3>
+              <p>A bimonthly digital-only publication that focuses on a specific topic—featuring insights from industry experts, practical strategies, and more—to help readers achieve their goals</p>
             </div>
 
             <div className={styles.opportunityCard}>
-              <h3>📱 Social Media</h3>
-              <ul>
-                <li>Sponsored posts across all platforms</li>
-                <li>Instagram & Facebook Stories</li>
-                <li>LinkedIn promoted content</li>
-                <li>Twitter/X sponsored tweets</li>
-                <li>TikTok brand partnerships</li>
-              </ul>
+              <h3>Inside SUCCESS</h3>
+              <p>A triweekly newsletter featuring the latest trends, sneak peeks into upcoming projects, and exclusive insights that only subscribers get to enjoy</p>
+            </div>
+
+            <div className={styles.opportunityCard}>
+              <h3>2024 Women of Influence Awards</h3>
+              <p>An annual awards program designed to spotlight extraordinary women whose contributions consistently transform lives and transcend boundaries</p>
             </div>
           </div>
         </section>
@@ -131,11 +110,26 @@ export default function AdvertisePage() {
             Partner with SUCCESS Magazine and reach the audience that matters most to your business
           </p>
           <div className={styles.ctaButtons}>
-            <a href="mailto:advertising@success.com" className={styles.primaryButton}>
-              Request Media Kit
+            <a
+              href="https://www.success.com/wp-content/uploads/2025/02/2025_MEDIA-KIT_Updated_2.25.pdf"
+              className={styles.primaryButton}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Download Media Kit
             </a>
-            <a href="mailto:advertising@success.com" className={styles.secondaryButton}>
-              Schedule a Call
+            <a
+              href="https://www.success.com/wp-content/uploads/2025/02/2025_MEDIAKIT-Editorial-Calendar_At-a-Glance.pdf"
+              className={styles.secondaryButton}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Download Editorial Calendar
+            </a>
+          </div>
+          <div className={styles.contactLink}>
+            <a href="mailto:advertising@success.com">
+              Or contact us directly: advertising@success.com
             </a>
           </div>
         </section>

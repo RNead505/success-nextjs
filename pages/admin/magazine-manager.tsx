@@ -38,12 +38,58 @@ export default function MagazineManager() {
       const wpApiUrl = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || 'https://www.success.com/wp-json/wp/v2';
       const res = await fetch(`${wpApiUrl}/magazines?per_page=50&_embed`);
       const data = await res.json();
-      setMagazines(data);
-      if (data.length > 0) {
-        setSelectedMagazine(data[0]); // Select first (current) issue
+
+      // Create demo issue
+      const demoIssue = {
+        id: 99999,
+        title: { rendered: 'SUCCESS Magazine - DEMO ISSUE' },
+        slug: 'demo-issue-2025',
+        date: new Date().toISOString(),
+        meta_data: {
+          'magazine-published-text': ['DEMO - October 2025'],
+          'magazine-banner-heading': ['Welcome to SUCCESS Magazine Manager!'],
+          'magazine-banner-description': ['This is a demo issue to showcase the Magazine Manager features. In production, this page will display real magazine issues from WordPress. You can preview covers, download PDFs, and manage all your magazine content from this dashboard.'],
+          'image-for-listing-page': ['/demo-magazine-cover.jpg']
+        },
+        _embedded: {
+          'wp:featuredmedia': [{
+            source_url: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=600&h=800&fit=crop'
+          }]
+        }
+      };
+
+      // Always add demo issue at the end
+      if (data && Array.isArray(data) && data.length > 0) {
+        setMagazines([...data, demoIssue]);
+        setSelectedMagazine(data[0]); // Select first (current) real issue
+      } else {
+        // If no real magazines, show only demo
+        setMagazines([demoIssue]);
+        setSelectedMagazine(demoIssue);
       }
     } catch (error) {
       console.error('Error fetching magazines:', error);
+
+      // Show demo issue on error
+      const demoIssue = {
+        id: 99999,
+        title: { rendered: 'SUCCESS Magazine - DEMO ISSUE' },
+        slug: 'demo-issue-2025',
+        date: new Date().toISOString(),
+        meta_data: {
+          'magazine-published-text': ['DEMO - October 2025'],
+          'magazine-banner-heading': ['Welcome to SUCCESS Magazine Manager!'],
+          'magazine-banner-description': ['This is a demo issue to showcase the Magazine Manager features. In production, this page will display real magazine issues from WordPress. You can preview covers, download PDFs, and manage all your magazine content from this dashboard.'],
+          'image-for-listing-page': ['/demo-magazine-cover.jpg']
+        },
+        _embedded: {
+          'wp:featuredmedia': [{
+            source_url: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=600&h=800&fit=crop'
+          }]
+        }
+      };
+      setMagazines([demoIssue]);
+      setSelectedMagazine(demoIssue);
     } finally {
       setLoading(false);
     }
@@ -146,6 +192,9 @@ export default function MagazineManager() {
                   <div className={styles.cardBadge}>
                     {getMagazineStatus(index)}
                   </div>
+                  {magazine.id === 99999 && (
+                    <div className={styles.demoBadge}>DEMO</div>
+                  )}
 
                   {coverUrl && (
                     <div className={styles.coverImage}>
@@ -209,7 +258,12 @@ export default function MagazineManager() {
                 <button onClick={() => setView('grid')} className={styles.backButton}>
                   ← Back to All Issues
                 </button>
-                <h2 dangerouslySetInnerHTML={{ __html: selectedMagazine.title.rendered }} />
+                <div className={styles.previewTitleRow}>
+                  <h2 dangerouslySetInnerHTML={{ __html: selectedMagazine.title.rendered }} />
+                  {selectedMagazine.id === 99999 && (
+                    <span className={styles.demoBadgeInline}>DEMO</span>
+                  )}
+                </div>
               </div>
 
               <div className={styles.previewContent}>
