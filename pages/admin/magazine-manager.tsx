@@ -358,7 +358,7 @@ export default function MagazineManager() {
               </div>
             </div>
           )
-        ) : view === 'edit' && selectedMagazine && editData ? (
+        ) : view === 'edit' && selectedMagazine && editData && (
           <div className={styles.editContainer}>
             <div className={styles.editHeader}>
               <button onClick={() => setView('grid')} className={styles.backButton}>
@@ -482,7 +482,7 @@ export default function MagazineManager() {
               </div>
             </div>
           </div>
-        ) : null}
+        )}
       </div>
     </AdminLayout>
   );
