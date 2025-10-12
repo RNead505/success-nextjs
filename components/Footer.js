@@ -1,7 +1,47 @@
+import { useState } from 'react';
 import Link from 'next/link';
 import styles from './Footer.module.css';
 
 export default function Footer() {
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState(''); // 'success', 'error', 'loading'
+  const [message, setMessage] = useState('');
+
+  const handleNewsletterSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!email || !email.includes('@')) {
+      setStatus('error');
+      setMessage('Please enter a valid email address');
+      return;
+    }
+
+    setStatus('loading');
+    setMessage('');
+
+    try {
+      const res = await fetch('/api/newsletter/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setStatus('success');
+        setMessage('Thank you for subscribing!');
+        setEmail('');
+      } else {
+        setStatus('error');
+        setMessage(data.message || 'Failed to subscribe. Please try again.');
+      }
+    } catch (error) {
+      setStatus('error');
+      setMessage('An error occurred. Please try again later.');
+    }
+  };
+
   return (
     <footer className={styles.footer}>
       <div className={styles.container}>
@@ -77,17 +117,25 @@ export default function Footer() {
         <div className={styles.newsletter}>
           <h3>Stay Inspired</h3>
           <p>Get the latest SUCCESS stories delivered straight to your inbox</p>
-          <form className={styles.newsletterForm}>
+          <form className={styles.newsletterForm} onSubmit={handleNewsletterSubmit}>
             <input
               type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email address"
               className={styles.emailInput}
               aria-label="Email address"
+              disabled={status === 'loading'}
             />
-            <button type="submit" className={styles.subscribeBtn}>
-              Subscribe
+            <button type="submit" className={styles.subscribeBtn} disabled={status === 'loading'}>
+              {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
             </button>
           </form>
+          {message && (
+            <p className={status === 'success' ? styles.successMessage : styles.errorMessage}>
+              {message}
+            </p>
+          )}
         </div>
 
         {/* Bottom Bar */}

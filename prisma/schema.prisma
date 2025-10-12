@@ -165,3 +165,24 @@ model Podcast {
   @@map("podcasts")
   @@index([slug])
 }
+
+// Newsletter Subscribers
+model NewsletterSubscriber {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  status       SubscriberStatus  @default(ACTIVE)
+  subscribedAt DateTime @default(now())
+  unsubscribedAt DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("newsletter_subscribers")
+  @@index([email])
+  @@index([status])
+}
+
+enum SubscriberStatus {
+  ACTIVE
+  UNSUBSCRIBED
+  BOUNCED
+}
