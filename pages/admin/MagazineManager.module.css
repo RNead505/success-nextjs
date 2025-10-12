@@ -371,3 +371,178 @@
     padding: 1rem;
   }
 }
+
+/* Edit Mode */
+.editContainer {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.editHeader {
+  margin-bottom: 2rem;
+}
+
+.editHeader h2 {
+  font-size: 2rem;
+  margin: 0.5rem 0 0 0;
+  color: #1a1a1a;
+}
+
+.editForm {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.editSection {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.editSection h3 {
+  margin: 0 0 1.5rem 0;
+  color: #1a1a1a;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.formGroup:last-child {
+  margin-bottom: 0;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #333;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.previewLink {
+  display: inline-block;
+  margin-top: 0.5rem;
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.previewLink:hover {
+  text-decoration: underline;
+}
+
+.infoBox {
+  background: white;
+  padding: 1.25rem;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+}
+
+.infoBox p {
+  margin: 0 0 0.75rem 0;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.infoBox p:last-child {
+  margin-bottom: 0;
+}
+
+.infoBox a {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.infoBox a:hover {
+  text-decoration: underline;
+}
+
+.editActions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.cancelButton,
+.saveButton {
+  padding: 0.875rem 1.75rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancelButton {
+  background: #6c757d;
+  color: white;
+}
+
+.cancelButton:hover {
+  background: #5a6268;
+  transform: translateY(-1px);
+}
+
+.saveButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.saveButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.notice {
+  background: #e7f3ff;
+  border-left: 4px solid #2196f3;
+  padding: 1.25rem;
+  border-radius: 6px;
+  color: #1976d2;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.notice strong {
+  font-weight: 700;
+}
+
+.notice a {
+  color: #1976d2;
+  font-weight: 700;
+  text-decoration: underline;
+}

@@ -20,7 +20,8 @@ export default function MagazineManager() {
   const [magazines, setMagazines] = useState<Magazine[]>([]);
   const [selectedMagazine, setSelectedMagazine] = useState<Magazine | null>(null);
   const [loading, setLoading] = useState(true);
-  const [view, setView] = useState<'grid' | 'preview'>('grid');
+  const [view, setView] = useState<'grid' | 'preview' | 'edit'>('grid');
+  const [editData, setEditData] = useState<any>(null);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -181,6 +182,24 @@ export default function MagazineManager() {
             >
               👁 Preview Current
             </button>
+            <button
+              onClick={() => {
+                if (selectedMagazine) {
+                  setEditData({
+                    title: selectedMagazine.title.rendered,
+                    publishedText: selectedMagazine.meta_data?.['magazine-published-text']?.[0] || '',
+                    heading: selectedMagazine.meta_data?.['magazine-banner-heading']?.[0] || '',
+                    description: selectedMagazine.meta_data?.['magazine-banner-description']?.[0] || '',
+                    flipVersion: selectedMagazine.meta_data?.['flip_version']?.[0] || '',
+                  });
+                  setView('edit');
+                }
+              }}
+              className={view === 'edit' ? styles.viewButtonActive : styles.viewButton}
+              disabled={!selectedMagazine}
+            >
+              ✏️ Edit Current
+            </button>
           </div>
         </div>
 
@@ -339,7 +358,131 @@ export default function MagazineManager() {
               </div>
             </div>
           )
-        )}
+        ) : view === 'edit' && selectedMagazine && editData ? (
+          <div className={styles.editContainer}>
+            <div className={styles.editHeader}>
+              <button onClick={() => setView('grid')} className={styles.backButton}>
+                ← Back to All Issues
+              </button>
+              <h2>Edit Magazine Issue</h2>
+            </div>
+
+            <div className={styles.editForm}>
+              <div className={styles.editSection}>
+                <h3>📖 Basic Information</h3>
+
+                <div className={styles.formGroup}>
+                  <label htmlFor="title">Title</label>
+                  <input
+                    id="title"
+                    type="text"
+                    value={editData.title}
+                    onChange={(e) => setEditData({...editData, title: e.target.value})}
+                    className={styles.input}
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label htmlFor="publishedText">Published Text (e.g., "NOVEMBER / DECEMBER 2025")</label>
+                  <input
+                    id="publishedText"
+                    type="text"
+                    value={editData.publishedText}
+                    onChange={(e) => setEditData({...editData, publishedText: e.target.value})}
+                    className={styles.input}
+                    placeholder="NOVEMBER / DECEMBER 2025"
+                  />
+                </div>
+              </div>
+
+              <div className={styles.editSection}>
+                <h3>🎯 Banner Content</h3>
+
+                <div className={styles.formGroup}>
+                  <label htmlFor="heading">Banner Heading (Featured Person/Topic)</label>
+                  <input
+                    id="heading"
+                    type="text"
+                    value={editData.heading}
+                    onChange={(e) => setEditData({...editData, heading: e.target.value})}
+                    className={styles.input}
+                    placeholder="Russell Brunson"
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label htmlFor="description">Banner Description</label>
+                  <textarea
+                    id="description"
+                    value={editData.description}
+                    onChange={(e) => setEditData({...editData, description: e.target.value})}
+                    className={styles.textarea}
+                    rows={4}
+                    placeholder="MARKETING TRAILBLAZER AND BOOK COLLECTOR REVEALS HIS NEXT MOVE..."
+                  />
+                </div>
+              </div>
+
+              <div className={styles.editSection}>
+                <h3>🌐 Online Version</h3>
+
+                <div className={styles.formGroup}>
+                  <label htmlFor="flipVersion">Online Edition URL (Flip Version)</label>
+                  <input
+                    id="flipVersion"
+                    type="url"
+                    value={editData.flipVersion}
+                    onChange={(e) => setEditData({...editData, flipVersion: e.target.value})}
+                    className={styles.input}
+                    placeholder="https://read.mysuccessplus.com/..."
+                  />
+                  {editData.flipVersion && (
+                    <a
+                      href={editData.flipVersion}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.previewLink}
+                    >
+                      🔗 View Current Online Edition
+                    </a>
+                  )}
+                </div>
+              </div>
+
+              <div className={styles.editSection}>
+                <h3>📊 Current Issue Data</h3>
+                <div className={styles.infoBox}>
+                  <p><strong>Magazine ID:</strong> {selectedMagazine.id}</p>
+                  <p><strong>Slug:</strong> {selectedMagazine.slug}</p>
+                  <p><strong>WordPress Link:</strong> <a href={`https://www.success.com/magazines/${selectedMagazine.slug}/`} target="_blank" rel="noopener noreferrer">View on WordPress</a></p>
+                  <p><strong>Published Date:</strong> {new Date(selectedMagazine.date).toLocaleDateString()}</p>
+                </div>
+              </div>
+
+              <div className={styles.editActions}>
+                <button
+                  className={styles.cancelButton}
+                  onClick={() => setView('preview')}
+                >
+                  Cancel
+                </button>
+                <button
+                  className={styles.saveButton}
+                  onClick={() => {
+                    alert('Note: This is a preview-only interface. To actually update the magazine, you need to edit it in WordPress admin at www.success.com/wp-admin/');
+                    console.log('Edit data:', editData);
+                  }}
+                >
+                  💾 Save Changes (Preview Only)
+                </button>
+              </div>
+
+              <div className={styles.notice}>
+                <strong>ℹ️ Note:</strong> This editor allows you to preview changes. To publish updates, please edit the magazine in <a href="https://www.success.com/wp-admin/" target="_blank" rel="noopener noreferrer">WordPress Admin</a>.
+              </div>
+            </div>
+          </div>
+        ) : null}
       </div>
     </AdminLayout>
   );
