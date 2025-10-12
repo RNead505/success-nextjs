@@ -49,21 +49,24 @@ export default function MagazineManager() {
           'magazine-published-text': ['DEMO - October 2025'],
           'magazine-banner-heading': ['Welcome to SUCCESS Magazine Manager!'],
           'magazine-banner-description': ['This is a demo issue to showcase the Magazine Manager features. In production, this page will display real magazine issues from WordPress. You can preview covers, download PDFs, and manage all your magazine content from this dashboard.'],
-          'image-for-listing-page': ['/demo-magazine-cover.jpg']
+          'image-for-listing-page': ['https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&h=900&fit=crop&q=80']
         },
         _embedded: {
           'wp:featuredmedia': [{
-            source_url: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=600&h=800&fit=crop'
+            source_url: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&h=900&fit=crop&q=80',
+            alt_text: 'DEMO Magazine Cover'
           }]
         }
       };
 
       // Always add demo issue at the end
       if (data && Array.isArray(data) && data.length > 0) {
+        console.log('✅ Loaded', data.length, 'real magazines + 1 demo issue');
         setMagazines([...data, demoIssue]);
         setSelectedMagazine(data[0]); // Select first (current) real issue
       } else {
         // If no real magazines, show only demo
+        console.log('✅ No real magazines found, showing demo issue only');
         setMagazines([demoIssue]);
         setSelectedMagazine(demoIssue);
       }
@@ -80,11 +83,12 @@ export default function MagazineManager() {
           'magazine-published-text': ['DEMO - October 2025'],
           'magazine-banner-heading': ['Welcome to SUCCESS Magazine Manager!'],
           'magazine-banner-description': ['This is a demo issue to showcase the Magazine Manager features. In production, this page will display real magazine issues from WordPress. You can preview covers, download PDFs, and manage all your magazine content from this dashboard.'],
-          'image-for-listing-page': ['/demo-magazine-cover.jpg']
+          'image-for-listing-page': ['https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&h=900&fit=crop&q=80']
         },
         _embedded: {
           'wp:featuredmedia': [{
-            source_url: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=600&h=800&fit=crop'
+            source_url: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&h=900&fit=crop&q=80',
+            alt_text: 'DEMO Magazine Cover'
           }]
         }
       };
