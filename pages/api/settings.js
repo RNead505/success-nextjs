@@ -13,7 +13,13 @@ export default async function handler(req, res) {
   if (req.method === 'GET') {
     try {
       // Get settings from database
-      const settings = await prisma.siteSettings.findFirst();
+      let settings;
+      try {
+        settings = await prisma.siteSettings.findFirst();
+      } catch (dbError) {
+        console.log('Database not available, using defaults:', dbError.message);
+        settings = null;
+      }
 
       if (!settings) {
         // Return default settings if none exist
@@ -44,27 +50,37 @@ export default async function handler(req, res) {
   }
 
   if (req.method === 'POST') {
-    try {
-      const {
-        siteName,
-        siteDescription,
-        siteUrl,
-        adminEmail,
-        facebookUrl,
-        twitterUrl,
-        instagramUrl,
-        linkedinUrl,
-        youtubeUrl,
-        wordpressApiUrl,
-        wordpressApiKey,
-        defaultMetaTitle,
-        defaultMetaDescription,
-        googleAnalyticsId,
-        facebookPixelId,
-      } = req.body;
+    const {
+      siteName,
+      siteDescription,
+      siteUrl,
+      adminEmail,
+      facebookUrl,
+      twitterUrl,
+      instagramUrl,
+      linkedinUrl,
+      youtubeUrl,
+      wordpressApiUrl,
+      wordpressApiKey,
+      defaultMetaTitle,
+      defaultMetaDescription,
+      googleAnalyticsId,
+      facebookPixelId,
+    } = req.body;
 
+    try {
       // Check if settings exist
-      const existingSettings = await prisma.siteSettings.findFirst();
+      let existingSettings;
+      try {
+        existingSettings = await prisma.siteSettings.findFirst();
+      } catch (dbError) {
+        console.error('Database error:', dbError);
+        return res.status(503).json({
+          message: 'Database not available. Please run: npx prisma migrate dev --name add_site_settings',
+          error: dbError.message,
+          hint: 'You need to run database migrations first'
+        });
+      }
 
       let settings;
       if (existingSettings) {
@@ -119,8 +135,9 @@ export default async function handler(req, res) {
     } catch (error) {
       console.error('Error saving settings:', error);
       return res.status(500).json({
-        message: 'Failed to save settings',
-        error: error.message
+        message: 'Failed to save settings. Database may not be configured.',
+        error: error.message,
+        hint: 'Run: npx prisma migrate dev --name add_site_settings'
       });
     }
   }
