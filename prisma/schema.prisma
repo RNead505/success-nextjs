@@ -186,3 +186,27 @@ enum SubscriberStatus {
   UNSUBSCRIBED
   BOUNCED
 }
+
+// Site Settings
+model SiteSettings {
+  id                      String   @id @default(cuid())
+  siteName                String   @default("SUCCESS Magazine")
+  siteDescription         String?  @db.Text
+  siteUrl                 String?
+  adminEmail              String?
+  facebookUrl             String?
+  twitterUrl              String?
+  instagramUrl            String?
+  linkedinUrl             String?
+  youtubeUrl              String?
+  wordpressApiUrl         String?
+  wordpressApiKey         String?
+  defaultMetaTitle        String?
+  defaultMetaDescription  String?  @db.Text
+  googleAnalyticsId       String?
+  facebookPixelId         String?
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  @@map("site_settings")
+}
