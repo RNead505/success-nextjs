@@ -274,8 +274,7 @@ export default function MagazineManager() {
               );
             })}
           </div>
-        ) : (
-          selectedMagazine && (
+        ) : view === 'preview' && selectedMagazine ? (
             <div className={styles.previewContainer}>
               <div className={styles.previewHeader}>
                 <button onClick={() => setView('grid')} className={styles.backButton}>
@@ -357,8 +356,7 @@ export default function MagazineManager() {
                 </div>
               </div>
             </div>
-          )
-        ) : view === 'edit' && selectedMagazine && editData && (
+        ) : view === 'edit' && selectedMagazine && editData ? (
           <div className={styles.editContainer}>
             <div className={styles.editHeader}>
               <button onClick={() => setView('grid')} className={styles.backButton}>
@@ -482,7 +480,7 @@ export default function MagazineManager() {
               </div>
             </div>
           </div>
-        )}
+        ) : null}
       </div>
     </AdminLayout>
   );

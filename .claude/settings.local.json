@@ -64,7 +64,9 @@
       "WebFetch(domain:success-nextjs-f3n23kg9k-rns-projects-2b157598.vercel.app)",
       "Bash(python:*)",
       "Bash(find:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(taskkill:*)",
+      "Read(//c/**)"
     ],
     "deny": [],
     "ask": []
