@@ -95,6 +95,7 @@ export default function Footer() {
             <Link href="/category/money">Money</Link>
             <Link href="/category/lifestyle">Lifestyle</Link>
             <Link href="/podcasts">Podcasts</Link>
+            <a href="/api/rss" target="_blank" rel="noopener noreferrer">RSS Feed</a>
           </div>
 
           <div className={styles.column}>

@@ -25,7 +25,7 @@ export default function Header() {
             SIGN UP FOR NEWSLETTER
           </Link>
           <div className={styles.topBarButtons}>
-            <Link href="/signin" className={styles.signInButton}>
+            <Link href="/login" className={styles.signInButton}>
               SIGN IN
             </Link>
             <Link href="/subscribe" className={styles.subscribeButton}>

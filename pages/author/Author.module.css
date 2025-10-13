@@ -1,16 +1,14 @@
-.authorHeader {
+/* Author Hero */
+.authorHero {
   background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
   color: #fff;
-  padding: 4rem 1rem;
-  margin-bottom: 4rem;
+  padding: 5rem 1rem;
+  text-align: center;
 }
 
-.authorInfo {
-  max-width: 1200px;
+.heroContent {
+  max-width: 800px;
   margin: 0 auto;
-  display: flex;
-  align-items: center;
-  gap: 2rem;
 }
 
 .avatar {
@@ -18,22 +16,23 @@
   height: 120px;
   border-radius: 50%;
   border: 4px solid #fff;
-}
-
-.authorDetails {
-  flex: 1;
+  margin-bottom: 1.5rem;
+  display: inline-block;
 }
 
 .authorName {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin: 0 0 1rem 0;
+  font-size: 3rem;
+  font-weight: 900;
+  margin: 0 0 1.5rem 0;
+  line-height: 1;
 }
 
 .authorBio {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  opacity: 0.9;
+  font-size: 1.125rem;
+  line-height: 1.8;
+  opacity: 0.95;
+  margin-bottom: 2rem;
+  color: #e0e0e0;
 }
 
 .authorBio p {
@@ -43,19 +42,60 @@
 .authorBio a {
   color: #fff;
   text-decoration: underline;
+  font-weight: 500;
+}
+
+.authorBio a:hover {
+  opacity: 0.8;
+}
+
+/* Stats */
+.stats {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-top: 2rem;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.statNumber {
+  font-size: 2.5rem;
+  font-weight: 900;
+  line-height: 1;
+  color: #fff;
+}
+
+.statLabel {
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #ccc;
+  font-weight: 600;
+}
+
+/* Posts Section */
+.postsSection {
+  padding: 4rem 1rem;
+  background-color: #f9f9f9;
 }
 
 .postsContainer {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1rem 4rem;
 }
 
 .postsTitle {
   font-size: 2rem;
   font-weight: 700;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
   color: #000;
+  text-align: center;
 }
 
 .postsGrid {
@@ -64,6 +104,16 @@
   gap: 2.5rem;
 }
 
+/* No Articles */
+.noArticles {
+  text-align: center;
+  padding: 4rem 1rem;
+  font-size: 1.125rem;
+  color: #666;
+  background-color: #f9f9f9;
+}
+
+/* Loading & Error States */
 .loading,
 .error {
   text-align: center;
@@ -72,25 +122,24 @@
   color: #666;
 }
 
+.error {
+  color: #d32f2f;
+}
+
 /* Responsive */
 @media (max-width: 992px) {
-  .authorInfo {
-    flex-direction: column;
-    text-align: center;
-  }
-
   .postsGrid {
     grid-template-columns: repeat(2, 1fr);
   }
 
   .authorName {
-    font-size: 2rem;
+    font-size: 2.5rem;
   }
 }
 
 @media (max-width: 768px) {
-  .authorHeader {
-    padding: 3rem 1rem;
+  .authorHero {
+    padding: 4rem 1rem;
   }
 
   .avatar {
@@ -99,7 +148,7 @@
   }
 
   .authorName {
-    font-size: 1.75rem;
+    font-size: 2rem;
   }
 
   .authorBio {
@@ -110,11 +159,15 @@
     grid-template-columns: 1fr;
     gap: 2rem;
   }
+
+  .statNumber {
+    font-size: 2rem;
+  }
 }
 
 @media (max-width: 480px) {
-  .authorHeader {
-    padding: 2rem 1rem;
+  .authorHero {
+    padding: 3rem 1rem;
   }
 
   .avatar {
@@ -123,10 +176,18 @@
   }
 
   .authorName {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
   }
 
   .postsTitle {
     font-size: 1.5rem;
+  }
+
+  .stats {
+    gap: 2rem;
+  }
+
+  .statNumber {
+    font-size: 1.75rem;
   }
 }

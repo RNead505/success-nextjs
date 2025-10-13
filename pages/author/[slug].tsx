@@ -30,8 +30,9 @@ export default function AuthorPage({ author, posts }: AuthorPageProps) {
 
   return (
     <Layout>
-      <div className={styles.authorHeader}>
-        <div className={styles.authorInfo}>
+      {/* Author Hero */}
+      <div className={styles.authorHero}>
+        <div className={styles.heroContent}>
           {author.avatar_urls && (
             <img
               src={author.avatar_urls['96']}
@@ -39,26 +40,39 @@ export default function AuthorPage({ author, posts }: AuthorPageProps) {
               className={styles.avatar}
             />
           )}
-          <div className={styles.authorDetails}>
-            <h1 className={styles.authorName}>{author.name}</h1>
-            {author.description && (
-              <div
-                className={styles.authorBio}
-                dangerouslySetInnerHTML={{ __html: author.description }}
-              />
-            )}
+          <h1 className={styles.authorName}>{author.name}</h1>
+          {author.description && (
+            <div
+              className={styles.authorBio}
+              dangerouslySetInnerHTML={{ __html: author.description }}
+            />
+          )}
+          <div className={styles.stats}>
+            <div className={styles.stat}>
+              <span className={styles.statNumber}>{posts.length}</span>
+              <span className={styles.statLabel}>{posts.length === 1 ? 'Article' : 'Articles'}</span>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className={styles.postsContainer}>
-        <h2 className={styles.postsTitle}>Articles by {author.name}</h2>
-        <div className={styles.postsGrid}>
-          {posts.map((post: any) => (
-            <PostCard key={post.id} post={post} />
-          ))}
+      {/* Articles Section */}
+      {posts.length > 0 ? (
+        <div className={styles.postsSection}>
+          <div className={styles.postsContainer}>
+            <h2 className={styles.postsTitle}>Latest Articles</h2>
+            <div className={styles.postsGrid}>
+              {posts.map((post: any) => (
+                <PostCard key={post.id} post={post} />
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className={styles.noArticles}>
+          <p>No articles published yet.</p>
+        </div>
+      )}
     </Layout>
   );
 }

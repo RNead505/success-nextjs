@@ -11,25 +11,48 @@ export default function ContactPage() {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
+    // Clear error when user starts typing
+    if (error) setError('');
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Form submission will be connected later
-    console.log('Form submitted:', formData);
-    setSubmitted(true);
+    setSubmitting(true);
+    setError('');
 
-    // Reset form after 3 seconds
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormData({ name: '', email: '', subject: '', message: '' });
-    }, 3000);
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setSubmitted(true);
+        // Reset form after 5 seconds
+        setTimeout(() => {
+          setSubmitted(false);
+          setFormData({ name: '', email: '', subject: '', message: '' });
+        }, 5000);
+      } else {
+        setError(data.message || 'Failed to send message. Please try again.');
+      }
+    } catch (err) {
+      console.error('Error submitting form:', err);
+      setError('Network error. Please check your connection and try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -138,6 +161,14 @@ export default function ContactPage() {
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className={styles.form}>
+                    {error && (
+                      <div className={styles.errorMessage}>
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>{error}</span>
+                      </div>
+                    )}
                     <div className={styles.formGroup}>
                       <label htmlFor="name" className={styles.label}>Name *</label>
                       <input
@@ -200,8 +231,8 @@ export default function ContactPage() {
                       />
                     </div>
 
-                    <button type="submit" className={styles.submitButton}>
-                      Send Message
+                    <button type="submit" className={styles.submitButton} disabled={submitting}>
+                      {submitting ? 'Sending...' : 'Send Message'}
                     </button>
                   </form>
                 )}

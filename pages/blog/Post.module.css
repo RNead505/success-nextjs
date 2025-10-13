@@ -188,6 +188,17 @@
   display: flex;
   gap: 1.5rem;
   align-items: flex-start;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s;
+  padding: 0.5rem;
+  margin: -0.5rem;
+  border-radius: 8px;
+}
+
+.authorInfo:hover {
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .authorAvatar {
@@ -212,7 +223,29 @@
   font-size: 0.9375rem;
   line-height: 1.6;
   color: #444;
-  margin: 0;
+  margin: 0 0 0.75rem 0;
+}
+
+.authorDescription a {
+  color: #d32f2f;
+  text-decoration: none;
+}
+
+.authorDescription a:hover {
+  text-decoration: underline;
+}
+
+.viewProfile {
+  display: inline-block;
+  color: #d32f2f;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  transition: transform 0.2s;
+}
+
+.authorInfo:hover .viewProfile {
+  transform: translateX(4px);
 }
 
 /* Share Section */
@@ -237,24 +270,38 @@
   display: flex;
   justify-content: center;
   gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .shareBtn {
-  width: 48px;
-  height: 48px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
   background-color: #000;
   color: #fff;
   border: none;
-  border-radius: 50%;
+  border-radius: 50px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .shareBtn:hover {
   background-color: #333;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.shareBtn:active {
+  transform: translateY(0);
+}
+
+.shareBtn svg {
+  flex-shrink: 0;
 }
 
 /* Related Posts */

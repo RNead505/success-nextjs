@@ -48,10 +48,10 @@ export default function AdminDashboard() {
   const quickActions = [
     { label: 'New Post', href: '/admin/posts/new', icon: '📝', color: '#667eea' },
     { label: 'New Page', href: '/admin/pages/new', icon: '📄', color: '#764ba2' },
+    { label: 'SUCCESS+ Members', href: '/admin/members', icon: '⭐', color: '#d32f2f' },
+    { label: 'WordPress Sync', href: '/admin/wordpress-sync', icon: '🔄', color: '#43e97b' },
     { label: 'Media Library', href: '/admin/media', icon: '🖼️', color: '#f093fb' },
-    { label: 'Upload Media', href: '/admin/media/upload', icon: '⬆️', color: '#4facfe' },
-    { label: 'Categories', href: '/admin/categories', icon: '📁', color: '#43e97b' },
-    { label: 'Users', href: '/admin/users', icon: '👥', color: '#f6d365' },
+    { label: 'Analytics', href: '/admin/analytics', icon: '📈', color: '#4facfe' },
   ];
 
   return (

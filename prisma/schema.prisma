@@ -15,16 +15,18 @@ datasource db {
 
 // User model for admin authentication
 model User {
-  id            String    @id @default(cuid())
-  name          String
-  email         String    @unique
-  password      String
-  role          UserRole  @default(EDITOR)
-  bio           String?
-  avatar        String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  posts         Post[]
+  id               String        @id @default(cuid())
+  name             String
+  email            String        @unique
+  password         String
+  role             UserRole      @default(EDITOR)
+  bio              String?
+  avatar           String?
+  stripeCustomerId String?       @unique
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  posts            Post[]
+  subscription     Subscription?
 
   @@map("users")
 }
@@ -209,4 +211,30 @@ model SiteSettings {
   updatedAt               DateTime @updatedAt
 
   @@map("site_settings")
+}
+
+// Subscriptions (SUCCESS+ membership)
+model Subscription {
+  id                   String             @id @default(cuid())
+  userId               String             @unique
+  user                 User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stripeCustomerId     String?            @unique
+  stripeSubscriptionId String?            @unique
+  stripePriceId        String?
+  status               SubscriptionStatus @default(INACTIVE)
+  currentPeriodStart   DateTime?
+  currentPeriodEnd     DateTime?
+  cancelAtPeriodEnd    Boolean            @default(false)
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+
+  @@map("subscriptions")
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  INACTIVE
+  PAST_DUE
+  CANCELED
+  TRIALING
 }

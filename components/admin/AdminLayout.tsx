@@ -21,30 +21,33 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       ]
     },
     {
-      title: 'Management',
+      title: 'SUCCESS.com',
       items: [
-        { name: 'WordPress Sync', href: '/admin/wordpress-sync', icon: '🔄' },
-        { name: 'Site Monitor', href: '/admin/site-monitor', icon: '🔍' },
-        { name: 'Email Manager', href: '/admin/email-manager', icon: '✉️' },
-      ]
-    },
-    {
-      title: 'Content',
-      items: [
-        { name: 'Content Viewer', href: '/admin/content-viewer', icon: '👁' },
-        { name: 'Magazine Manager', href: '/admin/magazine-manager', icon: '📚' },
         { name: 'Posts', href: '/admin/posts', icon: '📝' },
         { name: 'Pages', href: '/admin/pages', icon: '📄' },
         { name: 'Videos', href: '/admin/videos', icon: '🎥' },
         { name: 'Podcasts', href: '/admin/podcasts', icon: '🎙️' },
-      ]
-    },
-    {
-      title: 'Organization',
-      items: [
+        { name: 'Magazine Manager', href: '/admin/magazine-manager', icon: '📚' },
         { name: 'Categories', href: '/admin/categories', icon: '📁' },
         { name: 'Tags', href: '/admin/tags', icon: '🏷️' },
         { name: 'Media', href: '/admin/media', icon: '🖼️' },
+      ]
+    },
+    {
+      title: 'SUCCESS+',
+      items: [
+        { name: 'Members', href: '/admin/members', icon: '⭐' },
+        { name: 'Subscriptions', href: '/admin/subscriptions', icon: '💳' },
+        { name: 'Revenue', href: '/admin/revenue', icon: '💰' },
+      ]
+    },
+    {
+      title: 'Management',
+      items: [
+        { name: 'WordPress Sync', href: '/admin/wordpress-sync', icon: '🔄' },
+        { name: 'Site Monitor', href: '/admin/site-monitor', icon: '🔍' },
+        { name: 'Content Viewer', href: '/admin/content-viewer', icon: '👁' },
+        { name: 'Email Manager', href: '/admin/email-manager', icon: '✉️' },
         { name: 'Users', href: '/admin/users', icon: '👥' },
       ]
     },

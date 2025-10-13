@@ -202,13 +202,36 @@
   transition: all 0.2s;
 }
 
-.submitButton:hover {
+.submitButton:hover:not(:disabled) {
   background-color: #333;
   transform: translateY(-2px);
 }
 
-.submitButton:active {
+.submitButton:active:not(:disabled) {
   transform: translateY(0);
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Error Message */
+.errorMessage {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background-color: #fee;
+  border: 1px solid #fcc;
+  border-radius: 4px;
+  color: #c33;
+  font-size: 0.9375rem;
+  margin-bottom: 1rem;
+}
+
+.errorMessage svg {
+  flex-shrink: 0;
 }
 
 /* Success Message */
