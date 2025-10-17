@@ -1,0 +1,186 @@
+.article {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+}
+
+.breadcrumb {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.breadcrumb a {
+  color: #666;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.breadcrumb a:hover {
+  color: #e63946;
+}
+
+.separator {
+  color: #ccc;
+}
+
+.header {
+  margin-bottom: 40px;
+}
+
+.title {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 20px 0;
+  color: #000;
+  letter-spacing: -0.02em;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 0;
+  border-top: 1px solid #e5e5e5;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.date {
+  font-size: 15px;
+  color: #999;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.featuredImage {
+  margin: 40px 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.featuredImage img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.content {
+  margin: 60px 0;
+}
+
+.body {
+  font-size: 18px;
+  line-height: 1.8;
+  color: #333;
+}
+
+.body p {
+  margin: 0 0 1.5em 0;
+}
+
+.body h2 {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 2em 0 0.5em 0;
+  color: #000;
+}
+
+.body h3 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 1.5em 0 0.5em 0;
+  color: #000;
+}
+
+.body a {
+  color: #e63946;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.body a:hover {
+  color: #d62839;
+}
+
+.body ul,
+.body ol {
+  margin: 1.5em 0;
+  padding-left: 1.5em;
+}
+
+.body li {
+  margin-bottom: 0.5em;
+}
+
+.body blockquote {
+  margin: 2em 0;
+  padding: 20px 30px;
+  border-left: 4px solid #e63946;
+  background: #f9f9f9;
+  font-style: italic;
+  font-size: 20px;
+}
+
+.body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 2em 0;
+}
+
+.footer {
+  margin-top: 60px;
+  padding-top: 40px;
+  border-top: 2px solid #e5e5e5;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  color: #e63946;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 16px;
+  transition: transform 0.2s;
+}
+
+.backLink:hover {
+  transform: translateX(-4px);
+}
+
+.loading,
+.error {
+  text-align: center;
+  padding: 100px 20px;
+  font-size: 20px;
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 32px;
+  }
+
+  .body {
+    font-size: 16px;
+  }
+
+  .body h2 {
+    font-size: 24px;
+  }
+
+  .body h3 {
+    font-size: 20px;
+  }
+
+  .body blockquote {
+    font-size: 18px;
+    padding: 15px 20px;
+  }
+}

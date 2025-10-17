@@ -8,8 +8,12 @@ const navItems = [
   { label: 'BUSINESS', path: '/category/business' },
   { label: 'MONEY', path: '/category/money' },
   { label: 'LIFESTYLE', path: '/category/lifestyle' },
+  { label: 'ENTERTAINMENT', path: '/category/entertainment' },
+  { label: 'HEALTH & WELLNESS', path: '/category/health' },
   { label: 'FUTURE OF WORK', path: '/category/future-of-work' },
+  { label: 'VIDEOS', path: '/videos' },
   { label: 'PODCASTS', path: '/podcasts' },
+  { label: 'BESTSELLERS', path: 'https://www.success.com/bestsellers/', external: true },
   { label: 'STORE', path: '/store' },
 ];
 
