@@ -42,6 +42,14 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       ]
     },
     {
+      title: 'CRM & Email',
+      items: [
+        { name: 'Contacts', href: '/admin/crm/contacts', icon: '👤' },
+        { name: 'Campaigns', href: '/admin/crm/campaigns', icon: '📧' },
+        { name: 'Email Templates', href: '/admin/crm/templates', icon: '📄' },
+      ]
+    },
+    {
       title: 'Management',
       items: [
         { name: 'WordPress Sync', href: '/admin/wordpress-sync', icon: '🔄' },

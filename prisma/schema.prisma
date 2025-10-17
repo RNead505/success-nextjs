@@ -255,3 +255,128 @@ model Magazine {
   @@map("magazines")
   @@index([slug])
 }
+
+// CRM Contact model
+model Contact {
+  id              String         @id @default(cuid())
+  email           String         @unique
+  firstName       String?
+  lastName        String?
+  phone           String?
+  company         String?
+  tags            String[]       // Array of tags
+  status          ContactStatus  @default(ACTIVE)
+  source          String?        // Where they came from (newsletter, form, etc.)
+  notes           String?        @db.Text
+  lastContactedAt DateTime?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  emailLogs       EmailLog[]
+  campaignContacts CampaignContact[]
+
+  @@map("contacts")
+  @@index([email])
+  @@index([status])
+}
+
+enum ContactStatus {
+  ACTIVE
+  UNSUBSCRIBED
+  BOUNCED
+  SPAM
+}
+
+// Email Campaign (Drip Campaign)
+model Campaign {
+  id          String         @id @default(cuid())
+  name        String
+  subject     String
+  status      CampaignStatus @default(DRAFT)
+  templateId  String?
+  template    EmailTemplate? @relation(fields: [templateId], references: [id])
+  scheduledAt DateTime?
+  sentAt      DateTime?
+  totalSent   Int            @default(0)
+  totalOpened Int            @default(0)
+  totalClicked Int           @default(0)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  contacts    CampaignContact[]
+  emails      DripEmail[]
+
+  @@map("campaigns")
+}
+
+enum CampaignStatus {
+  DRAFT
+  SCHEDULED
+  SENDING
+  SENT
+  PAUSED
+}
+
+// Drip Email (part of a campaign sequence)
+model DripEmail {
+  id          String   @id @default(cuid())
+  campaignId  String
+  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  name        String
+  subject     String
+  content     String   @db.Text
+  delayDays   Int      @default(0) // Days after previous email
+  order       Int      // Order in sequence
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("drip_emails")
+}
+
+// Junction table for Campaign and Contact
+model CampaignContact {
+  id         String   @id @default(cuid())
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  contactId  String
+  contact    Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  status     String   @default("pending") // pending, sent, opened, clicked
+  sentAt     DateTime?
+  openedAt   DateTime?
+  clickedAt  DateTime?
+  createdAt  DateTime @default(now())
+
+  @@unique([campaignId, contactId])
+  @@map("campaign_contacts")
+}
+
+// Email Template
+model EmailTemplate {
+  id        String     @id @default(cuid())
+  name      String
+  subject   String
+  content   String     @db.Text
+  isDefault Boolean    @default(false)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  campaigns Campaign[]
+
+  @@map("email_templates")
+}
+
+// Email Log (track all sent emails)
+model EmailLog {
+  id          String   @id @default(cuid())
+  contactId   String
+  contact     Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  subject     String
+  content     String   @db.Text
+  status      String   // sent, delivered, opened, clicked, bounced, failed
+  sentAt      DateTime @default(now())
+  openedAt    DateTime?
+  clickedAt   DateTime?
+  bouncedAt   DateTime?
+  errorMessage String?
+
+  @@map("email_logs")
+  @@index([contactId])
+  @@index([status])
+}
