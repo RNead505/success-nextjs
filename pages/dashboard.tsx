@@ -242,7 +242,7 @@ export default function MemberDashboard() {
                       {analytics.recentPosts.slice(0, 5).map((post: any) => (
                         <div key={post.id} className={styles.recentPost}>
                           <a href={`/blog/${post.slug}`} className={styles.recentPostLink}>
-                            {post.title.rendered.replace(/&#8217;/g, ''').replace(/&#8220;/g, '"').replace(/&#8221;/g, '"')}
+                            {post.title.rendered.replace(/&#8217;/g, "'").replace(/&#8220;/g, '"').replace(/&#8221;/g, '"')}
                           </a>
                           <span className={styles.recentPostDate}>
                             {new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
