@@ -67,7 +67,8 @@
       "Bash(npx tsc:*)",
       "Bash(taskkill:*)",
       "Read(//c/**)",
-      "Bash(tee:*)"
+      "Bash(tee:*)",
+      "Bash(npm run lint:*)"
     ],
     "deny": [],
     "ask": []
