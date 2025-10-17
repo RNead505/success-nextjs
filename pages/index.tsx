@@ -8,14 +8,24 @@ import styles from './Home.module.css';
 import { fetchWordPressData } from '../lib/wordpress';
 
 type HomePageProps = {
-  posts: any[];
+  featuredPost: any;
+  secondaryPosts: any[];
   trendingPosts: any[];
+  latestPosts: any[];
+  businessPosts: any[];
+  lifestylePosts: any[];
+  moneyPosts: any[];
+  futureOfWorkPosts: any[];
+  healthPosts: any[];
+  entertainmentPosts: any[];
+  videos: any[];
+  podcasts: any[];
   latestMagazine: any;
   bestsellers: any[];
 };
 
-function HomePage({ posts, trendingPosts, latestMagazine, bestsellers }: HomePageProps) {
-  if (!posts || posts.length === 0) {
+function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, businessPosts, lifestylePosts, moneyPosts, futureOfWorkPosts, healthPosts, entertainmentPosts, videos, podcasts, latestMagazine, bestsellers }: HomePageProps) {
+  if (!featuredPost) {
     return <Layout><p>Loading...</p></Layout>;
   }
 
@@ -27,32 +37,197 @@ function HomePage({ posts, trendingPosts, latestMagazine, bestsellers }: HomePag
         url="https://www.success.com"
         type="website"
       />
-
-      {/* Magazine Hero Section */}
-      {latestMagazine && <MagazineHero magazine={latestMagazine} />}
-
       <div className={styles.container}>
-        <div className={styles.mainGrid}>
-          {/* Posts Feed */}
-          <div className={styles.postsColumn}>
-            {posts.map((post: any, index: number) => (
-              <PostCard key={post.id} post={post} isFeatured={index === 0} />
+        {/* Main content grid comes first */}
+        <div className={styles.homeLayout}>
+          <div className={styles.featuredSection}>
+            <PostCard post={featuredPost} isFeatured={true} />
+          </div>
+          <div className={styles.secondarySection}>
+            {secondaryPosts.map((post: any) => (
+              <PostCard key={post.id} post={post} />
             ))}
           </div>
-
-          {/* Sidebar */}
-          <div className={styles.sidebarColumn}>
+          <div className={styles.trendingSection}>
             <Trending posts={trendingPosts} />
           </div>
         </div>
       </div>
+
+      {/* "Inside the Magazine" hero */}
+      <MagazineHero magazine={latestMagazine} />
+
+      {/* Bestsellers Section */}
+      <Bestsellers books={bestsellers} />
+
+      {/* Latest Articles Section */}
+      <section className={styles.latestSection}>
+        <div className={styles.sectionContainer}>
+          <h2 className={styles.sectionTitle}>Latest Articles</h2>
+          <div className={styles.postsGrid}>
+            {latestPosts.map((post: any) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
+          <div className={styles.viewMoreWrapper}>
+            <a href="/category/business" className={styles.viewMore}>View All Articles</a>
+          </div>
+        </div>
+      </section>
+
+      {/* Business Section */}
+      <section className={styles.categorySection}>
+        <div className={styles.sectionContainer}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Business</h2>
+            <a href="/category/business" className={styles.viewAllLink}>View All →</a>
+          </div>
+          <div className={styles.postsGrid}>
+            {businessPosts.map((post: any) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Lifestyle Section */}
+      <section className={styles.categorySectionGray}>
+        <div className={styles.sectionContainer}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Lifestyle</h2>
+            <a href="/category/lifestyle" className={styles.viewAllLink}>View All →</a>
+          </div>
+          <div className={styles.postsGrid}>
+            {lifestylePosts.map((post: any) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Money Section */}
+      <section className={styles.categorySection}>
+        <div className={styles.sectionContainer}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Money</h2>
+            <a href="/category/money" className={styles.viewAllLink}>View All →</a>
+          </div>
+          <div className={styles.postsGrid}>
+            {moneyPosts.map((post: any) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Future of Work Section */}
+      <section className={styles.categorySectionGray}>
+        <div className={styles.sectionContainer}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Future of Work</h2>
+            <a href="/category/future-of-work" className={styles.viewAllLink}>View All →</a>
+          </div>
+          <div className={styles.postsGrid}>
+            {futureOfWorkPosts.map((post: any) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Health & Wellness Section */}
+      <section className={styles.categorySection}>
+        <div className={styles.sectionContainer}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Health & Wellness</h2>
+            <a href="/category/health" className={styles.viewAllLink}>View All →</a>
+          </div>
+          <div className={styles.postsGrid}>
+            {healthPosts.map((post: any) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Entertainment Section */}
+      <section className={styles.categorySectionGray}>
+        <div className={styles.sectionContainer}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Entertainment</h2>
+            <a href="/category/entertainment" className={styles.viewAllLink}>View All →</a>
+          </div>
+          <div className={styles.postsGrid}>
+            {entertainmentPosts.map((post: any) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Videos Section */}
+      <section className={styles.categorySection}>
+        <div className={styles.sectionContainer}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Latest Videos</h2>
+            <a href="/videos" className={styles.viewAllLink}>View All →</a>
+          </div>
+          <div className={styles.postsGrid}>
+            {videos.slice(0, 3).map((video: any) => (
+              <PostCard key={video.id} post={video} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Podcasts Section */}
+      <section className={styles.categorySectionGray}>
+        <div className={styles.sectionContainer}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Latest Podcasts</h2>
+            <a href="/podcasts" className={styles.viewAllLink}>View All →</a>
+          </div>
+          <div className={styles.postsGrid}>
+            {podcasts.slice(0, 3).map((podcast: any) => (
+              <PostCard key={podcast.id} post={podcast} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter CTA */}
+      <section className={styles.newsletterCTA}>
+        <div className={styles.ctaContent}>
+          <h2 className={styles.ctaTitle}>Stay Inspired</h2>
+          <p className={styles.ctaText}>
+            Get the latest SUCCESS stories delivered straight to your inbox
+          </p>
+          <a href="/newsletter" className={styles.ctaButton}>Subscribe Now</a>
+        </div>
+      </section>
     </Layout>
   );
 }
 
 export async function getStaticProps() {
-  const posts = await fetchWordPressData('posts?_embed&per_page=25');
-  const trendingPosts = posts.slice(0, 5); // First 5 as trending
+  const posts = await fetchWordPressData('posts?_embed&per_page=30');
+
+  const featuredPost = posts[0];
+  const secondaryPosts = posts.slice(1, 5); // 4 posts for 2x2 grid
+  const trendingPosts = posts.slice(5, 8);
+  const latestPosts = posts.slice(8, 14); // 6 more posts
+
+  // Fetch category-specific posts
+  const businessPosts = await fetchWordPressData('posts?categories=4&_embed&per_page=3');
+  const lifestylePosts = await fetchWordPressData('posts?categories=14056&_embed&per_page=3');
+  const moneyPosts = await fetchWordPressData('posts?categories=14060&_embed&per_page=3');
+  const futureOfWorkPosts = await fetchWordPressData('posts?categories=14061&_embed&per_page=3');
+  const healthPosts = await fetchWordPressData('posts?categories=14059&_embed&per_page=3');
+  const entertainmentPosts = await fetchWordPressData('posts?categories=14382&_embed&per_page=3');
+
+  // Fetch custom post types
+  const videos = await fetchWordPressData('videos?_embed&per_page=3');
+  const podcasts = await fetchWordPressData('podcasts?_embed&per_page=3');
 
   // Fetch latest magazine issue
   const magazines = await fetchWordPressData('magazines?per_page=1&_embed');
@@ -63,12 +238,22 @@ export async function getStaticProps() {
 
   return {
     props: {
-      posts,
+      featuredPost,
+      secondaryPosts,
       trendingPosts,
+      latestPosts,
+      businessPosts,
+      lifestylePosts,
+      moneyPosts,
+      futureOfWorkPosts,
+      healthPosts,
+      entertainmentPosts,
+      videos: videos || [],
+      podcasts: podcasts || [],
       latestMagazine,
       bestsellers: bestsellers || [],
     },
-    revalidate: 86400, // Revalidate daily (24 hours = 86400 seconds)
+    revalidate: 600, // Revalidate every 10 minutes
   };
 }
 

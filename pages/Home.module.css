@@ -1,65 +1,230 @@
 .container {
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-  overflow-x: hidden;
+  background-color: #fff;
 }
 
-.mainGrid {
+.homeLayout {
   display: grid;
-  grid-template-columns: 1fr 350px;
-  gap: 3rem;
-  align-items: start;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 2.5rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
 }
 
-.postsColumn {
-  min-width: 0;
+.featuredSection {
+  grid-column: 1;
+}
+
+.secondarySection {
+  grid-column: 2;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  align-content: start;
+}
+
+.trendingSection {
+  grid-column: 1 / -1;
+  margin-top: 3rem;
+}
+
+/* Latest Articles Section */
+.latestSection {
+  padding: 6rem 1rem;
+  background-color: #fff;
+}
+
+.sectionContainer {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.sectionTitle {
+  font-size: 2.25rem;
+  font-weight: 800;
+  margin: 0 0 2.5rem 0;
+  text-align: center;
+  letter-spacing: -0.03em;
+  color: #000;
+}
+
+.postsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5rem;
+}
+
+.viewMoreWrapper {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+.viewMore {
+  display: inline-block;
+  padding: 1rem 3rem;
+  background-color: #000;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.viewMore:hover {
+  background-color: #333;
+  transform: translateY(-2px);
+}
+
+/* Category Sections */
+.categorySection {
+  padding: 5rem 0;
+}
+
+.categorySectionGray {
+  padding: 5rem 0;
+  background-color: #fafafa;
+}
+
+.sectionHeader {
   display: flex;
-  flex-direction: column;
-  gap: 2rem;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
 }
 
-.sidebarColumn {
-  min-width: 0;
-  position: sticky;
-  top: 2rem;
+.sectionHeader .sectionTitle {
+  margin: 0;
+  text-align: left;
+  font-size: 2rem;
 }
 
-/* Responsive */
-@media (max-width: 1024px) {
-  .mainGrid {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+.viewAllLink {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #000;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: opacity 0.2s;
+  border-bottom: 2px solid #000;
+  padding-bottom: 2px;
+}
+
+.viewAllLink:hover {
+  opacity: 0.6;
+}
+
+/* Newsletter CTA */
+.newsletterCTA {
+  padding: 5rem 1rem;
+  background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+  text-align: center;
+}
+
+.ctaContent {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.ctaTitle {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #fff;
+  margin: 0 0 1rem 0;
+}
+
+.ctaText {
+  font-size: 1.25rem;
+  color: #ccc;
+  margin: 0 0 2rem 0;
+  line-height: 1.6;
+}
+
+.ctaButton {
+  display: inline-block;
+  padding: 1rem 3rem;
+  background-color: #fff;
+  color: #000;
+  text-decoration: none;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.ctaButton:hover {
+  background-color: #e5e5e5;
+  transform: translateY(-2px);
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+  .homeLayout {
+    grid-template-columns: 1.5fr 1fr;
+    gap: 2.5rem;
   }
 
-  .sidebarColumn {
+  .trendingSection {
+    grid-column: 1 / -1;
     position: static;
-    max-width: 600px;
-    margin: 0 auto;
+  }
+
+  .postsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
   }
 }
 
 @media (max-width: 768px) {
-  .container {
-    padding: 1.5rem 0.75rem;
+  .homeLayout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 2rem 1rem;
   }
 
-  .mainGrid {
-    gap: 1.5rem;
+  .secondarySection {
+    gap: 2rem;
   }
 
-  .postsColumn {
-    gap: 1.5rem;
+  .latestSection,
+  .categorySection,
+  .newsletterCTA {
+    padding: 3rem 1rem;
+  }
+
+  .sectionTitle {
+    font-size: 2rem;
+  }
+
+  .postsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .sectionHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .ctaTitle {
+    font-size: 2.5rem;
+  }
+
+  .ctaText {
+    font-size: 1.125rem;
   }
 }
 
 @media (max-width: 480px) {
-  .container {
-    padding: 1rem 0.5rem;
+  .sectionTitle {
+    font-size: 1.75rem;
   }
 
-  .postsColumn {
-    gap: 1.25rem;
+  .ctaTitle {
+    font-size: 2rem;
   }
 }
