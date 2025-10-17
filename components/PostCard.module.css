@@ -25,7 +25,7 @@
 
 .featured .image {
   height: 400px;
-  object-position: center center;
+  object-position: center 75%;
 }
 
 .content {
