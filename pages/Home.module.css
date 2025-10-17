@@ -1,230 +1,157 @@
-.container {
-  background-color: #fff;
+/* Hero Container */
+.heroContainer {
+  width: 100%;
+  max-width: 100%;
+  background: #fff;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 2rem 0;
+  overflow-x: hidden;
 }
 
-.homeLayout {
+.heroContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Main Container - Feed + Sidebar Layout */
+.mainContainer {
+  width: 100%;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
+  grid-template-columns: 1fr 320px;
   gap: 2.5rem;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 3rem 2rem;
+  overflow-x: hidden;
 }
 
-.featuredSection {
-  grid-column: 1;
+.feedSection {
+  min-width: 0; /* Prevents grid blowout */
+  overflow-x: hidden;
 }
 
-.secondarySection {
-  grid-column: 2;
+.feedGrid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-  align-content: start;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
 }
 
-.trendingSection {
-  grid-column: 1 / -1;
-  margin-top: 3rem;
+/* Sidebar */
+.sidebar {
+  min-width: 0; /* Prevents grid blowout */
+  overflow-x: hidden;
 }
 
-/* Latest Articles Section */
-.latestSection {
-  padding: 6rem 1rem;
-  background-color: #fff;
+.sidebarNewsletter,
+.sidebarMagazine {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
 }
 
-.sectionContainer {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 2rem;
-}
-
-.sectionTitle {
-  font-size: 2.25rem;
-  font-weight: 800;
-  margin: 0 0 2.5rem 0;
-  text-align: center;
-  letter-spacing: -0.03em;
-  color: #000;
-}
-
-.postsGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2.5rem;
-}
-
-.viewMoreWrapper {
-  text-align: center;
-  margin-top: 3rem;
-}
-
-.viewMore {
-  display: inline-block;
-  padding: 1rem 3rem;
-  background-color: #000;
-  color: #fff;
-  text-decoration: none;
+.sidebarTitle {
+  font-size: 1.125rem;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  border-radius: 4px;
-  transition: all 0.2s;
+  margin: 0 0 0.75rem 0;
+  color: #1a1a1a;
 }
 
-.viewMore:hover {
-  background-color: #333;
-  transform: translateY(-2px);
-}
-
-/* Category Sections */
-.categorySection {
-  padding: 5rem 0;
-}
-
-.categorySectionGray {
-  padding: 5rem 0;
-  background-color: #fafafa;
-}
-
-.sectionHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2.5rem;
-}
-
-.sectionHeader .sectionTitle {
-  margin: 0;
-  text-align: left;
-  font-size: 2rem;
-}
-
-.viewAllLink {
-  font-size: 0.9375rem;
-  font-weight: 700;
-  color: #000;
-  text-decoration: none;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  transition: opacity 0.2s;
-  border-bottom: 2px solid #000;
-  padding-bottom: 2px;
-}
-
-.viewAllLink:hover {
-  opacity: 0.6;
-}
-
-/* Newsletter CTA */
-.newsletterCTA {
-  padding: 5rem 1rem;
-  background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
-  text-align: center;
-}
-
-.ctaContent {
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.ctaTitle {
-  font-size: 3rem;
-  font-weight: 900;
-  color: #fff;
+.sidebarText {
+  font-size: 0.9rem;
+  color: #666;
   margin: 0 0 1rem 0;
+  line-height: 1.5;
 }
 
-.ctaText {
-  font-size: 1.25rem;
-  color: #ccc;
-  margin: 0 0 2rem 0;
-  line-height: 1.6;
-}
-
-.ctaButton {
-  display: inline-block;
-  padding: 1rem 3rem;
-  background-color: #fff;
-  color: #000;
+.sidebarButton {
+  display: block;
+  background: #000;
+  color: white;
+  text-align: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
   text-decoration: none;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  border-radius: 4px;
-  transition: all 0.2s;
+  font-weight: 600;
+  transition: background 0.2s;
 }
 
-.ctaButton:hover {
-  background-color: #e5e5e5;
-  transform: translateY(-2px);
+.sidebarButton:hover {
+  background: #333;
+}
+
+.magazineLink {
+  display: block;
+  text-decoration: none;
+}
+
+.magazineCover {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  margin-bottom: 0.75rem;
+}
+
+.magazineTitle {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1a1a1a;
 }
 
 /* Responsive Styles */
-@media (max-width: 992px) {
-  .homeLayout {
-    grid-template-columns: 1.5fr 1fr;
-    gap: 2.5rem;
-  }
-
-  .trendingSection {
-    grid-column: 1 / -1;
-    position: static;
-  }
-
-  .postsGrid {
-    grid-template-columns: repeat(2, 1fr);
+@media (max-width: 968px) {
+  .mainContainer {
+    grid-template-columns: 1fr;
     gap: 2rem;
+  }
+
+  .feedGrid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+
+  .sidebar {
+    max-width: 500px;
+    margin: 0 auto;
   }
 }
 
 @media (max-width: 768px) {
-  .homeLayout {
+  .heroContainer {
+    padding: 1.5rem 0;
+  }
+
+  .mainContainer {
+    margin: 1.5rem auto;
+    padding: 0 0.75rem;
+  }
+
+  .feedGrid {
     grid-template-columns: 1fr;
-    gap: 2rem;
-    padding: 2rem 1rem;
+    gap: 1.5rem;
   }
 
-  .secondarySection {
-    gap: 2rem;
-  }
-
-  .latestSection,
-  .categorySection,
-  .newsletterCTA {
-    padding: 3rem 1rem;
-  }
-
-  .sectionTitle {
-    font-size: 2rem;
-  }
-
-  .postsGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .sectionHeader {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-
-  .ctaTitle {
-    font-size: 2.5rem;
-  }
-
-  .ctaText {
-    font-size: 1.125rem;
+  .sidebar {
+    max-width: 100%;
   }
 }
 
 @media (max-width: 480px) {
-  .sectionTitle {
-    font-size: 1.75rem;
+  .heroContainer {
+    padding: 1rem 0;
   }
 
-  .ctaTitle {
-    font-size: 2rem;
+  .heroContent {
+    padding: 0 0.75rem;
+  }
+
+  .mainContainer {
+    padding: 0 0.5rem;
+  }
+
+  .sidebarNewsletter,
+  .sidebarMagazine {
+    padding: 1.25rem;
   }
 }

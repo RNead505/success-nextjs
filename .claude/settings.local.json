@@ -68,7 +68,8 @@
       "Bash(taskkill:*)",
       "Read(//c/**)",
       "Bash(tee:*)",
-      "Bash(npm run lint:*)"
+      "Bash(npm run lint:*)",
+      "Bash(DATABASE_URL=\"postgres://default:9iXF2IrQGpwL@ep-cold-tooth-a4z49xhe-pooler.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require\" npx prisma migrate dev --name add_crm_system)"
     ],
     "deny": [],
     "ask": []
