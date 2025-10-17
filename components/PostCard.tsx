@@ -48,6 +48,38 @@ export default function PostCard({ post, isFeatured = false }: PostCardProps) {
 
   const cardClassName = isFeatured ? `${styles.card} ${styles.featured}` : styles.card;
 
+  if (isFeatured) {
+    return (
+      <div className={cardClassName}>
+        <div className={styles.featuredImageContainer}>
+          {featuredImageUrl && (
+            <Link href={`/blog/${slug}`}>
+              <img src={featuredImageUrl} alt={title} className={styles.image} />
+            </Link>
+          )}
+          <div className={styles.featuredOverlay}>
+            <div className={styles.content}>
+              <p className={styles.category}>{category}</p>
+              <Link href={`/blog/${slug}`} className={styles.titleLink}>
+                <h2 className={styles.title}>{title}</h2>
+              </Link>
+              <p className={styles.author}>By {author}</p>
+              {excerpt && (
+                <div
+                  className={styles.excerpt}
+                  dangerouslySetInnerHTML={{ __html: excerpt }}
+                />
+              )}
+              <Link href={`/blog/${slug}`} className={styles.readMore}>
+                Read More
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={cardClassName}>
       {featuredImageUrl && (
@@ -60,20 +92,6 @@ export default function PostCard({ post, isFeatured = false }: PostCardProps) {
         <Link href={`/blog/${slug}`} className={styles.titleLink}>
           <h2 className={styles.title}>{title}</h2>
         </Link>
-        {isFeatured && (
-          <>
-            <p className={styles.author}>By {author}</p>
-            {excerpt && (
-              <div
-                className={styles.excerpt}
-                dangerouslySetInnerHTML={{ __html: excerpt }}
-              />
-            )}
-            <Link href={`/blog/${slug}`} className={styles.readMore}>
-              Read More
-            </Link>
-          </>
-        )}
       </div>
     </div>
   );
