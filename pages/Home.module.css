@@ -1,5 +1,9 @@
 .container {
   background-color: #fff;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .homeLayout {
@@ -8,7 +12,8 @@
   gap: 2.5rem;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 3rem 2rem;
+  padding: 3rem 1rem;
+  width: 100%;
 }
 
 .featuredSection {
@@ -37,7 +42,8 @@
 .sectionContainer {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 1rem;
+  width: 100%;
 }
 
 .sectionTitle {
