@@ -1,81 +1,65 @@
 .container {
+  width: 100%;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 2rem 1rem;
   overflow-x: hidden;
 }
 
-.homeLayout {
+.mainGrid {
   display: grid;
   grid-template-columns: 1fr 350px;
+  gap: 3rem;
+  align-items: start;
+}
+
+.postsColumn {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
   gap: 2rem;
-  margin-bottom: 3rem;
-  padding: 2rem 0;
 }
 
-.featuredSection {
-  grid-column: 1;
-  grid-row: 1;
+.sidebarColumn {
   min-width: 0;
+  position: sticky;
+  top: 2rem;
 }
 
-.secondarySection {
-  grid-column: 1;
-  grid-row: 2;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-  min-width: 0;
-}
-
-.trendingSection {
-  grid-column: 2;
-  grid-row: 1 / span 2;
-  min-width: 0;
-}
-
-/* Responsive Styles */
-@media (max-width: 992px) {
-  .homeLayout {
+/* Responsive */
+@media (max-width: 1024px) {
+  .mainGrid {
     grid-template-columns: 1fr;
     gap: 2rem;
   }
 
-  .featuredSection {
-    grid-column: 1;
-  }
-
-  .secondarySection {
-    grid-column: 1;
-  }
-
-  .trendingSection {
-    grid-column: 1;
-    grid-row: 3;
+  .sidebarColumn {
+    position: static;
+    max-width: 600px;
+    margin: 0 auto;
   }
 }
 
 @media (max-width: 768px) {
   .container {
-    padding: 0 0.75rem;
+    padding: 1.5rem 0.75rem;
   }
 
-  .homeLayout {
-    padding: 1.5rem 0;
+  .mainGrid {
+    gap: 1.5rem;
   }
 
-  .secondarySection {
-    grid-template-columns: 1fr;
+  .postsColumn {
+    gap: 1.5rem;
   }
 }
 
 @media (max-width: 480px) {
   .container {
-    padding: 0 0.5rem;
+    padding: 1rem 0.5rem;
   }
 
-  .homeLayout {
-    padding: 1rem 0;
-    gap: 1.5rem;
+  .postsColumn {
+    gap: 1.25rem;
   }
 }

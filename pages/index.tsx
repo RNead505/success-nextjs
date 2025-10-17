@@ -8,15 +8,14 @@ import styles from './Home.module.css';
 import { fetchWordPressData } from '../lib/wordpress';
 
 type HomePageProps = {
-  featuredPost: any;
-  secondaryPosts: any[];
+  posts: any[];
   trendingPosts: any[];
   latestMagazine: any;
   bestsellers: any[];
 };
 
-function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestMagazine, bestsellers }: HomePageProps) {
-  if (!featuredPost) {
+function HomePage({ posts, trendingPosts, latestMagazine, bestsellers }: HomePageProps) {
+  if (!posts || posts.length === 0) {
     return <Layout><p>Loading...</p></Layout>;
   }
 
@@ -29,17 +28,16 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestMagazine,
         type="website"
       />
       <div className={styles.container}>
-        {/* Main content grid */}
-        <div className={styles.homeLayout}>
-          <div className={styles.featuredSection}>
-            <PostCard post={featuredPost} isFeatured={true} />
-          </div>
-          <div className={styles.secondarySection}>
-            {secondaryPosts.map((post: any) => (
-              <PostCard key={post.id} post={post} />
+        <div className={styles.mainGrid}>
+          {/* Posts Feed */}
+          <div className={styles.postsColumn}>
+            {posts.map((post: any, index: number) => (
+              <PostCard key={post.id} post={post} isFeatured={index === 0} />
             ))}
           </div>
-          <div className={styles.trendingSection}>
+
+          {/* Sidebar */}
+          <div className={styles.sidebarColumn}>
             <Trending posts={trendingPosts} />
           </div>
         </div>
@@ -49,11 +47,8 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestMagazine,
 }
 
 export async function getStaticProps() {
-  const posts = await fetchWordPressData('posts?_embed&per_page=30');
-
-  const featuredPost = posts[0];
-  const secondaryPosts = posts.slice(1, 5); // 4 posts for 2x2 grid
-  const trendingPosts = posts.slice(5, 10); // 5 trending posts
+  const posts = await fetchWordPressData('posts?_embed&per_page=25');
+  const trendingPosts = posts.slice(0, 5); // First 5 as trending
 
   // Fetch latest magazine issue
   const magazines = await fetchWordPressData('magazines?per_page=1&_embed');
@@ -64,8 +59,7 @@ export async function getStaticProps() {
 
   return {
     props: {
-      featuredPost,
-      secondaryPosts,
+      posts,
       trendingPosts,
       latestMagazine,
       bestsellers: bestsellers || [],
