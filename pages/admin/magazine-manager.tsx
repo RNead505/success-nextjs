@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import AdminLayout from '../../components/admin/AdminLayout';
 import { exportMagazineCoverToPDF, exportMagazinePrintPDF } from '../../lib/pdfExport';
+import { decodeHtmlEntities } from '../../lib/htmlDecode';
 import styles from './MagazineManager.module.css';
 
 interface Magazine {
@@ -226,10 +227,9 @@ export default function MagazineManager() {
                   )}
 
                   <div className={styles.cardContent}>
-                    <h3
-                      className={styles.cardTitle}
-                      dangerouslySetInnerHTML={{ __html: magazine.title.rendered }}
-                    />
+                    <h3 className={styles.cardTitle}>
+                      {decodeHtmlEntities(magazine.title.rendered)}
+                    </h3>
                     {publishDate && (
                       <p className={styles.publishDate}>{publishDate}</p>
                     )}
@@ -281,7 +281,7 @@ export default function MagazineManager() {
                   ← Back to All Issues
                 </button>
                 <div className={styles.previewTitleRow}>
-                  <h2 dangerouslySetInnerHTML={{ __html: selectedMagazine.title.rendered }} />
+                  <h2>{decodeHtmlEntities(selectedMagazine.title.rendered)}</h2>
                   {selectedMagazine.id === 99999 && (
                     <span className={styles.demoBadgeInline}>DEMO</span>
                   )}

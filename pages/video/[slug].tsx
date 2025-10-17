@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import Layout from '../../components/Layout';
 import styles from './Video.module.css';
 import { fetchWordPressData } from '../../lib/wordpress';
+import { decodeHtmlEntities, decodeHtmlContent } from '../../lib/htmlDecode';
 
 type VideoPageProps = {
   video: any;
@@ -33,7 +34,7 @@ export default function VideoPage({ video, relatedVideos }: VideoPageProps) {
     <Layout>
       <article className={styles.videoArticle}>
         <div className={styles.videoHeader}>
-          <h1 className={styles.title}>{video.title?.rendered || 'Video'}</h1>
+          <h1 className={styles.title}>{decodeHtmlEntities(video.title?.rendered || 'Video')}</h1>
           <div className={styles.meta}>
             <time className={styles.date}>
               {new Date(video.date).toLocaleDateString('en-US', {
@@ -47,7 +48,7 @@ export default function VideoPage({ video, relatedVideos }: VideoPageProps) {
 
         {featuredImageUrl && (
           <div className={styles.featuredImage}>
-            <img src={featuredImageUrl} alt={video.title?.rendered || 'Video'} />
+            <img src={featuredImageUrl} alt={decodeHtmlEntities(video.title?.rendered || 'Video')} />
           </div>
         )}
 
@@ -55,7 +56,7 @@ export default function VideoPage({ video, relatedVideos }: VideoPageProps) {
           {video.content?.rendered && (
             <div
               className={styles.content}
-              dangerouslySetInnerHTML={{ __html: video.content.rendered }}
+              dangerouslySetInnerHTML={{ __html: decodeHtmlContent(video.content.rendered) }}
             />
           )}
         </div>
@@ -73,12 +74,12 @@ export default function VideoPage({ video, relatedVideos }: VideoPageProps) {
                   {relatedVideo._embedded?.['wp:featuredmedia']?.[0]?.source_url && (
                     <img
                       src={relatedVideo._embedded['wp:featuredmedia'][0].source_url}
-                      alt={relatedVideo.title?.rendered || 'Video'}
+                      alt={decodeHtmlEntities(relatedVideo.title?.rendered || 'Video')}
                       className={styles.relatedImage}
                     />
                   )}
                   <h3 className={styles.relatedCardTitle}>
-                    {relatedVideo.title?.rendered || 'Video'}
+                    {decodeHtmlEntities(relatedVideo.title?.rendered || 'Video')}
                   </h3>
                 </a>
               ))}

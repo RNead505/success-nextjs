@@ -1,4 +1,5 @@
 import styles from './Bestsellers.module.css';
+import { decodeHtmlEntities } from '../lib/htmlDecode';
 
 type BestsellerBook = {
   id: number;
@@ -33,6 +34,7 @@ export default function Bestsellers({ books }: BestsellersProps) {
           {books.map((book) => {
             const imageUrl = book._embedded?.['wp:featuredmedia']?.[0]?.source_url || '';
             const imageAlt = book._embedded?.['wp:featuredmedia']?.[0]?.alt_text || book.title.rendered;
+            const bookTitle = decodeHtmlEntities(book.title.rendered);
 
             return (
               <div key={book.id} className={styles.bookCard}>
@@ -42,10 +44,9 @@ export default function Bestsellers({ books }: BestsellersProps) {
                       <img src={imageUrl} alt={imageAlt} loading="lazy" />
                     </div>
                   )}
-                  <h3
-                    className={styles.bookTitle}
-                    dangerouslySetInnerHTML={{ __html: book.title.rendered }}
-                  />
+                  <h3 className={styles.bookTitle}>
+                    {bookTitle}
+                  </h3>
                 </a>
               </div>
             );

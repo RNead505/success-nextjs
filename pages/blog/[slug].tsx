@@ -3,6 +3,7 @@ import Layout from '../../components/Layout';
 import SEO from '../../components/SEO';
 import styles from './Post.module.css';
 import { fetchWordPressData } from '../../lib/wordpress';
+import { decodeHtmlEntities, decodeHtmlContent } from '../../lib/htmlDecode';
 
 type PostPageProps = {
   post: any;
@@ -18,7 +19,7 @@ export default function PostPage({ post, relatedPosts }: PostPageProps) {
 
   // Share handlers
   const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
-  const shareTitle = post?.title?.rendered || '';
+  const shareTitle = decodeHtmlEntities(post?.title?.rendered || '');
 
   const handleFacebookShare = () => {
     window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank', 'width=600,height=400');
@@ -76,14 +77,14 @@ export default function PostPage({ post, relatedPosts }: PostPageProps) {
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'Article',
-    headline: post.title.rendered,
+    headline: decodeHtmlEntities(post.title.rendered),
     description: seoDescription,
     image: featuredImage?.source_url,
     datePublished: post.date,
     dateModified: post.modified,
     author: {
       '@type': 'Person',
-      name: author?.name,
+      name: author?.name ? decodeHtmlEntities(author.name) : undefined,
     },
     publisher: {
       '@type': 'Organization',
@@ -102,15 +103,15 @@ export default function PostPage({ post, relatedPosts }: PostPageProps) {
   return (
     <Layout>
       <SEO
-        title={post.title.rendered}
+        title={decodeHtmlEntities(post.title.rendered)}
         description={seoDescription}
         image={featuredImage?.source_url}
         url={`https://www.success.com/blog/${post.slug}`}
         type="article"
         publishedTime={post.date}
         modifiedTime={post.modified}
-        author={author?.name}
-        keywords={category?.name}
+        author={author?.name ? decodeHtmlEntities(author.name) : undefined}
+        keywords={category?.name ? decodeHtmlEntities(category.name) : undefined}
       />
       <script
         type="application/ld+json"
@@ -122,14 +123,14 @@ export default function PostPage({ post, relatedPosts }: PostPageProps) {
           <div className={styles.headerContent}>
             {category && (
               <a href={`/category/${category.slug}`} className={styles.category}>
-                {category.name}
+                {decodeHtmlEntities(category.name)}
               </a>
             )}
-            <h1 className={styles.title}>{post.title.rendered}</h1>
+            <h1 className={styles.title}>{decodeHtmlEntities(post.title.rendered)}</h1>
 
             <div className={styles.meta}>
               {author && (
-                <span className={styles.author}>By {author.name}</span>
+                <span className={styles.author}>By {decodeHtmlEntities(author.name)}</span>
               )}
               <span className={styles.date}>{postDate}</span>
               <span className={styles.readTime}>{readTime}</span>
@@ -138,7 +139,7 @@ export default function PostPage({ post, relatedPosts }: PostPageProps) {
             {post.excerpt?.rendered && (
               <div
                 className={styles.excerpt}
-                dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }}
+                dangerouslySetInnerHTML={{ __html: decodeHtmlContent(post.excerpt.rendered) }}
               />
             )}
           </div>
@@ -149,13 +150,13 @@ export default function PostPage({ post, relatedPosts }: PostPageProps) {
           <div className={styles.featuredImageWrapper}>
             <img
               src={featuredImage.source_url}
-              alt={featuredImage.alt_text || post.title.rendered}
+              alt={featuredImage.alt_text || decodeHtmlEntities(post.title.rendered)}
               className={styles.featuredImage}
             />
             {featuredImage.caption?.rendered && (
               <div
                 className={styles.imageCaption}
-                dangerouslySetInnerHTML={{ __html: featuredImage.caption.rendered }}
+                dangerouslySetInnerHTML={{ __html: decodeHtmlContent(featuredImage.caption.rendered) }}
               />
             )}
           </div>
@@ -165,7 +166,7 @@ export default function PostPage({ post, relatedPosts }: PostPageProps) {
         <div className={styles.content}>
           <div
             className={styles.body}
-            dangerouslySetInnerHTML={{ __html: post.content.rendered }}
+            dangerouslySetInnerHTML={{ __html: decodeHtmlContent(post.content.rendered) }}
           />
         </div>
 
@@ -181,11 +182,11 @@ export default function PostPage({ post, relatedPosts }: PostPageProps) {
                 />
               )}
               <div className={styles.authorDetails}>
-                <h3 className={styles.authorName}>{author.name}</h3>
+                <h3 className={styles.authorName}>{decodeHtmlEntities(author.name)}</h3>
                 {author.description && (
                   <div
                     className={styles.authorDescription}
-                    dangerouslySetInnerHTML={{ __html: author.description }}
+                    dangerouslySetInnerHTML={{ __html: decodeHtmlContent(author.description) }}
                   />
                 )}
                 <span className={styles.viewProfile}>View Profile →</span>
@@ -241,15 +242,15 @@ export default function PostPage({ post, relatedPosts }: PostPageProps) {
                     {relatedImage && (
                       <img
                         src={relatedImage.source_url}
-                        alt={relatedPost.title.rendered}
+                        alt={decodeHtmlEntities(relatedPost.title.rendered)}
                         className={styles.relatedImage}
                       />
                     )}
                     <div className={styles.relatedContent}>
                       {relatedCategory && (
-                        <span className={styles.relatedCategory}>{relatedCategory.name}</span>
+                        <span className={styles.relatedCategory}>{decodeHtmlEntities(relatedCategory.name)}</span>
                       )}
-                      <h3 className={styles.relatedCardTitle}>{relatedPost.title.rendered}</h3>
+                      <h3 className={styles.relatedCardTitle}>{decodeHtmlEntities(relatedPost.title.rendered)}</h3>
                     </div>
                   </a>
                 );

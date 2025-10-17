@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import AdminLayout from '../../../components/admin/AdminLayout';
 import Link from 'next/link';
 import styles from './AdminPosts.module.css';
+import { decodeHtmlEntities } from '../../../lib/htmlDecode';
 
 interface Post {
   id: string | number;
@@ -155,7 +156,7 @@ export default function AdminPosts() {
                   <tr key={post.id}>
                     <td className={styles.titleCell}>
                       <Link href={`/admin/posts/${post.id}/edit`}>
-                        {post.title.rendered}
+                        {decodeHtmlEntities(post.title.rendered)}
                       </Link>
                     </td>
                     <td>{post._embedded?.author?.[0]?.name || post._embedded?.['wp:author']?.[0]?.name || 'Unknown'}</td>

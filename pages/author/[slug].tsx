@@ -3,6 +3,7 @@ import Layout from '../../components/Layout';
 import PostCard from '../../components/PostCard';
 import styles from './Author.module.css';
 import { fetchWordPressData } from '../../lib/wordpress';
+import { decodeHtmlEntities, decodeHtmlContent } from '../../lib/htmlDecode';
 
 type AuthorPageProps = {
   author: any;
@@ -40,11 +41,11 @@ export default function AuthorPage({ author, posts }: AuthorPageProps) {
               className={styles.avatar}
             />
           )}
-          <h1 className={styles.authorName}>{author.name}</h1>
+          <h1 className={styles.authorName}>{decodeHtmlEntities(author.name)}</h1>
           {author.description && (
             <div
               className={styles.authorBio}
-              dangerouslySetInnerHTML={{ __html: author.description }}
+              dangerouslySetInnerHTML={{ __html: decodeHtmlContent(author.description) }}
             />
           )}
           <div className={styles.stats}>

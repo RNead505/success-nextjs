@@ -5,10 +5,10 @@
 .homeLayout {
   display: grid;
   grid-template-columns: 1.5fr 1fr;
-  gap: 3rem;
-  max-width: 1200px;
+  gap: 2.5rem;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 4rem 1rem;
+  padding: 3rem 2rem;
 }
 
 .featuredSection {
@@ -19,7 +19,7 @@
   grid-column: 2;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+  gap: 1.5rem;
   align-content: start;
 }
 
@@ -35,21 +35,24 @@
 }
 
 .sectionContainer {
-  max-width: 1200px;
+  max-width: 1280px;
   margin: 0 auto;
+  padding: 0 2rem;
 }
 
 .sectionTitle {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin: 0 0 3rem 0;
+  font-size: 2.25rem;
+  font-weight: 800;
+  margin: 0 0 2.5rem 0;
   text-align: center;
+  letter-spacing: -0.03em;
+  color: #000;
 }
 
 .postsGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 3rem;
+  gap: 2.5rem;
 }
 
 .viewMoreWrapper {
@@ -77,36 +80,41 @@
 
 /* Category Sections */
 .categorySection {
-  padding: 6rem 1rem;
+  padding: 5rem 0;
 }
 
 .categorySectionGray {
-  padding: 6rem 1rem;
-  background-color: #f9f9f9;
+  padding: 5rem 0;
+  background-color: #fafafa;
 }
 
 .sectionHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 3rem;
+  margin-bottom: 2.5rem;
 }
 
 .sectionHeader .sectionTitle {
   margin: 0;
   text-align: left;
+  font-size: 2rem;
 }
 
 .viewAllLink {
-  font-size: 1.125rem;
-  font-weight: 600;
+  font-size: 0.9375rem;
+  font-weight: 700;
   color: #000;
   text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   transition: opacity 0.2s;
+  border-bottom: 2px solid #000;
+  padding-bottom: 2px;
 }
 
 .viewAllLink:hover {
-  opacity: 0.7;
+  opacity: 0.6;
 }
 
 /* Newsletter CTA */

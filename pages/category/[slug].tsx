@@ -3,6 +3,7 @@ import Layout from '../../components/Layout';
 import PostCard from '../../components/PostCard';
 import styles from './Category.module.css';
 import { fetchWordPressData } from '../../lib/wordpress';
+import { decodeHtmlEntities } from '../../lib/htmlDecode';
 
 type CategoryPageProps = {
   category: any;
@@ -24,9 +25,9 @@ export default function CategoryPage({ category, posts, totalPages, currentPage 
         {/* Category Header */}
         <div className={styles.header}>
           <div className={styles.headerContent}>
-            <h1 className={styles.title}>{category.name}</h1>
+            <h1 className={styles.title}>{decodeHtmlEntities(category.name)}</h1>
             {category.description && (
-              <p className={styles.description}>{category.description}</p>
+              <p className={styles.description}>{decodeHtmlEntities(category.description)}</p>
             )}
             <div className={styles.postCount}>
               {category.count} {category.count === 1 ? 'Article' : 'Articles'}

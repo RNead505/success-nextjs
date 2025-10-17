@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import Layout from '../../components/Layout';
 import styles from './Podcast.module.css';
 import { fetchWordPressData } from '../../lib/wordpress';
+import { decodeHtmlEntities, decodeHtmlContent } from '../../lib/htmlDecode';
 
 type PodcastPageProps = {
   podcast: any;
@@ -33,7 +34,7 @@ export default function PodcastPage({ podcast, relatedPodcasts }: PodcastPagePro
     <Layout>
       <article className={styles.podcastArticle}>
         <div className={styles.podcastHeader}>
-          <h1 className={styles.title}>{podcast.title?.rendered || 'Podcast'}</h1>
+          <h1 className={styles.title}>{decodeHtmlEntities(podcast.title?.rendered || 'Podcast')}</h1>
           <div className={styles.meta}>
             <time className={styles.date}>
               {new Date(podcast.date).toLocaleDateString('en-US', {
@@ -47,7 +48,7 @@ export default function PodcastPage({ podcast, relatedPodcasts }: PodcastPagePro
 
         {featuredImageUrl && (
           <div className={styles.featuredImage}>
-            <img src={featuredImageUrl} alt={podcast.title?.rendered || 'Podcast'} />
+            <img src={featuredImageUrl} alt={decodeHtmlEntities(podcast.title?.rendered || 'Podcast')} />
           </div>
         )}
 
@@ -55,7 +56,7 @@ export default function PodcastPage({ podcast, relatedPodcasts }: PodcastPagePro
           {podcast.content?.rendered && (
             <div
               className={styles.content}
-              dangerouslySetInnerHTML={{ __html: podcast.content.rendered }}
+              dangerouslySetInnerHTML={{ __html: decodeHtmlContent(podcast.content.rendered) }}
             />
           )}
         </div>
@@ -73,12 +74,12 @@ export default function PodcastPage({ podcast, relatedPodcasts }: PodcastPagePro
                   {relatedPodcast._embedded?.['wp:featuredmedia']?.[0]?.source_url && (
                     <img
                       src={relatedPodcast._embedded['wp:featuredmedia'][0].source_url}
-                      alt={relatedPodcast.title?.rendered || 'Podcast'}
+                      alt={decodeHtmlEntities(relatedPodcast.title?.rendered || 'Podcast')}
                       className={styles.relatedImage}
                     />
                   )}
                   <h3 className={styles.relatedCardTitle}>
-                    {relatedPodcast.title?.rendered || 'Podcast'}
+                    {decodeHtmlEntities(relatedPodcast.title?.rendered || 'Podcast')}
                   </h3>
                 </a>
               ))}

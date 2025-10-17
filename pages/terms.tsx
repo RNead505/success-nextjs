@@ -1,6 +1,7 @@
 import Layout from '../components/Layout';
 import styles from './Legal.module.css';
 import { fetchWordPressData } from '../lib/wordpress';
+import { decodeHtmlEntities, decodeHtmlContent } from '../lib/htmlDecode';
 
 type TermsPageProps = {
   page: any;
@@ -11,13 +12,13 @@ export default function TermsPage({ page }: TermsPageProps) {
     <Layout>
       <div className={styles.legal}>
         <header className={styles.hero}>
-          <h1 className={styles.title}>{page.title.rendered}</h1>
+          <h1 className={styles.title}>{decodeHtmlEntities(page.title.rendered)}</h1>
         </header>
 
         <section className={styles.content}>
           <div
             className={styles.body}
-            dangerouslySetInnerHTML={{ __html: page.content.rendered }}
+            dangerouslySetInnerHTML={{ __html: decodeHtmlContent(page.content.rendered) }}
           />
         </section>
       </div>

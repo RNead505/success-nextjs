@@ -1,4 +1,5 @@
 import styles from './MagazineHero.module.css';
+import { decodeHtmlEntities } from '../lib/htmlDecode';
 
 export default function MagazineHero({ magazine }) {
   if (!magazine) {
@@ -42,15 +43,15 @@ export default function MagazineHero({ magazine }) {
         <div className={styles.contentGrid}>
           <div className={styles.mainFeature}>
             <p className={styles.subheading}>{magazine.slug?.replace(/-/g, ' ').toUpperCase() || 'The Legacy Issue'}</p>
-            <p className={styles.date}>{date}</p>
-            <h1 className={styles.title}>{title}</h1>
-            <p className={styles.description} dangerouslySetInnerHTML={{ __html: description }} />
+            <p className={styles.date}>{decodeHtmlEntities(date)}</p>
+            <h1 className={styles.title}>{decodeHtmlEntities(title)}</h1>
+            <p className={styles.description}>{decodeHtmlEntities(description)}</p>
           </div>
           <div className={styles.sideFeatures}>
             {sideFeatures.map((feature, index) => (
               <div key={index} className={styles.featureItem}>
-                <h3 dangerouslySetInnerHTML={{ __html: feature.title }} />
-                <p>{feature.description}</p>
+                <h3>{decodeHtmlEntities(feature.title)}</h3>
+                <p>{decodeHtmlEntities(feature.description)}</p>
               </div>
             ))}
             <p className={styles.subscribeText}>

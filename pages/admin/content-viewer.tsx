@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import AdminLayout from '../../components/admin/AdminLayout';
 import styles from './ContentViewer.module.css';
+import { decodeHtmlEntities } from '../../lib/htmlDecode';
 
 interface ContentItem {
   id: number;
@@ -115,10 +116,9 @@ export default function ContentViewer() {
                     <span className={`${styles.badge} ${styles[`badge-${item.type}`]}`}>
                       {item.type}
                     </span>
-                    <h3
-                      className={styles.cardTitle}
-                      dangerouslySetInnerHTML={{ __html: item.title.rendered }}
-                    />
+                    <h3 className={styles.cardTitle}>
+                      {decodeHtmlEntities(item.title.rendered)}
+                    </h3>
                     <p className={styles.cardDate}>
                       {new Date(item.date).toLocaleDateString('en-US', {
                         year: 'numeric',

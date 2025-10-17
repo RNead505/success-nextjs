@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import AdminLayout from '../../../components/admin/AdminLayout';
 import Link from 'next/link';
 import styles from './AdminPages.module.css';
+import { decodeHtmlEntities } from '../../../lib/htmlDecode';
 
 interface Page {
   id: string | number;
@@ -202,7 +203,7 @@ export default function AdminPages() {
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          <span dangerouslySetInnerHTML={{ __html: page.title.rendered }} />
+                          <span>{decodeHtmlEntities(page.title.rendered)}</span>
                         </a>
                         <span className={styles.slug}>/{page.slug}</span>
                       </div>
