@@ -238,3 +238,20 @@ enum SubscriptionStatus {
   CANCELED
   TRIALING
 }
+
+// Magazine model for storing uploaded PDFs
+model Magazine {
+  id             String   @id @default(cuid())
+  title          String
+  slug           String   @unique
+  publishedText  String   // e.g., "JANUARY 2025"
+  description    String?  @db.Text
+  pdfUrl         String   // URL to the PDF file
+  coverImageUrl  String?  // URL to cover image
+  fileSize       Int      // PDF file size in bytes
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("magazines")
+  @@index([slug])
+}

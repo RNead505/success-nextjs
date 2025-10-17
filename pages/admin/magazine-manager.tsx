@@ -21,8 +21,16 @@ export default function MagazineManager() {
   const [magazines, setMagazines] = useState<Magazine[]>([]);
   const [selectedMagazine, setSelectedMagazine] = useState<Magazine | null>(null);
   const [loading, setLoading] = useState(true);
-  const [view, setView] = useState<'grid' | 'preview' | 'edit'>('grid');
+  const [view, setView] = useState<'grid' | 'preview' | 'edit' | 'add'>('grid');
   const [editData, setEditData] = useState<any>(null);
+  const [uploadingPDF, setUploadingPDF] = useState(false);
+  const [pdfFile, setPdfFile] = useState<File | null>(null);
+  const [newIssueData, setNewIssueData] = useState({
+    title: '',
+    publishedText: '',
+    description: '',
+    coverImage: null as File | null
+  });
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -157,6 +165,55 @@ export default function MagazineManager() {
     return 'Past Issue';
   };
 
+  const handleAddIssue = async () => {
+    if (!newIssueData.title || !newIssueData.publishedText || !pdfFile) {
+      alert('Please fill in all required fields and upload a PDF');
+      return;
+    }
+
+    setUploadingPDF(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('pdf', pdfFile);
+      formData.append('title', newIssueData.title);
+      formData.append('publishedText', newIssueData.publishedText);
+      formData.append('description', newIssueData.description);
+
+      if (newIssueData.coverImage) {
+        formData.append('coverImage', newIssueData.coverImage);
+      }
+
+      const response = await fetch('/api/magazines/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Upload failed');
+      }
+
+      const result = await response.json();
+      alert('Magazine issue uploaded successfully!');
+
+      // Reset form
+      setNewIssueData({
+        title: '',
+        publishedText: '',
+        description: '',
+        coverImage: null
+      });
+      setPdfFile(null);
+      setView('grid');
+      fetchMagazines();
+    } catch (error) {
+      console.error('Error uploading magazine:', error);
+      alert('Failed to upload magazine issue');
+    } finally {
+      setUploadingPDF(false);
+    }
+  };
+
   if (loading) {
     return (
       <AdminLayout>
@@ -200,6 +257,12 @@ export default function MagazineManager() {
               disabled={!selectedMagazine}
             >
               ✏️ Edit Current
+            </button>
+            <button
+              onClick={() => setView('add')}
+              className={view === 'add' ? styles.viewButtonActive : styles.viewButton}
+            >
+              ➕ Add Issue
             </button>
           </div>
         </div>
@@ -477,6 +540,145 @@ export default function MagazineManager() {
 
               <div className={styles.notice}>
                 <strong>ℹ️ Note:</strong> This editor allows you to preview changes. To publish updates, please edit the magazine in <a href="https://www.success.com/wp-admin/" target="_blank" rel="noopener noreferrer">WordPress Admin</a>.
+              </div>
+            </div>
+          </div>
+        ) : view === 'add' ? (
+          <div className={styles.editContainer}>
+            <div className={styles.editHeader}>
+              <button onClick={() => setView('grid')} className={styles.backButton}>
+                ← Back to All Issues
+              </button>
+              <h2>Add New Magazine Issue</h2>
+            </div>
+
+            <div className={styles.editForm}>
+              <div className={styles.editSection}>
+                <h3>📖 Basic Information</h3>
+
+                <div className={styles.formGroup}>
+                  <label htmlFor="newTitle">Title *</label>
+                  <input
+                    id="newTitle"
+                    type="text"
+                    value={newIssueData.title}
+                    onChange={(e) => setNewIssueData({...newIssueData, title: e.target.value})}
+                    className={styles.input}
+                    placeholder="SUCCESS Magazine - January 2025"
+                    required
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label htmlFor="newPublishedText">Published Text * (e.g., "JANUARY 2025")</label>
+                  <input
+                    id="newPublishedText"
+                    type="text"
+                    value={newIssueData.publishedText}
+                    onChange={(e) => setNewIssueData({...newIssueData, publishedText: e.target.value})}
+                    className={styles.input}
+                    placeholder="JANUARY 2025"
+                    required
+                  />
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label htmlFor="newDescription">Description</label>
+                  <textarea
+                    id="newDescription"
+                    value={newIssueData.description}
+                    onChange={(e) => setNewIssueData({...newIssueData, description: e.target.value})}
+                    className={styles.textarea}
+                    rows={4}
+                    placeholder="Brief description of this magazine issue..."
+                  />
+                </div>
+              </div>
+
+              <div className={styles.editSection}>
+                <h3>📄 PDF Upload *</h3>
+                <div className={styles.formGroup}>
+                  <label htmlFor="pdfUpload">Magazine PDF</label>
+                  <input
+                    id="pdfUpload"
+                    type="file"
+                    accept=".pdf"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        if (file.type !== 'application/pdf') {
+                          alert('Please upload a PDF file');
+                          e.target.value = '';
+                          return;
+                        }
+                        if (file.size > 50 * 1024 * 1024) {
+                          alert('PDF file size must be less than 50MB');
+                          e.target.value = '';
+                          return;
+                        }
+                        setPdfFile(file);
+                      }
+                    }}
+                    className={styles.fileInput}
+                    required
+                  />
+                  {pdfFile && (
+                    <div className={styles.fileInfo}>
+                      ✓ Selected: {pdfFile.name} ({(pdfFile.size / 1024 / 1024).toFixed(2)} MB)
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className={styles.editSection}>
+                <h3>🖼️ Cover Image (Optional)</h3>
+                <div className={styles.formGroup}>
+                  <label htmlFor="coverUpload">Cover Image (JPG, PNG)</label>
+                  <input
+                    id="coverUpload"
+                    type="file"
+                    accept="image/jpeg,image/png,image/jpg"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        if (!file.type.startsWith('image/')) {
+                          alert('Please upload an image file');
+                          e.target.value = '';
+                          return;
+                        }
+                        if (file.size > 10 * 1024 * 1024) {
+                          alert('Image file size must be less than 10MB');
+                          e.target.value = '';
+                          return;
+                        }
+                        setNewIssueData({...newIssueData, coverImage: file});
+                      }
+                    }}
+                    className={styles.fileInput}
+                  />
+                  {newIssueData.coverImage && (
+                    <div className={styles.fileInfo}>
+                      ✓ Selected: {newIssueData.coverImage.name}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className={styles.editActions}>
+                <button
+                  onClick={handleAddIssue}
+                  className={styles.saveButton}
+                  disabled={uploadingPDF || !newIssueData.title || !newIssueData.publishedText || !pdfFile}
+                >
+                  {uploadingPDF ? 'Uploading...' : '📤 Upload Magazine Issue'}
+                </button>
+                <button
+                  onClick={() => setView('grid')}
+                  className={styles.cancelButton}
+                  disabled={uploadingPDF}
+                >
+                  Cancel
+                </button>
               </div>
             </div>
           </div>

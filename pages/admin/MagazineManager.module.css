@@ -546,3 +546,37 @@
   font-weight: 700;
   text-decoration: underline;
 }
+
+/* File Upload Styles */
+.fileInput {
+  width: 100%;
+  padding: 0.875rem;
+  border: 2px dashed #e0e0e0;
+  border-radius: 8px;
+  background: #f9f9f9;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+
+.fileInput:hover {
+  border-color: #000;
+  background: #f0f0f0;
+}
+
+.fileInfo {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: #e8f5e9;
+  border-left: 4px solid #4caf50;
+  border-radius: 6px;
+  color: #2e7d32;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.saveButton:disabled,
+.cancelButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
