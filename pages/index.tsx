@@ -27,6 +27,10 @@ function HomePage({ posts, trendingPosts, latestMagazine, bestsellers }: HomePag
         url="https://www.success.com"
         type="website"
       />
+
+      {/* Magazine Hero Section */}
+      {latestMagazine && <MagazineHero magazine={latestMagazine} />}
+
       <div className={styles.container}>
         <div className={styles.mainGrid}>
           {/* Posts Feed */}
