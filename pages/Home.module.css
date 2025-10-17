@@ -1,157 +1,81 @@
-/* Hero Container */
-.heroContainer {
-  width: 100%;
-  max-width: 100%;
-  background: #fff;
-  border-bottom: 1px solid #e0e0e0;
-  padding: 2rem 0;
-  overflow-x: hidden;
-}
-
-.heroContent {
-  max-width: 1200px;
+.container {
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0 1rem;
-}
-
-/* Main Container - Feed + Sidebar Layout */
-.mainContainer {
-  width: 100%;
-  max-width: 1200px;
-  margin: 2rem auto;
-  padding: 0 1rem;
-  display: grid;
-  grid-template-columns: 1fr 320px;
-  gap: 2.5rem;
   overflow-x: hidden;
 }
 
-.feedSection {
-  min-width: 0; /* Prevents grid blowout */
-  overflow-x: hidden;
-}
-
-.feedGrid {
+.homeLayout {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: 1fr 350px;
   gap: 2rem;
+  margin-bottom: 3rem;
+  padding: 2rem 0;
 }
 
-/* Sidebar */
-.sidebar {
-  min-width: 0; /* Prevents grid blowout */
-  overflow-x: hidden;
+.featuredSection {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
 }
 
-.sidebarNewsletter,
-.sidebarMagazine {
-  background: #f8f9fa;
-  padding: 1.5rem;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
+.secondarySection {
+  grid-column: 1;
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  min-width: 0;
 }
 
-.sidebarTitle {
-  font-size: 1.125rem;
-  font-weight: 700;
-  margin: 0 0 0.75rem 0;
-  color: #1a1a1a;
-}
-
-.sidebarText {
-  font-size: 0.9rem;
-  color: #666;
-  margin: 0 0 1rem 0;
-  line-height: 1.5;
-}
-
-.sidebarButton {
-  display: block;
-  background: #000;
-  color: white;
-  text-align: center;
-  padding: 0.75rem 1.5rem;
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: background 0.2s;
-}
-
-.sidebarButton:hover {
-  background: #333;
-}
-
-.magazineLink {
-  display: block;
-  text-decoration: none;
-}
-
-.magazineCover {
-  width: 100%;
-  height: auto;
-  border-radius: 6px;
-  margin-bottom: 0.75rem;
-}
-
-.magazineTitle {
-  display: block;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #1a1a1a;
+.trendingSection {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  min-width: 0;
 }
 
 /* Responsive Styles */
-@media (max-width: 968px) {
-  .mainContainer {
+@media (max-width: 992px) {
+  .homeLayout {
     grid-template-columns: 1fr;
     gap: 2rem;
   }
 
-  .feedGrid {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  .featuredSection {
+    grid-column: 1;
   }
 
-  .sidebar {
-    max-width: 500px;
-    margin: 0 auto;
+  .secondarySection {
+    grid-column: 1;
+  }
+
+  .trendingSection {
+    grid-column: 1;
+    grid-row: 3;
   }
 }
 
 @media (max-width: 768px) {
-  .heroContainer {
-    padding: 1.5rem 0;
-  }
-
-  .mainContainer {
-    margin: 1.5rem auto;
+  .container {
     padding: 0 0.75rem;
   }
 
-  .feedGrid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+  .homeLayout {
+    padding: 1.5rem 0;
   }
 
-  .sidebar {
-    max-width: 100%;
+  .secondarySection {
+    grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 480px) {
-  .heroContainer {
-    padding: 1rem 0;
-  }
-
-  .heroContent {
-    padding: 0 0.75rem;
-  }
-
-  .mainContainer {
+  .container {
     padding: 0 0.5rem;
   }
 
-  .sidebarNewsletter,
-  .sidebarMagazine {
-    padding: 1.25rem;
+  .homeLayout {
+    padding: 1rem 0;
+    gap: 1.5rem;
   }
 }

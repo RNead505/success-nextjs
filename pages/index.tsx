@@ -9,13 +9,13 @@ import { fetchWordPressData } from '../lib/wordpress';
 
 type HomePageProps = {
   featuredPost: any;
-  allPosts: any[];
+  secondaryPosts: any[];
   trendingPosts: any[];
   latestMagazine: any;
   bestsellers: any[];
 };
 
-function HomePage({ featuredPost, allPosts, trendingPosts, latestMagazine, bestsellers }: HomePageProps) {
+function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestMagazine, bestsellers }: HomePageProps) {
   if (!featuredPost) {
     return <Layout><p>Loading...</p></Layout>;
   }
@@ -28,62 +28,32 @@ function HomePage({ featuredPost, allPosts, trendingPosts, latestMagazine, bests
         url="https://www.success.com"
         type="website"
       />
-
-      {/* Hero Section with Featured Post */}
-      <div className={styles.heroContainer}>
-        <div className={styles.heroContent}>
-          <PostCard post={featuredPost} isFeatured={true} />
-        </div>
-      </div>
-
-      {/* Main Feed Container */}
-      <div className={styles.mainContainer}>
-        {/* Feed Section */}
-        <div className={styles.feedSection}>
-          <div className={styles.feedGrid}>
-            {allPosts.map((post: any) => (
+      <div className={styles.container}>
+        {/* Main content grid */}
+        <div className={styles.homeLayout}>
+          <div className={styles.featuredSection}>
+            <PostCard post={featuredPost} isFeatured={true} />
+          </div>
+          <div className={styles.secondarySection}>
+            {secondaryPosts.map((post: any) => (
               <PostCard key={post.id} post={post} />
             ))}
           </div>
-        </div>
-
-        {/* Sidebar */}
-        <aside className={styles.sidebar}>
-          <Trending posts={trendingPosts} />
-
-          {/* Newsletter Signup */}
-          <div className={styles.sidebarNewsletter}>
-            <h3 className={styles.sidebarTitle}>Stay Inspired</h3>
-            <p className={styles.sidebarText}>Get SUCCESS stories in your inbox</p>
-            <a href="/newsletter" className={styles.sidebarButton}>Subscribe</a>
+          <div className={styles.trendingSection}>
+            <Trending posts={trendingPosts} />
           </div>
-
-          {/* Magazine CTA */}
-          {latestMagazine && (
-            <div className={styles.sidebarMagazine}>
-              <h3 className={styles.sidebarTitle}>Latest Magazine</h3>
-              <a href="/magazine" className={styles.magazineLink}>
-                <img
-                  src={latestMagazine._embedded?.['wp:featuredmedia']?.[0]?.source_url || '/placeholder.jpg'}
-                  alt={latestMagazine.title?.rendered || 'Magazine Cover'}
-                  className={styles.magazineCover}
-                />
-                <span className={styles.magazineTitle}>{latestMagazine.title?.rendered}</span>
-              </a>
-            </div>
-          )}
-        </aside>
+        </div>
       </div>
     </Layout>
   );
 }
 
 export async function getStaticProps() {
-  const posts = await fetchWordPressData('posts?_embed&per_page=50');
+  const posts = await fetchWordPressData('posts?_embed&per_page=30');
 
   const featuredPost = posts[0];
-  const allPosts = posts.slice(1, 25); // Next 24 posts for the feed
-  const trendingPosts = posts.slice(1, 6); // 5 trending posts
+  const secondaryPosts = posts.slice(1, 5); // 4 posts for 2x2 grid
+  const trendingPosts = posts.slice(5, 10); // 5 trending posts
 
   // Fetch latest magazine issue
   const magazines = await fetchWordPressData('magazines?per_page=1&_embed');
@@ -95,7 +65,7 @@ export async function getStaticProps() {
   return {
     props: {
       featuredPost,
-      allPosts,
+      secondaryPosts,
       trendingPosts,
       latestMagazine,
       bestsellers: bestsellers || [],
