@@ -88,11 +88,11 @@
 
 /* Category Sections */
 .categorySection {
-  padding: 5rem 0;
+  padding: 3rem 0;
 }
 
 .categorySectionGray {
-  padding: 5rem 0;
+  padding: 3rem 0;
   background-color: #fafafa;
 }
 
@@ -100,13 +100,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .sectionHeader .sectionTitle {
   margin: 0;
   text-align: left;
-  font-size: 2rem;
+  font-size: 1.75rem;
 }
 
 .viewAllLink {
