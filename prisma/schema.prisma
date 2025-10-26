@@ -27,6 +27,9 @@ model User {
   updatedAt        DateTime      @updatedAt
   posts            Post[]
   subscription     Subscription?
+  bookmarks        Bookmark[]
+  readingProgress  ReadingProgress[]
+  activities       UserActivity[]
 
   @@map("users")
 }
@@ -379,4 +382,66 @@ model EmailLog {
   @@map("email_logs")
   @@index([contactId])
   @@index([status])
+}
+
+// Bookmarks - Users can save articles for later
+model Bookmark {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  articleId   String   // WordPress post ID or slug
+  articleTitle String
+  articleUrl  String
+  articleImage String?
+  createdAt   DateTime @default(now())
+
+  @@unique([userId, articleId])
+  @@map("bookmarks")
+  @@index([userId])
+}
+
+// Reading Progress - Track how much of an article a user has read
+model ReadingProgress {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  articleId   String   // WordPress post ID or slug
+  articleTitle String
+  articleUrl  String
+  progress    Int      // Percentage (0-100)
+  completed   Boolean  @default(false)
+  lastReadAt  DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([userId, articleId])
+  @@map("reading_progress")
+  @@index([userId])
+  @@index([completed])
+}
+
+// User Activity - Track user actions for activity feed
+model UserActivity {
+  id          String       @id @default(cuid())
+  userId      String
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activityType ActivityType
+  title       String       // E.g., "Read 'How to Be Successful'"
+  description String?
+  metadata    String?      @db.Text // JSON data
+  createdAt   DateTime     @default(now())
+
+  @@map("user_activities")
+  @@index([userId])
+  @@index([activityType])
+  @@index([createdAt])
+}
+
+enum ActivityType {
+  ARTICLE_READ
+  ARTICLE_BOOKMARKED
+  VIDEO_WATCHED
+  PODCAST_LISTENED
+  ACHIEVEMENT_UNLOCKED
+  SUBSCRIPTION_STARTED
 }
