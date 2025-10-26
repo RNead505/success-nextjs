@@ -60,7 +60,7 @@
 .postsGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2.5rem;
+  gap: 1.5rem;
 }
 
 .viewMoreWrapper {
@@ -88,11 +88,11 @@
 
 /* Category Sections */
 .categorySection {
-  padding: 3rem 0;
+  padding: 2rem 0;
 }
 
 .categorySectionGray {
-  padding: 3rem 0;
+  padding: 2rem 0;
   background-color: #fafafa;
 }
 
@@ -100,13 +100,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .sectionHeader .sectionTitle {
   margin: 0;
   text-align: left;
-  font-size: 1.75rem;
+  font-size: 1.5rem;
 }
 
 .viewAllLink {
