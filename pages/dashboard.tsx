@@ -12,17 +12,116 @@ type AnalyticsData = {
   popularCategories: { name: string; count: number }[];
 };
 
+type Bookmark = {
+  id: string;
+  articleId: string;
+  articleTitle: string;
+  articleUrl: string;
+  articleImage: string | null;
+  createdAt: string;
+};
+
+type ReadingProgress = {
+  id: string;
+  articleId: string;
+  articleTitle: string;
+  articleUrl: string;
+  progress: number;
+  completed: boolean;
+  lastReadAt: string;
+};
+
+type Activity = {
+  id: string;
+  activityType: string;
+  title: string;
+  description: string | null;
+  createdAt: string;
+};
+
 export default function MemberDashboard() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
   const [loadingAnalytics, setLoadingAnalytics] = useState(true);
+  const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
+  const [loadingBookmarks, setLoadingBookmarks] = useState(true);
+  const [readingProgress, setReadingProgress] = useState<ReadingProgress[]>([]);
+  const [loadingProgress, setLoadingProgress] = useState(true);
+  const [activities, setActivities] = useState<Activity[]>([]);
+  const [loadingActivities, setLoadingActivities] = useState(true);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.push('/login');
     }
   }, [status, router]);
+
+  // Fetch user's bookmarks
+  useEffect(() => {
+    const fetchBookmarks = async () => {
+      try {
+        setLoadingBookmarks(true);
+        const res = await fetch('/api/bookmarks');
+        if (res.ok) {
+          const data = await res.json();
+          setBookmarks(data);
+        }
+      } catch (error) {
+        console.error('Error fetching bookmarks:', error);
+      } finally {
+        setLoadingBookmarks(false);
+      }
+    };
+
+    if (session) {
+      fetchBookmarks();
+    }
+  }, [session]);
+
+  // Fetch user's reading progress
+  useEffect(() => {
+    const fetchProgress = async () => {
+      try {
+        setLoadingProgress(true);
+        const res = await fetch('/api/reading-progress?completed=false');
+        if (res.ok) {
+          const data = await res.json();
+          setReadingProgress(data);
+        }
+      } catch (error) {
+        console.error('Error fetching reading progress:', error);
+      } finally {
+        setLoadingProgress(false);
+      }
+    };
+
+    if (session) {
+      fetchProgress();
+    }
+  }, [session]);
+
+  // Fetch user's activity feed
+  useEffect(() => {
+    const fetchActivities = async () => {
+      try {
+        setLoadingActivities(true);
+        const res = await fetch('/api/activity?limit=10');
+        if (res.ok) {
+          const data = await res.json();
+          setActivities(data);
+        }
+      } catch (error) {
+        console.error('Error fetching activities:', error);
+      } finally {
+        setLoadingActivities(false);
+      }
+    };
+
+    if (session) {
+      fetchActivities();
+    }
+  }, [session]);
 
   useEffect(() => {
     const fetchAnalytics = async () => {
@@ -86,6 +185,34 @@ export default function MemberDashboard() {
 
   // Check if user has active subscription
   const hasActiveSubscription = session.user.subscription?.status === 'ACTIVE';
+
+  // Remove bookmark handler
+  const handleRemoveBookmark = async (bookmarkId: string) => {
+    try {
+      const res = await fetch(`/api/bookmarks/${bookmarkId}`, {
+        method: 'DELETE',
+      });
+      if (res.ok) {
+        setBookmarks(bookmarks.filter(b => b.id !== bookmarkId));
+      }
+    } catch (error) {
+      console.error('Error removing bookmark:', error);
+    }
+  };
+
+  // Format date helper
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  };
+
+  // Format activity type
+  const formatActivityType = (type: string) => {
+    return type.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+  };
 
   return (
     <Layout>
@@ -304,6 +431,114 @@ export default function MemberDashboard() {
                 <span>Videos</span>
               </a>
             </div>
+          </div>
+
+          {/* Saved Articles / Bookmarks */}
+          <div className={styles.savedArticles}>
+            <h2>Saved Articles</h2>
+            {loadingBookmarks ? (
+              <div className={styles.loadingSection}>Loading bookmarks...</div>
+            ) : bookmarks.length > 0 ? (
+              <div className={styles.bookmarksGrid}>
+                {bookmarks.slice(0, 6).map((bookmark) => (
+                  <div key={bookmark.id} className={styles.bookmarkCard}>
+                    {bookmark.articleImage && (
+                      <div className={styles.bookmarkImage}>
+                        <img src={bookmark.articleImage} alt={bookmark.articleTitle} />
+                      </div>
+                    )}
+                    <div className={styles.bookmarkContent}>
+                      <a href={bookmark.articleUrl} className={styles.bookmarkTitle}>
+                        {bookmark.articleTitle}
+                      </a>
+                      <div className={styles.bookmarkMeta}>
+                        <span className={styles.bookmarkDate}>Saved {formatDate(bookmark.createdAt)}</span>
+                        <button
+                          onClick={() => handleRemoveBookmark(bookmark.id)}
+                          className={styles.removeBookmark}
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className={styles.emptyState}>
+                <p>You haven't saved any articles yet.</p>
+                <a href="/" className={styles.browseButton}>Browse Articles</a>
+              </div>
+            )}
+          </div>
+
+          {/* Reading Progress */}
+          <div className={styles.readingProgress}>
+            <h2>Continue Reading</h2>
+            {loadingProgress ? (
+              <div className={styles.loadingSection}>Loading reading progress...</div>
+            ) : readingProgress.length > 0 ? (
+              <div className={styles.progressList}>
+                {readingProgress.slice(0, 5).map((item) => (
+                  <div key={item.id} className={styles.progressItem}>
+                    <div className={styles.progressInfo}>
+                      <a href={item.articleUrl} className={styles.progressTitle}>
+                        {item.articleTitle}
+                      </a>
+                      <span className={styles.progressDate}>Last read {formatDate(item.lastReadAt)}</span>
+                    </div>
+                    <div className={styles.progressBar}>
+                      <div
+                        className={styles.progressFill}
+                        style={{ width: `${item.progress}%` }}
+                      />
+                      <span className={styles.progressPercent}>{item.progress}%</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className={styles.emptyState}>
+                <p>Start reading to track your progress.</p>
+              </div>
+            )}
+          </div>
+
+          {/* Activity Feed */}
+          <div className={styles.activityFeed}>
+            <h2>Recent Activity</h2>
+            {loadingActivities ? (
+              <div className={styles.loadingSection}>Loading activities...</div>
+            ) : activities.length > 0 ? (
+              <div className={styles.activitiesList}>
+                {activities.map((activity) => (
+                  <div key={activity.id} className={styles.activityItem}>
+                    <div className={styles.activityIcon}>
+                      {activity.activityType === 'ARTICLE_READ' && '📖'}
+                      {activity.activityType === 'ARTICLE_BOOKMARKED' && '🔖'}
+                      {activity.activityType === 'VIDEO_WATCHED' && '🎥'}
+                      {activity.activityType === 'PODCAST_LISTENED' && '🎧'}
+                      {activity.activityType === 'ACHIEVEMENT_UNLOCKED' && '🏆'}
+                      {activity.activityType === 'SUBSCRIPTION_STARTED' && '⭐'}
+                    </div>
+                    <div className={styles.activityContent}>
+                      <div className={styles.activityTitle}>{activity.title}</div>
+                      {activity.description && (
+                        <div className={styles.activityDescription}>{activity.description}</div>
+                      )}
+                      <div className={styles.activityMeta}>
+                        <span className={styles.activityType}>{formatActivityType(activity.activityType)}</span>
+                        <span className={styles.activityDate}>{formatDate(activity.createdAt)}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className={styles.emptyState}>
+                <p>Your activity will appear here as you use the site.</p>
+              </div>
+            )}
           </div>
 
           {/* Sign Out */}

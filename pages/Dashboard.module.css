@@ -503,3 +503,284 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Saved Articles / Bookmarks */
+.savedArticles {
+  margin-top: 3rem;
+}
+
+.savedArticles h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #000;
+}
+
+.bookmarksGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.bookmarkCard {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.2s;
+}
+
+.bookmarkCard:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.bookmarkImage {
+  width: 100%;
+  height: 150px;
+  overflow: hidden;
+}
+
+.bookmarkImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bookmarkContent {
+  padding: 1rem;
+}
+
+.bookmarkTitle {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #000;
+  text-decoration: none;
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+}
+
+.bookmarkTitle:hover {
+  color: #c41e3a;
+}
+
+.bookmarkMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+}
+
+.bookmarkDate {
+  color: #666;
+}
+
+.removeBookmark {
+  background: none;
+  border: none;
+  color: #c41e3a;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+
+.removeBookmark:hover {
+  text-decoration: underline;
+}
+
+/* Reading Progress */
+.readingProgress {
+  margin-top: 3rem;
+}
+
+.readingProgress h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #000;
+}
+
+.progressList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.progressItem {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 1.25rem;
+}
+
+.progressInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.progressTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #000;
+  text-decoration: none;
+  line-height: 1.4;
+}
+
+.progressTitle:hover {
+  color: #c41e3a;
+}
+
+.progressDate {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.progressBar {
+  position: relative;
+  width: 100%;
+  height: 8px;
+  background: #e5e5e5;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #c41e3a 0%, #e74c3c 100%);
+  transition: width 0.3s ease;
+}
+
+.progressPercent {
+  position: absolute;
+  right: 0;
+  top: -24px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #000;
+}
+
+/* Activity Feed */
+.activityFeed {
+  margin-top: 3rem;
+}
+
+.activityFeed h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #000;
+}
+
+.activitiesList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.activityItem {
+  display: flex;
+  gap: 1rem;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 1.25rem;
+}
+
+.activityIcon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.activityContent {
+  flex: 1;
+}
+
+.activityTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+.activityDescription {
+  font-size: 0.875rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.activityMeta {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.8125rem;
+  color: #999;
+}
+
+.activityType {
+  font-weight: 600;
+  color: #c41e3a;
+}
+
+.activityDate {
+  color: #666;
+}
+
+/* Empty State */
+.emptyState {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.emptyState p {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.browseButton {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  background: #000;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.browseButton:hover {
+  background: #333;
+  transform: translateY(-2px);
+}
+
+.loadingSection {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .bookmarksGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .bookmarksGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .savedArticles h2,
+  .readingProgress h2,
+  .activityFeed h2 {
+    font-size: 1.5rem;
+  }
+}

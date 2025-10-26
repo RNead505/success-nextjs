@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 async function resetAdminPassword() {
   try {
     const email = 'admin@success.com';
-    const newPassword = 'Admin123!'; // Change this to your desired password
+    const newPassword = 'ChangeMe123!'; // Change this to your desired password
 
     console.log('Looking for user:', email);
 
