@@ -57,6 +57,17 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, bu
       {/* "Inside the Magazine" hero */}
       <MagazineHero magazine={latestMagazine} />
 
+      {/* Join the Inner Circle CTA */}
+      <section className={styles.innerCircleCTA}>
+        <div className={styles.innerCircleContent}>
+          <h2 className={styles.innerCircleTitle}>Join the Inner Circle</h2>
+          <p className={styles.innerCircleText}>
+            Get exclusive access to SUCCESS+ content, live events, masterclasses, and a community of achievers who are building their best lives.
+          </p>
+          <a href="/subscribe" className={styles.innerCircleButton}>Learn More</a>
+        </div>
+      </section>
+
       {/* Bestsellers Section */}
       <Bestsellers books={bestsellers} />
 
