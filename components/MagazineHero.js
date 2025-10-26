@@ -43,15 +43,15 @@ export default function MagazineHero({ magazine }) {
         <div className={styles.contentGrid}>
           <div className={styles.mainFeature}>
             <p className={styles.subheading}>{magazine.slug?.replace(/-/g, ' ').toUpperCase() || 'The Legacy Issue'}</p>
-            <p className={styles.date}>{decodeHtmlEntities(date)}</p>
-            <h1 className={styles.title}>{decodeHtmlEntities(title)}</h1>
-            <p className={styles.description}>{decodeHtmlEntities(description)}</p>
+            <p className={styles.date} dangerouslySetInnerHTML={{ __html: decodeHtmlEntities(date) }} />
+            <h1 className={styles.title} dangerouslySetInnerHTML={{ __html: decodeHtmlEntities(title) }} />
+            <p className={styles.description} dangerouslySetInnerHTML={{ __html: decodeHtmlEntities(description) }} />
           </div>
           <div className={styles.sideFeatures}>
             {sideFeatures.map((feature, index) => (
               <div key={index} className={styles.featureItem}>
-                <h3>{decodeHtmlEntities(feature.title)}</h3>
-                <p>{decodeHtmlEntities(feature.description)}</p>
+                <h3 dangerouslySetInnerHTML={{ __html: decodeHtmlEntities(feature.title) }} />
+                <p dangerouslySetInnerHTML={{ __html: decodeHtmlEntities(feature.description) }} />
               </div>
             ))}
             <p className={styles.subscribeText}>
