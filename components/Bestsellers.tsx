@@ -39,11 +39,27 @@ export default function Bestsellers({ books }: BestsellersProps) {
             return (
               <div key={book.id} className={styles.bookCard}>
                 <a href={book.link} target="_blank" rel="noopener noreferrer" className={styles.bookLink}>
-                  {imageUrl && (
-                    <div className={styles.bookCover}>
+                  <div className={styles.bookCover}>
+                    {imageUrl ? (
                       <img src={imageUrl} alt={imageAlt} loading="lazy" />
-                    </div>
-                  )}
+                    ) : (
+                      <div style={{
+                        width: '100%',
+                        height: '100%',
+                        background: 'linear-gradient(135deg, #1a1a1a 0%, #333 100%)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: '1rem',
+                        textAlign: 'center',
+                        color: '#fff',
+                        fontSize: '0.875rem',
+                        fontWeight: '700'
+                      }}>
+                        {bookTitle}
+                      </div>
+                    )}
+                  </div>
                   <h3 className={styles.bookTitle}>
                     {bookTitle}
                   </h3>
