@@ -14,16 +14,17 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0.85) 100%);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 30%, rgba(0, 0, 0, 0.6) 100%);
   padding: 3rem 2rem;
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
 }
 
 .header {
   border-left: 4px solid #fff;
   padding-left: 1.5rem;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 }
 
 .headerText {
@@ -39,14 +40,13 @@
   gap: 4rem;
   width: 100%;
   max-width: 1200px;
-  margin: auto;
-  flex-grow: 1;
+  margin: 0 auto;
 }
 
 .mainFeature {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end;
 }
 
 .subheading {
@@ -86,8 +86,8 @@
 .sideFeatures {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 2.5rem;
+  justify-content: flex-end;
+  gap: 2rem;
   border-left: 1px solid rgba(255, 255, 255, 0.3);
   padding-left: 2.5rem;
 }
