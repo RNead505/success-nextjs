@@ -1,4 +1,6 @@
 import { useRouter } from 'next/router';
+import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import Layout from '../../components/Layout';
 import SEO from '../../components/SEO';
 import styles from './Post.module.css';
@@ -12,6 +14,9 @@ type PostPageProps = {
 
 export default function PostPage({ post, relatedPosts }: PostPageProps) {
   const router = useRouter();
+  const { data: session } = useSession();
+  const [isBookmarked, setIsBookmarked] = useState(false);
+  const [bookmarkLoading, setBookmarkLoading] = useState(false);
 
   if (router.isFallback || !post) {
     return <Layout><div className={styles.loading}>Loading...</div></Layout>;
@@ -39,6 +44,86 @@ export default function PostPage({ post, relatedPosts }: PostPageProps) {
       alert('Link copied to clipboard!');
     } catch (err) {
       console.error('Failed to copy link:', err);
+    }
+  };
+
+  // Check if article is bookmarked
+  useEffect(() => {
+    const checkBookmark = async () => {
+      if (!session || !post) return;
+
+      try {
+        const res = await fetch('/api/bookmarks');
+        if (res.ok) {
+          const bookmarks = await res.json();
+          const isAlreadyBookmarked = bookmarks.some(
+            (b: any) => b.articleId === post.id.toString()
+          );
+          setIsBookmarked(isAlreadyBookmarked);
+        }
+      } catch (error) {
+        console.error('Error checking bookmark:', error);
+      }
+    };
+
+    checkBookmark();
+  }, [session, post]);
+
+  // Handle bookmark toggle
+  const handleBookmarkToggle = async () => {
+    if (!session) {
+      router.push('/login');
+      return;
+    }
+
+    if (!post) return;
+
+    setBookmarkLoading(true);
+
+    try {
+      if (isBookmarked) {
+        // Remove bookmark - need to find the bookmark ID first
+        const res = await fetch('/api/bookmarks');
+        if (res.ok) {
+          const bookmarks = await res.json();
+          const bookmark = bookmarks.find(
+            (b: any) => b.articleId === post.id.toString()
+          );
+          if (bookmark) {
+            const deleteRes = await fetch(`/api/bookmarks/${bookmark.id}`, {
+              method: 'DELETE',
+            });
+            if (deleteRes.ok) {
+              setIsBookmarked(false);
+            }
+          }
+        }
+      } else {
+        // Add bookmark
+        const res = await fetch('/api/bookmarks', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            articleId: post.id.toString(),
+            articleTitle: decodeHtmlEntities(post.title.rendered),
+            articleUrl: shareUrl,
+            articleImage: featuredImage?.source_url || null,
+          }),
+        });
+
+        if (res.ok) {
+          setIsBookmarked(true);
+        } else if (res.status === 409) {
+          // Already bookmarked
+          setIsBookmarked(true);
+        }
+      }
+    } catch (error) {
+      console.error('Error toggling bookmark:', error);
+    } finally {
+      setBookmarkLoading(false);
     }
   };
 
@@ -195,10 +280,29 @@ export default function PostPage({ post, relatedPosts }: PostPageProps) {
           </div>
         )}
 
-        {/* Share Buttons */}
-        <div className={styles.shareSection}>
-          <h3 className={styles.shareTitle}>Share This Article</h3>
-          <div className={styles.shareButtons}>
+        {/* Bookmark and Share Section */}
+        <div className={styles.actionsSection}>
+          {/* Bookmark Button */}
+          {session && (
+            <div className={styles.bookmarkSection}>
+              <button
+                onClick={handleBookmarkToggle}
+                className={`${styles.bookmarkBtn} ${isBookmarked ? styles.bookmarked : ''}`}
+                disabled={bookmarkLoading}
+                aria-label={isBookmarked ? 'Remove bookmark' : 'Save article'}
+              >
+                <svg width="20" height="20" fill={isBookmarked ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                </svg>
+                <span>{bookmarkLoading ? 'Saving...' : isBookmarked ? 'Saved' : 'Save Article'}</span>
+              </button>
+            </div>
+          )}
+
+          {/* Share Buttons */}
+          <div className={styles.shareSection}>
+            <h3 className={styles.shareTitle}>Share This Article</h3>
+            <div className={styles.shareButtons}>
             <button onClick={handleFacebookShare} className={styles.shareBtn} aria-label="Share on Facebook" title="Share on Facebook">
               <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
@@ -224,6 +328,7 @@ export default function PostPage({ post, relatedPosts }: PostPageProps) {
               <span>Copy Link</span>
             </button>
           </div>
+        </div>
         </div>
       </article>
 
