@@ -57,6 +57,46 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, bu
       {/* "Inside the Magazine" hero */}
       <MagazineHero magazine={latestMagazine} />
 
+      {/* Speakers Bureau Section */}
+      <section className={styles.speakersSection}>
+        <div className={styles.sectionContainer}>
+          <h2 className={styles.speakersTitle}>Speakers For Every Event</h2>
+          <p className={styles.speakersSubtitle}>
+            Get exclusive access to world-class speakers<br />
+            through the SUCCESS Speakers Bureau.
+          </p>
+          <div className={styles.speakersGrid}>
+            <div className={styles.speakerCard}>
+              <img src="https://www.success.com/wp-content/uploads/2025/03/Grant-Cardone.jpg" alt="Grant Cardone" className={styles.speakerImage} />
+              <h3 className={styles.speakerName}>GRANT<br />CARDONE</h3>
+            </div>
+            <div className={styles.speakerCard}>
+              <img src="https://www.success.com/wp-content/uploads/2025/03/Daymond-John.jpg" alt="Daymond John" className={styles.speakerImage} />
+              <h3 className={styles.speakerName}>DAYMOND<br />JOHN</h3>
+            </div>
+            <div className={styles.speakerCard}>
+              <img src="https://www.success.com/wp-content/uploads/2025/03/Jenn-Lim.jpg" alt="Jenn Lim" className={styles.speakerImage} />
+              <h3 className={styles.speakerName}>JENN<br />LIM</h3>
+            </div>
+            <div className={styles.speakerCard}>
+              <img src="https://www.success.com/wp-content/uploads/2025/03/Andrea-Navedo.jpg" alt="Andrea Navedo" className={styles.speakerImage} />
+              <h3 className={styles.speakerName}>ANDREA<br />NAVEDO</h3>
+            </div>
+            <div className={styles.speakerCard}>
+              <img src="https://www.success.com/wp-content/uploads/2025/03/Mel-Robbins.jpg" alt="Mel Robbins" className={styles.speakerImage} />
+              <h3 className={styles.speakerName}>MEL<br />ROBBINS</h3>
+            </div>
+            <div className={styles.speakerCard}>
+              <img src="https://www.success.com/wp-content/uploads/2025/03/Nick-Santonastasso.jpg" alt="Nick Santonastasso" className={styles.speakerImage} />
+              <h3 className={styles.speakerName}>NICK<br />SANTONASTASSO</h3>
+            </div>
+          </div>
+          <div className={styles.viewMoreWrapper}>
+            <a href="https://www.success.com/speakers/" target="_blank" rel="noopener noreferrer" className={styles.viewMore}>Learn More</a>
+          </div>
+        </div>
+      </section>
+
       {/* Join the Inner Circle CTA */}
       <section className={styles.innerCircleCTA}>
         <div className={styles.innerCircleContent}>
