@@ -112,7 +112,7 @@
 
 .period {
   font-size: 1rem;
-  color: #666;
+  color: #4a4a4a;
 }
 
 .features {
@@ -124,7 +124,7 @@
 .features li {
   padding: 0.75rem 0;
   font-size: 0.9375rem;
-  color: #444;
+  color: #2a2a2a;
 }
 
 .planButton,
@@ -206,7 +206,7 @@
 .faqAnswer {
   font-size: 0.9375rem;
   line-height: 1.6;
-  color: #555;
+  color: #3a3a3a;
   margin: 0;
 }
 

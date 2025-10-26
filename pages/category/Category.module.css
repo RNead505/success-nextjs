@@ -8,13 +8,13 @@
   text-align: center;
   padding: 4rem 0;
   font-size: 1.25rem;
-  color: #666;
+  color: #4a4a4a;
 }
 
 /* Category Header */
 .header {
   background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
-  margin: 0 -1rem 3rem -1rem;
+  margin: 0 0 3rem 0;
   padding: 4rem 1rem;
   text-align: center;
   color: #fff;
@@ -37,7 +37,7 @@
 .description {
   font-size: 1.25rem;
   line-height: 1.6;
-  color: #ccc;
+  color: #e0e0e0;
   margin: 0 0 1.5rem 0;
 }
 
@@ -46,7 +46,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  color: #999;
+  color: #b3b3b3;
 }
 
 /* Posts Grid */

@@ -62,7 +62,7 @@
 .infoText {
   font-size: 1.0625rem;
   line-height: 1.6;
-  color: #555;
+  color: #3a3a3a;
   margin: 0 0 3rem 0;
 }
 
@@ -101,7 +101,7 @@
 .detailText {
   font-size: 0.9375rem;
   line-height: 1.5;
-  color: #555;
+  color: #3a3a3a;
   margin: 0;
 }
 
@@ -254,7 +254,7 @@
 
 .successMessage p {
   font-size: 1.125rem;
-  color: #555;
+  color: #3a3a3a;
   margin: 0;
 }
 

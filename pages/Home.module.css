@@ -4,6 +4,7 @@
   max-width: 100%;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
 }
 
 .homeLayout {
@@ -14,6 +15,7 @@
   margin: 0 auto;
   padding: 3rem 1rem;
   width: 100%;
+  overflow-x: hidden;
 }
 
 .featuredSection {
@@ -144,7 +146,7 @@
 
 .ctaText {
   font-size: 1.25rem;
-  color: #ccc;
+  color: #e0e0e0;
   margin: 0 0 2rem 0;
   line-height: 1.6;
 }

@@ -61,7 +61,7 @@
 .benefits li {
   padding: 0.75rem 0;
   font-size: 1.0625rem;
-  color: #444;
+  color: #2a2a2a;
 }
 
 .formWrapper {
@@ -115,7 +115,7 @@
 .privacy {
   text-align: center;
   font-size: 0.875rem;
-  color: #666;
+  color: #4a4a4a;
   margin: 1rem 0 0 0;
 }
 
@@ -136,7 +136,7 @@
 
 .success p {
   font-size: 1.125rem;
-  color: #555;
+  color: #3a3a3a;
 }
 
 @media (max-width: 768px) {

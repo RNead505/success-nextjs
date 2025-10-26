@@ -34,7 +34,7 @@
   font-size: 1.125rem;
   line-height: 1.8;
   text-align: center;
-  color: #444;
+  color: #2a2a2a;
 }
 
 .section {
@@ -106,7 +106,7 @@
 .issueDescription {
   font-size: 1.125rem;
   line-height: 1.7;
-  color: #444;
+  color: #2a2a2a;
   margin-bottom: 2rem;
 }
 
@@ -131,7 +131,7 @@
   padding-left: 1.5rem;
   position: relative;
   font-size: 1rem;
-  color: #555;
+  color: #3a3a3a;
 }
 
 .featuresList li::before {
@@ -226,7 +226,7 @@
 .benefitText {
   font-size: 0.9375rem;
   line-height: 1.6;
-  color: #555;
+  color: #3a3a3a;
 }
 
 .archiveGrid {
@@ -266,7 +266,7 @@
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
-  color: #666;
+  color: #4a4a4a;
 }
 
 .archiveTitle {

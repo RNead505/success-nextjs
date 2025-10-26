@@ -40,14 +40,14 @@
 }
 
 .tagline {
-  color: #999;
+  color: #b3b3b3;
   font-size: 0.875rem;
   line-height: 1.5;
   margin: 0 0 1.5rem 0;
 }
 
 .column a {
-  color: #ccc;
+  color: #e0e0e0;
   text-decoration: none;
   font-size: 0.875rem;
   transition: color 0.2s;
@@ -65,7 +65,7 @@
 }
 
 .social a {
-  color: #999;
+  color: #b3b3b3;
   transition: color 0.2s;
 }
 
@@ -89,7 +89,7 @@
 }
 
 .newsletter p {
-  color: #ccc;
+  color: #e0e0e0;
   margin: 0 0 1.5rem 0;
   font-size: 1rem;
 }
@@ -104,7 +104,7 @@
 .emailInput {
   flex: 1;
   padding: 0.875rem 1.25rem;
-  border: 1px solid #444;
+  border: 1px solid #555;
   background-color: #2a2a2a;
   color: #fff;
   border-radius: 4px;
@@ -114,11 +114,11 @@
 }
 
 .emailInput:focus {
-  border-color: #666;
+  border-color: #888;
 }
 
 .emailInput::placeholder {
-  color: #777;
+  color: #999;
 }
 
 .subscribeBtn {
@@ -169,7 +169,7 @@
   text-align: center;
   padding-top: 2rem;
   font-size: 0.75rem;
-  color: #777;
+  color: #999;
 }
 
 .bottomBar p {
@@ -178,7 +178,7 @@
 
 .disclosure {
   font-size: 0.7rem;
-  color: #666;
+  color: #888;
 }
 
 /* Responsive Styles */

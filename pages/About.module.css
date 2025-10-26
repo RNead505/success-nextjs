@@ -52,7 +52,7 @@
 .text {
   font-size: 1.125rem;
   line-height: 1.8;
-  color: #444;
+  color: #2a2a2a;
   margin: 0 0 1.5rem 0;
 }
 
@@ -126,7 +126,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: #666;
+  color: #4a4a4a;
 }
 
 /* Topics Grid */
@@ -159,7 +159,7 @@
 .topicDescription {
   font-size: 0.9375rem;
   line-height: 1.6;
-  color: #555;
+  color: #3a3a3a;
   margin: 0;
 }
 
@@ -197,7 +197,7 @@
 .timelineText {
   font-size: 1rem;
   line-height: 1.6;
-  color: #555;
+  color: #3a3a3a;
   margin: 0;
 }
 
@@ -252,7 +252,7 @@
 .timelineText {
   font-size: 0.95rem;
   line-height: 1.6;
-  color: #666;
+  color: #4a4a4a;
 }
 
 /* Team Section */
@@ -309,7 +309,7 @@
 
 .memberTitle {
   font-size: 0.95rem;
-  color: #666;
+  color: #4a4a4a;
   margin: 0 0 1rem 0;
   font-weight: 600;
 }
@@ -327,7 +327,7 @@
 .memberBio {
   font-size: 0.9rem;
   line-height: 1.6;
-  color: #666;
+  color: #4a4a4a;
   margin: 0 0 1rem 0;
 }
 
