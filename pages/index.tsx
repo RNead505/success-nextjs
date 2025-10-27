@@ -67,27 +67,27 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, bu
           </p>
           <div className={styles.speakersGrid}>
             <div className={styles.speakerCard}>
-              <img src="https://via.placeholder.com/400x400/1a1a1a/ffffff?text=GRANT+CARDONE" alt="Grant Cardone" className={styles.speakerImage} />
+              <div className={styles.speakerImagePlaceholder}>GC</div>
               <h3 className={styles.speakerName}>GRANT<br />CARDONE</h3>
             </div>
             <div className={styles.speakerCard}>
-              <img src="https://via.placeholder.com/400x400/1a1a1a/ffffff?text=DAYMOND+JOHN" alt="Daymond John" className={styles.speakerImage} />
+              <div className={styles.speakerImagePlaceholder}>DJ</div>
               <h3 className={styles.speakerName}>DAYMOND<br />JOHN</h3>
             </div>
             <div className={styles.speakerCard}>
-              <img src="https://via.placeholder.com/400x400/1a1a1a/ffffff?text=MEL+ROBBINS" alt="Mel Robbins" className={styles.speakerImage} />
+              <div className={styles.speakerImagePlaceholder}>MR</div>
               <h3 className={styles.speakerName}>MEL<br />ROBBINS</h3>
             </div>
             <div className={styles.speakerCard}>
-              <img src="https://via.placeholder.com/400x400/1a1a1a/ffffff?text=JAY+SHETTY" alt="Jay Shetty" className={styles.speakerImage} />
+              <div className={styles.speakerImagePlaceholder}>JS</div>
               <h3 className={styles.speakerName}>JAY<br />SHETTY</h3>
             </div>
             <div className={styles.speakerCard}>
-              <img src="https://via.placeholder.com/400x400/1a1a1a/ffffff?text=ROBERT+HERJAVEC" alt="Robert Herjavec" className={styles.speakerImage} />
+              <div className={styles.speakerImagePlaceholder}>RH</div>
               <h3 className={styles.speakerName}>ROBERT<br />HERJAVEC</h3>
             </div>
             <div className={styles.speakerCard}>
-              <img src="https://via.placeholder.com/400x400/1a1a1a/ffffff?text=SHAWN+ACHOR" alt="Shawn Achor" className={styles.speakerImage} />
+              <div className={styles.speakerImagePlaceholder}>SA</div>
               <h3 className={styles.speakerName}>SHAWN<br />ACHOR</h3>
             </div>
           </div>

@@ -169,6 +169,21 @@
   margin-bottom: 1rem;
 }
 
+.speakerImagePlaceholder {
+  width: 100%;
+  aspect-ratio: 1;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  font-weight: 900;
+  color: #c41e3a;
+  letter-spacing: 0.1em;
+}
+
 .speakerName {
   font-size: 0.875rem;
   font-weight: 800;
