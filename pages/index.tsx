@@ -67,28 +67,28 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, bu
           </p>
           <div className={styles.speakersGrid}>
             <div className={styles.speakerCard}>
-              <img src="https://www.success.com/wp-content/uploads/2025/03/Grant-Cardone.jpg" alt="Grant Cardone" className={styles.speakerImage} />
+              <img src="https://via.placeholder.com/400x400/1a1a1a/ffffff?text=GRANT+CARDONE" alt="Grant Cardone" className={styles.speakerImage} />
               <h3 className={styles.speakerName}>GRANT<br />CARDONE</h3>
             </div>
             <div className={styles.speakerCard}>
-              <img src="https://www.success.com/wp-content/uploads/2025/03/Daymond-John.jpg" alt="Daymond John" className={styles.speakerImage} />
+              <img src="https://via.placeholder.com/400x400/1a1a1a/ffffff?text=DAYMOND+JOHN" alt="Daymond John" className={styles.speakerImage} />
               <h3 className={styles.speakerName}>DAYMOND<br />JOHN</h3>
             </div>
             <div className={styles.speakerCard}>
-              <img src="https://www.success.com/wp-content/uploads/2025/03/Jenn-Lim.jpg" alt="Jenn Lim" className={styles.speakerImage} />
-              <h3 className={styles.speakerName}>JENN<br />LIM</h3>
-            </div>
-            <div className={styles.speakerCard}>
-              <img src="https://www.success.com/wp-content/uploads/2025/03/Andrea-Navedo.jpg" alt="Andrea Navedo" className={styles.speakerImage} />
-              <h3 className={styles.speakerName}>ANDREA<br />NAVEDO</h3>
-            </div>
-            <div className={styles.speakerCard}>
-              <img src="https://www.success.com/wp-content/uploads/2025/03/Mel-Robbins.jpg" alt="Mel Robbins" className={styles.speakerImage} />
+              <img src="https://via.placeholder.com/400x400/1a1a1a/ffffff?text=MEL+ROBBINS" alt="Mel Robbins" className={styles.speakerImage} />
               <h3 className={styles.speakerName}>MEL<br />ROBBINS</h3>
             </div>
             <div className={styles.speakerCard}>
-              <img src="https://www.success.com/wp-content/uploads/2025/03/Nick-Santonastasso.jpg" alt="Nick Santonastasso" className={styles.speakerImage} />
-              <h3 className={styles.speakerName}>NICK<br />SANTONASTASSO</h3>
+              <img src="https://via.placeholder.com/400x400/1a1a1a/ffffff?text=JAY+SHETTY" alt="Jay Shetty" className={styles.speakerImage} />
+              <h3 className={styles.speakerName}>JAY<br />SHETTY</h3>
+            </div>
+            <div className={styles.speakerCard}>
+              <img src="https://via.placeholder.com/400x400/1a1a1a/ffffff?text=ROBERT+HERJAVEC" alt="Robert Herjavec" className={styles.speakerImage} />
+              <h3 className={styles.speakerName}>ROBERT<br />HERJAVEC</h3>
+            </div>
+            <div className={styles.speakerCard}>
+              <img src="https://via.placeholder.com/400x400/1a1a1a/ffffff?text=SHAWN+ACHOR" alt="Shawn Achor" className={styles.speakerImage} />
+              <h3 className={styles.speakerName}>SHAWN<br />ACHOR</h3>
             </div>
           </div>
           <div className={styles.viewMoreWrapper}>
