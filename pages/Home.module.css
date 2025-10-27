@@ -243,6 +243,59 @@
   box-shadow: 0 4px 12px rgba(196, 30, 58, 0.4);
 }
 
+/* Social Media Section */
+.socialSection {
+  padding: 4rem 1rem;
+  background-color: #fff;
+  text-align: center;
+  border-top: 1px solid #e5e5e5;
+}
+
+.socialTitle {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0 0 0.75rem 0;
+  color: #000;
+}
+
+.socialSubtitle {
+  font-size: 1.125rem;
+  color: #4a4a4a;
+  margin: 0 0 2.5rem 0;
+  line-height: 1.6;
+}
+
+.socialLinks {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.socialLink {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #000;
+  color: #fff;
+  border-radius: 50%;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+
+.socialLink:hover {
+  background-color: #c41e3a;
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(196, 30, 58, 0.3);
+}
+
+.socialLink svg {
+  width: 24px;
+  height: 24px;
+}
+
 /* Newsletter CTA */
 .newsletterCTA {
   padding: 5rem 1rem;
