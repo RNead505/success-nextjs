@@ -39,6 +39,15 @@ export default function Header() {
         </div>
       </div>
 
+      {/* Logo Bar - Centered */}
+      <div className={styles.logoBar}>
+        <div className={styles.container}>
+          <Link href="/" className={styles.logo}>
+            SUCCESS
+          </Link>
+        </div>
+      </div>
+
       {/* Main Navigation Bar */}
       <div className={styles.navBar}>
         <div className={styles.container}>
@@ -51,10 +60,6 @@ export default function Header() {
             <span></span>
             <span></span>
           </button>
-
-          <Link href="/" className={styles.logo}>
-            SUCCESS
-          </Link>
 
           <nav className={`${styles.nav} ${mobileMenuOpen ? styles.navOpen : ''}`}>
             <ul>

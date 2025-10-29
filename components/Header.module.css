@@ -69,6 +69,31 @@
   background-color: #333;
 }
 
+/* Logo Bar - Centered above navigation */
+.logoBar {
+  background-color: #fff;
+  padding: 1.5rem 0;
+  text-align: center;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.logoBar .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.logo {
+  font-family: 'Bodoni Moda', Georgia, 'Times New Roman', serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-decoration: none;
+  color: #000;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
 /* Navigation Bar */
 .navBar {
   background-color: #000;
@@ -80,20 +105,9 @@
   margin: 0 auto;
   padding: 0 1rem;
   display: grid;
-  grid-template-columns: 150px 1fr 150px;
+  grid-template-columns: 50px 1fr 50px;
   align-items: center;
   gap: 2rem;
-}
-
-.logo {
-  font-family: 'Bodoni Moda', Georgia, 'Times New Roman', serif;
-  font-size: 1.8rem;
-  font-weight: 700;
-  letter-spacing: 3px;
-  text-decoration: none;
-  color: #fff;
-  text-transform: uppercase;
-  justify-self: start;
 }
 
 .nav {
