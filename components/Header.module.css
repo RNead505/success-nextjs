@@ -84,12 +84,12 @@
 }
 
 .logo {
-  font-family: 'Bodoni Moda', Georgia, 'Times New Roman', serif;
+  font-family: var(--font-serif);
   font-size: 2.5rem;
-  font-weight: 700;
+  font-weight: var(--font-black);
   letter-spacing: 4px;
   text-decoration: none;
-  color: #000;
+  color: var(--color-black);
   text-transform: uppercase;
   display: inline-block;
 }
@@ -128,11 +128,13 @@
 }
 
 .nav a {
+  font-family: var(--font-sans);
   text-decoration: none;
-  color: #fff;
-  font-weight: 600;
-  font-size: 0.875rem;
-  letter-spacing: 0.5px;
+  color: var(--color-white);
+  font-weight: var(--font-bold);
+  font-size: var(--text-sm);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
   transition: color 0.2s;
   white-space: nowrap;
 }
