@@ -48,12 +48,7 @@ export default function SpeakersPage({ speakers }: SpeakersPageProps) {
         <div className={styles.cta}>
           <h2>Ready to Book a Speaker?</h2>
           <p>Contact us to bring world-class speakers to your next event</p>
-          <a
-            href="https://www.success.com/contact"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.ctaButton}
-          >
+          <a href="/contact" className={styles.ctaButton}>
             Contact Us
           </a>
         </div>
