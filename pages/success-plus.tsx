@@ -7,43 +7,76 @@ export default function SuccessPlusPage() {
       <div className={styles.successPlus}>
         <section className={styles.hero}>
           <div className={styles.heroContent}>
-            <h1 className={styles.heroTitle}>Keep Your Access to SUCCESS+™</h1>
+            <h1 className={styles.heroTitle}>Online Learning That Plays to Your Strengths</h1>
             <p className={styles.heroSubtitle}>
-              It's easy to keep the insights, connections, and tools that enhance your daily life
+              Curated resources and expert insights based on your DISC profile to help you stay relevant in the modern working world
             </p>
+            <a href="#plans" className={styles.heroCTA}>JOIN SUCCESS+ NOW</a>
           </div>
         </section>
 
-        <section className={styles.section}>
+        <section className={styles.statsSection}>
           <div className={styles.container}>
-            <h2 className={styles.sectionTitle}>Here's What You Get With SUCCESS+</h2>
-            <div className={styles.benefits}>
-              <div className={styles.benefit}>
-                <span className={styles.bullet}>•</span>
-                <p><strong>Expert-Led Content:</strong> Access practical articles, videos, and guides from industry leaders on topics that matter to you.</p>
+            <div className={styles.statsGrid}>
+              <div className={styles.stat}>
+                <div className={styles.statNumber}>98,000+</div>
+                <div className={styles.statLabel}>People using courses</div>
               </div>
-              <div className={styles.benefit}>
-                <span className={styles.bullet}>•</span>
-                <p><strong>Digital Magazine Subscriptions:</strong> Read new and past issues of <em>SUCCESS®</em> and <em>SUCCESS+</em> magazines. Anytime. Anywhere.</p>
+              <div className={styles.stat}>
+                <div className={styles.statNumber}>120+</div>
+                <div className={styles.statLabel}>Years of growth system</div>
               </div>
-              <div className={styles.benefit}>
-                <span className={styles.bullet}>•</span>
-                <p><strong>Personalized Resources Built on DISC:</strong> From health to personal projects, SUCCESS+ offers tools that provide support for all areas of life.</p>
+              <div className={styles.stat}>
+                <div className={styles.statNumber}>80+</div>
+                <div className={styles.statLabel}>Hours of on-demand training</div>
               </div>
-              <div className={styles.benefit}>
-                <span className={styles.bullet}>•</span>
-                <p><strong>Live Events & Workshops:</strong> Join exclusive live sessions where you can connect with speakers, learn new skills, and explore fresh ideas.</p>
-              </div>
-              <div className={styles.benefit}>
-                <span className={styles.bullet}>•</span>
-                <p><strong>And more!</strong></p>
+              <div className={styles.stat}>
+                <div className={styles.statNumber}>30-Day</div>
+                <div className={styles.statLabel}>Risk-free trial</div>
               </div>
             </div>
           </div>
         </section>
 
-        <section className={styles.plansSection}>
+        <section className={styles.section}>
           <div className={styles.container}>
+            <h2 className={styles.sectionTitle}>What You Can Achieve With SUCCESS+</h2>
+            <div className={styles.benefits}>
+              <div className={styles.benefit}>
+                <span className={styles.bulletIcon}>✓</span>
+                <p>Find clarity on your career goals</p>
+              </div>
+              <div className={styles.benefit}>
+                <span className={styles.bulletIcon}>✓</span>
+                <p>Multiply your earning potential</p>
+              </div>
+              <div className={styles.benefit}>
+                <span className={styles.bulletIcon}>✓</span>
+                <p>Enable a "digital nomad" lifestyle</p>
+              </div>
+              <div className={styles.benefit}>
+                <span className={styles.bulletIcon}>✓</span>
+                <p>Protect yourself against inflation</p>
+              </div>
+              <div className={styles.benefit}>
+                <span className={styles.bulletIcon}>✓</span>
+                <p>Land your dream job</p>
+              </div>
+              <div className={styles.benefit}>
+                <span className={styles.bulletIcon}>✓</span>
+                <p>Build 6-7 figure income</p>
+              </div>
+              <div className={styles.benefit}>
+                <span className={styles.bulletIcon}>✓</span>
+                <p>Develop professional relationships</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className={styles.plansSection} id="plans">
+          <div className={styles.container}>
+            <h2 className={styles.sectionTitle}>Choose Your Membership</h2>
             <div className={styles.plansGrid}>
               {/* Collective Membership */}
               <div className={styles.plan}>

@@ -70,12 +70,7 @@ export default function BestsellersPage({ categories }: BestsellersPageProps) {
 
         <div className={styles.cta}>
           <h2>Find these books and more available now at</h2>
-          <a
-            href="https://mysuccessplus.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.ctaButton}
-          >
+          <a href="/store" className={styles.ctaButton}>
             SUCCESS Store
           </a>
         </div>
