@@ -104,13 +104,16 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1rem;
-  display: grid;
-  grid-template-columns: 50px 1fr 50px;
+  display: flex;
   align-items: center;
-  gap: 2rem;
+  justify-content: space-between;
+  position: relative;
 }
 
 .nav {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   justify-content: center;
 }
