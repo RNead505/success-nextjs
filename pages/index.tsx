@@ -316,7 +316,7 @@ export async function getStaticProps() {
       latestMagazine,
       bestsellers: bestsellers || [],
     },
-    revalidate: 600, // Revalidate every 10 minutes
+    revalidate: 3600, // Revalidate every hour (daily cron handles full sync)
   };
 }
 
