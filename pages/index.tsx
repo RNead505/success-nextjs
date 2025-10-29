@@ -171,28 +171,28 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, bu
           </p>
           <div className={styles.speakersGrid}>
             <div className={styles.speakerCard}>
-              <div className={styles.speakerImagePlaceholder}>GC</div>
+              <img src="https://www.success.com/wp-content/uploads/2024/03/90a1045e58f8b8b4c70dafa7986ed4f1.jpg" alt="Grant Cardone" className={styles.speakerImage} />
               <h3 className={styles.speakerName}>GRANT<br />CARDONE</h3>
             </div>
             <div className={styles.speakerCard}>
-              <div className={styles.speakerImagePlaceholder}>DJ</div>
+              <img src="https://www.success.com/wp-content/uploads/2024/03/90a1045e58f8b8b4c70dafa7986ed4f1s.jpg" alt="Daymond John" className={styles.speakerImage} />
               <h3 className={styles.speakerName}>DAYMOND<br />JOHN</h3>
             </div>
             <div className={styles.speakerCard}>
-              <div className={styles.speakerImagePlaceholder}>MR</div>
+              <img src="https://www.success.com/wp-content/uploads/2024/03/90a1045e58f8b8b4c70dafa7986ed4f1a.jpg" alt="Jenn Lim" className={styles.speakerImage} />
+              <h3 className={styles.speakerName}>JENN<br />LIM</h3>
+            </div>
+            <div className={styles.speakerCard}>
+              <img src="https://www.success.com/wp-content/uploads/2024/03/90a1045e58f8b8b4c70dafa7986ed4f1m.jpg" alt="Andrea Navedo" className={styles.speakerImage} />
+              <h3 className={styles.speakerName}>ANDREA<br />NAVEDO</h3>
+            </div>
+            <div className={styles.speakerCard}>
+              <img src="https://www.success.com/wp-content/uploads/2024/03/90a1045e58f8b8b4c70dafa7986ed4f1e.jpg" alt="Mel Robbins" className={styles.speakerImage} />
               <h3 className={styles.speakerName}>MEL<br />ROBBINS</h3>
             </div>
             <div className={styles.speakerCard}>
-              <div className={styles.speakerImagePlaceholder}>JS</div>
-              <h3 className={styles.speakerName}>JAY<br />SHETTY</h3>
-            </div>
-            <div className={styles.speakerCard}>
-              <div className={styles.speakerImagePlaceholder}>RH</div>
-              <h3 className={styles.speakerName}>ROBERT<br />HERJAVEC</h3>
-            </div>
-            <div className={styles.speakerCard}>
-              <div className={styles.speakerImagePlaceholder}>SA</div>
-              <h3 className={styles.speakerName}>SHAWN<br />ACHOR</h3>
+              <img src="https://www.success.com/wp-content/uploads/2024/03/90a1045e58f8b8b4c70dafa7986ed4f1o.jpg" alt="Nick Santonastasso" className={styles.speakerImage} />
+              <h3 className={styles.speakerName}>NICK<br />SANTONASTASSO</h3>
             </div>
           </div>
           <div className={styles.viewMoreWrapper}>
