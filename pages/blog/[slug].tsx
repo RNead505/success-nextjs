@@ -18,34 +18,9 @@ export default function PostPage({ post, relatedPosts }: PostPageProps) {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [bookmarkLoading, setBookmarkLoading] = useState(false);
 
-  if (router.isFallback || !post) {
-    return <Layout><div className={styles.loading}>Loading...</div></Layout>;
-  }
-
   // Share handlers
   const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
   const shareTitle = decodeHtmlEntities(post?.title?.rendered || '');
-
-  const handleFacebookShare = () => {
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank', 'width=600,height=400');
-  };
-
-  const handleTwitterShare = () => {
-    window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareTitle)}`, '_blank', 'width=600,height=400');
-  };
-
-  const handleLinkedInShare = () => {
-    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`, '_blank', 'width=600,height=400');
-  };
-
-  const handleCopyLink = async () => {
-    try {
-      await navigator.clipboard.writeText(shareUrl);
-      alert('Link copied to clipboard!');
-    } catch (err) {
-      console.error('Failed to copy link:', err);
-    }
-  };
 
   // Check if article is bookmarked
   useEffect(() => {
@@ -68,6 +43,27 @@ export default function PostPage({ post, relatedPosts }: PostPageProps) {
 
     checkBookmark();
   }, [session, post]);
+
+  const handleFacebookShare = () => {
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank', 'width=600,height=400');
+  };
+
+  const handleTwitterShare = () => {
+    window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareTitle)}`, '_blank', 'width=600,height=400');
+  };
+
+  const handleLinkedInShare = () => {
+    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`, '_blank', 'width=600,height=400');
+  };
+
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      alert('Link copied to clipboard!');
+    } catch (err) {
+      console.error('Failed to copy link:', err);
+    }
+  };
 
   // Handle bookmark toggle
   const handleBookmarkToggle = async () => {
@@ -126,6 +122,10 @@ export default function PostPage({ post, relatedPosts }: PostPageProps) {
       setBookmarkLoading(false);
     }
   };
+
+  if (router.isFallback || !post) {
+    return <Layout><div className={styles.loading}>Loading...</div></Layout>;
+  }
 
   const category = post._embedded?.['wp:term']?.[0]?.[0];
   const author = post._embedded?.author?.[0];

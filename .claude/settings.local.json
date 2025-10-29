@@ -71,7 +71,12 @@
       "Bash(npm run lint:*)",
       "Bash(DATABASE_URL=\"postgres://default:9iXF2IrQGpwL@ep-cold-tooth-a4z49xhe-pooler.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require\" npx prisma migrate dev --name add_crm_system)",
       "Bash(python3:*)",
-      "Bash(git checkout:*)"
+      "Bash(git checkout:*)",
+      "Bash(DATABASE_URL=\"postgres://default:9iXF2IrQGpwL@ep-cold-tooth-a4z49xhe-pooler.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require\" npx prisma db push)",
+      "WebFetch(domain:vercel.com)",
+      "Bash(node:*)",
+      "WebFetch(domain:speakers.success.com)",
+      "Bash(npx next build:*)"
     ],
     "deny": [],
     "ask": []

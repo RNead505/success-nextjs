@@ -1,20 +1,9 @@
-
-> success-nextjs@1.0.0 build
-> prisma generate && next build
-
-Environment variables loaded from .env
-Prisma schema loaded from prisma\schema.prisma
-
-✔ Generated Prisma Client (v6.17.0) to .\node_modules\@prisma\client in 441ms
-
-Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
-
-Tip: Interested in query caching in just a few lines of code? Try Accelerate today! https://pris.ly/tip-3-accelerate
-
   ▲ Next.js 14.2.3
   - Environments: .env.local, .env.production, .env
 
    Linting and checking validity of types ...
+
+Failed to compile.
 
 ./pages/about.tsx
 99:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
@@ -61,29 +50,31 @@ Tip: Interested in query caching in just a few lines of code? Try Accelerate tod
 38:13  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
 ./pages/blog/[slug].tsx
-151:13  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
-178:17  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
-243:23  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+51:3  Error: React Hook "useEffect" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?  react-hooks/rules-of-hooks
+236:13  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+263:17  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+348:23  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
 ./pages/dashboard.tsx
-265:15  Warning: Do not use an `<a>` element to navigate to `/category/business/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
-272:15  Warning: Do not use an `<a>` element to navigate to `/category/money/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
-279:15  Warning: Do not use an `<a>` element to navigate to `/category/lifestyle/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
-286:15  Warning: Do not use an `<a>` element to navigate to `/magazine/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
-293:15  Warning: Do not use an `<a>` element to navigate to `/podcasts/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
-300:15  Warning: Do not use an `<a>` element to navigate to `/videos/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+392:15  Warning: Do not use an `<a>` element to navigate to `/category/business/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+399:15  Warning: Do not use an `<a>` element to navigate to `/category/money/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+406:15  Warning: Do not use an `<a>` element to navigate to `/category/lifestyle/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+413:15  Warning: Do not use an `<a>` element to navigate to `/magazine/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+420:15  Warning: Do not use an `<a>` element to navigate to `/podcasts/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+427:15  Warning: Do not use an `<a>` element to navigate to `/videos/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+447:25  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+470:17  Warning: Do not use an `<a>` element to navigate to `/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
 
 ./pages/index.tsx
-73:13  Warning: Do not use an `<a>` element to navigate to `/category/business/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
-83:13  Warning: Do not use an `<a>` element to navigate to `/category/business/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
-98:13  Warning: Do not use an `<a>` element to navigate to `/category/lifestyle/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
-113:13  Warning: Do not use an `<a>` element to navigate to `/category/money/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
-128:13  Warning: Do not use an `<a>` element to navigate to `/category/future-of-work/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
-143:13  Warning: Do not use an `<a>` element to navigate to `/category/health/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
-158:13  Warning: Do not use an `<a>` element to navigate to `/category/entertainment/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
-173:13  Warning: Do not use an `<a>` element to navigate to `/videos/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
-188:13  Warning: Do not use an `<a>` element to navigate to `/podcasts/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
-205:11  Warning: Do not use an `<a>` element to navigate to `/newsletter/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+70:11  Warning: Do not use an `<a>` element to navigate to `/subscribe/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+79:13  Warning: Do not use an `<a>` element to navigate to `/category/money/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+94:13  Warning: Do not use an `<a>` element to navigate to `/category/business/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+109:13  Warning: Do not use an `<a>` element to navigate to `/category/future-of-work/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+124:13  Warning: Do not use an `<a>` element to navigate to `/category/lifestyle/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+139:13  Warning: Do not use an `<a>` element to navigate to `/category/health/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+154:13  Warning: Do not use an `<a>` element to navigate to `/category/personal-development/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+209:13  Warning: Do not use an `<a>` element to navigate to `/category/entertainment/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+268:11  Warning: Do not use an `<a>` element to navigate to `/newsletter/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
 
 ./pages/magazine/archive.tsx
 34:23  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
@@ -146,295 +137,3 @@ Tip: Interested in query caching in just a few lines of code? Try Accelerate tod
 87:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
 info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/basic-features/eslint#disabling-rules
-   Creating an optimized production build ...
- ✓ Compiled successfully
-   Collecting page data ...
-   Generating static pages (0/213) ...
-   Generating static pages (53/213) 
-Warning: data for page "/videos" is 181 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/podcasts" is 443 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/magazine/archive" is 1.21 MB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/author/[slug]" (path "/author/aaron-orendorff") is 555 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/magazine" is 1.21 MB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/author/[slug]" (path "/author/abebolaayindemailinator-com") is 133 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/author/[slug]" (path "/author/adam-ochstein") is 247 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/author/[slug]" (path "/author/adam-smith") is 197 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/author/[slug]" (path "/author/adam-rhew") is 201 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/author/[slug]" (path "/author/aditi-shrikant") is 314 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Rate limited on videos?_embed&per_page=3, retrying in 4000ms (attempt 1/5)
-Rate limited on categories?slug=future-of-work, retrying in 4000ms (attempt 1/5)
-Rate limited on categories?slug=health, retrying in 4000ms (attempt 1/5)
-Rate limited on categories?slug=press-releases, retrying in 4000ms (attempt 1/5)
-Rate limited on posts?categories=4&_embed&per_page=12, retrying in 4000ms (attempt 1/5)
-Rate limited on categories?slug=lifestyle, retrying in 4000ms (attempt 1/5)
-Rate limited on videos?_embed&per_page=3, retrying in 4000ms (attempt 1/5)
-Rate limited on videos?_embed&per_page=3, retrying in 4000ms (attempt 1/5)
-Rate limited on posts?categories=14382&_embed&per_page=12, retrying in 4000ms (attempt 1/5)
-Warning: data for page "/category/[slug]" (path "/category/personal-development") is 884 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/category/[slug]" (path "/category/money") is 734 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/category/[slug]" (path "/category/professional-development") is 697 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/category/[slug]" (path "/category/relationships") is 726 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/category/[slug]" (path "/category/success") is 938 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/category/[slug]" (path "/category/uncategorized") is 585 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/podcast/[slug]" (path "/podcast/unscripted-with-amy-somerville") is 334 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/podcast/[slug]" (path "/podcast/brilliant-thoughts") is 443 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/blog/[slug]" (path "/blog/revenge-bedtime-procrastination-tips") is 212 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/podcast/[slug]" (path "/podcast/in-the-details") is 334 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/podcast/[slug]" (path "/podcast/rich-regular") is 334 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/blog/[slug]" (path "/blog/apple-vision-pro-workspace") is 259 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/blog/[slug]" (path "/blog/health-crisis-leadership-lessons") is 212 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/blog/[slug]" (path "/blog/does-your-brand-need-a-mascot") is 200 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-   Generating static pages (106/213) 
-Warning: data for page "/blog/[slug]" (path "/blog/success-mindset") is 248 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/blog/[slug]" (path "/blog/risk-management-strategies") is 200 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-   Generating static pages (159/213) 
-Warning: data for page "/category/[slug]" (path "/category/business") is 672 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/category/[slug]" (path "/category/health") is 651 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/category/[slug]" (path "/category/future-of-work") is 736 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/category/[slug]" (path "/category/entertainment") is 691 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/blog/[slug]" (path "/blog/how-sandwich-moms-deal-with-pressure-from-all-sides") is 243 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/category/[slug]" (path "/category/lifestyle") is 790 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/blog/[slug]" (path "/blog/ontario-will-require-companies-to-respond-to-applicants") is 244 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/" is 3.17 MB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
- ✓ Generating static pages (213/213)
-   Finalizing page optimization ...
-   Collecting build traces ...
-
-Route (pages)                                                                 Size     First Load JS
-┌ ● / (ISR: 600 Seconds) (10883 ms)                                           4.51 kB         102 kB
-├   └ css/efc5e55b8849a151.css                                                4.28 kB
-├   /_app                                                                     0 B            89.6 kB
-├ ○ /404                                                                      184 B          89.8 kB
-├ ● /about (ISR: 86400 Seconds)                                               2.64 kB        99.8 kB
-├   └ css/20de3d2781398e61.css                                                3.27 kB
-├ ○ /accessibility                                                            1.57 kB        98.7 kB
-├ ○ /admin                                                                    3.53 kB        95.6 kB
-├   └ css/bfda62ca872f29f4.css                                                2.04 kB
-├ ○ /admin/analytics                                                          4.23 kB        96.3 kB
-├   └ css/e50300fef37995dc.css                                                2.4 kB
-├ ○ /admin/categories                                                         3.29 kB        95.4 kB
-├   └ css/7f96b9a94425ea40.css                                                1.85 kB
-├ ○ /admin/content-viewer                                                     3.01 kB        95.1 kB
-├   └ css/2669399eb66a4bca.css                                                1.77 kB
-├ ○ /admin/crm/campaigns                                                      3.74 kB        95.8 kB
-├ ○ /admin/crm/contacts                                                       3.98 kB        96.1 kB
-├ ○ /admin/crm/templates                                                      3.93 kB          96 kB
-├ ○ /admin/email-manager                                                      4.42 kB        96.5 kB
-├   └ css/8cfe73e680db6bcc.css                                                2.49 kB
-├ ○ /admin/login                                                              1 kB           90.6 kB
-├   └ css/d3941d3852740211.css                                                690 B
-├ ○ /admin/magazine-manager                                                   7.66 kB         276 kB
-├   └ css/77e1459b1b0e6723.css                                                2.83 kB
-├ ○ /admin/media                                                              4.88 kB         274 kB
-├   └ css/f5b58e4ee93276b8.css                                                2.08 kB
-├ ○ /admin/members                                                            3.25 kB        95.3 kB
-├   └ css/e587edc333887d8f.css                                                2.12 kB
-├ ○ /admin/members/[id]                                                       3.22 kB        95.3 kB
-├   └ css/fcce5ff91bc4d524.css                                                2.18 kB
-├ ○ /admin/pages                                                              3.63 kB        95.7 kB
-├   └ css/c1ee2d33066de54f.css                                                1.89 kB
-├ ○ /admin/pages/[id]/edit                                                    1.82 kB        97.9 kB
-├ ○ /admin/pages/new                                                          1.8 kB         97.9 kB
-├ ○ /admin/podcasts                                                           2.67 kB        94.8 kB
-├   └ css/dbf50376a855834e.css                                                1.77 kB
-├ ○ /admin/podcasts/[id]/edit                                                 1.85 kB        97.9 kB
-├ ○ /admin/podcasts/new                                                       1.84 kB        97.9 kB
-├ ○ /admin/posts                                                              3.29 kB        95.4 kB
-├   └ css/c128cbe3853ee3dc.css                                                1.73 kB
-├ ○ /admin/posts/[id]/edit                                                    452 B           204 kB
-├ ○ /admin/posts/new                                                          431 B           204 kB
-├ ○ /admin/revenue                                                            3.14 kB        95.2 kB
-├   └ css/66fef1b0aed00826.css                                                1.81 kB
-├ ○ /admin/settings                                                           3.54 kB        95.6 kB
-├   └ css/abbe8f94add58d04.css                                                1.6 kB
-├ ○ /admin/site-monitor                                                       3.81 kB        95.9 kB
-├   └ css/19102fed8d1b5456.css                                                1.97 kB
-├ ○ /admin/subscriptions                                                      2.99 kB        95.1 kB
-├   └ css/c65a5fda6d7838fa.css                                                1.77 kB
-├ ○ /admin/tags                                                               3.17 kB        95.3 kB
-├   └ css/94cd0db98828ed81.css                                                1.84 kB
-├ ○ /admin/users                                                              3.76 kB        95.9 kB
-├   └ css/2f4051560d53550f.css                                                2.05 kB
-├ ○ /admin/videos                                                             2.66 kB        94.8 kB
-├   └ css/558cc9fd8a8eb380.css                                                1.77 kB
-├ ○ /admin/videos/[id]/edit                                                   1.86 kB        97.9 kB
-├ ○ /admin/videos/new                                                         1.84 kB        97.9 kB
-├ ○ /admin/wordpress-sync                                                     4.05 kB        96.1 kB
-├   └ css/31bccb05d0346044.css                                                2.18 kB
-├ ● /advertise (ISR: 86400 Seconds)                                           2.31 kB        99.5 kB
-├   └ css/0a885109c7ab4115.css                                                2.99 kB
-├ ƒ /api/admin/members                                                        0 B            89.6 kB
-├ ƒ /api/admin/members/[id]                                                   0 B            89.6 kB
-├ ƒ /api/analytics                                                            0 B            89.6 kB
-├ ƒ /api/auth/[...nextauth]                                                   0 B            89.6 kB
-├ ƒ /api/categories                                                           0 B            89.6 kB
-├ ƒ /api/categories/[id]                                                      0 B            89.6 kB
-├ ƒ /api/contact                                                              0 B            89.6 kB
-├ ƒ /api/crm/campaigns                                                        0 B            89.6 kB
-├ ƒ /api/crm/campaigns/[id]                                                   0 B            89.6 kB
-├ ƒ /api/crm/contacts                                                         0 B            89.6 kB
-├ ƒ /api/crm/contacts/[id]                                                    0 B            89.6 kB
-├ ƒ /api/crm/templates                                                        0 B            89.6 kB
-├ ƒ /api/crm/templates/[id]                                                   0 B            89.6 kB
-├ ƒ /api/email/campaigns                                                      0 B            89.6 kB
-├ ƒ /api/email/stats                                                          0 B            89.6 kB
-├ ƒ /api/email/subscribers                                                    0 B            89.6 kB
-├ ƒ /api/health                                                               0 B            89.6 kB
-├ ƒ /api/health/performance                                                   0 B            89.6 kB
-├ ƒ /api/health/system-status                                                 0 B            89.6 kB
-├ ƒ /api/hello                                                                0 B            89.6 kB
-├ ƒ /api/magazines/upload                                                     0 B            89.6 kB
-├ ƒ /api/media                                                                0 B            89.6 kB
-├ ƒ /api/media/[id]                                                           0 B            89.6 kB
-├ ƒ /api/media/upload                                                         0 B            89.6 kB
-├ ƒ /api/newsletter/subscribe                                                 0 B            89.6 kB
-├ ƒ /api/pages                                                                0 B            89.6 kB
-├ ƒ /api/pages/[id]                                                           0 B            89.6 kB
-├ ƒ /api/podcasts                                                             0 B            89.6 kB
-├ ƒ /api/podcasts/[id]                                                        0 B            89.6 kB
-├ ƒ /api/posts                                                                0 B            89.6 kB
-├ ƒ /api/posts/[id]                                                           0 B            89.6 kB
-├ ƒ /api/revenue                                                              0 B            89.6 kB
-├ ƒ /api/rss                                                                  0 B            89.6 kB
-├ ƒ /api/settings                                                             0 B            89.6 kB
-├ ƒ /api/sitemap.xml                                                          0 B            89.6 kB
-├ ƒ /api/subscriptions                                                        0 B            89.6 kB
-├ ƒ /api/subscriptions/[id]                                                   0 B            89.6 kB
-├ ƒ /api/tags                                                                 0 B            89.6 kB
-├ ƒ /api/tags/[id]                                                            0 B            89.6 kB
-├ ƒ /api/users                                                                0 B            89.6 kB
-├ ƒ /api/users/[id]                                                           0 B            89.6 kB
-├ ƒ /api/videos                                                               0 B            89.6 kB
-├ ƒ /api/videos/[id]                                                          0 B            89.6 kB
-├ ƒ /api/webhooks/stripe                                                      0 B            89.6 kB
-├ ƒ /api/wordpress/clear-cache                                                0 B            89.6 kB
-├ ƒ /api/wordpress/sync                                                       0 B            89.6 kB
-├ ƒ /api/wordpress/sync-status                                                0 B            89.6 kB
-├ ● /author/[slug] (ISR: 86400 Seconds) (9119 ms)                             2.03 kB        99.2 kB
-├   └ css/f5f9384ae8ded84d.css                                                3.1 kB
-├   ├ /author/abby-perkins (778 ms)
-├   ├ /author/abigail-sawyer (732 ms)
-├   ├ /author/achimal (653 ms)
-├   ├ /author/abebolaayindemailinator-com (633 ms)
-├   ├ /author/aaron-barnhart (567 ms)
-├   ├ /author/aaron-orendorff (535 ms)
-├   ├ /author/adam-rhew (509 ms)
-├   └ [+13 more paths] (avg 361 ms)
-├ ● /blog/[slug] (ISR: 86400 Seconds) (34995 ms)                              4.46 kB         102 kB
-├   └ css/ea6cd96ddc3e5e5e.css                                                3.23 kB
-├   ├ /blog/rocky-garza-identity-expert (524 ms)
-├   ├ /blog/boss-holding-back-career-growth (462 ms)
-├   ├ /blog/ontario-will-require-companies-to-respond-to-applicants (441 ms)
-├   ├ /blog/21-quotes-about-failing-fearlessly (437 ms)
-├   ├ /blog/when-to-leave-a-relationship (429 ms)
-├   ├ /blog/deepak-chopra-global-membership-platform (426 ms)
-├   ├ /blog/importance-of-professional-networking-events (418 ms)
-├   └ [+93 more paths] (avg 342 ms)
-├ ○ /careers                                                                  1.07 kB        98.2 kB
-├ ● /category/[slug] (ISR: 86400 Seconds) (56281 ms)                          2.03 kB        99.2 kB
-├   └ css/f44ffa9d7eb559cd.css                                                3.08 kB
-├   ├ /category/lifestyle (8936 ms)
-├   ├ /category/entertainment (8898 ms)
-├   ├ /category/future-of-work (8833 ms)
-├   ├ /category/health (8698 ms)
-├   ├ /category/business (8658 ms)
-├   ├ /category/press-releases (8607 ms)
-├   ├ /category/money (516 ms)
-├   └ [+7 more paths] (avg 446 ms)
-├ ○ /contact                                                                  3.99 kB         101 kB
-├   └ css/b22b1d809e71e89e.css                                                2.79 kB
-├ ○ /dashboard                                                                3.38 kB         101 kB
-├   └ css/4ac64285173e51aa.css                                                3.37 kB
-├ ○ /help                                                                     1.41 kB        98.6 kB
-├ ○ /login                                                                    1.71 kB        98.9 kB
-├   └ css/7afb87cde3b0cc4a.css                                                2.79 kB
-├ ● /magazine (ISR: 86400 Seconds) (770 ms)                                   3.75 kB         278 kB
-├   └ css/79ff0e82fcafc383.css                                                3.04 kB
-├ ● /magazine/archive (ISR: 86400 Seconds) (412 ms)                           939 B          98.1 kB
-├   └ css/fcddf601ee2cd82c.css                                                2.47 kB
-├ ○ /newsletter                                                               1.39 kB        98.6 kB
-├   └ css/e87a294c622770f3.css                                                2.43 kB
-├ ● /podcast/[slug] (ISR: 86400 Seconds) (1618 ms)                            1.4 kB         98.6 kB
-├   └ css/c28b7a363aab21ce.css                                                2.41 kB
-├   ├ /podcast/rich-regular (468 ms)
-├   ├ /podcast/in-the-details (411 ms)
-├   ├ /podcast/unscripted-with-amy-somerville (382 ms)
-├   └ /podcast/brilliant-thoughts (343 ms)
-├ ● /podcasts (ISR: 86400 Seconds)                                            1.91 kB        99.1 kB
-├   └ css/2da55b4fe80d40e2.css                                                3.08 kB
-├ ○ /press                                                                    1.15 kB        98.3 kB
-├ ● /press-release/[slug]                                                     2.1 kB         99.3 kB
-├   └ css/5fe416b69d5dd6a5.css                                                2.55 kB
-├ ● /press-releases (ISR: 3600 Seconds) (359 ms)                              2.09 kB        99.3 kB
-├   └ css/c2f3d49ad68a6439.css                                                2.5 kB
-├ ● /privacy (ISR: 86400 Seconds) (478 ms)                                    762 B          97.9 kB
-├ ○ /search                                                                   2.7 kB         99.9 kB
-├   └ css/1afa8d5f95ad2e98.css                                                2.98 kB
-├ ○ /signin                                                                   2.02 kB        99.2 kB
-├   └ css/486933c5eea30ced.css                                                2.63 kB
-├ ƒ /sitemap.xml                                                              247 B          89.9 kB
-├ ○ /store                                                                    454 B          90.1 kB
-├ ○ /subscribe                                                                1.62 kB        98.8 kB
-├   └ css/e67af9bdaf8c11fb.css                                                2.73 kB
-├ ○ /success-plus                                                             2.55 kB        99.7 kB
-├   └ css/81af567f2644fd88.css                                                2.81 kB
-├ ● /terms (ISR: 86400 Seconds) (477 ms)                                      759 B          97.9 kB
-├ ● /video/[slug] (ISR: 86400 Seconds) (20779 ms)                             1.4 kB         98.6 kB
-├   └ css/c0a0024ef60dbb69.css                                                2.41 kB
-├   ├ /video/amy-s-busy-vs-productive (8692 ms)
-├   ├ /video/power-of-momentum (8626 ms)
-├   ├ /video/power-of-fear (443 ms)
-├   ├ /video/kris-carr-interview (420 ms)
-├   ├ /video/jewel-interview (376 ms)
-├   ├ /video/tony-robbins-illusion-of-investing (342 ms)
-├   ├ /video/importance-of-patience (330 ms)
-├   └ [+5 more paths] (avg 307 ms)
-└ ● /videos (ISR: 86400 Seconds)                                              1.63 kB        98.8 kB
-    └ css/ea2caca213b1b76d.css                                                2.78 kB
-+ First Load JS shared by all                                                 90 kB
-  ├ chunks/framework-0e8d27528ba61906.js                                      45.2 kB
-  ├ chunks/main-2fc7f0cd63ea9481.js                                           32.2 kB
-  ├ chunks/pages/_app-74fe3d6cd1508a63.js                                     10.2 kB
-  └ other shared chunks (total)                                               2.28 kB
-
-ƒ Middleware                                                                  51.2 kB
-
-○  (Static)   prerendered as static content
-●  (SSG)      prerendered as static HTML (uses getStaticProps)
-   (ISR)      incremental static regeneration (uses revalidate in getStaticProps)
-ƒ  (Dynamic)  server-rendered on demand
-
