@@ -57,6 +57,110 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, bu
       {/* "Inside the Magazine" hero */}
       <MagazineHero magazine={latestMagazine} />
 
+      {/* Bestsellers Section */}
+      <Bestsellers books={bestsellers} />
+
+      {/* Join the Inner Circle CTA */}
+      <section className={styles.innerCircleCTA}>
+        <div className={styles.innerCircleContent}>
+          <h2 className={styles.innerCircleTitle}>Join the Inner Circle</h2>
+          <p className={styles.innerCircleText}>
+            A weekly brief for leaders, entrepreneurs, and changemakers. Advance your expertise in growth and strategy, leadership and the future of work, and wealth and influence.
+          </p>
+          <a href="/subscribe" className={styles.innerCircleButton}>Learn More</a>
+        </div>
+      </section>
+
+      {/* Money Section */}
+      <section className={styles.categorySection}>
+        <div className={styles.sectionContainer}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Money</h2>
+            <a href="/category/money" className={styles.viewAllLink}>View All →</a>
+          </div>
+          <div className={styles.postsGrid}>
+            {moneyPosts.map((post: any) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Business Section */}
+      <section className={styles.categorySection}>
+        <div className={styles.sectionContainer}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Business</h2>
+            <a href="/category/business" className={styles.viewAllLink}>View All →</a>
+          </div>
+          <div className={styles.postsGrid}>
+            {businessPosts.map((post: any) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Future of Work Section */}
+      <section className={styles.categorySectionGray}>
+        <div className={styles.sectionContainer}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Future of Work</h2>
+            <a href="/category/future-of-work" className={styles.viewAllLink}>View All →</a>
+          </div>
+          <div className={styles.postsGrid}>
+            {futureOfWorkPosts.map((post: any) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Lifestyle Section */}
+      <section className={styles.categorySection}>
+        <div className={styles.sectionContainer}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Lifestyle</h2>
+            <a href="/category/lifestyle" className={styles.viewAllLink}>View All →</a>
+          </div>
+          <div className={styles.postsGrid}>
+            {lifestylePosts.map((post: any) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Health & Wellness Section */}
+      <section className={styles.categorySectionGray}>
+        <div className={styles.sectionContainer}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Health & Wellness</h2>
+            <a href="/category/health" className={styles.viewAllLink}>View All →</a>
+          </div>
+          <div className={styles.postsGrid}>
+            {healthPosts.map((post: any) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Personal Development Section */}
+      <section className={styles.categorySection}>
+        <div className={styles.sectionContainer}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Personal Development</h2>
+            <a href="/category/personal-development" className={styles.viewAllLink}>View All →</a>
+          </div>
+          <div className={styles.postsGrid}>
+            {latestPosts.slice(0, 3).map((post: any) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Speakers Bureau Section */}
       <section className={styles.speakersSection}>
         <div className={styles.sectionContainer}>
@@ -97,110 +201,6 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, bu
         </div>
       </section>
 
-      {/* Join the Inner Circle CTA */}
-      <section className={styles.innerCircleCTA}>
-        <div className={styles.innerCircleContent}>
-          <h2 className={styles.innerCircleTitle}>Join the Inner Circle</h2>
-          <p className={styles.innerCircleText}>
-            Get exclusive access to SUCCESS+ content, live events, masterclasses, and a community of achievers who are building their best lives.
-          </p>
-          <a href="/subscribe" className={styles.innerCircleButton}>Learn More</a>
-        </div>
-      </section>
-
-      {/* Bestsellers Section */}
-      <Bestsellers books={bestsellers} />
-
-      {/* Latest Articles Section */}
-      <section className={styles.latestSection}>
-        <div className={styles.sectionContainer}>
-          <h2 className={styles.sectionTitle}>Latest Articles</h2>
-          <div className={styles.postsGrid}>
-            {latestPosts.map((post: any) => (
-              <PostCard key={post.id} post={post} />
-            ))}
-          </div>
-          <div className={styles.viewMoreWrapper}>
-            <a href="/category/business" className={styles.viewMore}>View All Articles</a>
-          </div>
-        </div>
-      </section>
-
-      {/* Business Section */}
-      <section className={styles.categorySection}>
-        <div className={styles.sectionContainer}>
-          <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Business</h2>
-            <a href="/category/business" className={styles.viewAllLink}>View All →</a>
-          </div>
-          <div className={styles.postsGrid}>
-            {businessPosts.map((post: any) => (
-              <PostCard key={post.id} post={post} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Lifestyle Section */}
-      <section className={styles.categorySectionGray}>
-        <div className={styles.sectionContainer}>
-          <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Lifestyle</h2>
-            <a href="/category/lifestyle" className={styles.viewAllLink}>View All →</a>
-          </div>
-          <div className={styles.postsGrid}>
-            {lifestylePosts.map((post: any) => (
-              <PostCard key={post.id} post={post} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Money Section */}
-      <section className={styles.categorySection}>
-        <div className={styles.sectionContainer}>
-          <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Money</h2>
-            <a href="/category/money" className={styles.viewAllLink}>View All →</a>
-          </div>
-          <div className={styles.postsGrid}>
-            {moneyPosts.map((post: any) => (
-              <PostCard key={post.id} post={post} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Future of Work Section */}
-      <section className={styles.categorySectionGray}>
-        <div className={styles.sectionContainer}>
-          <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Future of Work</h2>
-            <a href="/category/future-of-work" className={styles.viewAllLink}>View All →</a>
-          </div>
-          <div className={styles.postsGrid}>
-            {futureOfWorkPosts.map((post: any) => (
-              <PostCard key={post.id} post={post} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Health & Wellness Section */}
-      <section className={styles.categorySection}>
-        <div className={styles.sectionContainer}>
-          <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Health & Wellness</h2>
-            <a href="/category/health" className={styles.viewAllLink}>View All →</a>
-          </div>
-          <div className={styles.postsGrid}>
-            {healthPosts.map((post: any) => (
-              <PostCard key={post.id} post={post} />
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Entertainment Section */}
       <section className={styles.categorySectionGray}>
         <div className={styles.sectionContainer}>
@@ -211,36 +211,6 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, bu
           <div className={styles.postsGrid}>
             {entertainmentPosts.map((post: any) => (
               <PostCard key={post.id} post={post} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Videos Section */}
-      <section className={styles.categorySection}>
-        <div className={styles.sectionContainer}>
-          <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Latest Videos</h2>
-            <a href="/videos" className={styles.viewAllLink}>View All →</a>
-          </div>
-          <div className={styles.postsGrid}>
-            {videos.slice(0, 3).map((video: any) => (
-              <PostCard key={video.id} post={video} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Podcasts Section */}
-      <section className={styles.categorySectionGray}>
-        <div className={styles.sectionContainer}>
-          <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Latest Podcasts</h2>
-            <a href="/podcasts" className={styles.viewAllLink}>View All →</a>
-          </div>
-          <div className={styles.postsGrid}>
-            {podcasts.slice(0, 3).map((podcast: any) => (
-              <PostCard key={podcast.id} post={podcast} />
             ))}
           </div>
         </div>
