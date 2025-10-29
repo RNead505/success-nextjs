@@ -13,7 +13,7 @@ const navItems = [
   { label: 'FUTURE OF WORK', path: '/category/future-of-work' },
   { label: 'VIDEOS', path: '/videos' },
   { label: 'PODCASTS', path: '/podcasts' },
-  { label: 'BESTSELLERS', path: 'https://www.success.com/bestsellers/', external: true },
+  { label: 'BESTSELLERS', path: '/bestsellers' },
   { label: 'STORE', path: '/store' },
 ];
 

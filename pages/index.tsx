@@ -196,7 +196,7 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, bu
             </div>
           </div>
           <div className={styles.viewMoreWrapper}>
-            <a href="https://www.success.com/speakers/" target="_blank" rel="noopener noreferrer" className={styles.viewMore}>Learn More</a>
+            <a href="/speakers" className={styles.viewMore}>Learn More</a>
           </div>
         </div>
       </section>
