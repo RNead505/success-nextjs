@@ -33,6 +33,8 @@ export const authOptions: AuthOptions = {
           throw new Error('Invalid credentials');
         }
 
+        console.log('User authenticated:', { email: user.email, role: user.role });
+
         return {
           id: user.id,
           email: user.email,
@@ -49,6 +51,7 @@ export const authOptions: AuthOptions = {
         token.id = user.id;
         token.role = user.role;
         token.avatar = user.avatar;
+        console.log('JWT callback - setting role:', user.role);
       }
       return token;
     },
@@ -57,6 +60,7 @@ export const authOptions: AuthOptions = {
         session.user.id = token.id;
         session.user.role = token.role;
         session.user.avatar = token.avatar;
+        console.log('Session callback - user role:', token.role);
       }
       return session;
     },

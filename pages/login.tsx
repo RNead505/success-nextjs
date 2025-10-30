@@ -29,14 +29,21 @@ export default function MemberLogin() {
         setError('Invalid email or password');
         setLoading(false);
       } else {
+        // Wait a moment for session to update, then fetch it
+        await new Promise(resolve => setTimeout(resolve, 500));
+
         // Fetch updated session to check user role
         const response = await fetch('/api/auth/session');
         const sessionData = await response.json();
 
+        console.log('Session data after login:', sessionData);
+
         // Redirect based on user role
         if (sessionData?.user?.role === 'ADMIN') {
+          console.log('Redirecting to /admin');
           router.push('/admin');
         } else {
+          console.log('Redirecting to /dashboard');
           const callbackUrl = router.query.callbackUrl as string || '/dashboard';
           router.push(callbackUrl);
         }

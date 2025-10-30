@@ -80,7 +80,9 @@
       "Bash(for img in \"90a1045e58f8b8b4c70dafa7986ed4f1.jpg\" \"90a1045e58f8b8b4c70dafa7986ed4f1s.jpg\" \"90a1045e58f8b8b4c70dafa7986ed4f1a.jpg\" \"90a1045e58f8b8b4c70dafa7986ed4f1m.jpg\" \"90a1045e58f8b8b4c70dafa7986ed4f1e.jpg\" \"90a1045e58f8b8b4c70dafa7986ed4f1o.jpg\")",
       "Bash(do echo \"Testing: $img\")",
       "Bash(done)",
-      "WebFetch(domain:offer.success.com)"
+      "WebFetch(domain:offer.success.com)",
+      "Bash(cd:*)",
+      "Bash(npx tsx:*)"
     ],
     "deny": [],
     "ask": []
