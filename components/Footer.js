@@ -111,7 +111,6 @@ export default function Footer() {
             <Link href="/contact">Contact</Link>
             <Link href="/press">Press</Link>
             <Link href="/press-releases">Press Releases</Link>
-            <Link href="/careers">Careers</Link>
           </div>
 
           <div className={styles.column}>
