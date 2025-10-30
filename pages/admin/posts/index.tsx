@@ -37,9 +37,8 @@ export default function AdminPosts() {
     async function fetchPosts() {
       try {
         setError(null);
-        const wpApiUrl = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || 'https://www.success.com/wp-json/wp/v2';
-
-        const res = await fetch(`${wpApiUrl}/posts?_embed&per_page=50`, {
+        // Use our API proxy to avoid CORS issues
+        const res = await fetch('/api/wordpress/posts?per_page=50', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

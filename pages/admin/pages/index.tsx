@@ -43,19 +43,11 @@ export default function AdminPages() {
     setLoading(true);
     setError(null);
     try {
-      const wpApiUrl = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || 'https://www.success.com/wp-json/wp/v2';
+      // Use our API proxy to avoid CORS issues
+      const endpoint = '/api/wordpress/pages?per_page=100';
 
-      // WordPress API requires authentication to see draft/private content
-      // For now, only fetch published pages (public access)
-      // To see drafts/private, you'll need to authenticate with WordPress
-
-      let endpoint = `${wpApiUrl}/pages?_embed&per_page=100`;
-
-      // Only add status filter if it's 'publish' (public) or 'all' which defaults to publish
-      if (filter === 'publish' || filter === 'all') {
-        // No status param needed, defaults to published
-      } else {
-        // For draft/private, show a message that WordPress auth is needed
+      // Only show published pages for now
+      if (filter !== 'publish' && filter !== 'all') {
         setPages([]);
         setError('Draft and private pages require WordPress admin authentication. Only published pages are shown.');
         setLoading(false);
