@@ -30,8 +30,10 @@ export default function AdminPages() {
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.push('/admin/login');
+    } else if (status === 'authenticated' && session?.user?.role !== 'ADMIN') {
+      router.push('/dashboard');
     }
-  }, [status, router]);
+  }, [status, session, router]);
 
   useEffect(() => {
     fetchPages();

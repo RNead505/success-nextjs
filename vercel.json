@@ -4,8 +4,8 @@
   "regions": ["iad1"],
   "crons": [
     {
-      "path": "/api/cron/daily-sync",
-      "schedule": "0 2 * * *"
+      "path": "/api/cron/hourly-sync",
+      "schedule": "0 * * * *"
     }
   ],
   "functions": {
