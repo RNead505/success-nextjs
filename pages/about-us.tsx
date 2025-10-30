@@ -155,7 +155,7 @@ export async function getStaticProps() {
       image: 'https://www.success.com/wp-content/uploads/2025/10/GlennSquare.png',
       image2: 'https://www.success.com/wp-content/uploads/2025/10/GlennSquare.png',
       dreamCareer: 'Reimagining SUCCESS',
-      bio: 'Glenn Sanford is reimagining SUCCESS® as a next-gen platform for personal growth, leadership, and high performance. By fusing its legacy with modern innovation, he's turning SUCCESS® into a catalyst for transformation—where timeless principles meet the tools of the AI era.',
+      bio: 'Glenn Sanford is reimagining SUCCESS as a next-gen platform for personal growth, leadership, and high performance. By fusing its legacy with modern innovation, he is turning SUCCESS into a catalyst for transformation where timeless principles meet the tools of the AI era.',
       linkedin: 'https://www.linkedin.com/in/glenndsanford/'
     },
     {
