@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Layout from '../components/Layout';
@@ -7,6 +7,7 @@ import styles from './Login.module.css';
 
 export default function MemberLogin() {
   const router = useRouter();
+  const { data: session } = useSession();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -28,9 +29,17 @@ export default function MemberLogin() {
         setError('Invalid email or password');
         setLoading(false);
       } else {
-        // Redirect to member dashboard or callback URL
-        const callbackUrl = router.query.callbackUrl as string || '/dashboard';
-        router.push(callbackUrl);
+        // Fetch updated session to check user role
+        const response = await fetch('/api/auth/session');
+        const sessionData = await response.json();
+
+        // Redirect based on user role
+        if (sessionData?.user?.role === 'ADMIN') {
+          router.push('/admin/dashboard');
+        } else {
+          const callbackUrl = router.query.callbackUrl as string || '/dashboard';
+          router.push(callbackUrl);
+        }
       }
     } catch (err) {
       setError('An error occurred. Please try again.');

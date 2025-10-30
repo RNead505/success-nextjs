@@ -54,8 +54,11 @@ export default function MemberDashboard() {
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.push('/login');
+    } else if (status === 'authenticated' && session?.user?.role === 'ADMIN') {
+      // Redirect admins to the admin dashboard
+      router.push('/admin/dashboard');
     }
-  }, [status, router]);
+  }, [status, session, router]);
 
   // Fetch user's bookmarks
   useEffect(() => {
