@@ -1,78 +1,226 @@
 import { useEffect, useState } from 'react';
 import styles from './DashboardStats.module.css';
 
-interface Stats {
-  posts: number;
-  categories: number;
-  users: number;
-  videos: number;
-  podcasts: number;
+interface DashboardData {
+  overview: {
+    totalPosts: number;
+    totalVideos: number;
+    totalPodcasts: number;
+    totalCategories: number;
+    totalUsers: number;
+    activeSubscribers: number;
+    newsletterSubscribers: number;
+    magazineIssues: number;
+  };
+  content: {
+    postsThisPeriod: number;
+    videosThisPeriod: number;
+    podcastsThisPeriod: number;
+  };
+  editorial: {
+    totalItems: number;
+    byStatus: {
+      [key: string]: number;
+    };
+  };
+  engagement: {
+    totalBookmarks: number;
+    avgBookmarksPerUser: number | string;
+  };
 }
 
 export default function DashboardStats() {
-  const [stats, setStats] = useState<Stats>({
-    posts: 0,
-    categories: 0,
-    users: 0,
-    videos: 0,
-    podcasts: 0,
-  });
+  const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [period, setPeriod] = useState('7'); // days
 
   useEffect(() => {
-    async function fetchStats() {
-      try {
-        // Fetch counts from API
-        const [postsRes, catsRes, usersRes, videosRes, podcastsRes] = await Promise.all([
-          fetch('/api/posts').catch(e => ({ ok: false, headers: new Headers() })),
-          fetch('/api/categories').catch(e => ({ ok: false, headers: new Headers() })),
-          fetch('/api/users').catch(e => ({ ok: false, headers: new Headers() })),
-          fetch('/api/videos').catch(e => ({ ok: false, headers: new Headers() })),
-          fetch('/api/podcasts').catch(e => ({ ok: false, headers: new Headers() })),
-        ]);
+    fetchDashboardData();
+  }, [period]);
 
-        setStats({
-          posts: parseInt(postsRes.headers.get('X-WP-Total') || '0'),
-          categories: parseInt(catsRes.headers.get('X-WP-Total') || '0'),
-          users: parseInt(usersRes.headers.get('X-WP-Total') || '0'),
-          videos: parseInt(videosRes.headers.get('X-WP-Total') || '0'),
-          podcasts: parseInt(podcastsRes.headers.get('X-WP-Total') || '0'),
-        });
-      } catch (error) {
-        console.error('Error fetching stats:', error);
-      } finally {
-        setLoading(false);
+  const fetchDashboardData = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch(`/api/analytics/dashboard?period=${period}`);
+      if (res.ok) {
+        const dashboardData = await res.json();
+        setData(dashboardData);
       }
+    } catch (error) {
+      console.error('Error fetching dashboard data:', error);
+    } finally {
+      setLoading(false);
     }
-
-    fetchStats();
-  }, []);
-
-  const statCards = [
-    { label: 'Posts', value: stats.posts, icon: '📝', color: '#667eea' },
-    { label: 'Categories', value: stats.categories, icon: '📁', color: '#764ba2' },
-    { label: 'Users', value: stats.users, icon: '👥', color: '#f093fb' },
-    { label: 'Videos', value: stats.videos, icon: '🎥', color: '#4facfe' },
-    { label: 'Podcasts', value: stats.podcasts, icon: '🎙️', color: '#43e97b' },
-  ];
+  };
 
   if (loading) {
-    return <div className={styles.loading}>Loading stats...</div>;
+    return (
+      <div className={styles.statsGrid}>
+        {[...Array(4)].map((_, i) => (
+          <div key={i} className={styles.statCard}>
+            <div className={styles.loadingShimmer}></div>
+          </div>
+        ))}
+      </div>
+    );
   }
 
+  if (!data) {
+    return null;
+  }
+
+  const stats = [
+    {
+      label: 'Total Content',
+      value: data.overview.totalPosts + data.overview.totalVideos + data.overview.totalPodcasts,
+      change: `+${data.content.postsThisPeriod + data.content.videosThisPeriod + data.content.podcastsThisPeriod} this period`,
+      icon: '📚',
+      color: '#667eea',
+    },
+    {
+      label: 'Active Subscribers',
+      value: data.overview.activeSubscribers,
+      change: 'SUCCESS+ Members',
+      icon: '⭐',
+      color: '#d32f2f',
+    },
+    {
+      label: 'Newsletter Subscribers',
+      value: data.overview.newsletterSubscribers,
+      change: 'Total subscribers',
+      icon: '📧',
+      color: '#43e97b',
+    },
+    {
+      label: 'Content Bookmarks',
+      value: data.engagement.totalBookmarks,
+      change: `${data.engagement.avgBookmarksPerUser} avg per user`,
+      icon: '🔖',
+      color: '#f093fb',
+    },
+  ];
+
   return (
-    <div className={styles.statsGrid}>
-      {statCards.map((stat) => (
-        <div key={stat.label} className={styles.statCard}>
-          <div className={styles.statIcon} style={{ background: stat.color }}>
-            {stat.icon}
+    <div className={styles.container}>
+      <div className={styles.periodSelector}>
+        <button
+          onClick={() => setPeriod('7')}
+          className={period === '7' ? styles.periodActive : styles.periodButton}
+        >
+          Last 7 Days
+        </button>
+        <button
+          onClick={() => setPeriod('30')}
+          className={period === '30' ? styles.periodActive : styles.periodButton}
+        >
+          Last 30 Days
+        </button>
+        <button
+          onClick={() => setPeriod('90')}
+          className={period === '90' ? styles.periodActive : styles.periodButton}
+        >
+          Last 90 Days
+        </button>
+      </div>
+
+      <div className={styles.statsGrid}>
+        {stats.map((stat) => (
+          <div key={stat.label} className={styles.statCard} style={{ borderTopColor: stat.color }}>
+            <div className={styles.statIcon} style={{ backgroundColor: `${stat.color}20`, color: stat.color }}>
+              {stat.icon}
+            </div>
+            <div className={styles.statContent}>
+              <h3 className={styles.statLabel}>{stat.label}</h3>
+              <p className={styles.statValue}>{stat.value.toLocaleString()}</p>
+              <p className={styles.statChange}>{stat.change}</p>
+            </div>
           </div>
-          <div className={styles.statContent}>
-            <p className={styles.statLabel}>{stat.label}</p>
-            <p className={styles.statValue}>{stat.value}</p>
+        ))}
+      </div>
+
+      <div className={styles.detailsGrid}>
+        <div className={styles.detailCard}>
+          <h3>Content Breakdown</h3>
+          <div className={styles.detailList}>
+            <div className={styles.detailItem}>
+              <span>Articles</span>
+              <strong>{data.overview.totalPosts}</strong>
+            </div>
+            <div className={styles.detailItem}>
+              <span>Videos</span>
+              <strong>{data.overview.totalVideos}</strong>
+            </div>
+            <div className={styles.detailItem}>
+              <span>Podcasts</span>
+              <strong>{data.overview.totalPodcasts}</strong>
+            </div>
+            <div className={styles.detailItem}>
+              <span>Magazine Issues</span>
+              <strong>{data.overview.magazineIssues}</strong>
+            </div>
+            <div className={styles.detailItem}>
+              <span>Categories</span>
+              <strong>{data.overview.totalCategories}</strong>
+            </div>
           </div>
         </div>
-      ))}
+
+        <div className={styles.detailCard}>
+          <h3>Recent Activity</h3>
+          <div className={styles.detailList}>
+            <div className={styles.detailItem}>
+              <span>Posts (Last {period} days)</span>
+              <strong className={styles.positive}>+{data.content.postsThisPeriod}</strong>
+            </div>
+            <div className={styles.detailItem}>
+              <span>Videos (Last {period} days)</span>
+              <strong className={styles.positive}>+{data.content.videosThisPeriod}</strong>
+            </div>
+            <div className={styles.detailItem}>
+              <span>Podcasts (Last {period} days)</span>
+              <strong className={styles.positive}>+{data.content.podcastsThisPeriod}</strong>
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.detailCard}>
+          <h3>Editorial Calendar</h3>
+          <div className={styles.detailList}>
+            <div className={styles.detailItem}>
+              <span>Total Items</span>
+              <strong>{data.editorial.totalItems}</strong>
+            </div>
+            {Object.entries(data.editorial.byStatus).map(([status, count]) => (
+              <div key={status} className={styles.detailItem}>
+                <span>{status.replace('_', ' ')}</span>
+                <strong>{count}</strong>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className={styles.detailCard}>
+          <h3>User Engagement</h3>
+          <div className={styles.detailList}>
+            <div className={styles.detailItem}>
+              <span>Total Users</span>
+              <strong>{data.overview.totalUsers}</strong>
+            </div>
+            <div className={styles.detailItem}>
+              <span>Active Members</span>
+              <strong className={styles.positive}>{data.overview.activeSubscribers}</strong>
+            </div>
+            <div className={styles.detailItem}>
+              <span>Newsletter Subs</span>
+              <strong>{data.overview.newsletterSubscribers}</strong>
+            </div>
+            <div className={styles.detailItem}>
+              <span>Avg Bookmarks/User</span>
+              <strong>{data.engagement.avgBookmarksPerUser}</strong>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
