@@ -4,13 +4,6 @@ import { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
 import styles from './Dashboard.module.css';
 
-type AnalyticsData = {
-  totalPosts: number;
-  totalVideos: number;
-  totalPodcasts: number;
-  recentPosts: any[];
-  popularCategories: { name: string; count: number }[];
-};
 
 type Bookmark = {
   id: string;
@@ -42,8 +35,6 @@ type Activity = {
 export default function MemberDashboard() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
-  const [loadingAnalytics, setLoadingAnalytics] = useState(true);
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [loadingBookmarks, setLoadingBookmarks] = useState(true);
   const [readingProgress, setReadingProgress] = useState<ReadingProgress[]>([]);
@@ -56,7 +47,7 @@ export default function MemberDashboard() {
       router.push('/login');
     } else if (status === 'authenticated' && session?.user?.role === 'ADMIN') {
       // Redirect admins to the admin dashboard
-      router.push('/admin/dashboard');
+      router.push('/admin');
     }
   }, [status, session, router]);
 
@@ -126,53 +117,6 @@ export default function MemberDashboard() {
     }
   }, [session]);
 
-  useEffect(() => {
-    const fetchAnalytics = async () => {
-      try {
-        setLoadingAnalytics(true);
-
-        // Fetch data from WordPress API
-        const [postsRes, videosRes, podcastsRes, categoriesRes] = await Promise.all([
-          fetch(`${process.env.NEXT_PUBLIC_WORDPRESS_API_URL || 'https://www.success.com/wp-json/wp/v2'}/posts?per_page=5&_embed`),
-          fetch(`${process.env.NEXT_PUBLIC_WORDPRESS_API_URL || 'https://www.success.com/wp-json/wp/v2'}/videos?per_page=1`),
-          fetch(`${process.env.NEXT_PUBLIC_WORDPRESS_API_URL || 'https://www.success.com/wp-json/wp/v2'}/podcasts?per_page=1`),
-          fetch(`${process.env.NEXT_PUBLIC_WORDPRESS_API_URL || 'https://www.success.com/wp-json/wp/v2'}/categories?per_page=10`)
-        ]);
-
-        const totalPosts = parseInt(postsRes.headers.get('X-WP-Total') || '0');
-        const totalVideos = parseInt(videosRes.headers.get('X-WP-Total') || '0');
-        const totalPodcasts = parseInt(podcastsRes.headers.get('X-WP-Total') || '0');
-
-        const recentPosts = await postsRes.json();
-        const categories = await categoriesRes.json();
-
-        const popularCategories = categories
-          .filter((cat: any) => cat.count > 0)
-          .sort((a: any, b: any) => b.count - a.count)
-          .slice(0, 5)
-          .map((cat: any) => ({
-            name: cat.name,
-            count: cat.count
-          }));
-
-        setAnalytics({
-          totalPosts,
-          totalVideos,
-          totalPodcasts,
-          recentPosts,
-          popularCategories
-        });
-      } catch (error) {
-        console.error('Error fetching analytics:', error);
-      } finally {
-        setLoadingAnalytics(false);
-      }
-    };
-
-    if (session) {
-      fetchAnalytics();
-    }
-  }, [session]);
 
   if (status === 'loading') {
     return (
@@ -304,88 +248,6 @@ export default function MemberDashboard() {
                 <button className={styles.editButton}>Edit Profile</button>
               </div>
             </div>
-          </div>
-
-          {/* Site Analytics */}
-          <div className={styles.analyticsSection}>
-            <h2>Site Analytics</h2>
-            {loadingAnalytics ? (
-              <div className={styles.loadingAnalytics}>Loading analytics...</div>
-            ) : analytics ? (
-              <>
-                {/* Stats Cards */}
-                <div className={styles.statsGrid}>
-                  <div className={styles.statCard}>
-                    <div className={styles.statIcon}>
-                      <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
-                    </div>
-                    <div className={styles.statContent}>
-                      <div className={styles.statValue}>{analytics.totalPosts.toLocaleString()}</div>
-                      <div className={styles.statLabel}>Total Articles</div>
-                    </div>
-                  </div>
-
-                  <div className={styles.statCard}>
-                    <div className={styles.statIcon}>
-                      <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                      </svg>
-                    </div>
-                    <div className={styles.statContent}>
-                      <div className={styles.statValue}>{analytics.totalVideos.toLocaleString()}</div>
-                      <div className={styles.statLabel}>Videos</div>
-                    </div>
-                  </div>
-
-                  <div className={styles.statCard}>
-                    <div className={styles.statIcon}>
-                      <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
-                      </svg>
-                    </div>
-                    <div className={styles.statContent}>
-                      <div className={styles.statValue}>{analytics.totalPodcasts.toLocaleString()}</div>
-                      <div className={styles.statLabel}>Podcast Episodes</div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Content Breakdown */}
-                <div className={styles.contentBreakdown}>
-                  <div className={styles.breakdownCard}>
-                    <h3>Popular Categories</h3>
-                    <div className={styles.categoriesList}>
-                      {analytics.popularCategories.map((category, index) => (
-                        <div key={index} className={styles.categoryItem}>
-                          <span className={styles.categoryName}>{category.name}</span>
-                          <span className={styles.categoryCount}>{category.count} articles</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className={styles.breakdownCard}>
-                    <h3>Latest Articles</h3>
-                    <div className={styles.recentPosts}>
-                      {analytics.recentPosts.slice(0, 5).map((post: any) => (
-                        <div key={post.id} className={styles.recentPost}>
-                          <a href={`/blog/${post.slug}`} className={styles.recentPostLink}>
-                            {post.title.rendered.replace(/&#8217;/g, "'").replace(/&#8220;/g, '"').replace(/&#8221;/g, '"')}
-                          </a>
-                          <span className={styles.recentPostDate}>
-                            {new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </>
-            ) : (
-              <div className={styles.noAnalytics}>Unable to load analytics</div>
-            )}
           </div>
 
           {/* Quick Links */}

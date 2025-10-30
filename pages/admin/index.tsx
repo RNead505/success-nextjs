@@ -15,8 +15,11 @@ export default function AdminDashboard() {
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.push('/admin/login');
+    } else if (status === 'authenticated' && session?.user?.role !== 'ADMIN') {
+      // Redirect non-admin users to member dashboard
+      router.push('/dashboard');
     }
-  }, [status, router]);
+  }, [status, session, router]);
 
   useEffect(() => {
     // Fetch recent posts

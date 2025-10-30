@@ -35,7 +35,7 @@ export default function MemberLogin() {
 
         // Redirect based on user role
         if (sessionData?.user?.role === 'ADMIN') {
-          router.push('/admin/dashboard');
+          router.push('/admin');
         } else {
           const callbackUrl = router.query.callbackUrl as string || '/dashboard';
           router.push(callbackUrl);
