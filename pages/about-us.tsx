@@ -150,13 +150,31 @@ export async function getStaticProps() {
   // Team members data extracted from WordPress
   const teamMembers: TeamMember[] = [
     {
+      name: 'Glenn Sanford',
+      title: 'Managing Director and Publisher',
+      image: 'https://www.success.com/wp-content/uploads/2025/10/GlennSquare.png',
+      image2: 'https://www.success.com/wp-content/uploads/2025/10/GlennSquare.png',
+      dreamCareer: 'Reimagining SUCCESS',
+      bio: 'Glenn Sanford is reimagining SUCCESS® as a next-gen platform for personal growth, leadership, and high performance. By fusing its legacy with modern innovation, he's turning SUCCESS® into a catalyst for transformation—where timeless principles meet the tools of the AI era.',
+      linkedin: 'https://www.linkedin.com/in/glenndsanford/'
+    },
+    {
       name: 'Kerrie Lee Brown',
       title: 'Chief Content Officer & Editor-in-Chief',
-      image: 'https://www.success.com/wp-content/uploads/2024/03/staff_kerrie-lee-brown-2023.jpg',
-      image2: 'https://www.success.com/wp-content/uploads/2024/04/image-101.png',
+      image: 'https://www.success.com/wp-content/uploads/2025/10/kerrielee2_square_no_blackbar.jpg',
+      image2: 'https://www.success.com/wp-content/uploads/2025/10/kerrielee2_square_no_blackbar.jpg',
       dreamCareer: 'Doing what I\'m doing',
-      bio: 'Kerrie Lee Brown is an award-winning writer, editor and speaker who has worked in media and communications for three decades. She is published in 150 magazines worldwide, has interviewed some of the biggest names in Hollywood and business, and is the author of the book "My Heart, My Self: A Heartfelt Guide for Women Who Do Too Much" (Amazon), which has received various recognitions in the self-help category.',
+      bio: 'Kerrie Lee Brown is an award-winning journalist, speaker, and wellness advocate with 30 years of experience in media and communications. She has contributed works to over 150 magazines globally and interviewed top names in Hollywood and business. Kerrie is passionate about mentoring others, promoting authentic leadership, and inspiring creative teams.',
       linkedin: 'https://www.linkedin.com/in/kerrieleebrown/'
+    },
+    {
+      name: 'Courtland Warren',
+      title: 'Founding Faculty & Program Lead, SUCCESS Coaching™',
+      image: 'https://www.success.com/wp-content/uploads/2025/10/courtland-crop.png',
+      image2: 'https://www.success.com/wp-content/uploads/2025/10/courtland-crop.png',
+      dreamCareer: 'Transformational coach and strategist',
+      bio: 'A global strategist and transformational coach, Courtland Warren blends behavioral science with human potential. As the founding faculty of SUCCESS Coaching™, he guides leaders through identity-first transformation—helping them think deeper, lead stronger, and live with purpose.',
+      linkedin: 'https://www.linkedin.com/in/courtlandwarren/'
     },
     {
       name: 'Rachel Nead',
