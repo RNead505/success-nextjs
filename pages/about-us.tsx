@@ -227,7 +227,7 @@ export async function getStaticProps() {
       image: 'https://www.success.com/wp-content/uploads/2025/03/Kathryn-Giuffrida.jpg',
       image2: 'https://www.success.com/wp-content/uploads/2025/03/Kathryn-Giuffrida-1.jpg',
       dreamCareer: 'Homesteading mom of many',
-      bio: 'As associate marketing editor at SUCCESS®, Kathryn oversees and assists with all SEO and partner content initiatives. She collaborates closely with our talented team of writers, editors, fact-checkers, uploaders, and SEO strategists to produce high-quality content that resonates with our audience. She has over six years of experience in SEO content production and has achieved multiple first-page rankings on Google, demonstrating her ability to create content that is both engaging and highly discoverable.',
+      bio: 'With over 10 years of experience in SEO and marketing strategy, Kathryn leads digital growth across all channels at SUCCESS®. She oversees initiatives that enhance brand visibility, strengthen engagement, and drive sustainable results. Passionate about personal and professional development, she enjoys connecting with purpose-driven people who are committed to growth and turning their dreams into reality.',
       linkedin: ''
     },
     {
