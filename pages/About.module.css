@@ -334,8 +334,8 @@
 
 /* CTA Section */
 .cta {
-  background-color: #000;
-  color: #fff;
+  background-color: var(--color-black);
+  color: var(--color-white);
   padding: 5rem 1rem;
   text-align: center;
 }
@@ -344,11 +344,12 @@
   font-size: 2.5rem;
   font-weight: 700;
   margin: 0 0 1rem 0;
+  color: var(--color-white);
 }
 
 .ctaText {
   font-size: 1.25rem;
-  color: var(--color-gray-medium);
+  color: var(--color-white);
   margin: 0 0 2rem 0;
   max-width: 600px;
   margin-left: auto;
