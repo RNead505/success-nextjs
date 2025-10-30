@@ -23,13 +23,13 @@
   font-weight: 700;
   text-align: center;
   margin: 0 0 3rem 0;
-  color: #000;
+  color: var(--color-black);
 }
 
 .text {
   font-size: 1.125rem;
   line-height: 1.8;
-  color: #2a2a2a;
+  color: var(--color-text-primary);
   margin: 0 0 1.5rem 0;
 }
 
@@ -98,7 +98,7 @@
 .statNumber {
   font-size: 3rem;
   font-weight: 900;
-  color: #000;
+  color: var(--color-black);
   margin-bottom: 0.5rem;
 }
 
@@ -107,7 +107,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: #4a4a4a;
+  color: var(--color-text-secondary);
 }
 
 /* Topics Grid */
@@ -134,13 +134,13 @@
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0 0 1rem 0;
-  color: #000;
+  color: var(--color-black);
 }
 
 .topicDescription {
   font-size: 0.9375rem;
   line-height: 1.6;
-  color: #3a3a3a;
+  color: var(--color-text-primary);
   margin: 0;
 }
 
@@ -172,13 +172,13 @@
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0 0 0.75rem 0;
-  color: #000;
+  color: var(--color-black);
 }
 
 .timelineText {
   font-size: 1rem;
   line-height: 1.6;
-  color: #3a3a3a;
+  color: var(--color-text-primary);
   margin: 0;
 }
 
@@ -226,14 +226,14 @@
 .timelineYear {
   font-size: 2rem;
   font-weight: 700;
-  color: #000;
+  color: var(--color-black);
   margin: 0 0 1rem 0;
 }
 
 .timelineText {
   font-size: 0.95rem;
   line-height: 1.6;
-  color: #4a4a4a;
+  color: var(--color-text-secondary);
 }
 
 /* Team Section */
@@ -285,12 +285,12 @@
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0 0 0.5rem 0;
-  color: #000;
+  color: var(--color-black);
 }
 
 .memberTitle {
   font-size: 0.95rem;
-  color: #4a4a4a;
+  color: var(--color-text-secondary);
   margin: 0 0 1rem 0;
   font-weight: 600;
 }
@@ -302,13 +302,13 @@
 .dreamCareer {
   font-size: 0.9rem;
   margin: 0 0 0.75rem 0;
-  color: #333;
+  color: var(--color-text-primary);
 }
 
 .memberBio {
   font-size: 0.9rem;
   line-height: 1.6;
-  color: #4a4a4a;
+  color: var(--color-text-secondary);
   margin: 0 0 1rem 0;
 }
 
@@ -348,7 +348,7 @@
 
 .ctaText {
   font-size: 1.25rem;
-  color: #e5e5e5;
+  color: var(--color-gray-medium);
   margin: 0 0 2rem 0;
   max-width: 600px;
   margin-left: auto;
@@ -358,8 +358,8 @@
 .ctaButton {
   display: inline-block;
   padding: 1rem 3rem;
-  background-color: #fff;
-  color: #000;
+  background-color: var(--color-white);
+  color: var(--color-black);
   text-decoration: none;
   font-weight: 700;
   font-size: 1rem;
@@ -370,7 +370,7 @@
 }
 
 .ctaButton:hover {
-  background-color: #e5e5e5;
+  background-color: var(--color-gray-medium);
   transform: translateY(-2px);
 }
 
