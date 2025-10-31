@@ -164,8 +164,30 @@ async function handleSubscriptionDeleted(subscription) {
 
 // Handle successful payment
 async function handlePaymentSucceeded(invoice) {
-  console.log('Payment succeeded for invoice:', invoice.id);
-  // TODO: Send confirmation email to user
+  const customerId = invoice.customer;
+
+  const user = await prisma.user.findFirst({
+    where: { stripeCustomerId: customerId },
+    include: { subscription: true },
+  });
+
+  if (!user) {
+    console.error('User not found for customer:', customerId);
+    return;
+  }
+
+  // Send confirmation email
+  const { sendEmail, getSubscriptionConfirmationHTML } = require('../../../lib/email');
+  const amount = (invoice.amount_paid / 100).toFixed(2);
+  const plan = user.subscription?.stripePriceId || 'SUCCESS+';
+
+  await sendEmail({
+    to: user.email,
+    subject: 'Payment Successful - SUCCESS+ Subscription',
+    html: getSubscriptionConfirmationHTML(user.name || 'Subscriber', plan, amount),
+  });
+
+  console.log('Payment succeeded and email sent for user:', user.id);
 }
 
 // Handle failed payment
@@ -188,6 +210,14 @@ async function handlePaymentFailed(invoice) {
     },
   });
 
-  console.log('Payment failed for user:', user.id);
-  // TODO: Send payment failed email to user
+  // Send payment failed email
+  const { sendEmail, getPaymentFailedHTML } = require('../../../lib/email');
+
+  await sendEmail({
+    to: user.email,
+    subject: 'Payment Failed - Action Required',
+    html: getPaymentFailedHTML(user.name || 'Subscriber'),
+  });
+
+  console.log('Payment failed and email sent for user:', user.id);
 }

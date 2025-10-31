@@ -1,0 +1,136 @@
+.uploader {
+  width: 100%;
+  max-width: 600px;
+}
+
+.dropzone {
+  border: 2px dashed #d1d5db;
+  border-radius: 12px;
+  padding: 48px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #f9fafb;
+}
+
+.dropzone:hover {
+  border-color: #d32f2f;
+  background: white;
+}
+
+.dropzoneIcon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.dropzoneText {
+  font-size: 16px;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.dropzoneText strong {
+  color: #d32f2f;
+  font-weight: 600;
+}
+
+.dropzoneHint {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.fileInput {
+  display: none;
+}
+
+.preview {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid #e5e7eb;
+}
+
+.previewImage {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.progressOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.progressBar {
+  width: 100%;
+  max-width: 300px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(to right, #d32f2f, #f44336);
+  transition: width 0.3s ease;
+  border-radius: 4px;
+}
+
+.progressText {
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.error {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #991b1b;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.errorClose {
+  background: none;
+  border: none;
+  color: #991b1b;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.errorClose:hover {
+  opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+  .dropzone {
+    padding: 32px 16px;
+  }
+
+  .dropzoneIcon {
+    font-size: 36px;
+  }
+}
