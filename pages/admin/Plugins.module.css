@@ -1,0 +1,337 @@
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  color: #1a1a1a;
+}
+
+.subtitle {
+  color: #666;
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.headerActions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.updateAllButton {
+  padding: 0.75rem 1.5rem;
+  background: #f59e0b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.updateAllButton:hover {
+  background: #d97706;
+}
+
+.addNewButton {
+  padding: 0.75rem 1.5rem;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.addNewButton:hover {
+  background: #5568d3;
+}
+
+.toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.875rem;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.categoryFilter {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.categoryButton,
+.categoryActive {
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  background: white;
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.categoryButton:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.categoryActive {
+  background: #667eea;
+  color: white;
+  border-color: #667eea;
+}
+
+.pluginsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.pluginCard {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: all 0.2s;
+}
+
+.pluginCard:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #d1d5db;
+}
+
+.pluginHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.pluginInfo {
+  flex: 1;
+}
+
+.pluginName {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.proBadge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 4px;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.updateBadge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  background: #f59e0b;
+  color: white;
+  border-radius: 4px;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.pluginDescription {
+  color: #666;
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.pluginStatus {
+  display: flex;
+  align-items: center;
+}
+
+.activeStatus,
+.inactiveStatus {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.activeStatus {
+  color: #10b981;
+}
+
+.inactiveStatus {
+  color: #6b7280;
+}
+
+.pluginFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.version {
+  font-size: 0.8125rem;
+  color: #666;
+  font-family: monospace;
+}
+
+.category {
+  font-size: 0.8125rem;
+  color: #667eea;
+  font-weight: 500;
+}
+
+.pluginActions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.pluginActions button {
+  padding: 0.5rem 1rem;
+  border: 1px solid;
+  border-radius: 4px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.activateButton {
+  border-color: #10b981;
+  color: #10b981;
+  background: white;
+}
+
+.activateButton:hover {
+  background: #10b981;
+  color: white;
+}
+
+.deactivateButton {
+  border-color: #6b7280;
+  color: #6b7280;
+  background: white;
+}
+
+.deactivateButton:hover {
+  background: #6b7280;
+  color: white;
+}
+
+.updateButton {
+  border-color: #f59e0b;
+  color: #f59e0b;
+  background: white;
+}
+
+.updateButton:hover {
+  background: #f59e0b;
+  color: white;
+}
+
+.settingsButton {
+  border-color: #667eea;
+  color: #667eea;
+  background: white;
+}
+
+.settingsButton:hover {
+  background: #667eea;
+  color: white;
+}
+
+.loading {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #666;
+}
+
+@media (max-width: 1024px) {
+  .pluginHeader {
+    flex-direction: column;
+  }
+
+  .pluginFooter {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .pluginActions {
+    width: 100%;
+  }
+
+  .pluginActions button {
+    flex: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+  }
+
+  .headerActions {
+    width: 100%;
+  }
+
+  .headerActions button {
+    flex: 1;
+  }
+
+  .categoryFilter {
+    flex-direction: column;
+  }
+
+  .categoryButton,
+  .categoryActive {
+    width: 100%;
+    text-align: left;
+  }
+}

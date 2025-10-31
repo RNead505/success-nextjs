@@ -66,6 +66,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       title: 'Configuration',
       items: [
         { name: 'SEO Manager', href: '/admin/seo', icon: '🎯' },
+        { name: 'Plugins', href: '/admin/plugins', icon: '🔌' },
+        { name: 'Cache Management', href: '/admin/cache', icon: '🚀' },
         { name: 'Settings', href: '/admin/settings', icon: '⚙️' },
       ]
     }
