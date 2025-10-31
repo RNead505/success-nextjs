@@ -31,6 +31,8 @@ model User {
   readingProgress  ReadingProgress[]
   activities       UserActivity[]
   editorialItems   EditorialCalendar[]
+  activityLogs     ActivityLog[]
+  bulkActions      BulkAction[]
 
   @@map("users")
 }
@@ -550,4 +552,80 @@ enum Priority {
   MEDIUM
   HIGH
   URGENT
+}
+
+// Activity Log - Track all admin actions
+model ActivityLog {
+  id          String       @id @default(cuid())
+  userId      String
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action      String       // CREATE, UPDATE, DELETE, LOGIN, SYNC, etc.
+  entity      String       // post, page, user, settings, etc.
+  entityId    String?      // ID of the affected entity
+  details     String?      @db.Text // JSON string with additional details
+  ipAddress   String?
+  userAgent   String?
+  createdAt   DateTime     @default(now())
+
+  @@map("activity_logs")
+  @@index([userId])
+  @@index([action])
+  @@index([entity])
+  @@index([createdAt])
+}
+
+// Bulk Actions - Track batch operations
+model BulkAction {
+  id          String       @id @default(cuid())
+  userId      String
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action      String       // DELETE, PUBLISH, DRAFT, etc.
+  entity      String       // posts, pages, media, etc.
+  entityIds   String[]     // Array of affected IDs
+  status      BulkStatus   @default(PENDING)
+  totalItems  Int
+  processedItems Int       @default(0)
+  errors      String[]     @default([])
+  startedAt   DateTime?
+  completedAt DateTime?
+  createdAt   DateTime     @default(now())
+
+  @@map("bulk_actions")
+  @@index([userId])
+  @@index([status])
+}
+
+enum BulkStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+// Comments - For moderation
+model Comment {
+  id          String        @id @default(cuid())
+  postId      String        // WordPress post ID or internal post ID
+  postTitle   String
+  author      String
+  authorEmail String
+  authorUrl   String?
+  content     String        @db.Text
+  status      CommentStatus @default(PENDING)
+  ipAddress   String?
+  userAgent   String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@map("comments")
+  @@index([postId])
+  @@index([status])
+  @@index([authorEmail])
+}
+
+enum CommentStatus {
+  PENDING
+  APPROVED
+  SPAM
+  TRASH
 }
