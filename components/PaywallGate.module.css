@@ -1,0 +1,159 @@
+.paywallContainer {
+  position: relative;
+  width: 100%;
+}
+
+.contentPreview {
+  max-height: 400px;
+  overflow: hidden;
+  position: relative;
+}
+
+.fade {
+  position: relative;
+}
+
+.fade::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background: linear-gradient(to bottom, transparent, white);
+}
+
+.paywallOverlay {
+  position: relative;
+  background: #f9fafb;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.paywallModal {
+  max-width: 600px;
+  margin: 0 auto;
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.paywallIcon {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.paywallTitle {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: #111;
+}
+
+.paywallMessage {
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+.paywallStats {
+  background: #f3f4f6;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+
+.paywallStats p {
+  margin: 0;
+  font-size: 16px;
+  color: #374151;
+}
+
+.paywallStats strong {
+  color: #d32f2f;
+  font-weight: 600;
+}
+
+.paywallActions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.primaryButton {
+  background: #d32f2f;
+  color: white;
+  border: none;
+  padding: 14px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.primaryButton:hover {
+  background: #b71c1c;
+}
+
+.secondaryButton {
+  background: transparent;
+  color: #d32f2f;
+  border: 2px solid #d32f2f;
+  padding: 12px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.secondaryButton:hover {
+  background: #d32f2f;
+  color: white;
+}
+
+.paywallBenefits {
+  text-align: left;
+  background: #f9fafb;
+  padding: 24px;
+  border-radius: 8px;
+}
+
+.paywallBenefits h3 {
+  font-size: 18px;
+  margin-bottom: 16px;
+  color: #111;
+}
+
+.paywallBenefits ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.paywallBenefits li {
+  padding: 8px 0;
+  color: #374151;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .paywallModal {
+    padding: 24px;
+  }
+
+  .paywallTitle {
+    font-size: 24px;
+  }
+
+  .paywallMessage {
+    font-size: 16px;
+  }
+}

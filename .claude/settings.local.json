@@ -82,7 +82,8 @@
       "Bash(done)",
       "WebFetch(domain:offer.success.com)",
       "Bash(cd:*)",
-      "Bash(npx tsx:*)"
+      "Bash(npx tsx:*)",
+      "Bash(DATABASE_URL=\"postgres://default:9iXF2IrQGpwL@ep-cold-tooth-a4z49xhe-pooler.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require\" npx prisma migrate dev --name add_ecommerce_and_paywall_tables)"
     ],
     "deny": [],
     "ask": []

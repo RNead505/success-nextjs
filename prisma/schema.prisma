@@ -629,3 +629,152 @@ enum CommentStatus {
   SPAM
   TRASH
 }
+
+// E-Commerce Models (WooCommerce replacement)
+
+// Products - Store/shop items
+model Product {
+  id          String        @id @default(cuid())
+  name        String
+  slug        String        @unique
+  description String?       @db.Text
+  shortDescription String?   @db.Text
+  price       Decimal       @db.Decimal(10, 2)
+  salePrice   Decimal?      @db.Decimal(10, 2)
+  sku         String?       @unique
+  stockQuantity Int?
+  imageUrl    String?
+  galleryImages String[]    // Array of image URLs
+  status      ProductStatus @default(DRAFT)
+  featured    Boolean       @default(false)
+  categoryId  String?
+  tags        String[]      // Array of tag names
+  weight      Float?        // in pounds or kg
+  dimensions  String?       // e.g., "10x5x3"
+  downloadable Boolean      @default(false)
+  downloadUrl String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  orderItems  OrderItem[]
+
+  @@map("products")
+  @@index([slug])
+  @@index([status])
+  @@index([featured])
+}
+
+enum ProductStatus {
+  DRAFT
+  PUBLISHED
+  OUT_OF_STOCK
+  ARCHIVED
+}
+
+// Orders - Purchase records
+model Order {
+  id            String      @id @default(cuid())
+  orderNumber   String      @unique
+  userId        String?
+  userName      String      // Store name even if user deleted
+  userEmail     String
+  total         Decimal     @db.Decimal(10, 2)
+  subtotal      Decimal     @db.Decimal(10, 2)
+  tax           Decimal     @db.Decimal(10, 2) @default(0)
+  shipping      Decimal     @db.Decimal(10, 2) @default(0)
+  discount      Decimal     @db.Decimal(10, 2) @default(0)
+  status        OrderStatus @default(PENDING)
+  paymentMethod String      // stripe, paypal, etc.
+  paymentId     String?     // Stripe payment intent ID
+  shippingAddress String?   @db.Text // JSON string
+  billingAddress  String?   @db.Text // JSON string
+  notes         String?     @db.Text
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  items         OrderItem[]
+
+  @@map("orders")
+  @@index([userId])
+  @@index([status])
+  @@index([orderNumber])
+  @@index([createdAt])
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  SHIPPED
+  CANCELED
+  REFUNDED
+  FAILED
+}
+
+// OrderItems - Junction table for orders and products
+model OrderItem {
+  id          String   @id @default(cuid())
+  orderId     String
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId   String
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Restrict)
+  productName String   // Store name in case product is deleted
+  quantity    Int
+  price       Decimal  @db.Decimal(10, 2) // Price at time of purchase
+  total       Decimal  @db.Decimal(10, 2)
+  createdAt   DateTime @default(now())
+
+  @@map("order_items")
+  @@index([orderId])
+  @@index([productId])
+}
+
+// PageViews - Paywall tracking (metered paywall)
+model PageView {
+  id           String   @id @default(cuid())
+  userId       String?  // Null for anonymous users
+  sessionId    String?  // Cookie-based tracking for anonymous
+  articleId    String   // Post ID or slug
+  articleTitle String
+  articleUrl   String
+  viewedAt     DateTime @default(now())
+  ipAddress    String?
+  userAgent    String?
+
+  @@map("page_views")
+  @@index([userId])
+  @@index([sessionId])
+  @@index([articleId])
+  @@index([viewedAt])
+}
+
+// PaywallConfig - Admin-configurable paywall settings
+model PaywallConfig {
+  id                    String   @id @default(cuid())
+  freeArticleLimit      Int      @default(3) // Articles per month for free users
+  resetPeriodDays       Int      @default(30) // Days until counter resets
+  enablePaywall         Boolean  @default(true)
+  bypassedCategories    String[] // Category slugs that bypass paywall
+  bypassedArticles      String[] // Specific article slugs that bypass
+  popupTitle            String   @default("You've reached your free article limit")
+  popupMessage          String   @db.Text
+  ctaButtonText         String   @default("Subscribe Now")
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@map("paywall_config")
+}
+
+// URLRedirect - 301 redirects from WordPress to Next.js URLs
+model URLRedirect {
+  id          String   @id @default(cuid())
+  oldUrl      String   @unique
+  newUrl      String
+  statusCode  Int      @default(301) // 301 or 302
+  hits        Int      @default(0) // Track how many times used
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("url_redirects")
+  @@index([oldUrl])
+  @@index([isActive])
+}
