@@ -1,0 +1,52 @@
+.form {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.inlineForm {
+  width: 100%;
+}
+
+.searchBox {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  width: 100%;
+  padding: 12px 48px 12px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: border-color 0.2s;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #d32f2f;
+}
+
+.button {
+  position: absolute;
+  right: 4px;
+  background: #d32f2f;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.button:hover {
+  background: #b71c1c;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+}
