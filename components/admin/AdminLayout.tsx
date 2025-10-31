@@ -27,6 +27,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         { name: 'Pages', href: '/admin/pages', icon: '📄' },
         { name: 'Videos', href: '/admin/videos', icon: '🎥' },
         { name: 'Podcasts', href: '/admin/podcasts', icon: '🎙️' },
+        { name: 'Comments', href: '/admin/comments', icon: '💬' },
         { name: 'Magazine Manager', href: '/admin/magazine-manager', icon: '📚' },
         { name: 'Categories', href: '/admin/categories', icon: '📁' },
         { name: 'Tags', href: '/admin/tags', icon: '🏷️' },
