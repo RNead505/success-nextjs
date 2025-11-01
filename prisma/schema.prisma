@@ -297,6 +297,7 @@ model Product {
   metadata      String?       @db.Text // JSON for additional details
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
+  orderItems    OrderItem[]
 
   @@map("products")
   @@index([slug])
@@ -316,8 +317,10 @@ enum ProductCategory {
 enum ProductStatus {
   ACTIVE
   DRAFT
+  PUBLISHED
   OUT_OF_STOCK
   DISCONTINUED
+  ARCHIVED
 }
 
 // CRM Contact model
@@ -690,44 +693,6 @@ enum CommentStatus {
 }
 
 // E-Commerce Models (WooCommerce replacement)
-
-// Products - Store/shop items
-model Product {
-  id          String        @id @default(cuid())
-  name        String
-  slug        String        @unique
-  description String?       @db.Text
-  shortDescription String?   @db.Text
-  price       Decimal       @db.Decimal(10, 2)
-  salePrice   Decimal?      @db.Decimal(10, 2)
-  sku         String?       @unique
-  stockQuantity Int?
-  imageUrl    String?
-  galleryImages String[]    // Array of image URLs
-  status      ProductStatus @default(DRAFT)
-  featured    Boolean       @default(false)
-  categoryId  String?
-  tags        String[]      // Array of tag names
-  weight      Float?        // in pounds or kg
-  dimensions  String?       // e.g., "10x5x3"
-  downloadable Boolean      @default(false)
-  downloadUrl String?
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  orderItems  OrderItem[]
-
-  @@map("products")
-  @@index([slug])
-  @@index([status])
-  @@index([featured])
-}
-
-enum ProductStatus {
-  DRAFT
-  PUBLISHED
-  OUT_OF_STOCK
-  ARCHIVED
-}
 
 // Orders - Purchase records
 model Order {
