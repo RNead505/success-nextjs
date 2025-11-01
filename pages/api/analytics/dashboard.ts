@@ -20,12 +20,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const startDate = new Date();
       startDate.setDate(startDate.getDate() - days);
 
-      // Fetch WordPress content stats
-      const [posts, videos, podcasts, categories] = await Promise.all([
-        fetchWordPressData('posts?per_page=100'),
-        fetchWordPressData('videos?per_page=100').catch(() => []),
-        fetchWordPressData('podcasts?per_page=100').catch(() => []),
-        fetchWordPressData('categories?per_page=100'),
+      // Fetch WordPress content stats (get accurate totals from headers)
+      // First, get the total counts from WordPress
+      const [postsResponse, videosResponse, podcastsResponse, categoriesResponse] = await Promise.all([
+        fetch(`${process.env.WORDPRESS_API_URL || 'https://www.success.com/wp-json/wp/v2'}/posts?per_page=1`),
+        fetch(`${process.env.WORDPRESS_API_URL || 'https://www.success.com/wp-json/wp/v2'}/videos?per_page=1`).catch(() => null),
+        fetch(`${process.env.WORDPRESS_API_URL || 'https://www.success.com/wp-json/wp/v2'}/podcasts?per_page=1`).catch(() => null),
+        fetch(`${process.env.WORDPRESS_API_URL || 'https://www.success.com/wp-json/wp/v2'}/categories?per_page=1`),
+      ]);
+
+      // Get total counts from X-WP-Total header
+      const totalPostsCount = parseInt(postsResponse.headers.get('X-WP-Total') || '0');
+      const totalVideosCount = videosResponse ? parseInt(videosResponse.headers.get('X-WP-Total') || '0') : 0;
+      const totalPodcastsCount = podcastsResponse ? parseInt(podcastsResponse.headers.get('X-WP-Total') || '0') : 0;
+      const totalCategoriesCount = parseInt(categoriesResponse.headers.get('X-WP-Total') || '0');
+
+      // Fetch recent posts for period calculation (last 100 is enough for recent data)
+      const [posts, videos, podcasts] = await Promise.all([
+        fetchWordPressData('posts?per_page=100&orderby=date&order=desc'),
+        fetchWordPressData('videos?per_page=100&orderby=date&order=desc').catch(() => []),
+        fetchWordPressData('podcasts?per_page=100&orderby=date&order=desc').catch(() => []),
       ]);
 
       // Get database stats
@@ -62,10 +76,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       const dashboardData = {
         overview: {
-          totalPosts: posts.length,
-          totalVideos: videos.length,
-          totalPodcasts: podcasts.length,
-          totalCategories: categories.length,
+          totalPosts: totalPostsCount,
+          totalVideos: totalVideosCount,
+          totalPodcasts: totalPodcastsCount,
+          totalCategories: totalCategoriesCount,
           totalUsers,
           activeSubscribers,
           newsletterSubscribers,

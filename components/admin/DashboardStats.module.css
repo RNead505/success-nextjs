@@ -4,8 +4,16 @@
 
 .periodSelector {
   display: flex;
-  gap: 0.5rem;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
   margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.periodButtons {
+  display: flex;
+  gap: 0.5rem;
   flex-wrap: wrap;
 }
 
@@ -30,6 +38,37 @@
   background: #667eea;
   color: white;
   border-color: #667eea;
+}
+
+.refreshButton {
+  padding: 0.5rem 1rem;
+  border: 1px solid #10b981;
+  background: #10b981;
+  color: white;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.refreshButton:hover:not(:disabled) {
+  background: #059669;
+  border-color: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.refreshButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.refreshButton:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .statsGrid {

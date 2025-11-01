@@ -41,7 +41,10 @@ export default function DashboardStats() {
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`/api/analytics/dashboard?period=${period}`);
+      // Add timestamp to prevent caching
+      const res = await fetch(`/api/analytics/dashboard?period=${period}&_=${Date.now()}`, {
+        cache: 'no-store',
+      });
       if (res.ok) {
         const dashboardData = await res.json();
         setData(dashboardData);
@@ -51,6 +54,10 @@ export default function DashboardStats() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleRefresh = () => {
+    fetchDashboardData();
   };
 
   if (loading) {
@@ -103,23 +110,33 @@ export default function DashboardStats() {
   return (
     <div className={styles.container}>
       <div className={styles.periodSelector}>
+        <div className={styles.periodButtons}>
+          <button
+            onClick={() => setPeriod('7')}
+            className={period === '7' ? styles.periodActive : styles.periodButton}
+          >
+            Last 7 Days
+          </button>
+          <button
+            onClick={() => setPeriod('30')}
+            className={period === '30' ? styles.periodActive : styles.periodButton}
+          >
+            Last 30 Days
+          </button>
+          <button
+            onClick={() => setPeriod('90')}
+            className={period === '90' ? styles.periodActive : styles.periodButton}
+          >
+            Last 90 Days
+          </button>
+        </div>
         <button
-          onClick={() => setPeriod('7')}
-          className={period === '7' ? styles.periodActive : styles.periodButton}
+          onClick={handleRefresh}
+          className={styles.refreshButton}
+          disabled={loading}
+          title="Refresh data"
         >
-          Last 7 Days
-        </button>
-        <button
-          onClick={() => setPeriod('30')}
-          className={period === '30' ? styles.periodActive : styles.periodButton}
-        >
-          Last 30 Days
-        </button>
-        <button
-          onClick={() => setPeriod('90')}
-          className={period === '90' ? styles.periodActive : styles.periodButton}
-        >
-          Last 90 Days
+          🔄 Refresh Data
         </button>
       </div>
 
