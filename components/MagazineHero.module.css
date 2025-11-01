@@ -16,7 +16,8 @@
   padding: 3rem 4rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end;
+  padding-bottom: 4rem;
   order: 1;
 }
 
