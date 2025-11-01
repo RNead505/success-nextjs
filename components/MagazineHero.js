@@ -35,7 +35,7 @@ export default function MagazineHero({ magazine }) {
   }
 
   return (
-    <section className={styles.hero} style={{ backgroundImage: `url(${heroImage})` }}>
+    <section className={styles.hero}>
       <div className={styles.overlay}>
         <div className={styles.header}>
           <span className={styles.headerText}>Inside the Magazine</span>
@@ -60,6 +60,11 @@ export default function MagazineHero({ magazine }) {
           </div>
         </div>
       </div>
+      {heroImage && (
+        <div className={styles.heroImage}>
+          <img src={heroImage} alt={title || 'Magazine Cover'} />
+        </div>
+      )}
     </section>
   );
 }
