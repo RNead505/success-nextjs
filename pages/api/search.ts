@@ -129,7 +129,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Sort by relevance if requested
     if (sort === 'relevance') {
-      scoredResults.sort((a, b) => b.relevanceScore - a.relevanceScore);
+      scoredResults.sort((a: any, b: any) => b.relevanceScore - a.relevanceScore);
     }
 
     return res.status(200).json({

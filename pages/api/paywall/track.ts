@@ -59,8 +59,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         where: {
           userId: userId,
           viewedAt: { gte: resetDate }
-        },
-        distinct: ['articleId'] // Count unique articles only
+        }
       });
 
       // Track this view
@@ -87,7 +86,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Anonymous user tracking (cookie-based)
     // Get or create session ID
-    sessionId = req.cookies.paywallSession;
+    sessionId = req.cookies.paywallSession || null;
     if (!sessionId) {
       sessionId = uuidv4();
       res.setHeader('Set-Cookie', `paywallSession=${sessionId}; Path=/; Max-Age=2592000; SameSite=Lax`); // 30 days
@@ -98,8 +97,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       where: {
         sessionId: sessionId,
         viewedAt: { gte: resetDate }
-      },
-      distinct: ['articleId']
+      }
     });
 
     // Track this view

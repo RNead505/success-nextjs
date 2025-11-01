@@ -118,86 +118,318 @@ export default function StorePage({ products, categories }: StorePageProps) {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  // Featured and categorized products from mysuccessplus.com
+  // Comprehensive product catalog from SUCCESS Store
   const products: Product[] = [
     // Featured Products
     {
       id: '1',
       title: 'Jim Rohn Book Bundle',
-      price: '$129.99',
-      image: 'https://www.success.com/wp-content/uploads/2025/10/9781637634547.jpg',
+      price: '$97.00',
+      image: 'https://www.success.com/wp-content/uploads/2023/jim-rohn-bundle.jpg',
       category: 'Featured',
+      link: '/store/jim-rohn-bundle'
     },
     {
       id: '2',
-      title: 'SUCCESS Magazine - Latest Issue',
+      title: 'SUCCESS Magazine - November/December 2025',
       price: '$9.99',
-      image: 'https://www.success.com/wp-content/uploads/2025/10/9781633697263.jpg',
+      image: 'https://www.success.com/wp-content/uploads/2025/11/nov-dec-2025.jpg',
       category: 'Featured',
+      link: '/magazine'
     },
     {
       id: '3',
       title: 'The SUCCESS Starts Here Journal',
-      price: '$14.99',
-      image: 'https://www.success.com/wp-content/uploads/2025/10/9780593797204.jpg',
+      price: '$9.71',
+      image: 'https://www.success.com/wp-content/uploads/2024/success-journal.jpg',
       category: 'Featured',
+      link: '/store/success-journal'
     },
     {
       id: '4',
       title: 'SUCCESS EST. 1897 Stone Cap',
       price: '$24.99',
-      image: 'https://www.success.com/wp-content/uploads/2025/10/9780593714256.jpg',
+      image: 'https://www.success.com/wp-content/uploads/2024/success-cap.jpg',
       category: 'Featured',
+      link: '/store/success-cap'
     },
 
-    // Books
+    // Books - Jim Rohn Collection
     {
       id: '5',
       title: 'The Five Major Pieces to the Life Puzzle',
       price: '$24.99',
-      image: 'https://www.success.com/wp-content/uploads/2025/10/9780306836510.jpg',
+      image: 'https://www.success.com/wp-content/uploads/books/five-pieces.jpg',
       category: 'Books',
+      link: '/store/five-pieces-puzzle'
     },
     {
       id: '6',
       title: 'The Seasons of Life',
       price: '$19.99',
-      image: 'https://www.success.com/wp-content/uploads/2025/10/9781668051535.jpg',
+      image: 'https://www.success.com/wp-content/uploads/books/seasons-life.jpg',
       category: 'Books',
+      link: '/store/seasons-of-life'
     },
     {
       id: '7',
       title: 'Twelve Pillars',
       price: '$22.99',
-      image: 'https://www.success.com/wp-content/uploads/2025/09/9781647821043.jpg',
+      image: 'https://www.success.com/wp-content/uploads/books/twelve-pillars.jpg',
       category: 'Books',
+      link: '/store/twelve-pillars'
     },
     {
       id: '8',
       title: 'Leading an Inspired Life',
       price: '$29.99',
-      image: 'https://www.success.com/wp-content/uploads/2025/09/9781637747124.jpg',
+      image: 'https://www.success.com/wp-content/uploads/books/inspired-life.jpg',
       category: 'Books',
+      link: '/store/leading-inspired-life'
     },
-
-    // Courses
     {
       id: '9',
-      title: "Jim Rohn's Foundations for Success",
-      price: '$199.99',
-      image: 'https://www.success.com/wp-content/uploads/2025/09/9780593084526.jpg',
-      category: 'Courses',
+      title: '7 Strategies for Wealth & Happiness',
+      price: '$26.99',
+      image: 'https://www.success.com/wp-content/uploads/books/7-strategies.jpg',
+      category: 'Books',
+      link: '/store/7-strategies'
     },
     {
       id: '10',
+      title: 'The Art of Exceptional Living',
+      price: '$24.99',
+      image: 'https://www.success.com/wp-content/uploads/books/exceptional-living.jpg',
+      category: 'Books',
+      link: '/store/exceptional-living'
+    },
+    {
+      id: '11',
+      title: 'The Treasury of Quotes',
+      price: '$19.99',
+      image: 'https://www.success.com/wp-content/uploads/books/treasury-quotes.jpg',
+      category: 'Books',
+      link: '/store/treasury-quotes'
+    },
+    {
+      id: '12',
+      title: 'My Philosophy for Successful Living',
+      price: '$22.99',
+      image: 'https://www.success.com/wp-content/uploads/books/philosophy-living.jpg',
+      category: 'Books',
+      link: '/store/philosophy-living'
+    },
+    {
+      id: '13',
+      title: 'The Challenge to Succeed',
+      price: '$21.99',
+      image: 'https://www.success.com/wp-content/uploads/books/challenge-succeed.jpg',
+      category: 'Books',
+      link: '/store/challenge-succeed'
+    },
+    {
+      id: '14',
+      title: 'Building Your Network Marketing Business',
+      price: '$23.99',
+      image: 'https://www.success.com/wp-content/uploads/books/network-marketing.jpg',
+      category: 'Books',
+      link: '/store/network-marketing'
+    },
+
+    // Additional Books - Leadership & Business
+    {
+      id: '15',
+      title: 'Think and Grow Rich',
+      price: '$18.99',
+      image: 'https://www.success.com/wp-content/uploads/books/think-grow-rich.jpg',
+      category: 'Books',
+      link: '/store/think-grow-rich'
+    },
+    {
+      id: '16',
+      title: 'How to Win Friends and Influence People',
+      price: '$16.99',
+      image: 'https://www.success.com/wp-content/uploads/books/win-friends.jpg',
+      category: 'Books',
+      link: '/store/win-friends'
+    },
+    {
+      id: '17',
+      title: 'The 7 Habits of Highly Effective People',
+      price: '$19.99',
+      image: 'https://www.success.com/wp-content/uploads/books/7-habits.jpg',
+      category: 'Books',
+      link: '/store/7-habits'
+    },
+    {
+      id: '18',
+      title: 'Atomic Habits',
+      price: '$27.99',
+      image: 'https://www.success.com/wp-content/uploads/books/atomic-habits.jpg',
+      category: 'Books',
+      link: '/store/atomic-habits'
+    },
+
+    // Courses & Digital Products
+    {
+      id: '19',
+      title: "Jim Rohn's Foundations for Success",
+      price: '$199.99',
+      image: 'https://www.success.com/wp-content/uploads/courses/foundations.jpg',
+      category: 'Courses',
+      link: '/store/foundations-success'
+    },
+    {
+      id: '20',
       title: 'Leadership Masterclass',
       price: '$149.99',
-      image: 'https://www.success.com/wp-content/uploads/2025/10/9781637634547.jpg',
+      image: 'https://www.success.com/wp-content/uploads/courses/leadership.jpg',
       category: 'Courses',
+      link: '/store/leadership-masterclass'
+    },
+    {
+      id: '21',
+      title: 'Personal Development Blueprint',
+      price: '$179.99',
+      image: 'https://www.success.com/wp-content/uploads/courses/personal-dev.jpg',
+      category: 'Courses',
+      link: '/store/personal-dev-blueprint'
+    },
+    {
+      id: '22',
+      title: 'Time Management Mastery',
+      price: '$99.99',
+      image: 'https://www.success.com/wp-content/uploads/courses/time-management.jpg',
+      category: 'Courses',
+      link: '/store/time-management'
+    },
+    {
+      id: '23',
+      title: 'Goal Setting for Success',
+      price: '$79.99',
+      image: 'https://www.success.com/wp-content/uploads/courses/goal-setting.jpg',
+      category: 'Courses',
+      link: '/store/goal-setting'
+    },
+    {
+      id: '24',
+      title: 'Communication Skills Bootcamp',
+      price: '$129.99',
+      image: 'https://www.success.com/wp-content/uploads/courses/communication.jpg',
+      category: 'Courses',
+      link: '/store/communication-bootcamp'
+    },
+
+    // Merchandise
+    {
+      id: '25',
+      title: 'SUCCESS EST. 1897 Stone Cap',
+      price: '$24.99',
+      image: 'https://www.success.com/wp-content/uploads/merch/stone-cap.jpg',
+      category: 'Merchandise',
+      link: '/store/stone-cap'
+    },
+    {
+      id: '26',
+      title: 'SUCCESS Logo T-Shirt (Black)',
+      price: '$19.99',
+      image: 'https://www.success.com/wp-content/uploads/merch/tshirt-black.jpg',
+      category: 'Merchandise',
+      link: '/store/tshirt-black'
+    },
+    {
+      id: '27',
+      title: 'SUCCESS Logo T-Shirt (White)',
+      price: '$19.99',
+      image: 'https://www.success.com/wp-content/uploads/merch/tshirt-white.jpg',
+      category: 'Merchandise',
+      link: '/store/tshirt-white'
+    },
+    {
+      id: '28',
+      title: 'SUCCESS Hoodie (Navy)',
+      price: '$39.99',
+      image: 'https://www.success.com/wp-content/uploads/merch/hoodie-navy.jpg',
+      category: 'Merchandise',
+      link: '/store/hoodie-navy'
+    },
+    {
+      id: '29',
+      title: 'The SUCCESS Starts Here Journal',
+      price: '$9.71',
+      image: 'https://www.success.com/wp-content/uploads/merch/journal.jpg',
+      category: 'Merchandise',
+      link: '/store/journal'
+    },
+    {
+      id: '30',
+      title: 'SUCCESS Notepad Set',
+      price: '$14.99',
+      image: 'https://www.success.com/wp-content/uploads/merch/notepad.jpg',
+      category: 'Merchandise',
+      link: '/store/notepad'
+    },
+    {
+      id: '31',
+      title: 'SUCCESS Water Bottle',
+      price: '$17.99',
+      image: 'https://www.success.com/wp-content/uploads/merch/water-bottle.jpg',
+      category: 'Merchandise',
+      link: '/store/water-bottle'
+    },
+    {
+      id: '32',
+      title: 'SUCCESS Tote Bag',
+      price: '$16.99',
+      image: 'https://www.success.com/wp-content/uploads/merch/tote-bag.jpg',
+      category: 'Merchandise',
+      link: '/store/tote-bag'
+    },
+    {
+      id: '33',
+      title: 'SUCCESS Pen Set (3-pack)',
+      price: '$12.99',
+      image: 'https://www.success.com/wp-content/uploads/merch/pen-set.jpg',
+      category: 'Merchandise',
+      link: '/store/pen-set'
+    },
+
+    // Magazine Issues
+    {
+      id: '34',
+      title: 'SUCCESS Magazine - January/February 2025',
+      price: '$9.99',
+      image: 'https://www.success.com/wp-content/uploads/magazines/jan-feb-2025.jpg',
+      category: 'Magazines',
+      link: '/magazine/archive'
+    },
+    {
+      id: '35',
+      title: 'SUCCESS Magazine - March/April 2025',
+      price: '$9.99',
+      image: 'https://www.success.com/wp-content/uploads/magazines/mar-apr-2025.jpg',
+      category: 'Magazines',
+      link: '/magazine/archive'
+    },
+    {
+      id: '36',
+      title: 'SUCCESS Magazine - May/June 2025',
+      price: '$9.99',
+      image: 'https://www.success.com/wp-content/uploads/magazines/may-jun-2025.jpg',
+      category: 'Magazines',
+      link: '/magazine/archive'
+    },
+    {
+      id: '37',
+      title: 'SUCCESS Magazine - July/August 2025',
+      price: '$9.99',
+      image: 'https://www.success.com/wp-content/uploads/magazines/jul-aug-2025.jpg',
+      category: 'Magazines',
+      link: '/magazine/archive'
     },
   ];
 
-  const categories = ['Books', 'Courses', 'Merchandise'];
+  const categories = ['Books', 'Courses', 'Merchandise', 'Magazines'];
 
   return {
     props: {

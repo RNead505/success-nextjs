@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import AdminLayout from '../../../components/AdminLayout';
+import AdminLayout from '../../../components/admin/AdminLayout';
 import styles from './realtime.module.css';
 
 export default function RealtimeAnalytics() {
@@ -179,22 +179,25 @@ export default function RealtimeAnalytics() {
           <div className={styles.card}>
             <h2>Devices</h2>
             <div className={styles.breakdown}>
-              {Object.entries(data.devices).map(([device, count]: any) => (
-                <div key={device} className={styles.breakdownItem}>
-                  <div className={styles.breakdownLabel}>
-                    <span className={styles.capitalize}>{device}</span>
+              {Object.entries(data.devices).map(([device, count]) => {
+                const total = Object.values(data.devices).reduce((a: number, b) => a + (b as number), 0);
+                return (
+                  <div key={device} className={styles.breakdownItem}>
+                    <div className={styles.breakdownLabel}>
+                      <span className={styles.capitalize}>{device}</span>
+                    </div>
+                    <div className={styles.breakdownBar}>
+                      <div
+                        className={styles.breakdownBarFill}
+                        style={{
+                          width: `${((count as number) / total) * 100}%`,
+                        }}
+                      />
+                    </div>
+                    <div className={styles.breakdownValue}>{(count as number).toLocaleString()}</div>
                   </div>
-                  <div className={styles.breakdownBar}>
-                    <div
-                      className={styles.breakdownBarFill}
-                      style={{
-                        width: `${(count / Object.values(data.devices).reduce((a: any, b: any) => a + b, 0)) * 100}%`,
-                      }}
-                    />
-                  </div>
-                  <div className={styles.breakdownValue}>{count.toLocaleString()}</div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
@@ -202,20 +205,23 @@ export default function RealtimeAnalytics() {
           <div className={styles.card}>
             <h2>Browsers</h2>
             <div className={styles.breakdown}>
-              {Object.entries(data.browsers).map(([browser, count]: any) => (
-                <div key={browser} className={styles.breakdownItem}>
-                  <div className={styles.breakdownLabel}>{browser}</div>
-                  <div className={styles.breakdownBar}>
-                    <div
-                      className={styles.breakdownBarFill}
-                      style={{
-                        width: `${(count / Object.values(data.browsers).reduce((a: any, b: any) => a + b, 0)) * 100}%`,
-                      }}
-                    />
+              {Object.entries(data.browsers).map(([browser, count]) => {
+                const total = Object.values(data.browsers).reduce((a: number, b) => a + (b as number), 0);
+                return (
+                  <div key={browser} className={styles.breakdownItem}>
+                    <div className={styles.breakdownLabel}>{browser}</div>
+                    <div className={styles.breakdownBar}>
+                      <div
+                        className={styles.breakdownBarFill}
+                        style={{
+                          width: `${((count as number) / total) * 100}%`,
+                        }}
+                      />
+                    </div>
+                    <div className={styles.breakdownValue}>{(count as number).toLocaleString()}</div>
                   </div>
-                  <div className={styles.breakdownValue}>{count.toLocaleString()}</div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>

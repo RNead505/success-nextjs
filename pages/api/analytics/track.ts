@@ -71,9 +71,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       data: {
         contentId: metadata.postId || page,
         contentType: metadata.contentType || 'page',
+        contentSlug: page,
+        contentTitle: title,
         views: event === 'pageview' ? 1 : 0,
         uniqueVisitors: 1, // Will be aggregated in dashboard queries
-        averageTimeOnPage: metadata.timeOnPage || 0,
+        avgTimeOnPage: metadata.timeOnPage || 0,
         bounceRate: metadata.bounced ? 1 : 0,
         metadata: JSON.stringify({
           event,

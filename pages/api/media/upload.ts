@@ -73,12 +73,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         height: optimized.variants[0]?.height || 0,
         alt: (Array.isArray(fields.alt) ? fields.alt[0] : fields.alt) || '',
         caption: (Array.isArray(fields.caption) ? fields.caption[0] : fields.caption) || null,
-        metadata: JSON.stringify({
-          variants: optimized.variants,
-          uploadedBy: session.user.id,
-          uploadedAt: new Date().toISOString(),
-        }),
-        userId: session.user.id,
+        uploadedBy: session.user.id,
       },
     });
 

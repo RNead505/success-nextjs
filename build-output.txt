@@ -5,11 +5,11 @@
 Environment variables loaded from .env
 Prisma schema loaded from prisma\schema.prisma
 
-✔ Generated Prisma Client (v6.17.0) to .\node_modules\@prisma\client in 169ms
+✔ Generated Prisma Client (v6.17.0) to .\node_modules\@prisma\client in 436ms
 
 Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
 
-Tip: Interested in query caching in just a few lines of code? Try Accelerate today! https://pris.ly/tip-3-accelerate
+Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
 
   ▲ Next.js 14.2.3
   - Environments: .env.local, .env.production, .env
@@ -21,9 +21,15 @@ Tip: Interested in query caching in just a few lines of code? Try Accelerate tod
 107:23  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 139:13  Warning: Do not use an `<a>` element to navigate to `/subscribe/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
 
+./pages/account/index.tsx
+216:15  Warning: Do not use an `<a>` element to navigate to `/subscribe/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+
 ./pages/admin/activity-log.tsx
 46:6  Warning: React Hook useEffect has a missing dependency: 'fetchLogs'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
 183:27  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./pages/admin/analytics/realtime.tsx
+24:6  Warning: React Hook useEffect has a missing dependency: 'fetchAnalytics'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
 
 ./pages/admin/analytics.tsx
 44:6  Warning: React Hook useEffect has a missing dependency: 'fetchAnalytics'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
@@ -131,6 +137,9 @@ Tip: Interested in query caching in just a few lines of code? Try Accelerate tod
 ./pages/press-releases.tsx
 48:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
+./pages/search.tsx
+27:6  Warning: React Hook useEffect has a missing dependency: 'performSearch'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
 ./pages/signin.tsx
 133:13  Warning: Do not use an `<a>` element to navigate to `/subscribe/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
 
@@ -178,343 +187,277 @@ Tip: Interested in query caching in just a few lines of code? Try Accelerate tod
 29:6  Warning: React Hook useEffect has a missing dependency: 'fetchVideo'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
 212:17  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
+./components/AnalyticsTracker.tsx
+57:6  Warning: React Hook useEffect has a missing dependency: 'trackEvent'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ArticleDisplay.tsx
+51:6  Warning: React Hook useEffect has a missing dependency: 'injectAds'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+166:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+241:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+267:19  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
 ./components/Bestsellers.tsx
 44:23  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./components/CommentSection.tsx
+35:6  Warning: React Hook useEffect has a missing dependency: 'fetchComments'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+126:17  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./components/forms/NewsletterSignup.tsx
+112:11  Warning: Do not use an `<a>` element to navigate to `/privacy/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+
+./components/MediaUploader.tsx
+142:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./components/PaywallGate.tsx
+33:6  Warning: React Hook useEffect has a missing dependency: 'checkPaywallStatus'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
 
 ./components/PostCard.tsx
 57:15  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 87:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
 
 info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/basic-features/eslint#disabling-rules
-   Creating an optimized production build ...
- ✓ Compiled successfully
-   Collecting page data ...
-   Generating static pages (0/220) ...
-   Generating static pages (55/220) 
-Warning: data for page "/podcasts" is 442 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/videos" is 181 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/magazine/archive" is 1.21 MB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/magazine" is 1.21 MB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/category/[slug]" (path "/category/sponsored") is 627 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/category/[slug]" (path "/category/entertainment") is 677 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/category/[slug]" (path "/category/future-of-work") is 702 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/category/[slug]" (path "/category/business") is 669 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/podcast/[slug]" (path "/podcast/unscripted-with-amy-somerville") is 333 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/category/[slug]" (path "/category/health") is 696 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/podcast/[slug]" (path "/podcast/in-the-details") is 333 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/category/[slug]" (path "/category/lifestyle") is 815 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/podcast/[slug]" (path "/podcast/brilliant-thoughts") is 442 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/podcast/[slug]" (path "/podcast/rich-regular") is 333 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/category/[slug]" (path "/category/personal-development") is 833 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/category/[slug]" (path "/category/relationships") is 765 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/category/[slug]" (path "/category/money") is 720 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/category/[slug]" (path "/category/professional-development") is 722 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/category/[slug]" (path "/category/success") is 938 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/author/[slug]" (path "/author/abebolaayindemailinator-com") is 133 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/category/[slug]" (path "/category/videos") is 830 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/author/[slug]" (path "/author/aaron-orendorff") is 555 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/author/[slug]" (path "/author/adam-ochstein") is 247 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/author/[slug]" (path "/author/adam-smith") is 197 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-   Generating static pages (110/220) 
-Warning: data for page "/author/[slug]" (path "/author/aditi-shrikant") is 162 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/blog/[slug]" (path "/blog/stephanie-macleod-leadership") is 225 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/blog/[slug]" (path "/blog/adobe-ai-toolkit") is 241 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/blog/[slug]" (path "/blog/amazon-corporate-restructuring-lessons") is 225 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/blog/[slug]" (path "/blog/going-on-a-safari-helped-me-rest-and-reset") is 219 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/author/[slug]" (path "/author/alex-charfen") is 218 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/blog/[slug]" (path "/blog/shelley-zalis-equal-leadership-gender-gap") is 215 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/blog/[slug]" (path "/blog/breakthrough-ideas-inversion-thinking") is 216 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/blog/[slug]" (path "/blog/the-power-of-intergenerational-friendships") is 269 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/blog/[slug]" (path "/blog/guide-dogs-career-connections-blind-youth") is 216 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/blog/[slug]" (path "/blog/soft-skills-business-success") is 225 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/blog/[slug]" (path "/blog/powerful-women-in-business-ai") is 215 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/blog/[slug]" (path "/blog/ai-superintelligence-halt-tech-titans") is 215 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/blog/[slug]" (path "/blog/sleep-divorce-marriage-benefits") is 219 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/blog/[slug]" (path "/blog/help-teen-build-good-credit") is 221 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/blog/[slug]" (path "/blog/ai-gives-back-time-coaching-app") is 215 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-Warning: data for page "/" is 3.21 MB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
-   Generating static pages (165/220) 
-Warning: data for page "/blog/[slug]" (path "/blog/how-to-overcome-fear-of-failure") is 245 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
-See more info here: https://nextjs.org/docs/messages/large-page-data
- ✓ Generating static pages (220/220)
-   Finalizing page optimization ...
-   Collecting build traces ...
+Failed to compile.
 
-Route (pages)                                                          Size     First Load JS
-┌ ● / (ISR: 3600 Seconds) (13021 ms)                                   7.33 kB         105 kB
-├   └ css/430fd6dd604bdba7.css                                         4.98 kB
-├   /_app                                                              0 B            89.6 kB
-├ ○ /404                                                               184 B          89.8 kB
-├ ● /about (ISR: 86400 Seconds)                                        2.09 kB        99.3 kB
-├ ● /about-us (ISR: 86400 Seconds)                                     3.56 kB         101 kB
-├ ○ /accessibility                                                     1.57 kB        98.8 kB
-├ ○ /admin                                                             4.37 kB        96.5 kB
-├   └ css/d9d2fae166441623.css                                         2.47 kB
-├ ○ /admin/activity-log                                                3.49 kB        95.6 kB
-├   └ css/f76ef7ec4abad6d9.css                                         1.85 kB
-├ ○ /admin/analytics                                                   4.33 kB        96.4 kB
-├   └ css/e50300fef37995dc.css                                         2.4 kB
-├ ○ /admin/cache                                                       3.42 kB        95.5 kB
-├   └ css/06e41f1049e0e37e.css                                         2.06 kB
-├ ○ /admin/categories                                                  3.39 kB        95.5 kB
-├   └ css/7f96b9a94425ea40.css                                         1.85 kB
-├ ○ /admin/comments                                                    3.75 kB        95.9 kB
-├   └ css/8c2f56a66bb0d25a.css                                         2 kB
-├ ○ /admin/content-viewer                                              3.12 kB        95.2 kB
-├   └ css/2669399eb66a4bca.css                                         1.77 kB
-├ ○ /admin/crm/campaigns                                               3.85 kB          96 kB
-├ ○ /admin/crm/contacts                                                4.08 kB        96.2 kB
-├ ○ /admin/crm/templates                                               4.04 kB        96.1 kB
-├ ○ /admin/editorial-calendar                                          4.1 kB         96.2 kB
-├   └ css/880f8bea2b586377.css                                         2.15 kB
-├ ○ /admin/email-manager                                               4.52 kB        96.6 kB
-├   └ css/8cfe73e680db6bcc.css                                         2.49 kB
-├ ○ /admin/login                                                       1 kB           90.6 kB
-├   └ css/d3941d3852740211.css                                         690 B
-├ ○ /admin/magazine-manager                                            7.76 kB         277 kB
-├   └ css/77e1459b1b0e6723.css                                         2.83 kB
-├ ○ /admin/media                                                       4.98 kB         274 kB
-├   └ css/f5b58e4ee93276b8.css                                         2.08 kB
-├ ○ /admin/members                                                     3.35 kB        95.5 kB
-├   └ css/e587edc333887d8f.css                                         2.12 kB
-├ ○ /admin/members/[id]                                                3.33 kB        95.4 kB
-├   └ css/fcce5ff91bc4d524.css                                         2.18 kB
-├ ○ /admin/pages                                                       3.77 kB        95.9 kB
-├   └ css/c1ee2d33066de54f.css                                         1.89 kB
-├ ○ /admin/pages/[id]/edit                                             1.82 kB          98 kB
-├ ○ /admin/pages/new                                                   1.8 kB           98 kB
-├ ○ /admin/plugins                                                     4.58 kB        96.7 kB
-├   └ css/e7ebaed94399496f.css                                         1.99 kB
-├ ○ /admin/podcasts                                                    2.77 kB        94.9 kB
-├   └ css/dbf50376a855834e.css                                         1.77 kB
-├ ○ /admin/podcasts/[id]/edit                                          1.85 kB          98 kB
-├ ○ /admin/podcasts/new                                                1.84 kB          98 kB
-├ ○ /admin/posts                                                       3.41 kB        95.5 kB
-├   └ css/c128cbe3853ee3dc.css                                         1.73 kB
-├ ○ /admin/posts/[id]/edit                                             452 B           204 kB
-├ ○ /admin/posts/new                                                   431 B           204 kB
-├ ○ /admin/revenue                                                     3.24 kB        95.3 kB
-├   └ css/66fef1b0aed00826.css                                         1.81 kB
-├ ○ /admin/seo                                                         4.84 kB        96.9 kB
-├   └ css/60d0b2a64519840f.css                                         2.01 kB
-├ ○ /admin/settings                                                    3.64 kB        95.7 kB
-├   └ css/abbe8f94add58d04.css                                         1.6 kB
-├ ○ /admin/site-monitor                                                3.91 kB          96 kB
-├   └ css/19102fed8d1b5456.css                                         1.97 kB
-├ ○ /admin/subscriptions                                               3.1 kB         95.2 kB
-├   └ css/c65a5fda6d7838fa.css                                         1.77 kB
-├ ○ /admin/tags                                                        3.27 kB        95.4 kB
-├   └ css/94cd0db98828ed81.css                                         1.84 kB
-├ ○ /admin/users                                                       3.86 kB          96 kB
-├   └ css/2f4051560d53550f.css                                         2.05 kB
-├ ○ /admin/videos                                                      2.77 kB        94.9 kB
-├   └ css/558cc9fd8a8eb380.css                                         1.77 kB
-├ ○ /admin/videos/[id]/edit                                            1.86 kB        98.1 kB
-├ ○ /admin/videos/new                                                  1.84 kB          98 kB
-├ ○ /admin/wordpress-sync                                              4.15 kB        96.3 kB
-├   └ css/31bccb05d0346044.css                                         2.18 kB
-├ ● /advertise (ISR: 86400 Seconds)                                    2.31 kB        99.5 kB
-├   └ css/084d24070893f044.css                                         3.08 kB
-├ ƒ /api/activity                                                      0 B            89.6 kB
-├ ƒ /api/activity-logs                                                 0 B            89.6 kB
-├ ƒ /api/admin/members                                                 0 B            89.6 kB
-├ ƒ /api/admin/members/[id]                                            0 B            89.6 kB
-├ ƒ /api/analytics                                                     0 B            89.6 kB
-├ ƒ /api/analytics/dashboard                                           0 B            89.6 kB
-├ ƒ /api/auth/[...nextauth]                                            0 B            89.6 kB
-├ ƒ /api/bookmarks                                                     0 B            89.6 kB
-├ ƒ /api/bookmarks/[id]                                                0 B            89.6 kB
-├ ƒ /api/bulk-actions                                                  0 B            89.6 kB
-├ ƒ /api/cache/purge                                                   0 B            89.6 kB
-├ ƒ /api/categories                                                    0 B            89.6 kB
-├ ƒ /api/categories/[id]                                               0 B            89.6 kB
-├ ƒ /api/comments                                                      0 B            89.6 kB
-├ ƒ /api/comments/[id]                                                 0 B            89.6 kB
-├ ƒ /api/contact                                                       0 B            89.6 kB
-├ ƒ /api/crm/campaigns                                                 0 B            89.6 kB
-├ ƒ /api/crm/campaigns/[id]                                            0 B            89.6 kB
-├ ƒ /api/crm/contacts                                                  0 B            89.6 kB
-├ ƒ /api/crm/contacts/[id]                                             0 B            89.6 kB
-├ ƒ /api/crm/templates                                                 0 B            89.6 kB
-├ ƒ /api/crm/templates/[id]                                            0 B            89.6 kB
-├ ƒ /api/cron/daily-sync                                               0 B            89.6 kB
-├ ƒ /api/cron/hourly-sync                                              0 B            89.6 kB
-├ ƒ /api/editorial-calendar                                            0 B            89.6 kB
-├ ƒ /api/editorial-calendar/[id]                                       0 B            89.6 kB
-├ ƒ /api/email/campaigns                                               0 B            89.6 kB
-├ ƒ /api/email/stats                                                   0 B            89.6 kB
-├ ƒ /api/email/subscribers                                             0 B            89.6 kB
-├ ƒ /api/health                                                        0 B            89.6 kB
-├ ƒ /api/health/performance                                            0 B            89.6 kB
-├ ƒ /api/health/system-status                                          0 B            89.6 kB
-├ ƒ /api/hello                                                         0 B            89.6 kB
-├ ƒ /api/magazines/upload                                              0 B            89.6 kB
-├ ƒ /api/media                                                         0 B            89.6 kB
-├ ƒ /api/media/[id]                                                    0 B            89.6 kB
-├ ƒ /api/media/upload                                                  0 B            89.6 kB
-├ ƒ /api/newsletter/subscribe                                          0 B            89.6 kB
-├ ƒ /api/pages                                                         0 B            89.6 kB
-├ ƒ /api/pages/[id]                                                    0 B            89.6 kB
-├ ƒ /api/podcasts                                                      0 B            89.6 kB
-├ ƒ /api/podcasts/[id]                                                 0 B            89.6 kB
-├ ƒ /api/posts                                                         0 B            89.6 kB
-├ ƒ /api/posts/[id]                                                    0 B            89.6 kB
-├ ƒ /api/reading-progress                                              0 B            89.6 kB
-├ ƒ /api/revenue                                                       0 B            89.6 kB
-├ ƒ /api/rss                                                           0 B            89.6 kB
-├ ƒ /api/seo                                                           0 B            89.6 kB
-├ ƒ /api/settings                                                      0 B            89.6 kB
-├ ƒ /api/sitemap.xml                                                   0 B            89.6 kB
-├ ƒ /api/subscriptions                                                 0 B            89.6 kB
-├ ƒ /api/subscriptions/[id]                                            0 B            89.6 kB
-├ ƒ /api/tags                                                          0 B            89.6 kB
-├ ƒ /api/tags/[id]                                                     0 B            89.6 kB
-├ ƒ /api/users                                                         0 B            89.6 kB
-├ ƒ /api/users/[id]                                                    0 B            89.6 kB
-├ ƒ /api/videos                                                        0 B            89.6 kB
-├ ƒ /api/videos/[id]                                                   0 B            89.6 kB
-├ ƒ /api/webhooks/stripe                                               0 B            89.6 kB
-├ ƒ /api/wordpress/clear-cache                                         0 B            89.6 kB
-├ ƒ /api/wordpress/pages                                               0 B            89.6 kB
-├ ƒ /api/wordpress/posts                                               0 B            89.6 kB
-├ ƒ /api/wordpress/sync                                                0 B            89.6 kB
-├ ƒ /api/wordpress/sync-status                                         0 B            89.6 kB
-├ ● /author/[slug] (ISR: 86400 Seconds) (30314 ms)                     2.03 kB        99.2 kB
-├   └ css/15f4ba1f9f8804cf.css                                         3.26 kB
-├   ├ /author/aaron-orendorff (2027 ms)
-├   ├ /author/alex-charfen (1936 ms)
-├   ├ /author/aditi-shrikant (1717 ms)
-├   ├ /author/adam-smith (1707 ms)
-├   ├ /author/alan-alda (1675 ms)
-├   ├ /author/adam-strauss (1570 ms)
-├   ├ /author/abby-perkins (1555 ms)
-├   └ [+13 more paths] (avg 1394 ms)
-├ ● /bestsellers (ISR: 86400 Seconds)                                  1.96 kB        99.1 kB
-├   └ css/f71f64fb5d4b6863.css                                         2.54 kB
-├ ● /blog/[slug] (ISR: 86400 Seconds) (201989 ms)                      5.02 kB         102 kB
-├   └ css/bcd232e3de6f971c.css                                         3.46 kB
-├   ├ /blog/festival-marketing-strategies (3431 ms)
-├   ├ /blog/career-goals (3301 ms)
-├   ├ /blog/multiple-sclerosis-coach-karen-dwyer (3158 ms)
-├   ├ /blog/employability-skills (3153 ms)
-├   ├ /blog/email-management-tips (3138 ms)
-├   ├ /blog/tips-and-resources-to-scale-your-small-business (2981 ms)
-├   ├ /blog/6-reasons-why-job-hopping-is-ok (2915 ms)
-├   └ [+93 more paths] (avg 1934 ms)
-├ ● /category/[slug] (ISR: 86400 Seconds) (35754 ms)                   2.03 kB        99.2 kB
-├   └ css/fc372af89a7d355d.css                                         3.23 kB
-├   ├ /category/money (3356 ms)
-├   ├ /category/professional-development (3338 ms)
-├   ├ /category/videos (3253 ms)
-├   ├ /category/success (3151 ms)
-├   ├ /category/lifestyle (3055 ms)
-├   ├ /category/personal-development (3043 ms)
-├   ├ /category/relationships (2794 ms)
-├   └ [+6 more paths] (avg 2292 ms)
-├ ○ /contact                                                           3.99 kB         101 kB
-├   └ css/790cd5548d66cc1b.css                                         2.89 kB
-├ ○ /dashboard                                                         4.06 kB         101 kB
-├   └ css/29bf9c215fbfc761.css                                         4.18 kB
-├ ○ /help                                                              1.41 kB        98.6 kB
-├ ○ /login                                                             1.87 kB          99 kB
-├   └ css/a5c6678e0745c1da.css                                         2.89 kB
-├ ● /magazine (ISR: 86400 Seconds) (2965 ms)                           3.75 kB         278 kB
-├   └ css/77942b9576d43d3d.css                                         3.17 kB
-├ ● /magazine/archive (ISR: 86400 Seconds) (2644 ms)                   939 B          98.1 kB
-├   └ css/4869e4ddf0c1be62.css                                         2.55 kB
-├ ○ /newsletter                                                        1.39 kB        98.6 kB
-├   └ css/ef18b2a74167288f.css                                         2.53 kB
-├ ● /podcast/[slug] (ISR: 86400 Seconds) (4133 ms)                     1.4 kB         98.6 kB
-├   └ css/5758fc00f585e438.css                                         2.51 kB
-├   ├ /podcast/unscripted-with-amy-somerville (1362 ms)
-├   ├ /podcast/in-the-details (1048 ms)
-├   ├ /podcast/rich-regular (936 ms)
-├   └ /podcast/brilliant-thoughts (770 ms)
-├ ● /podcasts (ISR: 86400 Seconds) (1004 ms)                           1.91 kB        99.1 kB
-├   └ css/b5ba6959d9a6aa5b.css                                         3.24 kB
-├ ○ /press                                                             1.15 kB        98.3 kB
-├ ● /press-release/[slug]                                              2.1 kB         99.3 kB
-├   └ css/de17415d662e83ef.css                                         2.65 kB
-├ ● /press-releases (ISR: 3600 Seconds) (747 ms)                       2.09 kB        99.3 kB
-├   └ css/d23d581e5b015812.css                                         2.6 kB
-├ ● /privacy (ISR: 86400 Seconds) (963 ms)                             762 B          97.9 kB
-├ ○ /search                                                            2.7 kB         99.9 kB
-├   └ css/130c3c7f48f3f2aa.css                                         3.14 kB
-├ ○ /signin                                                            2.02 kB        99.2 kB
-├   └ css/809569bb7268924c.css                                         2.72 kB
-├ ƒ /sitemap.xml                                                       247 B          89.9 kB
-├ ● /speakers (ISR: 86400 Seconds)                                     1.8 kB           99 kB
-├   └ css/66c9eabd4bec9834.css                                         2.44 kB
-├ ● /store (ISR: 86400 Seconds)                                        2.28 kB        99.5 kB
-├   └ css/8cc5d0d42d99c8e2.css                                         3.05 kB
-├ ○ /subscribe                                                         1.62 kB        98.8 kB
-├   └ css/ea278b29e8a6cefd.css                                         2.82 kB
-├ ○ /success-plus                                                      2.59 kB        99.8 kB
-├   └ css/0f5948157025d120.css                                         2.91 kB
-├ ● /terms (ISR: 86400 Seconds) (1195 ms)                              759 B          97.9 kB
-├ ● /video/[slug] (ISR: 86400 Seconds) (13347 ms)                      1.4 kB         98.6 kB
-├   └ css/73b76b462ebb0529.css                                         2.51 kB
-├   ├ /video/power-of-fear (1383 ms)
-├   ├ /video/importance-of-patience (1362 ms)
-├   ├ /video/tony-robbins-illusion-of-investing (1362 ms)
-├   ├ /video/kris-carr-interview (1340 ms)
-├   ├ /video/dj-steve-aoki-interview (1330 ms)
-├   ├ /video/rest-and-recharge (1327 ms)
-├   ├ /video/jay-shetty-interview (1316 ms)
-├   └ [+5 more paths] (avg 783 ms)
-└ ● /videos (ISR: 86400 Seconds) (1736 ms)                             1.63 kB        98.8 kB
-    └ css/35bee9857964b75a.css                                         2.93 kB
-+ First Load JS shared by all                                          90.5 kB
-  ├ chunks/framework-0e8d27528ba61906.js                               45.2 kB
-  ├ chunks/main-2fc7f0cd63ea9481.js                                    32.2 kB
-  ├ chunks/pages/_app-72ee47257a223388.js                              10.3 kB
-  └ other shared chunks (total)                                        2.8 kB
+./pages/api/paywall/track.ts:89:5
+Type error: Type 'string | undefined' is not assignable to type 'string | null'.
+  Type 'undefined' is not assignable to type 'string | null'.
 
-ƒ Middleware                                                           51.3 kB
+[0m [90m 87 |[39m     [90m// Anonymous user tracking (cookie-based)[39m[0m
+[0m [90m 88 |[39m     [90m// Get or create session ID[39m[0m
+[0m[31m[1m>[22m[39m[90m 89 |[39m     sessionId [33m=[39m req[33m.[39mcookies[33m.[39mpaywallSession[33m;[39m[0m
+[0m [90m    |[39m     [31m[1m^[22m[39m[0m
+[0m [90m 90 |[39m     [36mif[39m ([33m![39msessionId) {[0m
+[0m [90m 91 |[39m       sessionId [33m=[39m uuidv4()[33m;[39m[0m
+[0m [90m 92 |[39m       res[33m.[39msetHeader([32m'Set-Cookie'[39m[33m,[39m [32m`paywallSession=${sessionId}; Path=/; Max-Age=2592000; SameSite=Lax`[39m)[33m;[39m [90m// 30 days[39m[0m
 
-○  (Static)   prerendered as static content
-●  (SSG)      prerendered as static HTML (uses getStaticProps)
-   (ISR)      incremental static regeneration (uses revalidate in getStaticProps)
-ƒ  (Dynamic)  server-rendered on demand
+> success-nextjs@1.0.0 build
+> prisma generate && next build
 
+Environment variables loaded from .env
+Prisma schema loaded from prisma\schema.prisma
+
+✔ Generated Prisma Client (v6.17.0) to .\node_modules\@prisma\client in 173ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Interested in query caching in just a few lines of code? Try Accelerate today! https://pris.ly/tip-3-accelerate
+
+  ▲ Next.js 14.2.3
+  - Environments: .env.local, .env.production, .env
+
+   Linting and checking validity of types ...
+
+./pages/about-us.tsx
+105:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+107:23  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+139:13  Warning: Do not use an `<a>` element to navigate to `/subscribe/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+
+./pages/account/index.tsx
+216:15  Warning: Do not use an `<a>` element to navigate to `/subscribe/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+
+./pages/admin/activity-log.tsx
+46:6  Warning: React Hook useEffect has a missing dependency: 'fetchLogs'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+183:27  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./pages/admin/analytics/realtime.tsx
+24:6  Warning: React Hook useEffect has a missing dependency: 'fetchAnalytics'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./pages/admin/analytics.tsx
+44:6  Warning: React Hook useEffect has a missing dependency: 'fetchAnalytics'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./pages/admin/comments.tsx
+41:6  Warning: React Hook useEffect has a missing dependency: 'fetchComments'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./pages/admin/content-viewer.tsx
+33:6  Warning: React Hook useEffect has a missing dependency: 'fetchContent'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+112:23  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./pages/admin/editorial-calendar.tsx
+54:6  Warning: React Hook useEffect has a missing dependency: 'fetchEditorialItems'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./pages/admin/magazine-manager.tsx
+288:23  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+356:19  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./pages/admin/media/index.tsx
+200:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+226:19  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./pages/admin/members/[id].tsx
+42:6  Warning: React Hook useEffect has a missing dependency: 'fetchMember'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./pages/admin/pages/index.tsx
+40:6  Warning: React Hook useEffect has a missing dependency: 'fetchPages'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./pages/admin/podcasts/index.tsx
+100:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./pages/admin/revenue.tsx
+37:6  Warning: React Hook useEffect has a missing dependency: 'fetchRevenueData'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./pages/admin/seo.tsx
+74:6  Warning: React Hook useEffect has a missing dependency: 'analyzeSEO'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./pages/admin/subscriptions.tsx
+41:6  Warning: React Hook useEffect has a missing dependency: 'fetchSubscriptions'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./pages/admin/users/index.tsx
+306:27  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./pages/admin/videos/index.tsx
+100:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./pages/author/[slug].tsx
+38:13  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./pages/bestsellers.tsx
+56:25  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+73:11  Warning: Do not use an `<a>` element to navigate to `/store/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+
+./pages/blog/[slug].tsx
+236:13  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+263:17  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+348:23  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./pages/dashboard.tsx
+257:15  Warning: Do not use an `<a>` element to navigate to `/category/business/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+264:15  Warning: Do not use an `<a>` element to navigate to `/category/money/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+271:15  Warning: Do not use an `<a>` element to navigate to `/category/lifestyle/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+278:15  Warning: Do not use an `<a>` element to navigate to `/magazine/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+285:15  Warning: Do not use an `<a>` element to navigate to `/podcasts/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+292:15  Warning: Do not use an `<a>` element to navigate to `/videos/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+312:25  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+335:17  Warning: Do not use an `<a>` element to navigate to `/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+
+./pages/index.tsx
+70:11  Warning: Do not use an `<a>` element to navigate to `/subscribe/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+79:13  Warning: Do not use an `<a>` element to navigate to `/category/money/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+94:13  Warning: Do not use an `<a>` element to navigate to `/category/business/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+109:13  Warning: Do not use an `<a>` element to navigate to `/category/future-of-work/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+124:13  Warning: Do not use an `<a>` element to navigate to `/category/lifestyle/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+139:13  Warning: Do not use an `<a>` element to navigate to `/category/health/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+154:13  Warning: Do not use an `<a>` element to navigate to `/category/personal-development/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+174:15  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+178:15  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+182:15  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+186:15  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+190:15  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+194:15  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+199:13  Warning: Do not use an `<a>` element to navigate to `/speakers/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+209:13  Warning: Do not use an `<a>` element to navigate to `/category/entertainment/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+268:11  Warning: Do not use an `<a>` element to navigate to `/newsletter/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+
+./pages/magazine/archive.tsx
+34:23  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./pages/magazine.tsx
+70:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+100:21  Warning: Do not use an `<a>` element to navigate to `/subscribe/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+178:25  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./pages/podcast/[slug].tsx
+51:13  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+75:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./pages/press-release/[slug].tsx
+46:11  Warning: Do not use an `<a>` element to navigate to `/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+48:11  Warning: Do not use an `<a>` element to navigate to `/press-releases/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+69:13  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+83:11  Warning: Do not use an `<a>` element to navigate to `/press-releases/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+
+./pages/press-releases.tsx
+48:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./pages/search.tsx
+27:6  Warning: React Hook useEffect has a missing dependency: 'performSearch'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./pages/signin.tsx
+133:13  Warning: Do not use an `<a>` element to navigate to `/subscribe/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+
+./pages/speakers.tsx
+40:17  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+51:11  Warning: Do not use an `<a>` element to navigate to `/contact/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+
+./pages/store.tsx
+44:19  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+68:23  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+92:15  Warning: Do not use an `<a>` element to navigate to `/magazine/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+107:13  Warning: Do not use an `<a>` element to navigate to `/bestsellers/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+110:13  Warning: Do not use an `<a>` element to navigate to `/success-plus/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+
+./pages/video/[slug].tsx
+51:13  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+75:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./pages/_app.tsx
+13:9  Warning: Custom fonts not added in `pages/_document.js` will only load for a single page. This is discouraged. See: https://nextjs.org/docs/messages/no-page-custom-font  @next/next/no-page-custom-font
+18:9  Warning: Custom fonts not added in `pages/_document.js` will only load for a single page. This is discouraged. See: https://nextjs.org/docs/messages/no-page-custom-font  @next/next/no-page-custom-font
+
+./components/admin/AdminLayout.tsx
+111:19  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./components/admin/DashboardStats.tsx
+39:6  Warning: React Hook useEffect has a missing dependency: 'fetchDashboardData'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/admin/EnhancedPostEditor.tsx
+84:6  Warning: React Hook useEffect has a missing dependency: 'fetchPost'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+450:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./components/admin/PageEditor.tsx
+31:6  Warning: React Hook useEffect has a missing dependency: 'fetchPage'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/admin/PodcastEditor.tsx
+29:6  Warning: React Hook useEffect has a missing dependency: 'fetchPodcast'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+212:17  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./components/admin/PostEditor.tsx
+42:6  Warning: React Hook useEffect has a missing dependency: 'fetchPost'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+267:17  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./components/admin/VideoEditor.tsx
+29:6  Warning: React Hook useEffect has a missing dependency: 'fetchVideo'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+212:17  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./components/AnalyticsTracker.tsx
+57:6  Warning: React Hook useEffect has a missing dependency: 'trackEvent'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/ArticleDisplay.tsx
+51:6  Warning: React Hook useEffect has a missing dependency: 'injectAds'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+166:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+241:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+267:19  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./components/Bestsellers.tsx
+44:23  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./components/CommentSection.tsx
+35:6  Warning: React Hook useEffect has a missing dependency: 'fetchComments'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+126:17  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./components/forms/NewsletterSignup.tsx
+112:11  Warning: Do not use an `<a>` element to navigate to `/privacy/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+
+./components/MediaUploader.tsx
+142:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./components/PaywallGate.tsx
+33:6  Warning: React Hook useEffect has a missing dependency: 'checkPaywallStatus'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/PostCard.tsx
+57:15  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+87:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/basic-features/eslint#disabling-rules
+Failed to compile.
+
+./pages/api/paywall/track.ts:101:7
+Type error: Type 'string[]' is not assignable to type 'never'.
+
+[0m [90m  99 |[39m         viewedAt[33m:[39m { gte[33m:[39m resetDate }[0m
+[0m [90m 100 |[39m       }[33m,[39m[0m
+[0m[31m[1m>[22m[39m[90m 101 |[39m       distinct[33m:[39m [[32m'articleId'[39m][0m
+[0m [90m     |[39m       [31m[1m^[22m[39m[0m
+[0m [90m 102 |[39m     })[33m;[39m[0m
+[0m [90m 103 |[39m[0m
+[0m [90m 104 |[39m     [90m// Track this view[39m[0m

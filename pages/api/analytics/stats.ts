@@ -145,9 +145,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Average time on page
     const avgTimeOnPage = analytics
-      .filter(a => a.averageTimeOnPage > 0)
-      .reduce((sum, a) => sum + a.averageTimeOnPage, 0) /
-      (analytics.filter(a => a.averageTimeOnPage > 0).length || 1);
+      .filter(a => a.avgTimeOnPage > 0)
+      .reduce((sum, a) => sum + a.avgTimeOnPage, 0) /
+      (analytics.filter(a => a.avgTimeOnPage > 0).length || 1);
 
     // Bounce rate
     const bounceRate = analytics.length > 0

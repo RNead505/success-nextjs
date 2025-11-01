@@ -1,0 +1,408 @@
+.successPlusPage {
+  background: #fff;
+}
+
+/* Hero Section */
+.hero {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  color: #fff;
+  padding: 100px 20px;
+  text-align: center;
+}
+
+.heroContent {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.hero h1 {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.heroSubtitle {
+  font-size: 1.25rem;
+  line-height: 1.8;
+  margin-bottom: 40px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.ctaPrimary {
+  background: #ff6b6b;
+  color: #fff;
+  border: none;
+  padding: 18px 48px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.ctaPrimary:hover {
+  background: #ff5252;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+}
+
+.ctaSecondary {
+  background: #fff;
+  color: #1a1a2e;
+  border: 2px solid #1a1a2e;
+  padding: 18px 48px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.ctaSecondary:hover {
+  background: #1a1a2e;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* What's Included Section */
+.whatsIncluded {
+  padding: 80px 20px;
+  background: #f8f9fa;
+}
+
+.whatsIncluded h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 60px;
+  color: #1a1a2e;
+}
+
+.benefitsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.benefit {
+  text-align: center;
+  padding: 30px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
+}
+
+.benefit:hover {
+  transform: translateY(-5px);
+}
+
+.benefitIcon {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.benefit h3 {
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+  color: #1a1a2e;
+}
+
+.benefit p {
+  color: #666;
+  line-height: 1.6;
+}
+
+/* Audience Section */
+.audience {
+  padding: 80px 20px;
+  background: #fff;
+}
+
+.audience h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 60px;
+  color: #1a1a2e;
+}
+
+.audienceGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.audienceCard {
+  padding: 30px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.audienceCard h4 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+.audienceCard p {
+  line-height: 1.6;
+  opacity: 0.95;
+}
+
+/* Pricing Section */
+.pricing {
+  padding: 80px 20px;
+  background: #f8f9fa;
+}
+
+.pricing h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 40px;
+  color: #1a1a2e;
+}
+
+.billingToggle {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 60px;
+}
+
+.billingToggle button {
+  padding: 12px 30px;
+  border: 2px solid #1a1a2e;
+  background: #fff;
+  color: #1a1a2e;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.billingToggle button.active {
+  background: #1a1a2e;
+  color: #fff;
+}
+
+.saveBadge {
+  background: #ff6b6b;
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  margin-left: 8px;
+}
+
+.pricingGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 40px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.pricingCard {
+  background: #fff;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.pricingCard:hover {
+  transform: translateY(-10px);
+}
+
+.pricingCard.featured {
+  border: 3px solid #ff6b6b;
+  box-shadow: 0 12px 40px rgba(255, 107, 107, 0.3);
+}
+
+.popularBadge {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ff6b6b;
+  color: #fff;
+  padding: 8px 24px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+}
+
+.pricingHeader h3 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #1a1a2e;
+}
+
+.valueTag {
+  color: #666;
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+.pricingPrice {
+  margin: 30px 0;
+  text-align: center;
+}
+
+.currency {
+  font-size: 2rem;
+  vertical-align: top;
+  color: #1a1a2e;
+}
+
+.amount {
+  font-size: 4rem;
+  font-weight: 800;
+  color: #1a1a2e;
+}
+
+.period {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.featureList {
+  list-style: none;
+  padding: 0;
+  margin: 30px 0;
+}
+
+.featureList li {
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+  color: #333;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.featureList li:last-child {
+  border-bottom: none;
+}
+
+/* Guarantee Section */
+.guarantee {
+  padding: 80px 20px;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: #fff;
+  text-align: center;
+}
+
+.guarantee h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.guarantee p {
+  font-size: 1.25rem;
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.8;
+}
+
+/* FAQ Section */
+.faq {
+  padding: 80px 20px;
+  background: #fff;
+}
+
+.faq h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 60px;
+  color: #1a1a2e;
+}
+
+.faqGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.faqItem {
+  padding: 30px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border-left: 4px solid #ff6b6b;
+}
+
+.faqItem h4 {
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+  color: #1a1a2e;
+}
+
+.faqItem p {
+  color: #666;
+  line-height: 1.6;
+}
+
+/* Final CTA */
+.finalCta {
+  padding: 100px 20px;
+  background: #1a1a2e;
+  color: #fff;
+  text-align: center;
+}
+
+.finalCta h2 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.finalCta p {
+  font-size: 1.25rem;
+  margin-bottom: 40px;
+  opacity: 0.9;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .heroSubtitle {
+    font-size: 1.1rem;
+  }
+
+  .whatsIncluded h2,
+  .audience h2,
+  .pricing h2,
+  .faq h2 {
+    font-size: 2rem;
+  }
+
+  .benefitsGrid,
+  .audienceGrid,
+  .pricingGrid,
+  .faqGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .amount {
+    font-size: 3rem;
+  }
+
+  .finalCta h2 {
+    font-size: 2rem;
+  }
+}
