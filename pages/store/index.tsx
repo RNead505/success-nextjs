@@ -57,7 +57,7 @@ export default function StorePage({ products, categories }: StorePageProps) {
         </header>
 
         {/* Featured Products */}
-        {featured Products.length > 0 && (
+        {featuredProducts.length > 0 && (
           <section className={styles.featuredSection}>
             <h2>Featured Products</h2>
             <div className={styles.featuredGrid}>
