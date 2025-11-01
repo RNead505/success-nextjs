@@ -22,18 +22,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       // Fetch WordPress content stats (get accurate totals from headers)
       // First, get the total counts from WordPress
+      const wpApiUrl = process.env.WORDPRESS_API_URL || 'https://www.success.com/wp-json/wp/v2';
+
       const [postsResponse, videosResponse, podcastsResponse, categoriesResponse] = await Promise.all([
-        fetch(`${process.env.WORDPRESS_API_URL || 'https://www.success.com/wp-json/wp/v2'}/posts?per_page=1`),
-        fetch(`${process.env.WORDPRESS_API_URL || 'https://www.success.com/wp-json/wp/v2'}/videos?per_page=1`).catch(() => null),
-        fetch(`${process.env.WORDPRESS_API_URL || 'https://www.success.com/wp-json/wp/v2'}/podcasts?per_page=1`).catch(() => null),
-        fetch(`${process.env.WORDPRESS_API_URL || 'https://www.success.com/wp-json/wp/v2'}/categories?per_page=1`),
+        fetch(`${wpApiUrl}/posts?per_page=1`, { cache: 'no-store' }),
+        fetch(`${wpApiUrl}/videos?per_page=1`, { cache: 'no-store' }).catch(() => null),
+        fetch(`${wpApiUrl}/podcasts?per_page=1`, { cache: 'no-store' }).catch(() => null),
+        fetch(`${wpApiUrl}/categories?per_page=1`, { cache: 'no-store' }),
       ]);
 
-      // Get total counts from X-WP-Total header
-      const totalPostsCount = parseInt(postsResponse.headers.get('X-WP-Total') || '0');
-      const totalVideosCount = videosResponse ? parseInt(videosResponse.headers.get('X-WP-Total') || '0') : 0;
-      const totalPodcastsCount = podcastsResponse ? parseInt(podcastsResponse.headers.get('X-WP-Total') || '0') : 0;
-      const totalCategoriesCount = parseInt(categoriesResponse.headers.get('X-WP-Total') || '0');
+      // Get total counts from X-Wp-Total header (case-sensitive!)
+      const totalPostsCount = parseInt(postsResponse.headers.get('X-Wp-Total') || postsResponse.headers.get('x-wp-total') || '0');
+      const totalVideosCount = videosResponse ? parseInt(videosResponse.headers.get('X-Wp-Total') || videosResponse.headers.get('x-wp-total') || '0') : 0;
+      const totalPodcastsCount = podcastsResponse ? parseInt(podcastsResponse.headers.get('X-Wp-Total') || podcastsResponse.headers.get('x-wp-total') || '0') : 0;
+      const totalCategoriesCount = parseInt(categoriesResponse.headers.get('X-Wp-Total') || categoriesResponse.headers.get('x-wp-total') || '0');
+
+      console.log('WordPress API Totals:', {
+        posts: totalPostsCount,
+        videos: totalVideosCount,
+        podcasts: totalPodcastsCount,
+        categories: totalCategoriesCount,
+      });
 
       // Fetch recent posts for period calculation (last 100 is enough for recent data)
       const [posts, videos, podcasts] = await Promise.all([
@@ -59,11 +68,30 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         prisma.editorialCalendar.count(),
       ]);
 
+      console.log('Database Stats:', {
+        totalUsers,
+        activeSubscribers,
+        totalBookmarks,
+        newsletterSubscribers,
+        magazineIssues,
+        editorialItems,
+      });
+
       // Calculate content stats
       const now = new Date();
       const recentPosts = posts.filter((post: any) => {
         const postDate = new Date(post.date);
         return postDate >= startDate;
+      });
+
+      const recentVideos = videos.filter((v: any) => new Date(v.date) >= startDate);
+      const recentPodcasts = podcasts.filter((p: any) => new Date(p.date) >= startDate);
+
+      console.log('Recent Content (last ' + days + ' days):', {
+        posts: recentPosts.length,
+        videos: recentVideos.length,
+        podcasts: recentPodcasts.length,
+        startDate: startDate.toISOString(),
       });
 
       // Get editorial calendar stats
@@ -87,8 +115,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         },
         content: {
           postsThisPeriod: recentPosts.length,
-          videosThisPeriod: videos.filter((v: any) => new Date(v.date) >= startDate).length,
-          podcastsThisPeriod: podcasts.filter((p: any) => new Date(p.date) >= startDate).length,
+          videosThisPeriod: recentVideos.length,
+          podcastsThisPeriod: recentPodcasts.length,
         },
         editorial: {
           totalItems: editorialItems,
