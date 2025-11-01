@@ -1,0 +1,342 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 2rem 0;
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: var(--text-5xl);
+  font-weight: var(--font-extrabold);
+  letter-spacing: var(--tracking-tighter);
+  color: var(--color-black);
+  margin: 0 0 1rem 0;
+}
+
+.subtitle {
+  font-family: var(--font-sans);
+  font-size: var(--text-lg);
+  color: var(--color-text-secondary);
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: var(--leading-relaxed);
+}
+
+/* Featured Section */
+.featured {
+  margin-bottom: 4rem;
+}
+
+.sectionTitle {
+  font-family: var(--font-serif);
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-black);
+  margin: 0 0 2rem 0;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--color-gray-medium);
+}
+
+.featuredGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Category Section */
+.categorySection {
+  margin-bottom: 4rem;
+}
+
+.productsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 2rem;
+}
+
+/* Product Card */
+.productCard {
+  background-color: #fff;
+  border: 1px solid var(--color-gray-medium);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.productCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.productImage {
+  width: 100%;
+  height: 320px;
+  overflow: hidden;
+  background-color: var(--color-gray-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.productImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.productInfo {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.productTitle {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
+  line-height: var(--leading-snug);
+  color: var(--color-black);
+  margin: 0 0 0.5rem 0;
+  letter-spacing: var(--tracking-tight);
+}
+
+.productPrice {
+  font-family: var(--font-sans);
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  color: var(--color-black);
+  margin: 0 0 1rem 0;
+}
+
+.buyButton {
+  display: block;
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  background-color: var(--color-black);
+  color: var(--color-white);
+  text-align: center;
+  text-decoration: none;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--font-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  border: 2px solid var(--color-black);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin-top: auto;
+}
+
+.buyButton:hover {
+  background-color: var(--color-white);
+  color: var(--color-black);
+}
+
+/* Magazine Section */
+.magazineSection {
+  background-color: var(--color-gray-light);
+  padding: 3rem 2rem;
+  margin: 4rem 0;
+  border-radius: 8px;
+}
+
+.magazineContent {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.magazineInfo h3 {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  margin: 0 0 1rem 0;
+  color: var(--color-black);
+}
+
+.issueTitle {
+  font-family: var(--font-sans);
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  color: var(--color-text-primary);
+  margin: 0 0 0.5rem 0;
+}
+
+.issueFeatured {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+  margin: 0 0 1rem 0;
+}
+
+.magazinePrice {
+  font-family: var(--font-sans);
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  color: var(--color-black);
+  margin: 0 0 1.5rem 0;
+}
+
+.magazineImage {
+  min-height: 300px;
+  background-color: var(--color-gray-medium);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* CTA Section */
+.ctaSection {
+  text-align: center;
+  padding: 4rem 2rem;
+  background-color: var(--color-gray-dark);
+  color: var(--color-white);
+  margin: 4rem 0;
+  border-radius: 8px;
+}
+
+.ctaSection h2 {
+  font-family: var(--font-serif);
+  font-size: var(--text-4xl);
+  font-weight: var(--font-bold);
+  margin: 0 0 1rem 0;
+  color: var(--color-white);
+}
+
+.ctaSection p {
+  font-family: var(--font-sans);
+  font-size: var(--text-lg);
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0 0 2rem 0;
+}
+
+.ctaButtons {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.ctaButton {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background-color: var(--color-white);
+  color: var(--color-black);
+  text-decoration: none;
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: var(--font-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  border: 2px solid var(--color-white);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.ctaButton:hover {
+  background-color: transparent;
+  color: var(--color-white);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .featuredGrid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+
+  .magazineContent {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1.5rem 1rem;
+  }
+
+  .header {
+    margin-bottom: 2rem;
+    padding: 1rem 0;
+  }
+
+  .title {
+    font-size: var(--text-4xl);
+  }
+
+  .subtitle {
+    font-size: var(--text-base);
+  }
+
+  .sectionTitle {
+    font-size: var(--text-2xl);
+  }
+
+  .featuredGrid,
+  .productsGrid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .productImage {
+    height: 280px;
+  }
+
+  .productTitle {
+    font-size: var(--text-lg);
+  }
+
+  .productPrice {
+    font-size: var(--text-xl);
+  }
+
+  .magazineSection {
+    padding: 2rem 1.5rem;
+    margin: 3rem 0;
+  }
+
+  .ctaSection {
+    padding: 3rem 1.5rem;
+  }
+
+  .ctaSection h2 {
+    font-size: var(--text-3xl);
+  }
+
+  .ctaButtons {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .ctaButton {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .featuredGrid,
+  .productsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .productImage {
+    height: 320px;
+  }
+
+  .title {
+    font-size: var(--text-3xl);
+  }
+
+  .header {
+    padding: 0.5rem 0;
+  }
+}
