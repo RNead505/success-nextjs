@@ -113,9 +113,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       case 'checkout.session.completed': {
         const session = event.data.object as Stripe.Checkout.Session;
 
-        if (session.mode === 'subscription') {
+        if (session.mode === 'subscription' && session.subscription) {
           // Get subscription and customer details
-          const subscription = await stripe.subscriptions.retrieve(
+          const subscription: Stripe.Subscription = await stripe.subscriptions.retrieve(
             session.subscription as string
           );
           const customer = await stripe.customers.retrieve(
@@ -127,15 +127,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           const userId = session.metadata?.userId;
 
           // Create or update subscription in database
+          const subscriptionAny = subscription as any;
+          const currentPeriodStart = subscriptionAny.current_period_start
+            ? new Date(subscriptionAny.current_period_start * 1000)
+            : new Date();
+          const currentPeriodEnd = subscriptionAny.current_period_end
+            ? new Date(subscriptionAny.current_period_end * 1000)
+            : new Date();
+
           const dbSubscription = await prisma.subscription.upsert({
             where: {
               stripeSubscriptionId: subscription.id,
             },
             update: {
               status: subscription.status,
-              currentPeriodStart: new Date(subscription.current_period_start * 1000),
-              currentPeriodEnd: new Date(subscription.current_period_end * 1000),
-              cancelAtPeriodEnd: subscription.cancel_at_period_end,
+              currentPeriodStart,
+              currentPeriodEnd,
+              cancelAtPeriodEnd: subscriptionAny.cancel_at_period_end || false,
             },
             create: {
               userId: userId && userId !== 'guest' ? userId : undefined,
@@ -144,9 +152,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               tier,
               billingCycle,
               status: subscription.status,
-              currentPeriodStart: new Date(subscription.current_period_start * 1000),
-              currentPeriodEnd: new Date(subscription.current_period_end * 1000),
-              cancelAtPeriodEnd: subscription.cancel_at_period_end,
+              currentPeriodStart,
+              currentPeriodEnd,
+              cancelAtPeriodEnd: subscriptionAny.cancel_at_period_end || false,
             },
           });
 
@@ -155,10 +163,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             await sendToCWFulfillment(subscription, customer);
 
             // Create magazine subscription record
+            const shippingAddress = JSON.parse(JSON.stringify(
+              customer.shipping || customer.address || {}
+            ));
             await prisma.magazineSubscription.create({
               data: {
                 subscriptionId: dbSubscription.id,
-                shippingAddress: customer.shipping || customer.address || {},
+                shippingAddress,
                 status: 'active',
               },
             });
@@ -187,6 +198,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       case 'customer.subscription.updated': {
         const subscription = event.data.object as Stripe.Subscription;
+        const subscriptionAny = subscription as any;
+
+        const currentPeriodStart = subscriptionAny.current_period_start
+          ? new Date(subscriptionAny.current_period_start * 1000)
+          : undefined;
+        const currentPeriodEnd = subscriptionAny.current_period_end
+          ? new Date(subscriptionAny.current_period_end * 1000)
+          : undefined;
 
         // Update subscription in database
         await prisma.subscription.update({
@@ -195,9 +214,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           },
           data: {
             status: subscription.status,
-            currentPeriodStart: new Date(subscription.current_period_start * 1000),
-            currentPeriodEnd: new Date(subscription.current_period_end * 1000),
-            cancelAtPeriodEnd: subscription.cancel_at_period_end,
+            currentPeriodStart,
+            currentPeriodEnd,
+            cancelAtPeriodEnd: subscriptionAny.cancel_at_period_end || false,
           },
         });
 
@@ -208,7 +227,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         });
 
         if (dbSub) {
-          const newTier = subscription.metadata.tier;
+          const newTier = subscription.metadata?.tier as string | undefined;
 
           // If upgraded to Insider and no magazine subscription exists, create one
           if (newTier === 'insider' && !dbSub.magazineSubscription) {
@@ -218,10 +237,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
             await sendToCWFulfillment(subscription, customer);
 
+            const shippingAddress = JSON.parse(JSON.stringify(
+              customer.shipping || customer.address || {}
+            ));
             await prisma.magazineSubscription.create({
               data: {
                 subscriptionId: dbSub.id,
-                shippingAddress: customer.shipping || customer.address || {},
+                shippingAddress,
                 status: 'active',
               },
             });
@@ -281,7 +303,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
 
       case 'invoice.payment_succeeded': {
-        const invoice = event.data.object as Stripe.Invoice;
+        const invoice = event.data.object as any;
 
         if (invoice.subscription) {
           // Log successful recurring payment
@@ -305,7 +327,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
 
       case 'invoice.payment_failed': {
-        const invoice = event.data.object as Stripe.Invoice;
+        const invoice = event.data.object as any;
 
         if (invoice.subscription) {
           // Log failed payment
