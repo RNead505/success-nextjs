@@ -224,20 +224,21 @@ model SiteSettings {
 
 // Subscriptions (SUCCESS+ membership)
 model Subscription {
-  id                   String             @id @default(cuid())
-  userId               String             @unique
-  user                 User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  stripeCustomerId     String?            @unique
-  stripeSubscriptionId String?            @unique
+  id                   String                  @id @default(cuid())
+  userId               String?                 @unique
+  user                 User?                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stripeCustomerId     String?                 @unique
+  stripeSubscriptionId String?                 @unique
   stripePriceId        String?
-  status               SubscriptionStatus @default(INACTIVE)
-  tier                 MembershipTier?
-  billingCycle         BillingCycle?
+  status               String                  @default("inactive") // 'active', 'canceled', 'past_due', etc.
+  tier                 String?                 // 'collective' or 'insider'
+  billingCycle         String?                 // 'monthly' or 'annual'
   currentPeriodStart   DateTime?
   currentPeriodEnd     DateTime?
-  cancelAtPeriodEnd    Boolean            @default(false)
-  createdAt            DateTime           @default(now())
-  updatedAt            DateTime           @updatedAt
+  cancelAtPeriodEnd    Boolean                 @default(false)
+  createdAt            DateTime                @default(now())
+  updatedAt            DateTime                @updatedAt
+  magazineSubscription MagazineSubscription?
 
   @@map("subscriptions")
 }
@@ -258,6 +259,21 @@ enum MembershipTier {
 enum BillingCycle {
   MONTHLY
   ANNUAL
+}
+
+// Magazine Subscription for print magazine fulfillment (Insider tier)
+model MagazineSubscription {
+  id               String   @id @default(cuid())
+  subscriptionId   String   @unique
+  subscription     Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  cwSubscriptionId String?  // C+W's fulfillment system subscription ID
+  shippingAddress  Json     // Shipping address for magazine delivery
+  status           String   @default("active") // 'active', 'canceled', 'pending'
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@map("magazine_subscriptions")
+  @@index([subscriptionId])
 }
 
 // Magazine model for storing uploaded PDFs
