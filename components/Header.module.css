@@ -97,14 +97,15 @@
 }
 
 .logo {
-  font-family: var(--font-serif);
-  font-size: 2.5rem;
-  font-weight: var(--font-black);
-  letter-spacing: 4px;
+  font-family: 'Arial Black', 'Arial Bold', Gadget, sans-serif;
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: 0.15em;
   text-decoration: none;
-  color: var(--color-black);
+  color: #000;
   text-transform: uppercase;
   display: inline-block;
+  line-height: 1;
 }
 
 /* Navigation Bar */
