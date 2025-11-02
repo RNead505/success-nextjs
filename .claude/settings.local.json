@@ -87,7 +87,8 @@
       "Bash(if exist \"pages\\api\\auth\\forgot-password.ts.disabled\" move \"pages\\api\\auth\\forgot-password.ts.disabled\" \"pages\\api\\auth\\forgot-password.ts\")",
       "WebFetch(domain:success.com)",
       "Bash(git log:*)",
-      "Bash(awk:*)"
+      "Bash(awk:*)",
+      "Bash(DATABASE_URL=\"postgres://default:9iXF2IrQGpwL@ep-cold-tooth-a4z49xhe-pooler.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require\" npx prisma migrate dev --name add_magazine_subscription)"
     ],
     "deny": [],
     "ask": []
