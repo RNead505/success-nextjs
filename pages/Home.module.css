@@ -9,7 +9,7 @@
 
 .homeLayout {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
+  grid-template-columns: 2fr 1fr;
   gap: 2.5rem;
   max-width: 1280px;
   margin: 0 auto;
@@ -24,17 +24,18 @@
 }
 
 .secondarySection {
-  grid-column: 2;
-  grid-row: 1;
+  grid-column: 1;
+  grid-row: 2;
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
   align-content: start;
+  margin-top: 2rem;
 }
 
 .trendingSection {
   grid-column: 2;
-  grid-row: 2;
+  grid-row: 1 / 3;
 }
 
 /* Latest Articles Section */

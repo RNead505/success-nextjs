@@ -40,6 +40,19 @@
   align-items: center;
 }
 
+.searchButtonTop {
+  text-decoration: none;
+  color: #000;
+  display: flex;
+  align-items: center;
+  padding: 0.25rem;
+  transition: color 0.2s;
+}
+
+.searchButtonTop:hover {
+  color: #555;
+}
+
 .signInButton {
   text-decoration: none;
   color: #000;
@@ -163,24 +176,6 @@
   height: 2px;
   background-color: #fff;
   transition: all 0.3s;
-}
-
-/* Search Button */
-.searchButton {
-  background: none;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-  padding: 0.5rem;
-  display: flex;
-  align-items: center;
-  transition: color 0.2s;
-  z-index: 1001;
-  margin-left: auto;
-}
-
-.searchButton:hover {
-  color: #ccc;
 }
 
 /* Mobile Overlay */
