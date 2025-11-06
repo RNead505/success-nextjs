@@ -97,15 +97,14 @@
 }
 
 .logo {
-  font-family: 'Arial Black', 'Arial Bold', Gadget, sans-serif;
-  font-size: 3rem;
-  font-weight: 900;
-  letter-spacing: 0.15em;
   text-decoration: none;
-  color: #000;
-  text-transform: uppercase;
   display: inline-block;
   line-height: 1;
+}
+
+.logo img {
+  display: block;
+  height: auto;
 }
 
 /* Navigation Bar */
@@ -259,8 +258,9 @@
     padding: 0.4rem 1rem;
   }
 
-  .logo {
-    font-size: 1.5rem;
+  .logo img {
+    height: 40px;
+    max-height: 40px;
   }
 }
 
@@ -269,8 +269,8 @@
     display: none;
   }
 
-  .logo {
-    font-size: 1.25rem;
-    letter-spacing: 2px;
+  .logo img {
+    height: 35px;
+    max-height: 35px;
   }
 }
