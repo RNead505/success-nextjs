@@ -52,10 +52,10 @@ export default function Header() {
             <Image
               src="/images/success-logo.png"
               alt="SUCCESS Magazine"
-              width={300}
-              height={80}
+              width={800}
+              height={200}
               priority
-              style={{ width: 'auto', height: '60px', maxHeight: '60px' }}
+              style={{ width: 'auto', height: '240px', maxHeight: '240px' }}
             />
           </Link>
         </div>
