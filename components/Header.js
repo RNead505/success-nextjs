@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import styles from './Header.module.css';
 
 const navItems = [
@@ -48,7 +49,14 @@ export default function Header() {
       <div className={styles.logoBar}>
         <div className={styles.container}>
           <Link href="/" className={styles.logo}>
-            SUCCESS
+            <Image
+              src="/images/success-logo.png"
+              alt="SUCCESS Magazine"
+              width={200}
+              height={50}
+              priority
+              style={{ width: 'auto', height: '40px' }}
+            />
           </Link>
         </div>
       </div>
