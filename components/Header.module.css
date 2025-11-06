@@ -85,7 +85,7 @@
 /* Logo Bar - Centered above navigation */
 .logoBar {
   background-color: #fff;
-  padding: 0.75rem 0;
+  padding: 0;
   text-align: center;
   border-bottom: 1px solid #e5e5e5;
 }
@@ -93,18 +93,19 @@
 .logoBar .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0;
 }
 
 .logo {
   text-decoration: none;
   display: inline-block;
-  line-height: 1;
+  line-height: 0;
 }
 
 .logo img {
   display: block;
   height: auto;
+  vertical-align: middle;
 }
 
 /* Navigation Bar */
