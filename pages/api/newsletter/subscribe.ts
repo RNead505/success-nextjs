@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
+import { randomUUID } from 'crypto';
 
 const prisma = new PrismaClient();
 
@@ -20,7 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // Check if already subscribed
-    const existing = await prisma.newsletterSubscriber.findUnique({
+    const existing = await prisma.newsletter_subscribers.findUnique({
       where: { email: email.toLowerCase() }
     });
 
@@ -32,7 +33,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         });
       } else {
         // Reactivate subscription
-        await prisma.newsletterSubscriber.update({
+        await prisma.newsletter_subscribers.update({
           where: { email: email.toLowerCase() },
           data: {
             status: 'ACTIVE',
@@ -49,22 +50,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // Create newsletter subscriber
-    await prisma.newsletterSubscriber.create({
+    await prisma.newsletter_subscribers.create({
       data: {
+        id: randomUUID(),
         email: email.toLowerCase(),
         status: 'ACTIVE',
-        subscribedAt: new Date()
+        subscribedAt: new Date(),
+        updatedAt: new Date(),
       }
     });
 
     // Also create/update CRM contact
-    const existingContact = await prisma.contact.findUnique({
+    const existingContact = await prisma.contacts.findUnique({
       where: { email: email.toLowerCase() }
     });
 
     if (existingContact) {
       // Update existing contact
-      await prisma.contact.update({
+      await prisma.contacts.update({
         where: { email: email.toLowerCase() },
         data: {
           firstName: firstName || existingContact.firstName,
@@ -74,13 +77,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
     } else {
       // Create new contact
-      await prisma.contact.create({
+      await prisma.contacts.create({
         data: {
+          id: randomUUID(),
           email: email.toLowerCase(),
           firstName: firstName || null,
           source,
           tags: ['newsletter-subscriber'],
-          status: 'ACTIVE'
+          status: 'ACTIVE',
+          updatedAt: new Date(),
         }
       });
     }

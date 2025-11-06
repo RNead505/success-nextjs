@@ -19,7 +19,7 @@ export default async function handler(req, res) {
 
 async function getUser(req, res, id) {
   try {
-    const user = await prisma.user.findUnique({
+    const user = await prisma.users.findUnique({
       where: { id },
       select: {
         id: true,
@@ -60,7 +60,7 @@ async function updateUser(req, res, id) {
       updateData.password = await bcrypt.hash(password, 10);
     }
 
-    const user = await prisma.user.update({
+    const user = await prisma.users.update({
       where: { id },
       data: updateData,
       select: {
@@ -83,7 +83,7 @@ async function updateUser(req, res, id) {
 
 async function deleteUser(req, res, id) {
   try {
-    await prisma.user.delete({
+    await prisma.users.delete({
       where: { id },
     });
 

@@ -10,7 +10,7 @@ async function resetAdminPassword() {
 
     console.log('Looking for user:', email);
 
-    const user = await prisma.user.findUnique({
+    const user = await prisma.users.findUnique({
       where: { email },
     });
 
@@ -20,7 +20,7 @@ async function resetAdminPassword() {
 
       const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-      const newUser = await prisma.user.create({
+      const newUser = await prisma.users.create({
         data: {
           email,
           password: hashedPassword,
@@ -38,7 +38,7 @@ async function resetAdminPassword() {
 
       const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-      await prisma.user.update({
+      await prisma.users.update({
         where: { email },
         data: { password: hashedPassword },
       });

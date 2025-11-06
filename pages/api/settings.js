@@ -15,7 +15,7 @@ export default async function handler(req, res) {
       // Get settings from database
       let settings;
       try {
-        settings = await prisma.siteSettings.findFirst();
+        settings = await prisma.site_settings.findFirst();
       } catch (dbError) {
         console.log('Database not available, using defaults:', dbError.message);
         settings = null;
@@ -72,7 +72,7 @@ export default async function handler(req, res) {
       // Check if settings exist
       let existingSettings;
       try {
-        existingSettings = await prisma.siteSettings.findFirst();
+        existingSettings = await prisma.site_settings.findFirst();
       } catch (dbError) {
         console.error('Database error:', dbError);
         return res.status(503).json({
@@ -85,7 +85,7 @@ export default async function handler(req, res) {
       let settings;
       if (existingSettings) {
         // Update existing settings
-        settings = await prisma.siteSettings.update({
+        settings = await prisma.site_settings.update({
           where: { id: existingSettings.id },
           data: {
             siteName,
@@ -107,7 +107,7 @@ export default async function handler(req, res) {
         });
       } else {
         // Create new settings
-        settings = await prisma.siteSettings.create({
+        settings = await prisma.site_settings.create({
           data: {
             siteName,
             siteDescription,

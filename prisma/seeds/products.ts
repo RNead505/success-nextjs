@@ -1,4 +1,5 @@
 import { PrismaClient, ProductCategory, ProductStatus } from '@prisma/client';
+import { randomUUID } from 'crypto';
 
 const prisma = new PrismaClient();
 
@@ -516,10 +517,14 @@ async function main() {
   console.log('Seeding products...');
 
   for (const product of products) {
-    await prisma.product.upsert({
+    await prisma.products.upsert({
       where: { slug: product.slug },
       update: product,
-      create: product,
+      create: {
+        ...product,
+        id: randomUUID(),
+        updatedAt: new Date(),
+      },
     });
   }
 

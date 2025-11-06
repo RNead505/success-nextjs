@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
+import { randomUUID } from 'crypto';
 
 const prisma = new PrismaClient();
 
@@ -21,7 +22,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // Find user with valid token
-    const user = await prisma.user.findFirst({
+    const user = await prisma.users.findFirst({
       where: {
         resetToken: token,
         resetTokenExpiry: {
@@ -38,7 +39,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Update user
-    await prisma.user.update({
+    await prisma.users.update({
       where: { id: user.id },
       data: {
         password: hashedPassword,
@@ -48,8 +49,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
 
     // Log activity
-    await prisma.activityLog.create({
+    await prisma.activity_logs.create({
       data: {
+        id: randomUUID(),
         userId: user.id,
         action: 'PASSWORD_RESET',
         entity: 'user',

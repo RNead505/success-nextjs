@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]';
 import { PrismaClient } from '@prisma/client';
+import { randomUUID } from 'crypto';
 
 const prisma = new PrismaClient();
 
@@ -15,11 +16,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method === 'GET') {
     try {
       // Get SEO settings (create default if doesn't exist)
-      let seoSettings = await prisma.sEOSettings.findFirst();
+      let seoSettings = await prisma.seo_settings.findFirst();
 
       if (!seoSettings) {
-        seoSettings = await prisma.sEOSettings.create({
-          data: {},
+        seoSettings = await prisma.seo_settings.create({
+          data: {
+            id: randomUUID(),
+            updatedAt: new Date(),
+          },
         });
       }
 
@@ -56,11 +60,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       } = req.body;
 
       // Get or create SEO settings
-      let seoSettings = await prisma.sEOSettings.findFirst();
+      let seoSettings = await prisma.seo_settings.findFirst();
 
       if (seoSettings) {
         // Update existing
-        seoSettings = await prisma.sEOSettings.update({
+        seoSettings = await prisma.seo_settings.update({
           where: { id: seoSettings.id },
           data: {
             siteTitle,
@@ -87,8 +91,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         });
       } else {
         // Create new
-        seoSettings = await prisma.sEOSettings.create({
+        seoSettings = await prisma.seo_settings.create({
           data: {
+            id: randomUUID(),
             siteTitle,
             siteDescription,
             siteKeywords,
@@ -109,6 +114,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             footerScripts,
             faviconUrl,
             appleTouchIconUrl,
+            updatedAt: new Date(),
           },
         });
       }

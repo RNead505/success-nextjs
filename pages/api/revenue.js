@@ -27,12 +27,12 @@ export default async function handler(req, res) {
     }
 
     // Get all active subscriptions
-    const activeSubscriptions = await prisma.subscription.findMany({
+    const activeSubscriptions = await prisma.subscriptions.findMany({
       where: {
         status: 'ACTIVE',
       },
       include: {
-        user: true,
+        users: true,
       },
     });
 
@@ -42,7 +42,7 @@ export default async function handler(req, res) {
     const monthlyRevenue = activeSubscriptions.length * pricePerMonth;
 
     // Get total subscriptions in the time range
-    const totalSubscriptionsInRange = await prisma.subscription.count({
+    const totalSubscriptionsInRange = await prisma.subscriptions.count({
       where: {
         createdAt: {
           gte: startDate,
@@ -51,7 +51,7 @@ export default async function handler(req, res) {
     });
 
     // Get canceled subscriptions in the time range
-    const canceledInRange = await prisma.subscription.count({
+    const canceledInRange = await prisma.subscriptions.count({
       where: {
         status: 'CANCELED',
         updatedAt: {
@@ -81,7 +81,7 @@ export default async function handler(req, res) {
       const monthStart = new Date(date.getFullYear(), date.getMonth(), 1);
       const monthEnd = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
-      const subsInMonth = await prisma.subscription.count({
+      const subsInMonth = await prisma.subscriptions.count({
         where: {
           status: 'ACTIVE',
           createdAt: {
@@ -102,7 +102,7 @@ export default async function handler(req, res) {
     }
 
     // Calculate total revenue (all-time)
-    const totalSubscriptions = await prisma.subscription.count({
+    const totalSubscriptions = await prisma.subscriptions.count({
       where: {
         status: {
           in: ['ACTIVE', 'CANCELED'],

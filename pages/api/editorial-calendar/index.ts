@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]';
 import { PrismaClient, EditorialStatus } from '@prisma/client';
+import { randomUUID } from 'crypto';
 
 const prisma = new PrismaClient();
 
@@ -18,10 +19,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       const where = status && status !== 'all' ? { status: status as EditorialStatus } : {};
 
-      const items = await prisma.editorialCalendar.findMany({
+      const items = await prisma.editorial_calendar.findMany({
         where,
         include: {
-          assignedTo: {
+          users: {
             select: {
               name: true,
               email: true,
@@ -55,8 +56,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         assignedToId,
       } = req.body;
 
-      const item = await prisma.editorialCalendar.create({
+      const item = await prisma.editorial_calendar.create({
         data: {
+          id: randomUUID(),
           title,
           contentType: contentType || 'ARTICLE',
           status: status || 'IDEA',
@@ -65,9 +67,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           deadline: deadline ? new Date(deadline) : undefined,
           notes,
           assignedToId,
+          updatedAt: new Date(),
         },
         include: {
-          assignedTo: {
+          users: {
             select: {
               name: true,
               email: true,

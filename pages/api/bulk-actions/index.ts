@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]';
 import { PrismaClient } from '@prisma/client';
+import { randomUUID } from 'crypto';
 
 const prisma = new PrismaClient();
 
@@ -21,8 +22,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
 
       // Create bulk action record
-      const bulkAction = await prisma.bulkAction.create({
+      const bulkAction = await prisma.bulk_actions.create({
         data: {
+          id: randomUUID(),
           userId: session.user.id,
           action,
           entity,
@@ -55,10 +57,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (status) where.status = status;
 
       const [actions, total] = await Promise.all([
-        prisma.bulkAction.findMany({
+        prisma.bulk_actions.findMany({
           where,
           include: {
-            user: {
+            users: {
               select: {
                 name: true,
                 email: true,
@@ -71,7 +73,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           skip,
           take: parseInt(perPage as string),
         }),
-        prisma.bulkAction.count({ where }),
+        prisma.bulk_actions.count({ where }),
       ]);
 
       return res.status(200).json({
@@ -99,7 +101,7 @@ async function processBulkAction(
 ) {
   try {
     // Update status to processing
-    await prisma.bulkAction.update({
+    await prisma.bulk_actions.update({
       where: { id: bulkActionId },
       data: {
         status: 'PROCESSING',
@@ -117,8 +119,9 @@ async function processBulkAction(
         processedCount++;
 
         // Log activity
-        await prisma.activityLog.create({
+        await prisma.activity_logs.create({
           data: {
+            id: randomUUID(),
             userId,
             action: action.toUpperCase(),
             entity,
@@ -128,7 +131,7 @@ async function processBulkAction(
         });
 
         // Update progress
-        await prisma.bulkAction.update({
+        await prisma.bulk_actions.update({
           where: { id: bulkActionId },
           data: { processedItems: processedCount },
         });
@@ -138,7 +141,7 @@ async function processBulkAction(
     }
 
     // Mark as completed
-    await prisma.bulkAction.update({
+    await prisma.bulk_actions.update({
       where: { id: bulkActionId },
       data: {
         status: errors.length > 0 ? 'FAILED' : 'COMPLETED',
@@ -148,7 +151,7 @@ async function processBulkAction(
     });
   } catch (error) {
     console.error('Error processing bulk action:', error);
-    await prisma.bulkAction.update({
+    await prisma.bulk_actions.update({
       where: { id: bulkActionId },
       data: {
         status: 'FAILED',
@@ -169,25 +172,25 @@ async function processSingleEntity(action: string, entity: string, entityId: str
 
     case 'bookmark':
       if (action === 'DELETE') {
-        await prisma.bookmark.delete({ where: { id: entityId } });
+        await prisma.bookmarks.delete({ where: { id: entityId } });
       }
       break;
 
     case 'comment':
       if (action === 'DELETE') {
-        await prisma.comment.delete({ where: { id: entityId } });
+        await prisma.comments.delete({ where: { id: entityId } });
       } else if (action === 'APPROVE') {
-        await prisma.comment.update({
+        await prisma.comments.update({
           where: { id: entityId },
           data: { status: 'APPROVED' },
         });
       } else if (action === 'SPAM') {
-        await prisma.comment.update({
+        await prisma.comments.update({
           where: { id: entityId },
           data: { status: 'SPAM' },
         });
       } else if (action === 'TRASH') {
-        await prisma.comment.update({
+        await prisma.comments.update({
           where: { id: entityId },
           data: { status: 'TRASH' },
         });
@@ -196,20 +199,20 @@ async function processSingleEntity(action: string, entity: string, entityId: str
 
     case 'user':
       if (action === 'DELETE') {
-        await prisma.user.delete({ where: { id: entityId } });
+        await prisma.users.delete({ where: { id: entityId } });
       }
       break;
 
     case 'editorialItem':
       if (action === 'DELETE') {
-        await prisma.editorialCalendar.delete({ where: { id: entityId } });
+        await prisma.editorial_calendar.delete({ where: { id: entityId } });
       } else if (action === 'PUBLISH') {
-        await prisma.editorialCalendar.update({
+        await prisma.editorial_calendar.update({
           where: { id: entityId },
           data: { status: 'PUBLISHED' },
         });
       } else if (action === 'ARCHIVE') {
-        await prisma.editorialCalendar.update({
+        await prisma.editorial_calendar.update({
           where: { id: entityId },
           data: { status: 'ARCHIVED' },
         });

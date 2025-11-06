@@ -20,10 +20,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method === 'GET') {
     try {
-      const item = await prisma.editorialCalendar.findUnique({
+      const item = await prisma.editorial_calendar.findUnique({
         where: { id },
         include: {
-          assignedTo: {
+          users: {
             select: {
               name: true,
               email: true,
@@ -70,11 +70,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (assignedToId !== undefined) updateData.assignedToId = assignedToId;
       if (wordpressId !== undefined) updateData.wordpressId = wordpressId;
 
-      const item = await prisma.editorialCalendar.update({
+      const item = await prisma.editorial_calendar.update({
         where: { id },
         data: updateData,
         include: {
-          assignedTo: {
+          users: {
             select: {
               name: true,
               email: true,
@@ -92,7 +92,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method === 'DELETE') {
     try {
-      await prisma.editorialCalendar.delete({
+      await prisma.editorial_calendar.delete({
         where: { id },
       });
 

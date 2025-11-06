@@ -20,10 +20,10 @@ async function getPost(id, req, res) {
   try {
     const { _embed } = req.query;
 
-    const post = await prisma.post.findUnique({
+    const post = await prisma.posts.findUnique({
       where: { id },
       include: _embed === 'true' || _embed === '1' ? {
-        author: {
+        users: {
           select: {
             id: true,
             name: true,
@@ -58,12 +58,12 @@ async function getPost(id, req, res) {
       },
       featured_media_url: post.featuredImage,
       _embedded: _embed ? {
-        author: post.author ? [{
-          id: post.author.id,
-          name: post.author.name,
-          description: post.author.bio || '',
+        author: post.users ? [{
+          id: post.users.id,
+          name: post.users.name,
+          description: post.users.bio || '',
           avatar_urls: {
-            96: post.author.avatar || '',
+            96: post.users.avatar || '',
           },
         }] : [],
         'wp:featuredmedia': post.featuredImage ? [{
@@ -128,11 +128,11 @@ async function updatePost(id, req, res) {
       };
     }
 
-    const post = await prisma.post.update({
+    const post = await prisma.posts.update({
       where: { id },
       data: updateData,
       include: {
-        author: true,
+        users: true,
         categories: true,
         tags: true,
       },
@@ -147,7 +147,7 @@ async function updatePost(id, req, res) {
 
 async function deletePost(id, res) {
   try {
-    await prisma.post.delete({
+    await prisma.posts.delete({
       where: { id },
     });
 

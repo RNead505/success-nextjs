@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]';
 import { prisma } from '../../../lib/prisma';
+import { randomUUID } from 'crypto';
 
 export default async function handler(
   req: NextApiRequest,
@@ -27,7 +28,7 @@ export default async function handler(
         where.completed = false;
       }
 
-      const progress = await prisma.readingProgress.findMany({
+      const progress = await prisma.reading_progress.findMany({
         where,
         orderBy: { lastReadAt: 'desc' },
         take: 20,
@@ -55,7 +56,7 @@ export default async function handler(
 
       const completed = progress >= 90; // Consider 90%+ as completed
 
-      const readingProgress = await prisma.readingProgress.upsert({
+      const readingProgress = await prisma.reading_progress.upsert({
         where: {
           userId_articleId: {
             userId,
@@ -66,21 +67,24 @@ export default async function handler(
           progress,
           completed,
           lastReadAt: new Date(),
+          updatedAt: new Date(),
         },
         create: {
+          id: randomUUID(),
           userId,
           articleId,
           articleTitle,
           articleUrl,
           progress,
           completed,
+          updatedAt: new Date(),
         },
       });
 
       // Create activity log if article was completed
       if (completed && progress >= 90) {
         // Check if we already logged this completion
-        const existingActivity = await prisma.userActivity.findFirst({
+        const existingActivity = await prisma.user_activities.findFirst({
           where: {
             userId,
             activityType: 'ARTICLE_READ',
@@ -91,8 +95,9 @@ export default async function handler(
         });
 
         if (!existingActivity) {
-          await prisma.userActivity.create({
+          await prisma.user_activities.create({
             data: {
+              id: randomUUID(),
               userId,
               activityType: 'ARTICLE_READ',
               title: `Read: ${articleTitle}`,

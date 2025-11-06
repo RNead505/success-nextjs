@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]';
 import { PrismaClient } from '@prisma/client';
+import { randomUUID } from 'crypto';
 
 const prisma = new PrismaClient();
 
@@ -23,7 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
 
       const [comments, total] = await Promise.all([
-        prisma.comment.findMany({
+        prisma.comments.findMany({
           where,
           orderBy: {
             createdAt: 'desc',
@@ -31,7 +32,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           skip,
           take: parseInt(perPage as string),
         }),
-        prisma.comment.count({ where }),
+        prisma.comments.count({ where }),
       ]);
 
       return res.status(200).json({
@@ -60,8 +61,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         userAgent,
       } = req.body;
 
-      const comment = await prisma.comment.create({
+      const comment = await prisma.comments.create({
         data: {
+          id: randomUUID(),
           postId,
           postTitle,
           author,
@@ -71,6 +73,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           status: 'PENDING',
           ipAddress,
           userAgent,
+          updatedAt: new Date(),
         },
       });
 

@@ -22,13 +22,13 @@ export default async function handler(
   if (req.method === 'GET') {
     try {
       // Fetch all users with their subscriptions
-      const members = await prisma.user.findMany({
+      const members = await prisma.users.findMany({
         select: {
           id: true,
           name: true,
           email: true,
           createdAt: true,
-          subscription: {
+          subscriptions: {
             select: {
               status: true,
               currentPeriodEnd: true,

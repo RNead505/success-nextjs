@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]';
 import { PrismaClient } from '@prisma/client';
+import { randomUUID } from 'crypto';
 
 const prisma = new PrismaClient();
 
@@ -15,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(400).json({ error: 'postId is required' });
       }
 
-      const comments = await prisma.comment.findMany({
+      const comments = await prisma.comments.findMany({
         where: {
           postId,
           status: status as any,
@@ -63,8 +64,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const isAdmin = session.user.role === 'ADMIN';
       const commentStatus = isAdmin ? 'APPROVED' : 'PENDING';
 
-      const comment = await prisma.comment.create({
+      const comment = await prisma.comments.create({
         data: {
+          id: randomUUID(),
           postId,
           postTitle,
           author: session.user.name || 'Anonymous',
@@ -73,6 +75,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           status: commentStatus,
           ipAddress: req.headers['x-forwarded-for'] as string || req.socket.remoteAddress || '',
           userAgent: req.headers['user-agent'] || '',
+          updatedAt: new Date(),
         },
       });
 

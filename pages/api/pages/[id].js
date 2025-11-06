@@ -18,7 +18,7 @@ export default async function handler(req, res) {
 
 async function getPage(req, res, id) {
   try {
-    const page = await prisma.page.findUnique({
+    const page = await prisma.pages.findUnique({
       where: { id },
     });
 
@@ -37,7 +37,7 @@ async function updatePage(req, res, id) {
   try {
     const { title, slug, content, status, seoTitle, seoDescription, publishedAt } = req.body;
 
-    const page = await prisma.page.update({
+    const page = await prisma.pages.update({
       where: { id },
       data: {
         title,
@@ -59,7 +59,7 @@ async function updatePage(req, res, id) {
 
 async function deletePage(req, res, id) {
   try {
-    await prisma.page.delete({
+    await prisma.pages.delete({
       where: { id },
     });
 

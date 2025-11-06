@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 async function setAdminRole() {
   try {
     // Update admin@success.com to have ADMIN role
-    const user = await prisma.user.update({
+    const user = await prisma.users.update({
       where: { email: 'admin@success.com' },
       data: { role: 'ADMIN' },
     });

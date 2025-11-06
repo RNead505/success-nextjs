@@ -88,7 +88,9 @@
       "WebFetch(domain:success.com)",
       "Bash(git log:*)",
       "Bash(awk:*)",
-      "Bash(DATABASE_URL=\"postgres://default:9iXF2IrQGpwL@ep-cold-tooth-a4z49xhe-pooler.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require\" npx prisma migrate dev --name add_magazine_subscription)"
+      "Bash(DATABASE_URL=\"postgres://default:9iXF2IrQGpwL@ep-cold-tooth-a4z49xhe-pooler.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require\" npx prisma migrate dev --name add_magazine_subscription)",
+      "Bash(cat:*)",
+      "Bash(echo:*)"
     ],
     "deny": [],
     "ask": []

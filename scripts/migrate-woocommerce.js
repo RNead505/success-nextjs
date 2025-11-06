@@ -13,6 +13,7 @@
  */
 
 const { PrismaClient } = require('@prisma/client');
+const { randomUUID } = require('crypto');
 const fs = require('fs').promises;
 const path = require('path');
 
@@ -107,7 +108,7 @@ async function migrateProducts() {
     for (const wcProduct of products) {
       try {
         // Check if product exists
-        const existing = await prisma.product.findUnique({
+        const existing = await prisma.products.findUnique({
           where: { slug: wcProduct.slug }
         });
 
@@ -135,8 +136,9 @@ async function migrateProducts() {
         }
 
         // Create product
-        await prisma.product.create({
+        await prisma.products.create({
           data: {
+            id: randomUUID(),
             name: wcProduct.name,
             slug: wcProduct.slug,
             description: wcProduct.description || null,
@@ -155,7 +157,8 @@ async function migrateProducts() {
               `${wcProduct.dimensions.length}x${wcProduct.dimensions.width}x${wcProduct.dimensions.height}` :
               null,
             downloadable: wcProduct.downloadable || false,
-            downloadUrl: wcProduct.downloads?.[0]?.file || null
+            downloadUrl: wcProduct.downloads?.[0]?.file || null,
+            updatedAt: new Date(),
           }
         });
 

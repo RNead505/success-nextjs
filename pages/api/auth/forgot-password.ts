@@ -18,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // Find user
-    const user = await prisma.user.findUnique({
+    const user = await prisma.users.findUnique({
       where: { email: email.toLowerCase() },
     });
 
@@ -35,7 +35,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const resetTokenExpiry = new Date(Date.now() + 3600000); // 1 hour
 
     // Save token to user
-    await prisma.user.update({
+    await prisma.users.update({
       where: { id: user.id },
       data: {
         resetToken,

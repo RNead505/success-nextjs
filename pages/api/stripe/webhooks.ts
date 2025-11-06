@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { buffer } from 'micro';
 import Stripe from 'stripe';
 import { PrismaClient } from '@prisma/client';
+import { randomUUID } from 'crypto';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-09-30.clover',
@@ -60,8 +61,9 @@ async function sendToCWFulfillment(subscription: any, customer: any) {
   } catch (error) {
     console.error('Failed to send to C+W fulfillment:', error);
     // Log to database for manual retry
-    await prisma.activityLog.create({
+    await prisma.activity_logs.create({
       data: {
+        id: randomUUID(),
         userId: subscription.metadata.userId || 'system',
         action: 'CW_FULFILLMENT_FAILED',
         entity: 'subscription',
@@ -135,7 +137,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             ? new Date(subscriptionAny.current_period_end * 1000)
             : new Date();
 
-          const dbSubscription = await prisma.subscription.upsert({
+          const dbSubscription = await prisma.subscriptions.upsert({
             where: {
               stripeSubscriptionId: subscription.id,
             },
@@ -146,6 +148,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               cancelAtPeriodEnd: subscriptionAny.cancel_at_period_end || false,
             },
             create: {
+              id: randomUUID(),
               userId: userId && userId !== 'guest' ? userId : undefined,
               stripeCustomerId: customer.id,
               stripeSubscriptionId: subscription.id,
@@ -155,6 +158,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               currentPeriodStart,
               currentPeriodEnd,
               cancelAtPeriodEnd: subscriptionAny.cancel_at_period_end || false,
+              updatedAt: new Date(),
             },
           });
 
@@ -166,11 +170,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             const shippingAddress = JSON.parse(JSON.stringify(
               customer.shipping || customer.address || {}
             ));
-            await prisma.magazineSubscription.create({
+            await prisma.magazine_subscriptions.create({
               data: {
+                id: randomUUID(),
                 subscriptionId: dbSubscription.id,
                 shippingAddress,
                 status: 'active',
+                updatedAt: new Date(),
               },
             });
           }
@@ -180,8 +186,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
           // Log activity
           if (userId && userId !== 'guest') {
-            await prisma.activityLog.create({
+            await prisma.activity_logs.create({
               data: {
+                id: randomUUID(),
                 userId,
                 action: 'SUBSCRIPTION_CREATED',
                 entity: 'subscription',
@@ -208,7 +215,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           : undefined;
 
         // Update subscription in database
-        await prisma.subscription.update({
+        await prisma.subscriptions.update({
           where: {
             stripeSubscriptionId: subscription.id,
           },
@@ -221,16 +228,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         });
 
         // Check if tier changed
-        const dbSub = await prisma.subscription.findUnique({
+        const dbSub = await prisma.subscriptions.findUnique({
           where: { stripeSubscriptionId: subscription.id },
-          include: { magazineSubscription: true },
+          include: { magazine_subscriptions: true },
         });
 
         if (dbSub) {
           const newTier = subscription.metadata?.tier as string | undefined;
 
           // If upgraded to Insider and no magazine subscription exists, create one
-          if (newTier === 'insider' && !dbSub.magazineSubscription) {
+          if (newTier === 'insider' && !dbSub.magazine_subscriptions) {
             const customer = await stripe.customers.retrieve(
               subscription.customer as string
             ) as Stripe.Customer;
@@ -240,18 +247,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             const shippingAddress = JSON.parse(JSON.stringify(
               customer.shipping || customer.address || {}
             ));
-            await prisma.magazineSubscription.create({
+            await prisma.magazine_subscriptions.create({
               data: {
+                id: randomUUID(),
                 subscriptionId: dbSub.id,
                 shippingAddress,
                 status: 'active',
+                updatedAt: new Date(),
               },
             });
           }
 
           // If downgraded from Insider to Collective, cancel magazine
-          if (newTier === 'collective' && dbSub.tier === 'insider' && dbSub.magazineSubscription) {
-            await prisma.magazineSubscription.update({
+          if (newTier === 'collective' && dbSub.tier === 'insider' && dbSub.magazine_subscriptions) {
+            await prisma.magazine_subscriptions.update({
               where: { subscriptionId: dbSub.id },
               data: { status: 'canceled' },
             });
@@ -261,7 +270,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
           // Update tier in database
           if (newTier !== dbSub.tier) {
-            await prisma.subscription.update({
+            await prisma.subscriptions.update({
               where: { id: dbSub.id },
               data: { tier: newTier },
             });
@@ -276,7 +285,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const subscription = event.data.object as Stripe.Subscription;
 
         // Update subscription status to canceled
-        const dbSub = await prisma.subscription.update({
+        const dbSub = await prisma.subscriptions.update({
           where: {
             stripeSubscriptionId: subscription.id,
           },
@@ -284,13 +293,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             status: 'canceled',
           },
           include: {
-            magazineSubscription: true,
+            magazine_subscriptions: true,
           },
         });
 
         // Cancel magazine subscription if exists
-        if (dbSub.magazineSubscription) {
-          await prisma.magazineSubscription.update({
+        if (dbSub.magazine_subscriptions) {
+          await prisma.magazine_subscriptions.update({
             where: { subscriptionId: dbSub.id },
             data: { status: 'canceled' },
           });
@@ -307,13 +316,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         if (invoice.subscription) {
           // Log successful recurring payment
-          const dbSub = await prisma.subscription.findUnique({
+          const dbSub = await prisma.subscriptions.findUnique({
             where: { stripeSubscriptionId: invoice.subscription as string },
           });
 
           if (dbSub?.userId) {
-            await prisma.activityLog.create({
+            await prisma.activity_logs.create({
               data: {
+                id: randomUUID(),
                 userId: dbSub.userId,
                 action: 'SUBSCRIPTION_PAYMENT_SUCCEEDED',
                 entity: 'subscription',
@@ -331,13 +341,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         if (invoice.subscription) {
           // Log failed payment
-          const dbSub = await prisma.subscription.findUnique({
+          const dbSub = await prisma.subscriptions.findUnique({
             where: { stripeSubscriptionId: invoice.subscription as string },
           });
 
           if (dbSub?.userId) {
-            await prisma.activityLog.create({
+            await prisma.activity_logs.create({
               data: {
+                id: randomUUID(),
                 userId: dbSub.userId,
                 action: 'SUBSCRIPTION_PAYMENT_FAILED',
                 entity: 'subscription',

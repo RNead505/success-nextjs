@@ -27,14 +27,14 @@ async function getPodcasts(req, res) {
 
     const where = status && status !== 'all' ? { status: status.toUpperCase() } : { status: 'PUBLISHED' };
 
-    const podcasts = await prisma.podcast.findMany({
+    const podcasts = await prisma.podcasts.findMany({
       where,
       skip,
       take,
       orderBy: { publishedAt: 'desc' },
     });
 
-    const total = await prisma.podcast.count({ where });
+    const total = await prisma.podcasts.count({ where });
 
     res.setHeader('X-WP-Total', total);
     res.setHeader('X-WP-TotalPages', Math.ceil(total / take));
@@ -77,7 +77,7 @@ async function createPodcast(req, res) {
       status = 'DRAFT',
     } = req.body;
 
-    const podcast = await prisma.podcast.create({
+    const podcast = await prisma.podcasts.create({
       data: {
         title,
         slug,

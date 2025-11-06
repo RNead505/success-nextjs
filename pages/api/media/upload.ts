@@ -5,6 +5,7 @@ import { PrismaClient } from '@prisma/client';
 import { uploadAndOptimizeImage, validateImageFile } from '../../../lib/media';
 import formidable from 'formidable';
 import fs from 'fs';
+import { randomUUID } from 'crypto';
 
 const prisma = new PrismaClient();
 
@@ -65,6 +66,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Save to database
     const media = await prisma.media.create({
       data: {
+        id: randomUUID(),
         filename: uploadedFile.originalFilename || 'upload.jpg',
         url: optimized.original,
         mimeType: uploadedFile.mimetype || 'image/jpeg',
@@ -78,8 +80,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
 
     // Log activity
-    await prisma.activityLog.create({
+    await prisma.activity_logs.create({
       data: {
+        id: randomUUID(),
         userId: session.user.id,
         action: 'UPLOAD',
         entity: 'media',

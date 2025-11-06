@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
+import { randomUUID } from 'crypto';
 
 const prisma = new PrismaClient();
 
@@ -29,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // Create or update contact in CRM
-    const existingContact = await prisma.contact.findUnique({
+    const existingContact = await prisma.contacts.findUnique({
       where: { email: email.toLowerCase() }
     });
 
@@ -37,7 +38,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (existingContact) {
       // Update existing contact
-      contact = await prisma.contact.update({
+      contact = await prisma.contacts.update({
         where: { email: email.toLowerCase() },
         data: {
           firstName,
@@ -53,8 +54,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
     } else {
       // Create new contact
-      contact = await prisma.contact.create({
+      contact = await prisma.contacts.create({
         data: {
+          id: randomUUID(),
           email: email.toLowerCase(),
           firstName,
           lastName,
@@ -63,7 +65,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           source,
           tags: ['contact-form-lead'],
           status: 'ACTIVE',
-          notes: `[${new Date().toISOString()}] ${subject}: ${message}`
+          notes: `[${new Date().toISOString()}] ${subject}: ${message}`,
+          updatedAt: new Date(),
         }
       });
     }

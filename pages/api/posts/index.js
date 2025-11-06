@@ -46,13 +46,13 @@ async function getPosts(req, res) {
       };
     }
 
-    const posts = await prisma.post.findMany({
+    const posts = await prisma.posts.findMany({
       where,
       skip,
       take,
       orderBy: { publishedAt: 'desc' },
       include: _embed === 'true' || _embed === '1' ? {
-        author: {
+        users: {
           select: {
             id: true,
             name: true,
@@ -65,7 +65,7 @@ async function getPosts(req, res) {
       } : undefined,
     });
 
-    const total = await prisma.post.count({ where });
+    const total = await prisma.posts.count({ where });
 
     res.setHeader('X-WP-Total', total);
     res.setHeader('X-WP-TotalPages', Math.ceil(total / take));
@@ -88,12 +88,12 @@ async function getPosts(req, res) {
       },
       featured_media_url: post.featuredImage,
       _embedded: _embed ? {
-        author: post.author ? [{
-          id: post.author.id,
-          name: post.author.name,
-          description: post.author.bio || '',
+        author: post.users ? [{
+          id: post.users.id,
+          name: post.users.name,
+          description: post.users.bio || '',
           avatar_urls: {
-            96: post.author.avatar || '',
+            96: post.users.avatar || '',
           },
         }] : [],
         'wp:featuredmedia': post.featuredImage ? [{
@@ -131,7 +131,7 @@ async function createPost(req, res) {
       seoDescription,
     } = req.body;
 
-    const post = await prisma.post.create({
+    const post = await prisma.posts.create({
       data: {
         title,
         slug,
@@ -152,7 +152,7 @@ async function createPost(req, res) {
         },
       },
       include: {
-        author: true,
+        users: true,
         categories: true,
         tags: true,
       },

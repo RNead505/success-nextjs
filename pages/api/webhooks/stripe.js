@@ -77,7 +77,7 @@ async function handleSubscriptionCreated(subscription) {
   const customerId = subscription.customer;
 
   // Find user by Stripe customer ID
-  const user = await prisma.user.findFirst({
+  const user = await prisma.users.findFirst({
     where: { stripeCustomerId: customerId },
   });
 
@@ -87,7 +87,7 @@ async function handleSubscriptionCreated(subscription) {
   }
 
   // Create or update subscription record
-  await prisma.subscription.upsert({
+  await prisma.subscriptions.upsert({
     where: { userId: user.id },
     create: {
       userId: user.id,
@@ -116,7 +116,7 @@ async function handleSubscriptionCreated(subscription) {
 async function handleSubscriptionUpdated(subscription) {
   const customerId = subscription.customer;
 
-  const user = await prisma.user.findFirst({
+  const user = await prisma.users.findFirst({
     where: { stripeCustomerId: customerId },
   });
 
@@ -125,7 +125,7 @@ async function handleSubscriptionUpdated(subscription) {
     return;
   }
 
-  await prisma.subscription.update({
+  await prisma.subscriptions.update({
     where: { userId: user.id },
     data: {
       status: subscription.status.toUpperCase(),
@@ -142,7 +142,7 @@ async function handleSubscriptionUpdated(subscription) {
 async function handleSubscriptionDeleted(subscription) {
   const customerId = subscription.customer;
 
-  const user = await prisma.user.findFirst({
+  const user = await prisma.users.findFirst({
     where: { stripeCustomerId: customerId },
   });
 
@@ -151,7 +151,7 @@ async function handleSubscriptionDeleted(subscription) {
     return;
   }
 
-  await prisma.subscription.update({
+  await prisma.subscriptions.update({
     where: { userId: user.id },
     data: {
       status: 'CANCELED',
@@ -166,9 +166,9 @@ async function handleSubscriptionDeleted(subscription) {
 async function handlePaymentSucceeded(invoice) {
   const customerId = invoice.customer;
 
-  const user = await prisma.user.findFirst({
+  const user = await prisma.users.findFirst({
     where: { stripeCustomerId: customerId },
-    include: { subscription: true },
+    include: { subscriptions: true },
   });
 
   if (!user) {
@@ -179,7 +179,7 @@ async function handlePaymentSucceeded(invoice) {
   // Send confirmation email
   const { sendEmail, getSubscriptionConfirmationHTML } = require('../../../lib/email');
   const amount = (invoice.amount_paid / 100).toFixed(2);
-  const plan = user.subscription?.stripePriceId || 'SUCCESS+';
+  const plan = user.subscriptions?.stripePriceId || 'SUCCESS+';
 
   await sendEmail({
     to: user.email,
@@ -194,7 +194,7 @@ async function handlePaymentSucceeded(invoice) {
 async function handlePaymentFailed(invoice) {
   const customerId = invoice.customer;
 
-  const user = await prisma.user.findFirst({
+  const user = await prisma.users.findFirst({
     where: { stripeCustomerId: customerId },
   });
 
@@ -203,7 +203,7 @@ async function handlePaymentFailed(invoice) {
     return;
   }
 
-  await prisma.subscription.update({
+  await prisma.subscriptions.update({
     where: { userId: user.id },
     data: {
       status: 'PAST_DUE',

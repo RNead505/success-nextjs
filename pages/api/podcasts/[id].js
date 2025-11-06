@@ -18,7 +18,7 @@ export default async function handler(req, res) {
 
 async function getPodcast(req, res, id) {
   try {
-    const podcast = await prisma.podcast.findUnique({
+    const podcast = await prisma.podcasts.findUnique({
       where: { id },
     });
 
@@ -37,7 +37,7 @@ async function updatePodcast(req, res, id) {
   try {
     const { title, slug, description, audioUrl, thumbnail, duration, status, publishedAt } = req.body;
 
-    const podcast = await prisma.podcast.update({
+    const podcast = await prisma.podcasts.update({
       where: { id },
       data: {
         title,
@@ -60,7 +60,7 @@ async function updatePodcast(req, res, id) {
 
 async function deletePodcast(req, res, id) {
   try {
-    await prisma.podcast.delete({
+    await prisma.podcasts.delete({
       where: { id },
     });
 

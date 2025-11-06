@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]';
 import { PrismaClient } from '@prisma/client';
+import { randomUUID } from 'crypto';
 
 const prisma = new PrismaClient();
 
@@ -17,12 +18,12 @@ export default async function handler(
 
   try {
     if (req.method === 'GET') {
-      const campaigns = await prisma.campaign.findMany({
+      const campaigns = await prisma.campaigns.findMany({
         include: {
           _count: {
             select: {
-              contacts: true,
-              emails: true,
+              campaign_contacts: true,
+              drip_emails: true,
             },
           },
         },
@@ -38,12 +39,14 @@ export default async function handler(
         return res.status(400).json({ message: 'Name and subject are required' });
       }
 
-      const campaign = await prisma.campaign.create({
+      const campaign = await prisma.campaigns.create({
         data: {
+          id: randomUUID(),
           name,
           subject,
           status: 'DRAFT',
           scheduledAt: scheduledAt ? new Date(scheduledAt) : null,
+          updatedAt: new Date(),
         },
       });
 

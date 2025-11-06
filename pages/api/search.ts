@@ -59,17 +59,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     let model: any;
     switch (type) {
       case 'video':
-        model = prisma.video;
+        model = prisma.videos;
         break;
       case 'podcast':
-        model = prisma.podcast;
+        model = prisma.podcasts;
         break;
       case 'page':
-        model = prisma.page;
+        model = prisma.pages;
         where.status = undefined; // Pages don't have status in same way
         break;
       default:
-        model = prisma.post;
+        model = prisma.posts;
     }
 
     // Fetch results
@@ -77,11 +77,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       model.findMany({
         where,
         include: {
-          author: {
+          users: {
             select: {
               id: true,
               name: true,
-              image: true,
+              avatar: true,
             },
           },
           categories: true,

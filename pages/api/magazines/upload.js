@@ -74,7 +74,7 @@ export default async function handler(req, res) {
     }
 
     // Store magazine metadata in database
-    const magazine = await prisma.magazine.create({
+    const magazine = await prisma.magazines.create({
       data: {
         title,
         slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),

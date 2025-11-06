@@ -18,7 +18,7 @@ export default async function handler(req, res) {
 
 async function getCategory(req, res, id) {
   try {
-    const category = await prisma.category.findUnique({
+    const category = await prisma.categories.findUnique({
       where: { id },
       include: {
         _count: {
@@ -42,7 +42,7 @@ async function updateCategory(req, res, id) {
   try {
     const { name, slug, description } = req.body;
 
-    const category = await prisma.category.update({
+    const category = await prisma.categories.update({
       where: { id },
       data: {
         name,
@@ -60,7 +60,7 @@ async function updateCategory(req, res, id) {
 
 async function deleteCategory(req, res, id) {
   try {
-    await prisma.category.delete({
+    await prisma.categories.delete({
       where: { id },
     });
 

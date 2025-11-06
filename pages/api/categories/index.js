@@ -33,7 +33,7 @@ async function getCategories(req, res) {
       ];
     }
 
-    const categories = await prisma.category.findMany({
+    const categories = await prisma.categories.findMany({
       where,
       skip,
       take,
@@ -45,7 +45,7 @@ async function getCategories(req, res) {
       },
     });
 
-    const total = await prisma.category.count({ where });
+    const total = await prisma.categories.count({ where });
 
     res.setHeader('X-WP-Total', total);
     res.setHeader('X-WP-TotalPages', Math.ceil(total / take));
@@ -70,7 +70,7 @@ async function createCategory(req, res) {
   try {
     const { name, slug, description } = req.body;
 
-    const category = await prisma.category.create({
+    const category = await prisma.categories.create({
       data: {
         name,
         slug,

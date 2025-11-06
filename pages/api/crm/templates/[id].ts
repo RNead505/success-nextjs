@@ -23,7 +23,7 @@ export default async function handler(
 
   try {
     if (req.method === 'GET') {
-      const template = await prisma.emailTemplate.findUnique({
+      const template = await prisma.email_templates.findUnique({
         where: { id },
         include: {
           campaigns: true,
@@ -42,7 +42,7 @@ export default async function handler(
 
       // If this is set as default, unset all other defaults
       if (isDefault) {
-        await prisma.emailTemplate.updateMany({
+        await prisma.email_templates.updateMany({
           where: {
             isDefault: true,
             id: { not: id }
@@ -51,7 +51,7 @@ export default async function handler(
         });
       }
 
-      const template = await prisma.emailTemplate.update({
+      const template = await prisma.email_templates.update({
         where: { id },
         data: {
           name: name || undefined,
@@ -67,7 +67,7 @@ export default async function handler(
 
     if (req.method === 'DELETE') {
       // Check if template is in use
-      const template = await prisma.emailTemplate.findUnique({
+      const template = await prisma.email_templates.findUnique({
         where: { id },
         include: {
           _count: {
@@ -84,7 +84,7 @@ export default async function handler(
         });
       }
 
-      await prisma.emailTemplate.delete({
+      await prisma.email_templates.delete({
         where: { id },
       });
 

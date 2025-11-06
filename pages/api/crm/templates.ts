@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]';
 import { PrismaClient } from '@prisma/client';
+import { randomUUID } from 'crypto';
 
 const prisma = new PrismaClient();
 
@@ -17,7 +18,7 @@ export default async function handler(
 
   try {
     if (req.method === 'GET') {
-      const templates = await prisma.emailTemplate.findMany({
+      const templates = await prisma.email_templates.findMany({
         include: {
           _count: {
             select: {
@@ -39,18 +40,20 @@ export default async function handler(
 
       // If this is set as default, unset all other defaults
       if (isDefault) {
-        await prisma.emailTemplate.updateMany({
+        await prisma.email_templates.updateMany({
           where: { isDefault: true },
           data: { isDefault: false },
         });
       }
 
-      const template = await prisma.emailTemplate.create({
+      const template = await prisma.email_templates.create({
         data: {
+          id: randomUUID(),
           name,
           subject,
           content,
           isDefault: isDefault || false,
+          updatedAt: new Date(),
         },
       });
 

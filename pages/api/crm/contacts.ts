@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]';
 import { PrismaClient } from '@prisma/client';
+import { randomUUID } from 'crypto';
 
 const prisma = new PrismaClient();
 
@@ -17,7 +18,7 @@ export default async function handler(
 
   try {
     if (req.method === 'GET') {
-      const contacts = await prisma.contact.findMany({
+      const contacts = await prisma.contacts.findMany({
         orderBy: { createdAt: 'desc' },
       });
       return res.status(200).json(contacts);
@@ -31,7 +32,7 @@ export default async function handler(
       }
 
       // Check if contact already exists
-      const existingContact = await prisma.contact.findUnique({
+      const existingContact = await prisma.contacts.findUnique({
         where: { email },
       });
 
@@ -39,8 +40,9 @@ export default async function handler(
         return res.status(400).json({ message: 'Contact with this email already exists' });
       }
 
-      const contact = await prisma.contact.create({
+      const contact = await prisma.contacts.create({
         data: {
+          id: randomUUID(),
           email,
           firstName: firstName || null,
           lastName: lastName || null,
@@ -49,6 +51,7 @@ export default async function handler(
           tags: tags || [],
           source: source || 'manual',
           status: 'ACTIVE',
+          updatedAt: new Date(),
         },
       });
 

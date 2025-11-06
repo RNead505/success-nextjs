@@ -60,12 +60,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         magazineIssues,
         editorialItems,
       ] = await Promise.all([
-        prisma.user.count(),
-        prisma.subscription.count({ where: { status: 'ACTIVE' } }),
-        prisma.bookmark.count(),
-        prisma.newsletterSubscriber.count({ where: { status: 'ACTIVE' } }),
-        prisma.magazine.count(),
-        prisma.editorialCalendar.count(),
+        prisma.users.count(),
+        prisma.subscriptions.count({ where: { status: 'ACTIVE' } }),
+        prisma.bookmarks.count(),
+        prisma.newsletter_subscribers.count({ where: { status: 'ACTIVE' } }),
+        prisma.magazines.count(),
+        prisma.editorial_calendar.count(),
       ]);
 
       console.log('Database Stats:', {
@@ -95,7 +95,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
 
       // Get editorial calendar stats
-      const editorialStats = await prisma.editorialCalendar.groupBy({
+      const editorialStats = await prisma.editorial_calendar.groupBy({
         by: ['status'],
         _count: {
           status: true,

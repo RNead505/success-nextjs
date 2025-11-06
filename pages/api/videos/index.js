@@ -27,14 +27,14 @@ async function getVideos(req, res) {
 
     const where = status && status !== 'all' ? { status: status.toUpperCase() } : { status: 'PUBLISHED' };
 
-    const videos = await prisma.video.findMany({
+    const videos = await prisma.videos.findMany({
       where,
       skip,
       take,
       orderBy: { publishedAt: 'desc' },
     });
 
-    const total = await prisma.video.count({ where });
+    const total = await prisma.videos.count({ where });
 
     res.setHeader('X-WP-Total', total);
     res.setHeader('X-WP-TotalPages', Math.ceil(total / take));
@@ -77,7 +77,7 @@ async function createVideo(req, res) {
       status = 'DRAFT',
     } = req.body;
 
-    const video = await prisma.video.create({
+    const video = await prisma.videos.create({
       data: {
         title,
         slug,

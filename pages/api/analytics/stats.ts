@@ -41,7 +41,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // Get analytics data
-    const analytics = await prisma.contentAnalytics.findMany({
+    const analytics = await prisma.content_analytics.findMany({
       where: {
         createdAt: {
           gte: startDate,

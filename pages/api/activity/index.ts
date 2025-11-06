@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]';
 import { prisma } from '../../../lib/prisma';
+import { randomUUID } from 'crypto';
 
 export default async function handler(
   req: NextApiRequest,
@@ -25,7 +26,7 @@ export default async function handler(
         where.activityType = type;
       }
 
-      const activities = await prisma.userActivity.findMany({
+      const activities = await prisma.user_activities.findMany({
         where,
         orderBy: { createdAt: 'desc' },
         take: parseInt(limit as string),
@@ -47,8 +48,9 @@ export default async function handler(
         return res.status(400).json({ error: 'Missing required fields' });
       }
 
-      const activity = await prisma.userActivity.create({
+      const activity = await prisma.user_activities.create({
         data: {
+          id: randomUUID(),
           userId,
           activityType,
           title,

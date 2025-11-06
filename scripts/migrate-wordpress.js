@@ -132,12 +132,12 @@ async function migrateUsers() {
     for (const wpUser of users) {
       try {
         // Check if user already exists
-        const existing = await prisma.user.findUnique({
+        const existing = await prisma.users.findUnique({
           where: { email: wpUser.email || `user-${wpUser.id}@imported.local` }
         });
 
         if (!existing) {
-          await prisma.user.create({
+          await prisma.users.create({
             data: {
               email: wpUser.email || `user-${wpUser.id}@imported.local`,
               name: wpUser.name || wpUser.slug,
@@ -187,12 +187,12 @@ async function migrateCategories() {
 
     for (const wpCat of categories) {
       try {
-        const existing = await prisma.category.findUnique({
+        const existing = await prisma.categories.findUnique({
           where: { slug: wpCat.slug }
         });
 
         if (!existing) {
-          await prisma.category.create({
+          await prisma.categories.create({
             data: {
               name: wpCat.name,
               slug: wpCat.slug,
@@ -238,12 +238,12 @@ async function migrateTags() {
 
     for (const wpTag of tags) {
       try {
-        const existing = await prisma.tag.findUnique({
+        const existing = await prisma.tags.findUnique({
           where: { slug: wpTag.slug }
         });
 
         if (!existing) {
-          await prisma.tag.create({
+          await prisma.tags.create({
             data: {
               name: wpTag.name,
               slug: wpTag.slug
@@ -356,7 +356,7 @@ async function migratePosts() {
     for (const wpPost of posts) {
       try {
         // Find author
-        const author = await prisma.user.findFirst({
+        const author = await prisma.users.findFirst({
           where: { email: { contains: 'imported' } }
         });
 
@@ -366,7 +366,7 @@ async function migratePosts() {
         }
 
         // Check if post exists
-        const existing = await prisma.post.findUnique({
+        const existing = await prisma.posts.findUnique({
           where: { slug: wpPost.slug }
         });
 
@@ -375,7 +375,7 @@ async function migratePosts() {
         // Get categories
         const categoryIds = [];
         if (wpPost.categories && wpPost.categories.length > 0) {
-          const cats = await prisma.category.findMany({
+          const cats = await prisma.categories.findMany({
             where: { id: { in: wpPost.categories.map(String) } }
           });
           categoryIds.push(...cats.map(c => c.id));
@@ -384,7 +384,7 @@ async function migratePosts() {
         // Get tags
         const tagIds = [];
         if (wpPost.tags && wpPost.tags.length > 0) {
-          const tags = await prisma.tag.findMany({
+          const tags = await prisma.tags.findMany({
             where: { id: { in: wpPost.tags.map(String) } }
           });
           tagIds.push(...tags.map(t => t.id));
@@ -394,7 +394,7 @@ async function migratePosts() {
         const featuredImage = wpPost._embedded?.['wp:featuredmedia']?.[0]?.source_url || null;
 
         // Create post
-        const newPost = await prisma.post.create({
+        const newPost = await prisma.posts.create({
           data: {
             title: wpPost.title.rendered,
             slug: wpPost.slug,
@@ -458,13 +458,13 @@ async function migratePages() {
 
     for (const wpPage of pages) {
       try {
-        const existing = await prisma.page.findUnique({
+        const existing = await prisma.pages.findUnique({
           where: { slug: wpPage.slug }
         });
 
         if (existing) continue;
 
-        await prisma.page.create({
+        await prisma.pages.create({
           data: {
             title: wpPage.title.rendered,
             slug: wpPage.slug,

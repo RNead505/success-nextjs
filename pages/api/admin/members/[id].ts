@@ -28,7 +28,7 @@ export default async function handler(
   if (req.method === 'GET') {
     try {
       // Fetch specific member with subscription details
-      const member = await prisma.user.findUnique({
+      const member = await prisma.users.findUnique({
         where: {
           id: id,
         },
@@ -38,7 +38,7 @@ export default async function handler(
           email: true,
           createdAt: true,
           updatedAt: true,
-          subscription: {
+          subscriptions: {
             select: {
               status: true,
               currentPeriodStart: true,
@@ -66,7 +66,7 @@ export default async function handler(
   if (req.method === 'DELETE') {
     try {
       // Delete member (cascade will delete subscription)
-      await prisma.user.delete({
+      await prisma.users.delete({
         where: {
           id: id,
         },

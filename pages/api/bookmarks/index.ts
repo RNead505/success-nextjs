@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]';
 import { prisma } from '../../../lib/prisma';
+import { randomUUID } from 'crypto';
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,7 +19,7 @@ export default async function handler(
   // GET - Fetch user's bookmarks
   if (req.method === 'GET') {
     try {
-      const bookmarks = await prisma.bookmark.findMany({
+      const bookmarks = await prisma.bookmarks.findMany({
         where: { userId },
         orderBy: { createdAt: 'desc' },
       });
@@ -40,7 +41,7 @@ export default async function handler(
       }
 
       // Check if bookmark already exists
-      const existing = await prisma.bookmark.findUnique({
+      const existing = await prisma.bookmarks.findUnique({
         where: {
           userId_articleId: {
             userId,
@@ -53,8 +54,9 @@ export default async function handler(
         return res.status(409).json({ error: 'Bookmark already exists' });
       }
 
-      const bookmark = await prisma.bookmark.create({
+      const bookmark = await prisma.bookmarks.create({
         data: {
+          id: randomUUID(),
           userId,
           articleId,
           articleTitle,
@@ -64,8 +66,9 @@ export default async function handler(
       });
 
       // Create activity log
-      await prisma.userActivity.create({
+      await prisma.user_activities.create({
         data: {
+          id: randomUUID(),
           userId,
           activityType: 'ARTICLE_BOOKMARKED',
           title: `Bookmarked: ${articleTitle}`,

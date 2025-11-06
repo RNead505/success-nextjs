@@ -23,18 +23,18 @@ export default async function handler(
 
   try {
     if (req.method === 'GET') {
-      const campaign = await prisma.campaign.findUnique({
+      const campaign = await prisma.campaigns.findUnique({
         where: { id },
         include: {
-          emails: {
+          drip_emails: {
             orderBy: { order: 'asc' },
           },
-          contacts: {
+          campaign_contacts: {
             include: {
-              contact: true,
+              contacts: true,
             },
           },
-          template: true,
+          email_templates: true,
         },
       });
 
@@ -48,7 +48,7 @@ export default async function handler(
     if (req.method === 'PUT') {
       const { name, subject, status, scheduledAt } = req.body;
 
-      const campaign = await prisma.campaign.update({
+      const campaign = await prisma.campaigns.update({
         where: { id },
         data: {
           name: name || undefined,
@@ -63,7 +63,7 @@ export default async function handler(
     }
 
     if (req.method === 'DELETE') {
-      await prisma.campaign.delete({
+      await prisma.campaigns.delete({
         where: { id },
       });
 

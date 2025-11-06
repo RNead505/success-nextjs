@@ -31,26 +31,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 async function generateSitemap(): Promise<string> {
   // Fetch all published content
   const [posts, pages, categories, videos, podcasts] = await Promise.all([
-    prisma.post.findMany({
+    prisma.posts.findMany({
       where: { status: 'PUBLISHED' },
       select: { slug: true, updatedAt: true, publishedAt: true },
       orderBy: { publishedAt: 'desc' }
     }),
-    prisma.page.findMany({
+    prisma.pages.findMany({
       where: { status: 'PUBLISHED' },
       select: { slug: true, updatedAt: true },
       orderBy: { updatedAt: 'desc' }
     }),
-    prisma.category.findMany({
+    prisma.categories.findMany({
       select: { slug: true, updatedAt: true },
       orderBy: { updatedAt: 'desc' }
     }),
-    prisma.video.findMany({
+    prisma.videos.findMany({
       where: { status: 'PUBLISHED' },
       select: { slug: true, updatedAt: true },
       orderBy: { publishedAt: 'desc' }
     }),
-    prisma.podcast.findMany({
+    prisma.podcasts.findMany({
       where: { status: 'PUBLISHED' },
       select: { slug: true, updatedAt: true },
       orderBy: { publishedAt: 'desc' }

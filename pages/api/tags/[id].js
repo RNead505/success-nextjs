@@ -18,7 +18,7 @@ export default async function handler(req, res) {
 
 async function getTag(req, res, id) {
   try {
-    const tag = await prisma.tag.findUnique({
+    const tag = await prisma.tags.findUnique({
       where: { id },
       include: {
         _count: {
@@ -42,7 +42,7 @@ async function updateTag(req, res, id) {
   try {
     const { name, slug } = req.body;
 
-    const tag = await prisma.tag.update({
+    const tag = await prisma.tags.update({
       where: { id },
       data: {
         name,
@@ -59,7 +59,7 @@ async function updateTag(req, res, id) {
 
 async function deleteTag(req, res, id) {
   try {
-    await prisma.tag.delete({
+    await prisma.tags.delete({
       where: { id },
     });
 

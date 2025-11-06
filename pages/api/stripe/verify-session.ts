@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
 import { PrismaClient } from '@prisma/client';
+import { randomUUID } from 'crypto';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-09-30.clover',
@@ -31,8 +32,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (session.payment_status === 'paid') {
       // Log successful conversion
       if (session.metadata?.userId && session.metadata.userId !== 'guest') {
-        await prisma.activityLog.create({
+        await prisma.activity_logs.create({
           data: {
+            id: randomUUID(),
             userId: session.metadata.userId,
             action: 'SUBSCRIPTION_CREATED',
             entity: 'subscription',

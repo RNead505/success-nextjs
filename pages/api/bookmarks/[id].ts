@@ -24,7 +24,7 @@ export default async function handler(
   if (req.method === 'DELETE') {
     try {
       // Check if bookmark exists and belongs to user
-      const bookmark = await prisma.bookmark.findUnique({
+      const bookmark = await prisma.bookmarks.findUnique({
         where: { id },
       });
 
@@ -36,7 +36,7 @@ export default async function handler(
         return res.status(403).json({ error: 'Forbidden' });
       }
 
-      await prisma.bookmark.delete({
+      await prisma.bookmarks.delete({
         where: { id },
       });
 

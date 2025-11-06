@@ -23,16 +23,16 @@ export default async function handler(
 
   try {
     if (req.method === 'GET') {
-      const contact = await prisma.contact.findUnique({
+      const contact = await prisma.contacts.findUnique({
         where: { id },
         include: {
-          emailLogs: {
+          email_logs: {
             orderBy: { sentAt: 'desc' },
             take: 10,
           },
-          campaignContacts: {
+          campaign_contacts: {
             include: {
-              campaign: true,
+              campaigns: true,
             },
           },
         },
@@ -48,7 +48,7 @@ export default async function handler(
     if (req.method === 'PUT') {
       const { email, firstName, lastName, phone, company, tags, status, notes } = req.body;
 
-      const contact = await prisma.contact.update({
+      const contact = await prisma.contacts.update({
         where: { id },
         data: {
           email: email || undefined,
@@ -67,7 +67,7 @@ export default async function handler(
     }
 
     if (req.method === 'DELETE') {
-      await prisma.contact.delete({
+      await prisma.contacts.delete({
         where: { id },
       });
 

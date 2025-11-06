@@ -21,7 +21,7 @@ async function getUsers(req, res) {
     const skip = (parseInt(page) - 1) * parseInt(per_page);
     const take = parseInt(per_page);
 
-    const users = await prisma.user.findMany({
+    const users = await prisma.users.findMany({
       skip,
       take,
       select: {
@@ -36,7 +36,7 @@ async function getUsers(req, res) {
       orderBy: { createdAt: 'desc' },
     });
 
-    const total = await prisma.user.count();
+    const total = await prisma.users.count();
 
     res.setHeader('X-WP-Total', total);
     res.setHeader('X-WP-TotalPages', Math.ceil(total / take));
@@ -55,7 +55,7 @@ async function createUser(req, res) {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await prisma.user.create({
+    const user = await prisma.users.create({
       data: {
         name,
         email,

@@ -16,10 +16,10 @@ export default async function handler(req, res) {
 
 async function getSubscription(req, res, id) {
   try {
-    const subscription = await prisma.subscription.findUnique({
+    const subscription = await prisma.subscriptions.findUnique({
       where: { id },
       include: {
-        user: {
+        users: {
           select: {
             id: true,
             name: true,
@@ -43,7 +43,7 @@ async function getSubscription(req, res, id) {
 async function cancelSubscription(req, res, id) {
   try {
     // Update subscription status to CANCELED
-    const subscription = await prisma.subscription.update({
+    const subscription = await prisma.subscriptions.update({
       where: { id },
       data: {
         status: 'CANCELED',

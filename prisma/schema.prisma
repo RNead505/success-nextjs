@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,508 +7,601 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// User model for admin authentication
-model User {
-  id               String        @id @default(cuid())
-  name             String
-  email            String        @unique
-  password         String
-  role             UserRole      @default(EDITOR)
-  bio              String?
-  avatar           String?
-  stripeCustomerId String?       @unique
-  resetToken       String?
-  resetTokenExpiry DateTime?
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
-  posts            Post[]
-  subscription     Subscription?
-  bookmarks        Bookmark[]
-  readingProgress  ReadingProgress[]
-  activities       UserActivity[]
-  editorialItems   EditorialCalendar[]
-  activityLogs     ActivityLog[]
-  bulkActions      BulkAction[]
+model activity_logs {
+  id        String   @id
+  userId    String
+  action    String
+  entity    String
+  entityId  String?
+  details   String?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  users     users    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@map("users")
+  @@index([action])
+  @@index([createdAt])
+  @@index([entity])
+  @@index([userId])
 }
 
-enum UserRole {
-  SUPER_ADMIN
-  ADMIN
-  EDITOR
-  AUTHOR
-}
-
-// Post model (articles/blog posts)
-model Post {
-  id                String      @id @default(cuid())
-  title             String
-  slug              String      @unique
-  content           String      @db.Text
-  excerpt           String?     @db.Text
-  featuredImage     String?
-  featuredImageAlt  String?
-  status            PostStatus  @default(DRAFT)
-  authorId          String
-  author            User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  categories        Category[]  @relation("PostCategories")
-  tags              Tag[]       @relation("PostTags")
-  publishedAt       DateTime?
-  createdAt         DateTime    @default(now())
-  updatedAt         DateTime    @updatedAt
-  seoTitle          String?
-  seoDescription    String?
-  readTime          Int?        // in minutes
-  views             Int         @default(0)
-
-  @@map("posts")
-  @@index([slug])
-  @@index([status])
-  @@index([publishedAt])
-}
-
-enum PostStatus {
-  DRAFT
-  PUBLISHED
-  ARCHIVED
-}
-
-// Category model
-model Category {
-  id          String    @id @default(cuid())
-  name        String
-  slug        String    @unique
-  description String?   @db.Text
-  posts       Post[]    @relation("PostCategories")
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-
-  @@map("categories")
-  @@index([slug])
-}
-
-// Tag model
-model Tag {
-  id        String    @id @default(cuid())
-  name      String
-  slug      String    @unique
-  posts     Post[]    @relation("PostTags")
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-
-  @@map("tags")
-  @@index([slug])
-}
-
-// Media library
-model Media {
-  id        String      @id @default(cuid())
-  filename  String
-  url       String
-  mimeType  String
-  size      Int         // in bytes
-  width     Int?
-  height    Int?
-  alt       String?
-  caption   String?
-  uploadedBy String
-  createdAt DateTime    @default(now())
-
-  @@map("media")
-}
-
-// Static pages (About, Magazine, etc.)
-model Page {
-  id          String      @id @default(cuid())
-  title       String
-  slug        String      @unique
-  content     String      @db.Text
-  status      PostStatus  @default(DRAFT)
-  publishedAt DateTime?
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  seoTitle    String?
-  seoDescription String?
-
-  @@map("pages")
-  @@index([slug])
-}
-
-// Videos
-model Video {
-  id          String      @id @default(cuid())
-  title       String
-  slug        String      @unique
-  description String?     @db.Text
-  videoUrl    String
-  thumbnail   String?
-  duration    Int?        // in seconds
-  status      PostStatus  @default(DRAFT)
-  publishedAt DateTime?
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-
-  @@map("videos")
-  @@index([slug])
-}
-
-// Podcasts
-model Podcast {
-  id          String      @id @default(cuid())
-  title       String
-  slug        String      @unique
-  description String?     @db.Text
-  audioUrl    String
-  thumbnail   String?
-  duration    Int?        // in seconds
-  status      PostStatus  @default(DRAFT)
-  publishedAt DateTime?
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-
-  @@map("podcasts")
-  @@index([slug])
-}
-
-// Newsletter Subscribers
-model NewsletterSubscriber {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  status       SubscriberStatus  @default(ACTIVE)
-  subscribedAt DateTime @default(now())
-  unsubscribedAt DateTime?
+model bookmarks {
+  id           String   @id
+  userId       String
+  articleId    String
+  articleTitle String
+  articleUrl   String
+  articleImage String?
   createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  users        users    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@map("newsletter_subscribers")
-  @@index([email])
+  @@unique([userId, articleId])
+  @@index([userId])
+}
+
+model bulk_actions {
+  id             String     @id
+  userId         String
+  action         String
+  entity         String
+  entityIds      String[]
+  status         BulkStatus @default(PENDING)
+  totalItems     Int
+  processedItems Int        @default(0)
+  errors         String[]   @default([])
+  startedAt      DateTime?
+  completedAt    DateTime?
+  createdAt      DateTime   @default(now())
+  users          users      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@index([status])
+  @@index([userId])
 }
 
-enum SubscriberStatus {
-  ACTIVE
-  UNSUBSCRIBED
-  BOUNCED
-}
-
-// Site Settings
-model SiteSettings {
-  id                      String   @id @default(cuid())
-  siteName                String   @default("SUCCESS Magazine")
-  siteDescription         String?  @db.Text
-  siteUrl                 String?
-  adminEmail              String?
-  facebookUrl             String?
-  twitterUrl              String?
-  instagramUrl            String?
-  linkedinUrl             String?
-  youtubeUrl              String?
-  wordpressApiUrl         String?
-  wordpressApiKey         String?
-  defaultMetaTitle        String?
-  defaultMetaDescription  String?  @db.Text
-  googleAnalyticsId       String?
-  facebookPixelId         String?
-  createdAt               DateTime @default(now())
-  updatedAt               DateTime @updatedAt
-
-  @@map("site_settings")
-}
-
-// Subscriptions (SUCCESS+ membership)
-model Subscription {
-  id                   String                  @id @default(cuid())
-  userId               String?                 @unique
-  user                 User?                   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  stripeCustomerId     String?                 @unique
-  stripeSubscriptionId String?                 @unique
-  stripePriceId        String?
-  status               String                  @default("inactive") // 'active', 'canceled', 'past_due', etc.
-  tier                 String?                 // 'collective' or 'insider'
-  billingCycle         String?                 // 'monthly' or 'annual'
-  currentPeriodStart   DateTime?
-  currentPeriodEnd     DateTime?
-  cancelAtPeriodEnd    Boolean                 @default(false)
-  createdAt            DateTime                @default(now())
-  updatedAt            DateTime                @updatedAt
-  magazineSubscription MagazineSubscription?
-
-  @@map("subscriptions")
-}
-
-enum SubscriptionStatus {
-  ACTIVE
-  INACTIVE
-  PAST_DUE
-  CANCELED
-  TRIALING
-}
-
-enum MembershipTier {
-  COLLECTIVE
-  INSIDER
-}
-
-enum BillingCycle {
-  MONTHLY
-  ANNUAL
-}
-
-// Magazine Subscription for print magazine fulfillment (Insider tier)
-model MagazineSubscription {
-  id               String   @id @default(cuid())
-  subscriptionId   String   @unique
-  subscription     Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
-  cwSubscriptionId String?  // C+W's fulfillment system subscription ID
-  shippingAddress  Json     // Shipping address for magazine delivery
-  status           String   @default("active") // 'active', 'canceled', 'pending'
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-
-  @@map("magazine_subscriptions")
-  @@index([subscriptionId])
-}
-
-// Magazine model for storing uploaded PDFs
-model Magazine {
-  id             String   @id @default(cuid())
-  title          String
-  slug           String   @unique
-  publishedText  String   // e.g., "JANUARY 2025"
-  description    String?  @db.Text
-  pdfUrl         String   // URL to the PDF file
-  coverImageUrl  String?  // URL to cover image
-  fileSize       Int      // PDF file size in bytes
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-
-  @@map("magazines")
-  @@index([slug])
-}
-
-// Product model for SUCCESS Store
-model Product {
-  id            String        @id @default(cuid())
-  name          String
-  slug          String        @unique
-  description   String?       @db.Text
-  shortDesc     String?
-  price         Float
-  salePrice     Float?
-  category      ProductCategory
-  subcategory   String?
-  imageUrl      String?
-  images        String[]      // Array of image URLs
-  sku           String?       @unique
-  stock         Int           @default(0)
-  featured      Boolean       @default(false)
-  status        ProductStatus @default(ACTIVE)
-  metadata      String?       @db.Text // JSON for additional details
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-  orderItems    OrderItem[]
-
-  @@map("products")
-  @@index([slug])
-  @@index([category])
-  @@index([featured])
-}
-
-enum ProductCategory {
-  BOOKS
-  COURSES
-  MERCHANDISE
-  MAGAZINES
-  BUNDLES
-  MEMBERSHIPS
-}
-
-enum ProductStatus {
-  ACTIVE
-  DRAFT
-  PUBLISHED
-  OUT_OF_STOCK
-  DISCONTINUED
-  ARCHIVED
-}
-
-// CRM Contact model
-model Contact {
-  id              String         @id @default(cuid())
-  email           String         @unique
-  firstName       String?
-  lastName        String?
-  phone           String?
-  company         String?
-  tags            String[]       // Array of tags
-  status          ContactStatus  @default(ACTIVE)
-  source          String?        // Where they came from (newsletter, form, etc.)
-  notes           String?        @db.Text
-  lastContactedAt DateTime?
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
-  emailLogs       EmailLog[]
-  campaignContacts CampaignContact[]
-
-  @@map("contacts")
-  @@index([email])
-  @@index([status])
-}
-
-enum ContactStatus {
-  ACTIVE
-  UNSUBSCRIBED
-  BOUNCED
-  SPAM
-}
-
-// Email Campaign (Drip Campaign)
-model Campaign {
-  id          String         @id @default(cuid())
-  name        String
-  subject     String
-  status      CampaignStatus @default(DRAFT)
-  templateId  String?
-  template    EmailTemplate? @relation(fields: [templateId], references: [id])
-  scheduledAt DateTime?
-  sentAt      DateTime?
-  totalSent   Int            @default(0)
-  totalOpened Int            @default(0)
-  totalClicked Int           @default(0)
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-  contacts    CampaignContact[]
-  emails      DripEmail[]
-
-  @@map("campaigns")
-}
-
-enum CampaignStatus {
-  DRAFT
-  SCHEDULED
-  SENDING
-  SENT
-  PAUSED
-}
-
-// Drip Email (part of a campaign sequence)
-model DripEmail {
-  id          String   @id @default(cuid())
-  campaignId  String
-  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
-  name        String
-  subject     String
-  content     String   @db.Text
-  delayDays   Int      @default(0) // Days after previous email
-  order       Int      // Order in sequence
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@map("drip_emails")
-}
-
-// Junction table for Campaign and Contact
-model CampaignContact {
-  id         String   @id @default(cuid())
+model campaign_contacts {
+  id         String    @id
   campaignId String
-  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
   contactId  String
-  contact    Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
-  status     String   @default("pending") // pending, sent, opened, clicked
+  status     String    @default("pending")
   sentAt     DateTime?
   openedAt   DateTime?
   clickedAt  DateTime?
-  createdAt  DateTime @default(now())
+  createdAt  DateTime  @default(now())
+  campaigns  campaigns @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  contacts   contacts  @relation(fields: [contactId], references: [id], onDelete: Cascade)
 
   @@unique([campaignId, contactId])
-  @@map("campaign_contacts")
 }
 
-// Email Template
-model EmailTemplate {
-  id        String     @id @default(cuid())
-  name      String
-  subject   String
-  content   String     @db.Text
-  isDefault Boolean    @default(false)
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  campaigns Campaign[]
-
-  @@map("email_templates")
+model campaigns {
+  id                String              @id
+  name              String
+  subject           String
+  status            CampaignStatus      @default(DRAFT)
+  templateId        String?
+  scheduledAt       DateTime?
+  sentAt            DateTime?
+  totalSent         Int                 @default(0)
+  totalOpened       Int                 @default(0)
+  totalClicked      Int                 @default(0)
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime
+  campaign_contacts campaign_contacts[]
+  email_templates   email_templates?    @relation(fields: [templateId], references: [id])
+  drip_emails       drip_emails[]
 }
 
-// Email Log (track all sent emails)
-model EmailLog {
-  id          String   @id @default(cuid())
-  contactId   String
-  contact     Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
-  subject     String
-  content     String   @db.Text
-  status      String   // sent, delivered, opened, clicked, bounced, failed
-  sentAt      DateTime @default(now())
-  openedAt    DateTime?
-  clickedAt   DateTime?
-  bouncedAt   DateTime?
+model categories {
+  id          String   @id
+  name        String
+  slug        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime
+  posts       posts[]  @relation("PostCategories")
+
+  @@index([slug])
+}
+
+model comments {
+  id          String        @id
+  postId      String
+  postTitle   String
+  author      String
+  authorEmail String
+  authorUrl   String?
+  content     String
+  status      CommentStatus @default(PENDING)
+  ipAddress   String?
+  userAgent   String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime
+
+  @@index([authorEmail])
+  @@index([postId])
+  @@index([status])
+}
+
+model contacts {
+  id                String              @id
+  email             String              @unique
+  firstName         String?
+  lastName          String?
+  phone             String?
+  company           String?
+  tags              String[]
+  status            ContactStatus       @default(ACTIVE)
+  source            String?
+  notes             String?
+  lastContactedAt   DateTime?
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime
+  campaign_contacts campaign_contacts[]
+  email_logs        email_logs[]
+
+  @@index([email])
+  @@index([status])
+}
+
+model content_analytics {
+  id             String   @id
+  contentType    String
+  contentId      String
+  contentSlug    String
+  contentTitle   String
+  views          Int      @default(0)
+  uniqueVisitors Int      @default(0)
+  avgTimeOnPage  Int      @default(0)
+  bounceRate     Float    @default(0.0)
+  socialShares   Int      @default(0)
+  comments       Int      @default(0)
+  bookmarks      Int      @default(0)
+  date           DateTime @default(now())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime
+  metadata       String?
+
+  @@unique([contentType, contentId, date])
+  @@index([contentSlug])
+  @@index([contentType])
+  @@index([date])
+}
+
+model drip_emails {
+  id         String    @id
+  campaignId String
+  name       String
+  subject    String
+  content    String
+  delayDays  Int       @default(0)
+  order      Int
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime
+  campaigns  campaigns @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+}
+
+model editorial_calendar {
+  id            String          @id
+  title         String
+  contentType   ContentType     @default(ARTICLE)
+  assignedToId  String?
+  categoryId    String?
+  status        EditorialStatus @default(IDEA)
+  scheduledDate DateTime?
+  publishDate   DateTime?
+  deadline      DateTime?
+  priority      Priority        @default(MEDIUM)
+  notes         String?
+  wordpressId   String?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime
+  users         users?          @relation(fields: [assignedToId], references: [id])
+
+  @@index([assignedToId])
+  @@index([scheduledDate])
+  @@index([status])
+}
+
+model email_logs {
+  id           String    @id
+  contactId    String
+  subject      String
+  content      String
+  status       String
+  sentAt       DateTime  @default(now())
+  openedAt     DateTime?
+  clickedAt    DateTime?
+  bouncedAt    DateTime?
   errorMessage String?
+  contacts     contacts  @relation(fields: [contactId], references: [id], onDelete: Cascade)
 
-  @@map("email_logs")
   @@index([contactId])
   @@index([status])
 }
 
-// Bookmarks - Users can save articles for later
-model Bookmark {
-  id          String   @id @default(cuid())
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  articleId   String   // WordPress post ID or slug
-  articleTitle String
-  articleUrl  String
-  articleImage String?
-  createdAt   DateTime @default(now())
+model email_templates {
+  id        String      @id
+  name      String
+  subject   String
+  content   String
+  isDefault Boolean     @default(false)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime
+  campaigns campaigns[]
+}
 
-  @@unique([userId, articleId])
-  @@map("bookmarks")
+model magazine_subscriptions {
+  id               String        @id
+  subscriptionId   String        @unique
+  cwSubscriptionId String?
+  shippingAddress  Json
+  status           String        @default("active")
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime
+  subscriptions    subscriptions @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+
+  @@index([subscriptionId])
+}
+
+model magazines {
+  id            String   @id
+  title         String
+  slug          String   @unique
+  publishedText String
+  description   String?
+  pdfUrl        String
+  coverImageUrl String?
+  fileSize      Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime
+
+  @@index([slug])
+}
+
+model media {
+  id         String   @id
+  filename   String
+  url        String
+  mimeType   String
+  size       Int
+  width      Int?
+  height     Int?
+  alt        String?
+  uploadedBy String
+  createdAt  DateTime @default(now())
+  caption    String?
+}
+
+model newsletter_subscribers {
+  id             String           @id
+  email          String           @unique
+  status         SubscriberStatus @default(ACTIVE)
+  subscribedAt   DateTime         @default(now())
+  unsubscribedAt DateTime?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime
+
+  @@index([email])
+  @@index([status])
+}
+
+model order_items {
+  id          String   @id
+  orderId     String
+  productId   String
+  productName String
+  quantity    Int
+  price       Decimal  @db.Decimal(10, 2)
+  total       Decimal  @db.Decimal(10, 2)
+  createdAt   DateTime @default(now())
+  orders      orders   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  products    products @relation(fields: [productId], references: [id])
+
+  @@index([orderId])
+  @@index([productId])
+}
+
+model orders {
+  id              String        @id
+  orderNumber     String        @unique
+  userId          String?
+  userName        String
+  userEmail       String
+  total           Decimal       @db.Decimal(10, 2)
+  subtotal        Decimal       @db.Decimal(10, 2)
+  tax             Decimal       @default(0) @db.Decimal(10, 2)
+  shipping        Decimal       @default(0) @db.Decimal(10, 2)
+  discount        Decimal       @default(0) @db.Decimal(10, 2)
+  status          OrderStatus   @default(PENDING)
+  paymentMethod   String
+  paymentId       String?
+  shippingAddress String?
+  billingAddress  String?
+  notes           String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime
+  order_items     order_items[]
+
+  @@index([createdAt])
+  @@index([orderNumber])
+  @@index([status])
   @@index([userId])
 }
 
-// Reading Progress - Track how much of an article a user has read
-model ReadingProgress {
-  id          String   @id @default(cuid())
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  articleId   String   // WordPress post ID or slug
+model page_views {
+  id           String   @id
+  userId       String?
+  sessionId    String?
+  articleId    String
   articleTitle String
-  articleUrl  String
-  progress    Int      // Percentage (0-100)
-  completed   Boolean  @default(false)
-  lastReadAt  DateTime @default(now())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  articleUrl   String
+  viewedAt     DateTime @default(now())
+  ipAddress    String?
+  userAgent    String?
 
-  @@unique([userId, articleId])
-  @@map("reading_progress")
+  @@index([articleId])
+  @@index([sessionId])
   @@index([userId])
-  @@index([completed])
+  @@index([viewedAt])
 }
 
-// User Activity - Track user actions for activity feed
-model UserActivity {
-  id          String       @id @default(cuid())
-  userId      String
-  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  activityType ActivityType
-  title       String       // E.g., "Read 'How to Be Successful'"
+model pages {
+  id             String     @id
+  title          String
+  slug           String     @unique
+  content        String
+  status         PostStatus @default(DRAFT)
+  publishedAt    DateTime?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime
+  seoTitle       String?
+  seoDescription String?
+
+  @@index([slug])
+}
+
+model paywall_config {
+  id                 String   @id
+  freeArticleLimit   Int      @default(3)
+  resetPeriodDays    Int      @default(30)
+  enablePaywall      Boolean  @default(true)
+  bypassedCategories String[]
+  bypassedArticles   String[]
+  popupTitle         String   @default("You've reached your free article limit")
+  popupMessage       String
+  ctaButtonText      String   @default("Subscribe Now")
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime
+}
+
+model podcasts {
+  id          String     @id
+  title       String
+  slug        String     @unique
   description String?
-  metadata    String?      @db.Text // JSON data
-  createdAt   DateTime     @default(now())
+  audioUrl    String
+  thumbnail   String?
+  duration    Int?
+  status      PostStatus @default(DRAFT)
+  publishedAt DateTime?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime
 
-  @@map("user_activities")
+  @@index([slug])
+}
+
+model posts {
+  id               String       @id
+  title            String
+  slug             String       @unique
+  content          String
+  excerpt          String?
+  featuredImage    String?
+  featuredImageAlt String?
+  status           PostStatus   @default(DRAFT)
+  authorId         String
+  publishedAt      DateTime?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime
+  seoTitle         String?
+  seoDescription   String?
+  readTime         Int?
+  views            Int          @default(0)
+  users            users        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  categories       categories[] @relation("PostCategories")
+  tags             tags[]       @relation("PostTags")
+
+  @@index([publishedAt])
+  @@index([slug])
+  @@index([status])
+}
+
+model products {
+  id          String          @id
+  name        String
+  slug        String          @unique
+  description String?
+  price       Float
+  salePrice   Float?
+  sku         String?         @unique
+  imageUrl    String?
+  status      ProductStatus   @default(ACTIVE)
+  featured    Boolean         @default(false)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime
+  category    ProductCategory
+  images      String[]
+  metadata    String?
+  shortDesc   String?
+  stock       Int             @default(0)
+  subcategory String?
+  order_items order_items[]
+
+  @@index([category])
+  @@index([featured])
+  @@index([slug])
+}
+
+model reading_progress {
+  id           String   @id
+  userId       String
+  articleId    String
+  articleTitle String
+  articleUrl   String
+  progress     Int
+  completed    Boolean  @default(false)
+  lastReadAt   DateTime @default(now())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime
+  users        users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, articleId])
+  @@index([completed])
   @@index([userId])
+}
+
+model seo_settings {
+  id                         String   @id
+  siteTitle                  String   @default("SUCCESS Magazine")
+  siteDescription            String   @default("Your Guide to Personal and Professional Growth")
+  siteKeywords               String   @default("success, business, entrepreneurship, leadership, personal development")
+  ogImage                    String   @default("https://www.success.com/og-image.jpg")
+  ogType                     String   @default("website")
+  twitterHandle              String   @default("@successmagazine")
+  twitterCardType            String   @default("summary_large_image")
+  googleAnalyticsId          String?
+  googleSearchConsoleCode    String?
+  bingWebmasterCode          String?
+  facebookDomainVerification String?
+  sitemapUrl                 String   @default("/api/sitemap.xml")
+  robotsTxt                  String   @default("User-agent: *\nAllow: /")
+  canonicalUrl               String?
+  hreflangTags               String?
+  schemaOrgMarkup            String?
+  headerScripts              String?
+  footerScripts              String?
+  faviconUrl                 String?
+  appleTouchIconUrl          String?
+  createdAt                  DateTime @default(now())
+  updatedAt                  DateTime
+}
+
+model site_settings {
+  id                     String   @id
+  siteName               String   @default("SUCCESS Magazine")
+  siteDescription        String?
+  siteUrl                String?
+  adminEmail             String?
+  facebookUrl            String?
+  twitterUrl             String?
+  instagramUrl           String?
+  linkedinUrl            String?
+  youtubeUrl             String?
+  wordpressApiUrl        String?
+  wordpressApiKey        String?
+  defaultMetaTitle       String?
+  defaultMetaDescription String?
+  googleAnalyticsId      String?
+  facebookPixelId        String?
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime
+}
+
+model subscriptions {
+  id                     String                  @id
+  userId                 String?                 @unique
+  stripeCustomerId       String?                 @unique
+  stripeSubscriptionId   String?                 @unique
+  stripePriceId          String?
+  currentPeriodStart     DateTime?
+  currentPeriodEnd       DateTime?
+  cancelAtPeriodEnd      Boolean                 @default(false)
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime
+  billingCycle           String?
+  tier                   String?
+  status                 String                  @default("inactive")
+  magazine_subscriptions magazine_subscriptions?
+  users                  users?                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model tags {
+  id        String   @id
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+  posts     posts[]  @relation("PostTags")
+
+  @@index([slug])
+}
+
+model url_redirects {
+  id         String   @id
+  oldUrl     String   @unique
+  newUrl     String
+  statusCode Int      @default(301)
+  hits       Int      @default(0)
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime
+
+  @@index([isActive])
+  @@index([oldUrl])
+}
+
+model user_activities {
+  id           String       @id
+  userId       String
+  activityType ActivityType
+  title        String
+  description  String?
+  metadata     String?
+  createdAt    DateTime     @default(now())
+  users        users        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@index([activityType])
   @@index([createdAt])
+  @@index([userId])
+}
+
+model users {
+  id                 String               @id
+  name               String
+  email              String               @unique
+  password           String
+  role               UserRole             @default(EDITOR)
+  bio                String?
+  avatar             String?
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime
+  stripeCustomerId   String?              @unique
+  resetToken         String?
+  resetTokenExpiry   DateTime?
+  activity_logs      activity_logs[]
+  bookmarks          bookmarks[]
+  bulk_actions       bulk_actions[]
+  editorial_calendar editorial_calendar[]
+  posts              posts[]
+  reading_progress   reading_progress[]
+  subscriptions      subscriptions?
+  user_activities    user_activities[]
+}
+
+model videos {
+  id          String     @id
+  title       String
+  slug        String     @unique
+  description String?
+  videoUrl    String
+  thumbnail   String?
+  duration    Int?
+  status      PostStatus @default(DRAFT)
+  publishedAt DateTime?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime
+
+  @@index([slug])
 }
 
 enum ActivityType {
@@ -526,83 +613,38 @@ enum ActivityType {
   SUBSCRIPTION_STARTED
 }
 
-// SEO Settings - Complete SEO management
-model SEOSettings {
-  id                      String   @id @default(cuid())
-  siteTitle               String   @default("SUCCESS Magazine")
-  siteDescription         String   @default("Your Guide to Personal and Professional Growth")
-  siteKeywords            String   @default("success, business, entrepreneurship, leadership, personal development")
-  ogImage                 String   @default("https://www.success.com/og-image.jpg")
-  ogType                  String   @default("website")
-  twitterHandle           String   @default("@successmagazine")
-  twitterCardType         String   @default("summary_large_image")
-  googleAnalyticsId       String?
-  googleSearchConsoleCode String?
-  bingWebmasterCode       String?
-  facebookDomainVerification String?
-  sitemapUrl              String   @default("/api/sitemap.xml")
-  robotsTxt               String   @default("User-agent: *\nAllow: /") @db.Text
-  canonicalUrl            String?
-  hreflangTags            String?  @db.Text // JSON array of hreflang entries
-  schemaOrgMarkup         String?  @db.Text // JSON-LD structured data
-  headerScripts           String?  @db.Text // Custom scripts for <head>
-  footerScripts           String?  @db.Text // Custom scripts before </body>
-  faviconUrl              String?
-  appleTouchIconUrl       String?
-  createdAt               DateTime @default(now())
-  updatedAt               DateTime @updatedAt
-
-  @@map("seo_settings")
+enum BillingCycle {
+  MONTHLY
+  ANNUAL
 }
 
-// Content Analytics - Track performance metrics
-model ContentAnalytics {
-  id              String   @id @default(cuid())
-  contentType     String   // post, page, video, podcast
-  contentId       String   // WordPress ID or internal ID
-  contentSlug     String
-  contentTitle    String
-  views           Int      @default(0)
-  uniqueVisitors  Int      @default(0)
-  avgTimeOnPage   Int      @default(0) // in seconds
-  bounceRate      Float    @default(0.0)
-  socialShares    Int      @default(0)
-  comments        Int      @default(0)
-  bookmarks       Int      @default(0)
-  metadata        String?  @db.Text // JSON metadata for tracking details
-  date            DateTime @default(now())
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-
-  @@unique([contentType, contentId, date])
-  @@map("content_analytics")
-  @@index([contentType])
-  @@index([contentSlug])
-  @@index([date])
+enum BulkStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
 }
 
-// Editorial Calendar - Content planning
-model EditorialCalendar {
-  id              String           @id @default(cuid())
-  title           String
-  contentType     ContentType      @default(ARTICLE)
-  assignedToId    String?
-  assignedTo      User?            @relation(fields: [assignedToId], references: [id])
-  categoryId      String?
-  status          EditorialStatus  @default(IDEA)
-  scheduledDate   DateTime?
-  publishDate     DateTime?
-  deadline        DateTime?
-  priority        Priority         @default(MEDIUM)
-  notes           String?          @db.Text
-  wordpressId     String?          // Link to WordPress post if published
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
+enum CampaignStatus {
+  DRAFT
+  SCHEDULED
+  SENDING
+  SENT
+  PAUSED
+}
 
-  @@map("editorial_calendar")
-  @@index([status])
-  @@index([scheduledDate])
-  @@index([assignedToId])
+enum CommentStatus {
+  PENDING
+  APPROVED
+  SPAM
+  TRASH
+}
+
+enum ContactStatus {
+  ACTIVE
+  UNSUBSCRIBED
+  BOUNCED
+  SPAM
 }
 
 enum ContentType {
@@ -625,118 +667,9 @@ enum EditorialStatus {
   ARCHIVED
 }
 
-enum Priority {
-  LOW
-  MEDIUM
-  HIGH
-  URGENT
-}
-
-// Activity Log - Track all admin actions
-model ActivityLog {
-  id          String       @id @default(cuid())
-  userId      String
-  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  action      String       // CREATE, UPDATE, DELETE, LOGIN, SYNC, etc.
-  entity      String       // post, page, user, settings, etc.
-  entityId    String?      // ID of the affected entity
-  details     String?      @db.Text // JSON string with additional details
-  ipAddress   String?
-  userAgent   String?
-  createdAt   DateTime     @default(now())
-
-  @@map("activity_logs")
-  @@index([userId])
-  @@index([action])
-  @@index([entity])
-  @@index([createdAt])
-}
-
-// Bulk Actions - Track batch operations
-model BulkAction {
-  id          String       @id @default(cuid())
-  userId      String
-  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  action      String       // DELETE, PUBLISH, DRAFT, etc.
-  entity      String       // posts, pages, media, etc.
-  entityIds   String[]     // Array of affected IDs
-  status      BulkStatus   @default(PENDING)
-  totalItems  Int
-  processedItems Int       @default(0)
-  errors      String[]     @default([])
-  startedAt   DateTime?
-  completedAt DateTime?
-  createdAt   DateTime     @default(now())
-
-  @@map("bulk_actions")
-  @@index([userId])
-  @@index([status])
-}
-
-enum BulkStatus {
-  PENDING
-  PROCESSING
-  COMPLETED
-  FAILED
-}
-
-// Comments - For moderation
-model Comment {
-  id          String        @id @default(cuid())
-  postId      String        // WordPress post ID or internal post ID
-  postTitle   String
-  author      String
-  authorEmail String
-  authorUrl   String?
-  content     String        @db.Text
-  status      CommentStatus @default(PENDING)
-  ipAddress   String?
-  userAgent   String?
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-
-  @@map("comments")
-  @@index([postId])
-  @@index([status])
-  @@index([authorEmail])
-}
-
-enum CommentStatus {
-  PENDING
-  APPROVED
-  SPAM
-  TRASH
-}
-
-// E-Commerce Models (WooCommerce replacement)
-
-// Orders - Purchase records
-model Order {
-  id            String      @id @default(cuid())
-  orderNumber   String      @unique
-  userId        String?
-  userName      String      // Store name even if user deleted
-  userEmail     String
-  total         Decimal     @db.Decimal(10, 2)
-  subtotal      Decimal     @db.Decimal(10, 2)
-  tax           Decimal     @db.Decimal(10, 2) @default(0)
-  shipping      Decimal     @db.Decimal(10, 2) @default(0)
-  discount      Decimal     @db.Decimal(10, 2) @default(0)
-  status        OrderStatus @default(PENDING)
-  paymentMethod String      // stripe, paypal, etc.
-  paymentId     String?     // Stripe payment intent ID
-  shippingAddress String?   @db.Text // JSON string
-  billingAddress  String?   @db.Text // JSON string
-  notes         String?     @db.Text
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  items         OrderItem[]
-
-  @@map("orders")
-  @@index([userId])
-  @@index([status])
-  @@index([orderNumber])
-  @@index([createdAt])
+enum MembershipTier {
+  COLLECTIVE
+  INSIDER
 }
 
 enum OrderStatus {
@@ -749,72 +682,54 @@ enum OrderStatus {
   FAILED
 }
 
-// OrderItems - Junction table for orders and products
-model OrderItem {
-  id          String   @id @default(cuid())
-  orderId     String
-  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  productId   String
-  product     Product  @relation(fields: [productId], references: [id], onDelete: Restrict)
-  productName String   // Store name in case product is deleted
-  quantity    Int
-  price       Decimal  @db.Decimal(10, 2) // Price at time of purchase
-  total       Decimal  @db.Decimal(10, 2)
-  createdAt   DateTime @default(now())
-
-  @@map("order_items")
-  @@index([orderId])
-  @@index([productId])
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
 }
 
-// PageViews - Paywall tracking (metered paywall)
-model PageView {
-  id           String   @id @default(cuid())
-  userId       String?  // Null for anonymous users
-  sessionId    String?  // Cookie-based tracking for anonymous
-  articleId    String   // Post ID or slug
-  articleTitle String
-  articleUrl   String
-  viewedAt     DateTime @default(now())
-  ipAddress    String?
-  userAgent    String?
-
-  @@map("page_views")
-  @@index([userId])
-  @@index([sessionId])
-  @@index([articleId])
-  @@index([viewedAt])
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
 }
 
-// PaywallConfig - Admin-configurable paywall settings
-model PaywallConfig {
-  id                    String   @id @default(cuid())
-  freeArticleLimit      Int      @default(3) // Articles per month for free users
-  resetPeriodDays       Int      @default(30) // Days until counter resets
-  enablePaywall         Boolean  @default(true)
-  bypassedCategories    String[] // Category slugs that bypass paywall
-  bypassedArticles      String[] // Specific article slugs that bypass
-  popupTitle            String   @default("You've reached your free article limit")
-  popupMessage          String   @db.Text
-  ctaButtonText         String   @default("Subscribe Now")
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
-
-  @@map("paywall_config")
+enum ProductCategory {
+  BOOKS
+  COURSES
+  MERCHANDISE
+  MAGAZINES
+  BUNDLES
+  MEMBERSHIPS
 }
 
-// URLRedirect - 301 redirects from WordPress to Next.js URLs
-model URLRedirect {
-  id          String   @id @default(cuid())
-  oldUrl      String   @unique
-  newUrl      String
-  statusCode  Int      @default(301) // 301 or 302
-  hits        Int      @default(0) // Track how many times used
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+enum ProductStatus {
+  DRAFT
+  PUBLISHED
+  OUT_OF_STOCK
+  ARCHIVED
+  ACTIVE
+  DISCONTINUED
+}
 
-  @@map("url_redirects")
-  @@index([oldUrl])
-  @@index([isActive])
+enum SubscriberStatus {
+  ACTIVE
+  UNSUBSCRIBED
+  BOUNCED
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  INACTIVE
+  PAST_DUE
+  CANCELED
+  TRIALING
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  EDITOR
+  AUTHOR
 }

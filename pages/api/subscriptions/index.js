@@ -20,12 +20,12 @@ async function getSubscriptions(req, res) {
 
     const where = status && status !== 'all' ? { status: status.toUpperCase() } : {};
 
-    const subscriptions = await prisma.subscription.findMany({
+    const subscriptions = await prisma.subscriptions.findMany({
       where,
       skip,
       take,
       include: {
-        user: {
+        users: {
           select: {
             id: true,
             name: true,
@@ -36,7 +36,7 @@ async function getSubscriptions(req, res) {
       orderBy: { createdAt: 'desc' },
     });
 
-    const total = await prisma.subscription.count({ where });
+    const total = await prisma.subscriptions.count({ where });
 
     res.setHeader('X-WP-Total', total);
     res.setHeader('X-WP-TotalPages', Math.ceil(total / take));

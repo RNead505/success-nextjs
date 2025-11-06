@@ -18,7 +18,7 @@ export default async function handler(req, res) {
 
 async function getVideo(req, res, id) {
   try {
-    const video = await prisma.video.findUnique({
+    const video = await prisma.videos.findUnique({
       where: { id },
     });
 
@@ -37,7 +37,7 @@ async function updateVideo(req, res, id) {
   try {
     const { title, slug, description, videoUrl, thumbnail, duration, status, publishedAt } = req.body;
 
-    const video = await prisma.video.update({
+    const video = await prisma.videos.update({
       where: { id },
       data: {
         title,
@@ -60,7 +60,7 @@ async function updateVideo(req, res, id) {
 
 async function deleteVideo(req, res, id) {
   try {
-    await prisma.video.delete({
+    await prisma.videos.delete({
       where: { id },
     });
 

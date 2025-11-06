@@ -33,7 +33,7 @@ async function getTags(req, res) {
       ];
     }
 
-    const tags = await prisma.tag.findMany({
+    const tags = await prisma.tags.findMany({
       where,
       skip,
       take,
@@ -45,7 +45,7 @@ async function getTags(req, res) {
       },
     });
 
-    const total = await prisma.tag.count({ where });
+    const total = await prisma.tags.count({ where });
 
     res.setHeader('X-WP-Total', total);
     res.setHeader('X-WP-TotalPages', Math.ceil(total / take));
@@ -70,7 +70,7 @@ async function createTag(req, res) {
   try {
     const { name, slug } = req.body;
 
-    const tag = await prisma.tag.create({
+    const tag = await prisma.tags.create({
       data: {
         name,
         slug,

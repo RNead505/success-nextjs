@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]';
 import { PrismaClient } from '@prisma/client';
 import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from 'crypto';
 
 const prisma = new PrismaClient();
 
@@ -16,20 +17,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { articleId, articleTitle, articleUrl } = req.body;
 
     // Get paywall config
-    const config = await prisma.paywallConfig.findFirst();
+    const config = await prisma.paywall_config.findFirst();
     const freeArticleLimit = config?.freeArticleLimit || 3;
     const resetPeriodDays = config?.resetPeriodDays || 30;
 
     // Check if user has active subscription
     if (session?.user) {
-      const subscription = await prisma.subscription.findUnique({
+      const subscription = await prisma.subscriptions.findUnique({
         where: { userId: session.user.id }
       });
 
       if (subscription && subscription.status === 'ACTIVE') {
         // Subscriber - track but don't count against limit
-        await prisma.pageView.create({
+        await prisma.page_views.create({
           data: {
+            id: randomUUID(),
             userId: session.user.id,
             articleId,
             articleTitle,
@@ -55,7 +57,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       userId = session.user.id;
 
       // Count views since reset date
-      const viewCount = await prisma.pageView.count({
+      const viewCount = await prisma.page_views.count({
         where: {
           userId: userId,
           viewedAt: { gte: resetDate }
@@ -63,8 +65,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
 
       // Track this view
-      await prisma.pageView.create({
+      await prisma.page_views.create({
         data: {
+          id: randomUUID(),
           userId,
           articleId,
           articleTitle,
@@ -93,7 +96,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // Count views for this session since reset date
-    const viewCount = await prisma.pageView.count({
+    const viewCount = await prisma.page_views.count({
       where: {
         sessionId: sessionId,
         viewedAt: { gte: resetDate }
@@ -101,8 +104,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
 
     // Track this view
-    await prisma.pageView.create({
+    await prisma.page_views.create({
       data: {
+        id: randomUUID(),
         sessionId,
         articleId,
         articleTitle,

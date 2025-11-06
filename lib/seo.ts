@@ -35,12 +35,15 @@ export async function getSEOSettings(): Promise<SEOSettings> {
   }
 
   try {
-    let settings = await prisma.sEOSettings.findFirst();
+    let settings = await prisma.seo_settings.findFirst();
 
     if (!settings) {
       // Create default settings if none exist
-      settings = await prisma.sEOSettings.create({
-        data: {},
+      settings = await prisma.seo_settings.create({
+        data: {
+          id: 'default',
+          updatedAt: new Date(),
+        },
       });
     }
 

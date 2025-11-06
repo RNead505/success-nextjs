@@ -18,7 +18,7 @@ async function main() {
 
   console.log('📁 Creating categories...');
   for (const cat of categories) {
-    await prisma.category.upsert({
+    await prisma.categories.upsert({
       where: { slug: cat.slug },
       update: {},
       create: cat,
@@ -33,7 +33,7 @@ async function main() {
   console.log('👤 Creating admin user...');
   const hashedPassword = await bcrypt.hash(adminPassword, 10);
 
-  const admin = await prisma.user.upsert({
+  const admin = await prisma.users.upsert({
     where: { email: adminEmail },
     update: {},
     create: {

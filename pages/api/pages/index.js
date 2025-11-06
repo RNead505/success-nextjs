@@ -38,14 +38,14 @@ async function getPages(req, res) {
       ];
     }
 
-    const pages = await prisma.page.findMany({
+    const pages = await prisma.pages.findMany({
       where,
       skip,
       take,
       orderBy: { createdAt: 'desc' },
     });
 
-    const total = await prisma.page.count({ where });
+    const total = await prisma.pages.count({ where });
 
     res.setHeader('X-WP-Total', total);
     res.setHeader('X-WP-TotalPages', Math.ceil(total / take));
@@ -61,7 +61,7 @@ async function createPage(req, res) {
   try {
     const { title, slug, content, status, seoTitle, seoDescription, publishedAt } = req.body;
 
-    const page = await prisma.page.create({
+    const page = await prisma.pages.create({
       data: {
         title,
         slug,

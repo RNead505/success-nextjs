@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]';
 import { PrismaClient } from '@prisma/client';
+import { randomUUID } from 'crypto';
 
 const prisma = new PrismaClient();
 
@@ -23,10 +24,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (userId) where.userId = userId;
 
       const [logs, total] = await Promise.all([
-        prisma.activityLog.findMany({
+        prisma.activity_logs.findMany({
           where,
           include: {
-            user: {
+            users: {
               select: {
                 name: true,
                 email: true,
@@ -41,7 +42,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           skip,
           take: parseInt(perPage as string),
         }),
-        prisma.activityLog.count({ where }),
+        prisma.activity_logs.count({ where }),
       ]);
 
       return res.status(200).json({
@@ -61,8 +62,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       const { action, entity, entityId, details, ipAddress, userAgent } = req.body;
 
-      const log = await prisma.activityLog.create({
+      const log = await prisma.activity_logs.create({
         data: {
+          id: randomUUID(),
           userId: session.user.id,
           action,
           entity,

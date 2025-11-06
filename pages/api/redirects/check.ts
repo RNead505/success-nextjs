@@ -15,7 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ error: 'Path parameter required' });
     }
 
-    const redirect = await prisma.uRLRedirect.findUnique({
+    const redirect = await prisma.url_redirects.findUnique({
       where: { oldUrl: path, isActive: true }
     });
 

@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]';
 import { PrismaClient } from '@prisma/client';
+import { randomUUID } from 'crypto';
 
 const prisma = new PrismaClient();
 
@@ -114,8 +115,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // Log the cache purge activity
-    await prisma.activityLog.create({
+    await prisma.activity_logs.create({
       data: {
+        id: randomUUID(),
         userId: session.user.id,
         action: 'CACHE_PURGE',
         entity: 'cache',
