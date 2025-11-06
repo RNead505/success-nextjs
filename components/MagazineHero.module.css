@@ -46,7 +46,45 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center top;
+  object-position: center center;
+}
+
+.loadingState {
+  padding: 2rem 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1rem;
+}
+
+.descriptionLink {
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 0.2s ease;
+}
+
+.descriptionLink:hover {
+  opacity: 0.8;
+}
+
+.descriptionLink:focus {
+  outline: 2px solid #fff;
+  outline-offset: 4px;
+}
+
+.featureLink {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.featureLink:hover {
+  transform: translateX(4px);
+  opacity: 0.9;
+}
+
+.featureLink:focus {
+  outline: 2px solid #fff;
+  outline-offset: 4px;
 }
 
 .contentGrid {

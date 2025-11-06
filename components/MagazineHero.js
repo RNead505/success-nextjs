@@ -1,9 +1,23 @@
 import styles from './MagazineHero.module.css';
 import { decodeHtmlEntities } from '../lib/htmlDecode';
+import Image from 'next/image';
+
+const phpunserialize = require('phpunserialize');
 
 export default function MagazineHero({ magazine }) {
   if (!magazine) {
-    return null;
+    return (
+      <section className={styles.hero}>
+        <div className={styles.overlay}>
+          <div className={styles.header}>
+            <span className={styles.headerText}>Inside the Magazine</span>
+          </div>
+          <div className={styles.loadingState}>
+            <p>Loading magazine content...</p>
+          </div>
+        </div>
+      </section>
+    );
   }
 
   const heroImage = magazine._embedded?.['wp:featuredmedia']?.[0]?.source_url ||
@@ -12,30 +26,50 @@ export default function MagazineHero({ magazine }) {
   const title = magazine.meta_data?.['magazine-banner-heading']?.[0] || magazine.title?.rendered || '';
   const date = magazine.meta_data?.['magazine-published-text']?.[0] || '';
   const description = magazine.meta_data?.['magazine-banner-description']?.[0] || '';
+  const descriptionLink = magazine.meta_data?.['magazine-banner-description-link']?.[0] || '';
 
-  // Parse related articles if available
+  // Parse related articles if available using proper PHP unserialize
   const relatedDataRaw = magazine.meta_data?.['magazine-banner-related-data']?.[0];
   let sideFeatures = [];
 
   if (relatedDataRaw) {
     try {
-      // PHP serialized data - extract articles manually
-      const item0Match = relatedDataRaw.match(/item-0.*?banner-related-data-title";s:\d+:"([^"]+)".*?banner-related-data-description";s:\d+:"([^"]+)"/);
-      const item1Match = relatedDataRaw.match(/item-1.*?banner-related-data-title";s:\d+:"([^"]+)".*?banner-related-data-description";s:\d+:"([^"]+)"/);
+      const parsed = phpunserialize(relatedDataRaw);
 
-      if (item0Match) {
-        sideFeatures.push({ title: item0Match[1], description: item0Match[2] });
-      }
-      if (item1Match) {
-        sideFeatures.push({ title: item1Match[1], description: item1Match[2] });
+      if (parsed && typeof parsed === 'object') {
+        // Extract item-0 and item-1 from the unserialized data
+        ['item-0', 'item-1'].forEach(key => {
+          if (parsed[key]) {
+            const item = parsed[key];
+            sideFeatures.push({
+              title: item['banner-related-data-title'] || '',
+              description: item['banner-related-data-description'] || '',
+              link: item['banner-related-data-link'] || ''
+            });
+          }
+        });
       }
     } catch (e) {
       console.error('Error parsing magazine related data:', e);
+      // Fallback to regex parsing if phpunserialize fails
+      try {
+        const item0Match = relatedDataRaw.match(/item-0.*?banner-related-data-title";s:\d+:"([^"]+)".*?banner-related-data-description";s:\d+:"([^"]+)".*?banner-related-data-link";s:\d+:"([^"]+)"/);
+        const item1Match = relatedDataRaw.match(/item-1.*?banner-related-data-title";s:\d+:"([^"]+)".*?banner-related-data-description";s:\d+:"([^"]+)".*?banner-related-data-link";s:\d+:"([^"]+)"/);
+
+        if (item0Match) {
+          sideFeatures.push({ title: item0Match[1], description: item0Match[2], link: item0Match[3] });
+        }
+        if (item1Match) {
+          sideFeatures.push({ title: item1Match[1], description: item1Match[2], link: item1Match[3] });
+        }
+      } catch (regexError) {
+        console.error('Fallback regex parsing also failed:', regexError);
+      }
     }
   }
 
   return (
-    <section className={styles.hero}>
+    <section className={styles.hero} aria-label="Inside the Magazine">
       <div className={styles.overlay}>
         <div className={styles.header}>
           <span className={styles.headerText}>Inside the Magazine</span>
@@ -45,13 +79,40 @@ export default function MagazineHero({ magazine }) {
             <p className={styles.subheading}>{magazine.slug?.replace(/-/g, ' ').toUpperCase() || 'The Legacy Issue'}</p>
             <p className={styles.date} dangerouslySetInnerHTML={{ __html: decodeHtmlEntities(date) }} />
             <h1 className={styles.title} dangerouslySetInnerHTML={{ __html: decodeHtmlEntities(title) }} />
-            <p className={styles.description} dangerouslySetInnerHTML={{ __html: decodeHtmlEntities(description) }} />
+            {descriptionLink ? (
+              <a
+                href={descriptionLink}
+                className={styles.descriptionLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Read more about ${decodeHtmlEntities(title)}`}
+              >
+                <p className={styles.description} dangerouslySetInnerHTML={{ __html: decodeHtmlEntities(description) }} />
+              </a>
+            ) : (
+              <p className={styles.description} dangerouslySetInnerHTML={{ __html: decodeHtmlEntities(description) }} />
+            )}
           </div>
           <div className={styles.sideFeatures}>
             {sideFeatures.map((feature, index) => (
               <div key={index} className={styles.featureItem}>
-                <h3 dangerouslySetInnerHTML={{ __html: decodeHtmlEntities(feature.title) }} />
-                <p dangerouslySetInnerHTML={{ __html: decodeHtmlEntities(feature.description) }} />
+                {feature.link ? (
+                  <a
+                    href={feature.link}
+                    className={styles.featureLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Read article: ${decodeHtmlEntities(feature.title)}`}
+                  >
+                    <h3 dangerouslySetInnerHTML={{ __html: decodeHtmlEntities(feature.title) }} />
+                    <p dangerouslySetInnerHTML={{ __html: decodeHtmlEntities(feature.description) }} />
+                  </a>
+                ) : (
+                  <>
+                    <h3 dangerouslySetInnerHTML={{ __html: decodeHtmlEntities(feature.title) }} />
+                    <p dangerouslySetInnerHTML={{ __html: decodeHtmlEntities(feature.description) }} />
+                  </>
+                )}
               </div>
             ))}
             <p className={styles.subscribeText}>
@@ -62,7 +123,14 @@ export default function MagazineHero({ magazine }) {
       </div>
       {heroImage && (
         <div className={styles.heroImage}>
-          <img src={heroImage} alt={title || 'Magazine Cover'} />
+          <Image
+            src={heroImage}
+            alt={title || 'Magazine Cover'}
+            fill
+            sizes="(max-width: 992px) 100vw, 55vw"
+            style={{ objectFit: 'cover', objectPosition: 'center center' }}
+            priority
+          />
         </div>
       )}
     </section>
