@@ -16,12 +16,14 @@
   font-size: 3rem;
   font-weight: 700;
   margin: 0 0 1rem 0;
+  color: #fff;
 }
 
 .subtitle {
   font-size: 1.25rem;
   margin: 0;
   opacity: 0.9;
+  color: #fff;
 }
 
 .videosGrid {

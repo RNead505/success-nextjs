@@ -5,7 +5,7 @@
 
 .hero {
   background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-  color: white;
+  color: #fff;
   padding: 4rem 2rem;
   text-align: center;
 }
@@ -16,6 +16,7 @@
   margin: 0;
   text-transform: uppercase;
   letter-spacing: -1px;
+  color: #fff;
 }
 
 .content {
