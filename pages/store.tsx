@@ -41,7 +41,15 @@ export default function StorePage({ products, categories }: StorePageProps) {
             {products.filter(p => p.category === 'Featured').slice(0, 4).map((product) => (
               <div key={product.id} className={styles.productCard}>
                 <div className={styles.productImage}>
-                  <img src={product.image} alt={product.title} loading="lazy" />
+                  <img
+                    src={product.image}
+                    alt={product.title}
+                    loading="lazy"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = 'https://via.placeholder.com/400x500/1a1a1a/ffffff?text=' + encodeURIComponent(product.title.substring(0, 30));
+                    }}
+                  />
                 </div>
                 <div className={styles.productInfo}>
                   <h3 className={styles.productTitle}>{product.title}</h3>
@@ -65,7 +73,15 @@ export default function StorePage({ products, categories }: StorePageProps) {
                 .map((product) => (
                   <div key={product.id} className={styles.productCard}>
                     <div className={styles.productImage}>
-                      <img src={product.image} alt={product.title} loading="lazy" />
+                      <img
+                        src={product.image}
+                        alt={product.title}
+                        loading="lazy"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = 'https://via.placeholder.com/400x500/1a1a1a/ffffff?text=' + encodeURIComponent(product.title.substring(0, 30));
+                        }}
+                      />
                     </div>
                     <div className={styles.productInfo}>
                       <h3 className={styles.productTitle}>{product.title}</h3>
