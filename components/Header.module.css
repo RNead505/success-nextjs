@@ -89,13 +89,17 @@
   text-align: center;
   border-bottom: 1px solid #e5e5e5;
   line-height: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .logoBar .container {
-  max-width: 1200px;
-  margin: 0;
   padding: 0;
   line-height: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .logo {
