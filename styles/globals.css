@@ -67,6 +67,8 @@ html {
   width: 100%;
   max-width: 100%;
   position: relative;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 body {
@@ -82,20 +84,24 @@ body {
   width: 100%;
   max-width: 100%;
   position: relative;
-  margin: 0;
-  padding: 0;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 #__next {
   overflow-x: hidden !important;
   width: 100%;
   max-width: 100%;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 main {
   overflow-x: hidden !important;
   width: 100%;
   max-width: 100%;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 section {

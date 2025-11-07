@@ -14,10 +14,10 @@ export default function Layout({ children }) {
           href="/api/rss"
         />
       </Head>
-      <div>
+      <div style={{ margin: 0, padding: 0 }}>
         <Header />
 
-        <main>
+        <main style={{ margin: 0, padding: 0 }}>
           {children}
         </main>
 
