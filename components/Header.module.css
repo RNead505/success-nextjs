@@ -88,24 +88,30 @@
   padding: 0;
   text-align: center;
   border-bottom: 1px solid #e5e5e5;
+  line-height: 0;
 }
 
 .logoBar .container {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 0;
   padding: 0;
+  line-height: 0;
 }
 
 .logo {
   text-decoration: none;
   display: inline-block;
   line-height: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .logo img {
   display: block;
   height: auto;
   vertical-align: middle;
+  margin: 0;
+  padding: 0;
 }
 
 /* Navigation Bar */
