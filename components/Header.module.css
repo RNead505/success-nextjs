@@ -270,8 +270,8 @@
   }
 
   .logo img {
-    height: 320px;
-    max-height: 320px;
+    height: 80px;
+    max-height: 80px;
   }
 }
 
@@ -281,7 +281,7 @@
   }
 
   .logo img {
-    height: 280px;
-    max-height: 280px;
+    height: 70px;
+    max-height: 70px;
   }
 }
