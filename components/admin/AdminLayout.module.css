@@ -14,10 +14,13 @@
   position: fixed;
   top: 0;
   left: 0;
+  bottom: 0;
   height: 100vh;
   overflow-y: auto;
+  overflow-x: hidden;
   border-right: 1px solid #1a1a1a;
-  z-index: 1000;
+  z-index: 100;
+  box-sizing: border-box;
 }
 
 .sidebarHeader {
@@ -162,6 +165,9 @@
   padding: 2rem;
   min-height: 100vh;
   background: #f8f8f8;
+  position: relative;
+  width: calc(100% - 280px);
+  box-sizing: border-box;
 }
 
 .content {
