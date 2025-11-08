@@ -28,7 +28,8 @@ jobs:
         run: npx prisma generate
 
       - name: Check TypeScript
-        run: npx tsc --noEmit || echo "TypeScript check completed with warnings"
+        run: npx tsc --noEmit || true
+        continue-on-error: true
 
       - name: Build project
         run: npm run build
