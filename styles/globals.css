@@ -108,7 +108,7 @@ body:has([class*="AdminLayout"]) {
   padding: 0 !important;
 }
 
-main {
+main:not([class*="AdminLayout"]) {
   overflow-x: hidden !important;
   width: 100%;
   max-width: 100%;
