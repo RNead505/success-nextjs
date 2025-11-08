@@ -1,20 +1,21 @@
 .container {
   min-height: 100vh;
   background: #f8f8f8;
-  width: 100%;
   position: relative;
+  display: flex;
 }
 
 .sidebar {
   width: 280px;
+  min-width: 280px;
+  flex-shrink: 0;
   background: #000;
   color: white;
   display: flex;
   flex-direction: column;
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
-  bottom: 0;
   height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
@@ -161,12 +162,12 @@
 }
 
 .main {
-  margin-left: 280px !important;
-  padding: 2rem !important;
+  flex: 1;
+  padding: 2rem;
   min-height: 100vh;
   background: #f8f8f8;
   position: relative;
-  width: calc(100% - 280px) !important;
+  overflow-x: auto;
   box-sizing: border-box;
 }
 
@@ -176,14 +177,18 @@
 }
 
 @media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
   .sidebar {
     width: 100%;
+    min-width: 100%;
     height: auto;
     position: relative;
   }
 
   .main {
-    margin-left: 0;
     padding: 1rem;
   }
 }
