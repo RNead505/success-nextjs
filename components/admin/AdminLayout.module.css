@@ -1,7 +1,8 @@
 .container {
-  display: flex;
   min-height: 100vh;
   background: #f8f8f8;
+  width: 100%;
+  position: relative;
 }
 
 .sidebar {
@@ -11,9 +12,12 @@
   display: flex;
   flex-direction: column;
   position: fixed;
+  top: 0;
+  left: 0;
   height: 100vh;
   overflow-y: auto;
   border-right: 1px solid #1a1a1a;
+  z-index: 1000;
 }
 
 .sidebarHeader {
@@ -154,9 +158,10 @@
 }
 
 .main {
-  flex: 1;
   margin-left: 280px;
   padding: 2rem;
+  min-height: 100vh;
+  background: #f8f8f8;
 }
 
 .content {

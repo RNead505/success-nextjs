@@ -1,59 +1,95 @@
 import Layout from '../components/Layout';
 import SEO from '../components/SEO';
+import AboutHistory from '../components/AboutHistory';
+import TeamMember from '../components/TeamMember';
 import styles from './About.module.css';
 
-type AboutPageProps = {
-  content: string;
-  title: string;
-};
+const teamMembers = [
+  {
+    name: 'Glenn Sanford',
+    title: 'Managing Director and Publisher',
+    bio: 'Glenn Sanford is reimagining SUCCESS® as a next-gen platform for personal growth, leadership, and high performance. By fusing its legacy with modern innovation, he's turning SUCCESS® into a catalyst for transformation—where timeless principles meet the tools of the AI era.',
+    image: 'https://www.success.com/wp-content/uploads/2025/10/GlennSquare.png',
+    linkedIn: 'https://www.linkedin.com/in/glenndsanford/',
+  },
+  {
+    name: 'Kerrie Lee Brown',
+    title: 'Chief Content Officer & Editor-in-Chief',
+    bio: 'Kerrie Lee Brown is an award-winning journalist, speaker, and wellness advocate with 30 years of experience in media and communications. She has contributed works to over 150 magazines globally and interviewed top names in Hollywood and business. Kerrie is passionate about mentoring others, promoting authentic leadership, and inspiring creative teams.',
+    image: 'https://www.success.com/wp-content/uploads/2025/10/kerrielee2_square_no_blackbar.jpg',
+    linkedIn: 'https://www.linkedin.com/in/kerrieleebrown/',
+  },
+  {
+    name: 'Courtland Warren',
+    title: 'Founding Faculty & Program Lead, SUCCESS Coaching™',
+    bio: 'A global strategist and transformational coach, Courtland Warren blends behavioral science with human potential. As the founding faculty of SUCCESS Coaching™, he guides leaders through identity-first transformation—helping them think deeper, lead stronger, and live with purpose.',
+    image: 'https://www.success.com/wp-content/uploads/2025/10/courtland-crop.png',
+    linkedIn: 'https://www.linkedin.com/in/courtlandwarren/',
+  },
+  {
+    name: 'Rachel Nead',
+    title: 'Vice President of Innovations',
+    bio: 'Rachel Nead brings a fresh perspective to innovation, leveraging emerging technologies and creative strategies to advance SUCCESS's mission. Her leadership drives the development of cutting-edge platforms and solutions that empower individuals to achieve their full potential.',
+    image: 'https://www.success.com/wp-content/uploads/2025/11/Rachel2.png',
+    linkedIn: '',
+  },
+];
 
-export default function AboutPage({ content, title }: AboutPageProps) {
+export default function AboutPage() {
   return (
     <Layout>
       <SEO
         title="About Us | SUCCESS"
         description="Unlike any other time in human history, people need to continually keep up with expanding knowledge and perpetually develop new skills to stay relevant"
-        url="https://www.success.com/about"
+        url="https://www.success.com/about-us"
       />
 
       <div className={styles.about}>
-        <div className={styles.container}>
-          <h1 className={styles.title}>{title}</h1>
+        {/* Hero Video Section */}
+        <section className={styles.hero}>
+          <div className={styles.videoWrapper}>
+            <iframe
+              src="https://player.vimeo.com/video/1114343879?autoplay=1&loop=1&muted=1&background=1"
+              frameBorder="0"
+              allow="autoplay; fullscreen; picture-in-picture"
+              className={styles.video}
+              title="SUCCESS About Us Video"
+            />
+          </div>
+        </section>
 
-          <div
-            className={styles.content}
-            dangerouslySetInnerHTML={{ __html: content }}
-          />
-        </div>
+        {/* History Timeline */}
+        <AboutHistory />
+
+        {/* Meet the Team Section */}
+        <section className={styles.teamSection}>
+          <div className={styles.container}>
+            <h2 className={styles.sectionTitle}>
+              <span className={styles.verticalText}>meet the team</span>
+            </h2>
+
+            <div className={styles.teamGrid}>
+              {teamMembers.map((member) => (
+                <TeamMember
+                  key={member.name}
+                  name={member.name}
+                  title={member.title}
+                  bio={member.bio}
+                  image={member.image}
+                  linkedIn={member.linkedIn}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
       </div>
     </Layout>
   );
 }
 
 export async function getStaticProps() {
-  // Static data from WordPress API (page ID: 32809)
-  // This mirrors the exact content from success.com/about
-  const content = `
-<figure class="wp-block-image size-large"><img decoding="async" width="1024" height="465" src="https://www.success.com/wp-content/uploads/2021/09/241415086_868466037124331_6403472925494844943_n-1024x465.jpg" alt="" srcset="https://www.success.com/wp-content/uploads/2021/09/241415086_868466037124331_6403472925494844943_n-1024x465.jpg 1024w, https://www.success.com/wp-content/uploads/2021/09/241415086_868466037124331_6403472925494844943_n-300x136.jpg 300w, https://www.success.com/wp-content/uploads/2021/09/241415086_868466037124331_6403472925494844943_n-768x349.jpg 768w, https://www.success.com/wp-content/uploads/2021/09/241415086_868466037124331_6403472925494844943_n.jpg 1100w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure>
-
-<p>Unlike any other time in human history, people need to continually keep up with expanding knowledge and perpetually develop new skills to stay relevant and sustain their lifestyles. In every issue of&nbsp;<em>SUCCESS</em>&nbsp;magazine we will strive to bring you the thought leaders and success experts, both past and present, and reveal their key ideas and strategies to help you excel in every area of your personal and professional life. You also will be provided a unique window into the lives, practices and philosophies of today's greatest achievers-top CEOs, revolutionary entrepreneurs and other extraordinary leaders.</p>
-
-<p><em>SUCCESS</em>&nbsp;is the only magazine that focuses on people who take full responsibility for their own development and income.&nbsp;<em>SUCCESS</em>&nbsp;readers understand that the world has changed and the classic employer-to-employee relationship has changed from a patriarchal to a transactional one. No longer can you expect a corporate training program and a predictable growth track. Our readers understand and embrace that they are responsible for their own long-term success and happiness, and need to be proactive in finding the inspiration, motivation and training to achieve their goals. Some may choose to start their own business but will prefer to keep it small-what some would call a micro business-so they will always have total control and visibility over its growth, spirit and contributions to society.&nbsp;<em>SUCCESS</em>&nbsp;readers desire the freedom and control to make all meaningful business decisions.</p>
-
-<p><em>SUCCESS</em>&nbsp;magazine, established in 1897 by&nbsp;philosopher&nbsp;<a href="https://www.success.com/article/orison-swett-marden-an-original-thinker">Orison Swett Marden</a>,&nbsp;offers advice on best business practices, inspiration from major personalities in business and entertainment, and motivation to improve their mind and body so that our readers are in the best possible mental and physical shape to compete and reach their goals.</p>
-
-<p>SUCCESS.com's mission is the same, but also addresses the needs of a generation who have entered the workforce after the rules changed. This generation lives in a highly competitive world where immediate performance is critical and most of the skills needed to succeed are self-generated. SUCCESS.com offers a more individualized approach to inspiration, motivation and training by delivering the content in a faster, immediate and topical way through multimedia platforms. Designed for those who work, learn and leisure on the go, our digital products deliver customized information based upon the user's needs and can be accessed at the exact time our users need the information, whether it is on our mobile app, shared socially in their social media feeds, delivered straight to their inbox or found as morning inspiration when they sit down to their desk and type www.success.com to start the day. Our users take SUCCESS.com with them into their jobs and use it as their own career coach while competing to improve personally and professionally.</p>
-
-<p>Both&nbsp;<em>SUCCESS</em>&nbsp;magazine and SUCCESS.com readers understand and value the fact that they are empowered to control their own destiny. Our products are a key resource in their continued growth, leadership and motivation.</p>
-
-<p><em>SUCCESS</em> magazine is published by SUCCESS Enterprises LLC, a subsidiary of eXp World Holdings.</p>
-  `;
-
   return {
-    props: {
-      content,
-      title: 'About Us',
-    },
+    props: {},
     revalidate: 86400, // 24 hours
   };
 }

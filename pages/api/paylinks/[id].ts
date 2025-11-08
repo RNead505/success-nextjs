@@ -1,0 +1,202 @@
+import { NextApiRequest, NextApiResponse } from 'next';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../auth/[...nextauth]';
+import { prisma } from '../../../lib/prisma';
+import { randomUUID } from 'crypto';
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const session = await getServerSession(req, res, authOptions);
+
+  // Only admins can manage paylinks
+  if (!session || (session.user.role !== 'ADMIN' && session.user.role !== 'SUPER_ADMIN')) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  const { id } = req.query;
+
+  if (!id || typeof id !== 'string') {
+    return res.status(400).json({ error: 'Invalid paylink ID' });
+  }
+
+  switch (req.method) {
+    case 'GET':
+      return getPayLink(id, res);
+    case 'PUT':
+      return updatePayLink(id, req, res, session);
+    case 'DELETE':
+      return deletePayLink(id, res, session);
+    default:
+      return res.status(405).json({ error: 'Method not allowed' });
+  }
+}
+
+async function getPayLink(id: string, res: NextApiResponse) {
+  try {
+    const paylink = await prisma.pay_links.findUnique({
+      where: { id },
+      include: {
+        users: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
+    });
+
+    if (!paylink) {
+      return res.status(404).json({ error: 'Paylink not found' });
+    }
+
+    return res.status(200).json(paylink);
+  } catch (error) {
+    console.error('Error fetching paylink:', error);
+    return res.status(500).json({ error: 'Failed to fetch paylink' });
+  }
+}
+
+async function updatePayLink(id: string, req: NextApiRequest, res: NextApiResponse, session: any) {
+  try {
+    const {
+      title,
+      description,
+      amount,
+      status,
+      expiresAt,
+      maxUses,
+      requiresShipping,
+      customFields,
+      metadata,
+    } = req.body;
+
+    // Check if paylink exists
+    const existingLink = await prisma.pay_links.findUnique({
+      where: { id },
+    });
+
+    if (!existingLink) {
+      return res.status(404).json({ error: 'Paylink not found' });
+    }
+
+    // Update Stripe price if amount changed and Stripe is configured
+    let stripePriceId = existingLink.stripePriceId;
+
+    if (amount && amount !== existingLink.amount.toNumber() && process.env.STRIPE_SECRET_KEY) {
+      try {
+        const stripe = require('../../../lib/stripe').stripe;
+
+        // Create new Stripe price (can't update existing price amount)
+        const price = await stripe.prices.create({
+          product: existingLink.stripeProductId,
+          unit_amount: Math.round(amount * 100),
+          currency: existingLink.currency.toLowerCase(),
+          metadata: {
+            paylink_slug: existingLink.slug,
+            updated_at: new Date().toISOString(),
+          },
+        });
+
+        stripePriceId = price.id;
+
+        // Archive old price
+        if (existingLink.stripePriceId) {
+          await stripe.prices.update(existingLink.stripePriceId, {
+            active: false,
+          });
+        }
+      } catch (stripeError) {
+        console.error('Stripe error:', stripeError);
+      }
+    }
+
+    // Update paylink
+    const updatedPaylink = await prisma.pay_links.update({
+      where: { id },
+      data: {
+        ...(title && { title }),
+        ...(description !== undefined && { description }),
+        ...(amount && { amount, stripePriceId }),
+        ...(status && { status }),
+        ...(expiresAt !== undefined && { expiresAt: expiresAt ? new Date(expiresAt) : null }),
+        ...(maxUses !== undefined && { maxUses }),
+        ...(requiresShipping !== undefined && { requiresShipping }),
+        ...(customFields !== undefined && { customFields }),
+        ...(metadata !== undefined && { metadata }),
+        updatedAt: new Date(),
+      },
+      include: {
+        users: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
+    });
+
+    // Log activity
+    await prisma.activity_logs.create({
+      data: {
+        id: randomUUID(),
+        userId: session.user.id,
+        action: 'UPDATE_PAYLINK',
+        entity: 'pay_link',
+        entityId: id,
+        details: JSON.stringify({ changes: req.body }),
+      },
+    });
+
+    return res.status(200).json(updatedPaylink);
+  } catch (error) {
+    console.error('Error updating paylink:', error);
+    return res.status(500).json({ error: 'Failed to update paylink' });
+  }
+}
+
+async function deletePayLink(id: string, res: NextApiResponse, session: any) {
+  try {
+    const paylink = await prisma.pay_links.findUnique({
+      where: { id },
+    });
+
+    if (!paylink) {
+      return res.status(404).json({ error: 'Paylink not found' });
+    }
+
+    // Archive Stripe product if exists
+    if (paylink.stripeProductId && process.env.STRIPE_SECRET_KEY) {
+      try {
+        const stripe = require('../../../lib/stripe').stripe;
+        await stripe.products.update(paylink.stripeProductId, {
+          active: false,
+        });
+      } catch (stripeError) {
+        console.error('Stripe error:', stripeError);
+      }
+    }
+
+    // Delete paylink
+    await prisma.pay_links.delete({
+      where: { id },
+    });
+
+    // Log activity
+    await prisma.activity_logs.create({
+      data: {
+        id: randomUUID(),
+        userId: session.user.id,
+        action: 'DELETE_PAYLINK',
+        entity: 'pay_link',
+        entityId: id,
+        details: JSON.stringify({ title: paylink.title, slug: paylink.slug }),
+      },
+    });
+
+    return res.status(200).json({ success: true, message: 'Paylink deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting paylink:', error);
+    return res.status(500).json({ error: 'Failed to delete paylink' });
+  }
+}

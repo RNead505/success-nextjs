@@ -345,6 +345,32 @@ model page_views {
   @@index([viewedAt])
 }
 
+model pay_links {
+  id               String        @id
+  userId           String
+  title            String
+  description      String?
+  amount           Decimal       @db.Decimal(10, 2)
+  currency         String        @default("USD")
+  slug             String        @unique
+  stripePriceId    String?
+  stripeProductId  String?
+  status           PayLinkStatus @default(ACTIVE)
+  expiresAt        DateTime?
+  maxUses          Int?
+  currentUses      Int           @default(0)
+  requiresShipping Boolean       @default(false)
+  customFields     Json?
+  metadata         Json?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime
+  users            users         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([slug])
+  @@index([status])
+  @@index([userId])
+}
+
 model pages {
   id             String     @id
   title          String
@@ -486,6 +512,21 @@ model seo_settings {
   updatedAt                  DateTime
 }
 
+model sessions {
+  id           String   @id
+  userId       String
+  sessionToken String   @unique
+  expires      DateTime
+  ipAddress    String?
+  userAgent    String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime
+  users        users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([sessionToken])
+  @@index([userId])
+}
+
 model site_settings {
   id                     String   @id
   siteName               String   @default("SUCCESS Magazine")
@@ -508,21 +549,28 @@ model site_settings {
 }
 
 model subscriptions {
-  id                     String                  @id
-  userId                 String?                 @unique
-  stripeCustomerId       String?                 @unique
-  stripeSubscriptionId   String?                 @unique
-  stripePriceId          String?
-  currentPeriodStart     DateTime?
-  currentPeriodEnd       DateTime?
-  cancelAtPeriodEnd      Boolean                 @default(false)
-  createdAt              DateTime                @default(now())
-  updatedAt              DateTime
-  billingCycle           String?
-  tier                   String?
-  status                 String                  @default("inactive")
-  magazine_subscriptions magazine_subscriptions?
-  users                  users?                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                      String                  @id
+  userId                  String?                 @unique
+  stripeCustomerId        String?                 @unique
+  stripeSubscriptionId    String?                 @unique
+  stripePriceId           String?
+  paykickstartCustomerId  String?                 @unique
+  paykickstartSubscriptionId String?              @unique
+  provider                String                  @default("stripe")
+  currentPeriodStart      DateTime?
+  currentPeriodEnd        DateTime?
+  cancelAtPeriodEnd       Boolean                 @default(false)
+  createdAt               DateTime                @default(now())
+  updatedAt               DateTime
+  billingCycle            String?
+  tier                    String?
+  status                  String                  @default("inactive")
+  magazine_subscriptions  magazine_subscriptions?
+  users                   users?                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([paykickstartCustomerId])
+  @@index([paykickstartSubscriptionId])
+  @@index([provider])
 }
 
 model tags {
@@ -566,26 +614,36 @@ model user_activities {
 }
 
 model users {
-  id                 String               @id
-  name               String
-  email              String               @unique
-  password           String
-  role               UserRole             @default(EDITOR)
-  bio                String?
-  avatar             String?
-  createdAt          DateTime             @default(now())
-  updatedAt          DateTime
-  stripeCustomerId   String?              @unique
-  resetToken         String?
-  resetTokenExpiry   DateTime?
-  activity_logs      activity_logs[]
-  bookmarks          bookmarks[]
-  bulk_actions       bulk_actions[]
-  editorial_calendar editorial_calendar[]
-  posts              posts[]
-  reading_progress   reading_progress[]
-  subscriptions      subscriptions?
-  user_activities    user_activities[]
+  id                   String               @id
+  name                 String
+  email                String               @unique
+  password             String
+  role                 UserRole             @default(EDITOR)
+  bio                  String?
+  avatar               String?
+  createdAt            DateTime             @default(now())
+  updatedAt            DateTime
+  stripeCustomerId     String?              @unique
+  subscriptionStatus   SubscriptionStatus   @default(INACTIVE)
+  subscriptionExpiry   DateTime?
+  lastLoginAt          DateTime?
+  emailVerified        Boolean              @default(false)
+  emailVerificationToken String?
+  resetToken           String?
+  resetTokenExpiry     DateTime?
+  activity_logs        activity_logs[]
+  bookmarks            bookmarks[]
+  bulk_actions         bulk_actions[]
+  editorial_calendar   editorial_calendar[]
+  posts                posts[]
+  reading_progress     reading_progress[]
+  sessions             sessions[]
+  subscriptions        subscriptions?
+  user_activities      user_activities[]
+  pay_links            pay_links[]
+
+  @@index([email])
+  @@index([subscriptionStatus])
 }
 
 model videos {
@@ -732,4 +790,11 @@ enum UserRole {
   ADMIN
   EDITOR
   AUTHOR
+}
+
+enum PayLinkStatus {
+  ACTIVE
+  INACTIVE
+  EXPIRED
+  ARCHIVED
 }

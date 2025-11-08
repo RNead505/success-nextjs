@@ -88,10 +88,22 @@ body {
   padding: 0 !important;
 }
 
+/* Exclude admin pages from overflow constraints */
+body:has([class*="AdminLayout"]) {
+  overflow: visible !important;
+}
+
 #__next {
   overflow-x: hidden !important;
   width: 100%;
   max-width: 100%;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Exclude admin pages from overflow constraints */
+#__next:has([class*="AdminLayout"]) {
+  overflow: visible !important;
   margin: 0 !important;
   padding: 0 !important;
 }
