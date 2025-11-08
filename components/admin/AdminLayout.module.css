@@ -161,12 +161,12 @@
 }
 
 .main {
-  margin-left: 280px;
-  padding: 2rem;
+  margin-left: 280px !important;
+  padding: 2rem !important;
   min-height: 100vh;
   background: #f8f8f8;
   position: relative;
-  width: calc(100% - 280px);
+  width: calc(100% - 280px) !important;
   box-sizing: border-box;
 }
 

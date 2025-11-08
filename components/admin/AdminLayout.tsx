@@ -126,7 +126,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       </aside>
 
       {/* Main Content */}
-      <main className={styles.main}>
+      <main className={styles.main} data-admin-layout="true">
         <div className={styles.content}>{children}</div>
       </main>
     </div>
