@@ -1,3 +1,4 @@
+// About Us Page - Video Hero, Timeline, Team Members
 import Layout from '../components/Layout';
 import SEO from '../components/SEO';
 import AboutHistory from '../components/AboutHistory';
