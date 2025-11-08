@@ -8,7 +8,7 @@ const teamMembers = [
   {
     name: 'Glenn Sanford',
     title: 'Managing Director and Publisher',
-    bio: 'Glenn Sanford is reimagining SUCCESS® as a next-gen platform for personal growth, leadership, and high performance. By fusing its legacy with modern innovation, he's turning SUCCESS® into a catalyst for transformation—where timeless principles meet the tools of the AI era.',
+    bio: 'Glenn Sanford is reimagining SUCCESS as a next-gen platform for personal growth, leadership, and high performance. By fusing its legacy with modern innovation, he is turning SUCCESS into a catalyst for transformation where timeless principles meet the tools of the AI era.',
     image: 'https://www.success.com/wp-content/uploads/2025/10/GlennSquare.png',
     linkedIn: 'https://www.linkedin.com/in/glenndsanford/',
   },
@@ -21,15 +21,15 @@ const teamMembers = [
   },
   {
     name: 'Courtland Warren',
-    title: 'Founding Faculty & Program Lead, SUCCESS Coaching™',
-    bio: 'A global strategist and transformational coach, Courtland Warren blends behavioral science with human potential. As the founding faculty of SUCCESS Coaching™, he guides leaders through identity-first transformation—helping them think deeper, lead stronger, and live with purpose.',
+    title: 'Founding Faculty & Program Lead, SUCCESS Coaching',
+    bio: 'A global strategist and transformational coach, Courtland Warren blends behavioral science with human potential. As the founding faculty of SUCCESS Coaching, he guides leaders through identity-first transformation helping them think deeper, lead stronger, and live with purpose.',
     image: 'https://www.success.com/wp-content/uploads/2025/10/courtland-crop.png',
     linkedIn: 'https://www.linkedin.com/in/courtlandwarren/',
   },
   {
     name: 'Rachel Nead',
     title: 'Vice President of Innovations',
-    bio: 'Rachel Nead brings a fresh perspective to innovation, leveraging emerging technologies and creative strategies to advance SUCCESS's mission. Her leadership drives the development of cutting-edge platforms and solutions that empower individuals to achieve their full potential.',
+    bio: 'Rachel Nead brings a fresh perspective to innovation, leveraging emerging technologies and creative strategies to advance SUCCESS mission. Her leadership drives the development of cutting-edge platforms and solutions that empower individuals to achieve their full potential.',
     image: 'https://www.success.com/wp-content/uploads/2025/11/Rachel2.png',
     linkedIn: '',
   },
