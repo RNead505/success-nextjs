@@ -36,44 +36,68 @@ export default function SuccessPlusHub() {
       ]
     },
     {
-      title: 'Courses',
-      description: 'Manage course library, micro-courses, and member discounts',
-      icon: '🎓',
-      color: '#667eea',
-      href: '/admin/success-plus/courses',
+      title: 'Special Stories',
+      description: 'Exclusive member-only stories and in-depth features',
+      icon: '⭐',
+      color: '#f59e0b',
+      href: '/admin/success-plus/stories',
       actions: [
-        { label: 'View All Courses', href: '/admin/success-plus/courses' },
-        { label: 'New Course', href: '/admin/success-plus/courses/new' },
-        { label: 'Course Categories', href: '/admin/success-plus/courses/categories' },
+        { label: 'View All Stories', href: '/admin/success-plus/stories' },
+        { label: 'New Special Story', href: '/admin/success-plus/stories/new' },
       ]
     },
     {
-      title: 'Resources',
-      description: 'E-books, guides, worksheets, and downloadable content',
+      title: 'Exclusive Videos',
+      description: 'Member-only video content, training, and interviews',
+      icon: '🎥',
+      color: '#ec4899',
+      href: '/admin/success-plus/videos',
+      actions: [
+        { label: 'View All Videos', href: '/admin/success-plus/videos' },
+        { label: 'Upload New Video', href: '/admin/success-plus/videos/new' },
+      ]
+    },
+    {
+      title: 'Content Library',
+      description: 'Curated library of courses, e-books, and resources',
       icon: '📚',
       color: '#10b981',
-      href: '/admin/success-plus/resources',
+      href: '/admin/success-plus/library',
       actions: [
-        { label: 'View All Resources', href: '/admin/success-plus/resources' },
-        { label: 'Upload Resource', href: '/admin/success-plus/resources/new' },
+        { label: 'Browse Library', href: '/admin/success-plus/library' },
+        { label: 'Add to Library', href: '/admin/success-plus/library/new' },
+        { label: 'Organize Collections', href: '/admin/success-plus/library/collections' },
       ]
     },
     {
-      title: 'Exclusive Interviews',
-      description: 'Cover talent interviews and thought leader content',
-      icon: '🎤',
-      color: '#f59e0b',
-      href: '/admin/success-plus/interviews',
+      title: 'Member Updates',
+      description: 'Platform updates, announcements, and member communications',
+      icon: '📢',
+      color: '#667eea',
+      href: '/admin/success-plus/updates',
       actions: [
-        { label: 'View All Interviews', href: '/admin/success-plus/interviews' },
-        { label: 'New Interview', href: '/admin/success-plus/interviews/new' },
+        { label: 'View All Updates', href: '/admin/success-plus/updates' },
+        { label: 'Post New Update', href: '/admin/success-plus/updates/new' },
+        { label: 'Scheduled Posts', href: '/admin/success-plus/updates/scheduled' },
+      ]
+    },
+    {
+      title: 'Quick Links',
+      description: 'Member resources, tools, and curated external links',
+      icon: '🔗',
+      color: '#8b5cf6',
+      href: '/admin/success-plus/links',
+      actions: [
+        { label: 'Manage Links', href: '/admin/success-plus/links' },
+        { label: 'Add New Link', href: '/admin/success-plus/links/new' },
+        { label: 'Link Categories', href: '/admin/success-plus/links/categories' },
       ]
     },
     {
       title: 'Insider Newsletters',
-      description: 'Manage monthly newsletters from SUCCESS leadership team',
+      description: 'Monthly newsletters from SUCCESS leadership team',
       icon: '✉️',
-      color: '#8b5cf6',
+      color: '#06b6d4',
       href: '/admin/success-plus/newsletters',
       actions: [
         { label: 'View Newsletters', href: '/admin/success-plus/newsletters' },
@@ -84,8 +108,8 @@ export default function SuccessPlusHub() {
     {
       title: 'Legacy Content',
       description: 'Historical SUCCESS video training and archived materials',
-      icon: '🎥',
-      color: '#ec4899',
+      icon: '🎞️',
+      color: '#84cc16',
       href: '/admin/success-plus/legacy',
       actions: [
         { label: 'View Legacy Library', href: '/admin/success-plus/legacy' },
