@@ -28,3 +28,6 @@ next-env.d.ts
 /lib/generated/prisma
 
 .vercel
+nul
+check-admin.mjs
+*.log

@@ -111,28 +111,94 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 }
 
 /**
+ * Add to ConvertKit (if configured)
+ */
+async function addToConvertKit(email: string, firstName?: string): Promise<boolean> {
+  const apiKey = process.env.CONVERTKIT_API_KEY;
+  const formId = process.env.CONVERTKIT_FORM_ID;
+
+  if (!apiKey || !formId) {
+    return false; // Not configured
+  }
+
+  try {
+    const response = await fetch(`https://api.convertkit.com/v3/forms/${formId}/subscribe`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        api_key: apiKey,
+        email,
+        first_name: firstName || '',
+      }),
+    });
+
+    return response.ok;
+  } catch (error) {
+    console.error('ConvertKit error:', error);
+    return false;
+  }
+}
+
+/**
+ * Add to Mailchimp (if configured)
+ */
+async function addToMailchimp(email: string, firstName?: string): Promise<boolean> {
+  const apiKey = process.env.MAILCHIMP_API_KEY;
+  const audienceId = process.env.MAILCHIMP_AUDIENCE_ID;
+  const serverPrefix = process.env.MAILCHIMP_SERVER_PREFIX; // e.g., 'us1'
+
+  if (!apiKey || !audienceId || !serverPrefix) {
+    return false; // Not configured
+  }
+
+  try {
+    const response = await fetch(
+      `https://${serverPrefix}.api.mailchimp.com/3.0/lists/${audienceId}/members`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Basic ${Buffer.from(`anystring:${apiKey}`).toString('base64')}`,
+        },
+        body: JSON.stringify({
+          email_address: email,
+          status: 'subscribed',
+          merge_fields: {
+            FNAME: firstName || '',
+          },
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      const error = await response.json();
+      // Ignore if already subscribed
+      if (error.title === 'Member Exists') {
+        return true;
+      }
+      console.error('Mailchimp error:', error);
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Mailchimp error:', error);
+    return false;
+  }
+}
+
+/**
  * Send welcome email to new subscriber
  */
 async function sendWelcomeEmail(email: string, firstName?: string) {
   try {
-    // For now, just log. You can integrate with SendGrid or your email service
-    console.log('Welcome email would be sent to:', email);
+    // Add to email service providers
+    await Promise.all([
+      addToConvertKit(email, firstName),
+      addToMailchimp(email, firstName),
+    ]);
 
-    // Example SendGrid integration:
-    /*
-    const sgMail = require('@sendgrid/mail');
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
-    const msg = {
-      to: email,
-      from: process.env.SENDGRID_FROM_EMAIL,
-      subject: 'Welcome to SUCCESS Magazine Newsletter',
-      text: `Hi ${firstName || 'there'}! Thanks for subscribing...`,
-      html: `<strong>Hi ${firstName || 'there'}!</strong><p>Thanks for subscribing...</p>`
-    };
-
-    await sgMail.send(msg);
-    */
+    console.log('Newsletter services synced for:', email);
   } catch (error) {
     console.error('Welcome email error:', error);
     // Don't fail the subscription if email fails

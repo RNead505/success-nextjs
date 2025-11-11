@@ -35,12 +35,23 @@ export const authOptions: AuthOptions = {
 
         console.log('User authenticated:', { email: user.email, role: user.role });
 
+        // Update last login timestamp
+        await prisma.users.update({
+          where: { id: user.id },
+          data: {
+            lastLoginAt: new Date(),
+            updatedAt: new Date(),
+          },
+        });
+
         return {
           id: user.id,
           email: user.email,
           name: user.name,
           role: user.role,
           avatar: user.avatar,
+          hasChangedDefaultPassword: user.hasChangedDefaultPassword,
+          membershipTier: user.membershipTier,
         };
       },
     }),
@@ -51,6 +62,8 @@ export const authOptions: AuthOptions = {
         token.id = user.id;
         token.role = user.role;
         token.avatar = user.avatar;
+        token.hasChangedDefaultPassword = user.hasChangedDefaultPassword;
+        token.membershipTier = user.membershipTier || 'FREE';
         console.log('JWT callback - setting role:', user.role);
       }
       return token;
@@ -60,6 +73,8 @@ export const authOptions: AuthOptions = {
         session.user.id = token.id;
         session.user.role = token.role;
         session.user.avatar = token.avatar;
+        session.user.hasChangedDefaultPassword = token.hasChangedDefaultPassword;
+        session.user.membershipTier = token.membershipTier || 'FREE';
         console.log('Session callback - user role:', token.role);
       }
       return session;

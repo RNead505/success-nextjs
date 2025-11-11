@@ -417,29 +417,51 @@ model podcasts {
 }
 
 model posts {
-  id               String       @id
+  id               String          @id
   title            String
-  slug             String       @unique
+  slug             String          @unique
   content          String
   excerpt          String?
   featuredImage    String?
   featuredImageAlt String?
-  status           PostStatus   @default(DRAFT)
+  status           PostStatus      @default(DRAFT)
   authorId         String
   publishedAt      DateTime?
-  createdAt        DateTime     @default(now())
+  createdAt        DateTime        @default(now())
   updatedAt        DateTime
   seoTitle         String?
   seoDescription   String?
   readTime         Int?
-  views            Int          @default(0)
-  users            users        @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  categories       categories[] @relation("PostCategories")
-  tags             tags[]       @relation("PostTags")
+  views            Int             @default(0)
+  users            users           @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  categories       categories[]    @relation("PostCategories")
+  tags             tags[]          @relation("PostTags")
+  post_revisions   post_revisions[]
 
   @@index([publishedAt])
   @@index([slug])
   @@index([status])
+}
+
+model post_revisions {
+  id               String    @id
+  postId           String
+  title            String
+  content          String
+  excerpt          String?
+  featuredImage    String?
+  featuredImageAlt String?
+  status           String
+  seoTitle         String?
+  seoDescription   String?
+  authorId         String
+  authorName       String
+  changeNote       String?
+  createdAt        DateTime  @default(now())
+  posts            posts     @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@index([postId])
+  @@index([createdAt])
 }
 
 model products {
@@ -614,36 +636,59 @@ model user_activities {
 }
 
 model users {
-  id                   String               @id
-  name                 String
-  email                String               @unique
-  password             String
-  role                 UserRole             @default(EDITOR)
-  bio                  String?
-  avatar               String?
-  createdAt            DateTime             @default(now())
-  updatedAt            DateTime
-  stripeCustomerId     String?              @unique
-  subscriptionStatus   SubscriptionStatus   @default(INACTIVE)
-  subscriptionExpiry   DateTime?
-  lastLoginAt          DateTime?
-  emailVerified        Boolean              @default(false)
-  emailVerificationToken String?
-  resetToken           String?
-  resetTokenExpiry     DateTime?
-  activity_logs        activity_logs[]
-  bookmarks            bookmarks[]
-  bulk_actions         bulk_actions[]
-  editorial_calendar   editorial_calendar[]
-  posts                posts[]
-  reading_progress     reading_progress[]
-  sessions             sessions[]
-  subscriptions        subscriptions?
-  user_activities      user_activities[]
-  pay_links            pay_links[]
+  id                        String               @id
+  name                      String
+  email                     String               @unique
+  password                  String
+  role                      UserRole             @default(EDITOR)
+  bio                       String?
+  avatar                    String?
+  createdAt                 DateTime             @default(now())
+  updatedAt                 DateTime
+  stripeCustomerId          String?              @unique
+  subscriptionStatus        SubscriptionStatus   @default(INACTIVE)
+  subscriptionExpiry        DateTime?
+  lastLoginAt               DateTime?
+  emailVerified             Boolean              @default(false)
+  emailVerificationToken    String?
+  resetToken                String?
+  resetTokenExpiry          DateTime?
+  hasChangedDefaultPassword Boolean              @default(false)
+  invitedBy                 String?
+  inviteCode                String?
+  membershipTier            MembershipTier       @default(FREE)
+  activity_logs             activity_logs[]
+  bookmarks                 bookmarks[]
+  bulk_actions              bulk_actions[]
+  editorial_calendar        editorial_calendar[]
+  posts                     posts[]
+  reading_progress          reading_progress[]
+  sessions                  sessions[]
+  subscriptions             subscriptions?
+  user_activities           user_activities[]
+  pay_links                 pay_links[]
 
   @@index([email])
   @@index([subscriptionStatus])
+  @@index([inviteCode])
+}
+
+model invite_codes {
+  id        String    @id
+  code      String    @unique
+  email     String?
+  role      UserRole  @default(EDITOR)
+  createdBy String
+  usedBy    String?
+  usedAt    DateTime?
+  expiresAt DateTime
+  maxUses   Int       @default(1)
+  uses      Int       @default(0)
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+
+  @@index([code])
+  @@index([isActive])
 }
 
 model videos {
@@ -726,8 +771,9 @@ enum EditorialStatus {
 }
 
 enum MembershipTier {
-  COLLECTIVE
+  FREE
   INSIDER
+  COLLECTIVE
 }
 
 enum OrderStatus {

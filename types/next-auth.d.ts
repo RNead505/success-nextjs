@@ -7,6 +7,8 @@ declare module 'next-auth' {
       role: string;
       avatar?: string;
       createdAt?: Date | string;
+      hasChangedDefaultPassword?: boolean;
+      membershipTier?: string;
       subscription?: {
         status: string;
         currentPeriodEnd?: Date;
@@ -21,6 +23,8 @@ declare module 'next-auth' {
     role: string;
     avatar?: string;
     createdAt?: Date | string;
+    hasChangedDefaultPassword?: boolean;
+    membershipTier?: string;
     subscription?: {
       status: string;
       currentPeriodEnd?: Date;
@@ -36,6 +40,8 @@ declare module 'next-auth/jwt' {
     role: string;
     avatar?: string;
     createdAt?: Date | string;
+    hasChangedDefaultPassword?: boolean;
+    membershipTier?: string;
     subscription?: {
       status: string;
       currentPeriodEnd?: Date;

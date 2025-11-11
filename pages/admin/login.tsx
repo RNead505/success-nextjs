@@ -84,6 +84,20 @@ export default function AdminLogin() {
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
+
+          <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
+            <p style={{ color: '#666', fontSize: '0.9rem' }}>
+              Don't have an account?{' '}
+              <a href="/register" style={{ color: '#c41e3a', textDecoration: 'none', fontWeight: 'bold' }}>
+                Register here
+              </a>
+            </p>
+            <p style={{ color: '#666', fontSize: '0.9rem', marginTop: '0.5rem' }}>
+              <a href="/forgot-password" style={{ color: '#666', textDecoration: 'underline' }}>
+                Forgot password?
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </>
