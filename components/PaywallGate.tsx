@@ -1,6 +1,7 @@
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import styles from './PaywallGate.module.css';
 
 interface PaywallGateProps {
@@ -8,19 +9,29 @@ interface PaywallGateProps {
   articleTitle: string;
   articleUrl: string;
   children: React.ReactNode;
+  categories?: { slug: string }[];
+  tags?: { slug: string }[];
+  isInsiderOnly?: boolean;
+  showPreview?: boolean;
 }
 
 export default function PaywallGate({
   articleId,
   articleTitle,
   articleUrl,
-  children
+  children,
+  categories = [],
+  tags = [],
+  isInsiderOnly = false,
+  showPreview = true,
 }: PaywallGateProps) {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
   const [isBlocked, setIsBlocked] = useState(false);
   const [articleCount, setArticleCount] = useState(0);
   const [showPaywall, setShowPaywall] = useState(false);
+  const [accessReason, setAccessReason] = useState('');
+  const [requiredTier, setRequiredTier] = useState('COLLECTIVE');
   const [config, setConfig] = useState({
     freeArticleLimit: 3,
     popupTitle: "You've reached your free article limit",
@@ -34,53 +45,43 @@ export default function PaywallGate({
 
   async function checkPaywallStatus() {
     try {
-      // Fetch paywall config
-      const configRes = await fetch('/api/paywall/config');
-      if (configRes.ok) {
-        const configData = await configRes.json();
-        setConfig(configData);
-
-        // Check if paywall is disabled
-        if (!configData.enablePaywall) {
-          setIsBlocked(false);
-          return;
-        }
-
-        // Check if article is bypassed
-        if (configData.bypassedArticles?.includes(articleId)) {
-          setIsBlocked(false);
-          return;
-        }
-      }
-
-      // Check subscription status
-      if (session?.user?.subscription?.status === 'ACTIVE') {
-        setIsBlocked(false);
-        trackArticleView(false);
-        return;
-      }
-
-      // Track view and check limit
-      const response = await fetch('/api/paywall/track', {
+      // Use new content access API
+      const response = await fetch('/api/content/check-access', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          articleId,
-          articleTitle,
-          articleUrl
-        })
+          contentId: articleId,
+          contentSlug: articleUrl.split('/').pop(),
+          title: articleTitle,
+          url: articleUrl,
+          categories,
+          tags,
+          isInsiderOnly,
+        }),
       });
 
       if (response.ok) {
         const data = await response.json();
-        setArticleCount(data.count);
 
-        if (data.blocked) {
+        if (data.canAccess) {
+          setIsBlocked(false);
+          setShowPaywall(false);
+        } else {
           setIsBlocked(true);
           setShowPaywall(true);
-        } else {
-          setIsBlocked(false);
+          setAccessReason(data.reason || '');
+          setRequiredTier(data.requiredTier || 'COLLECTIVE');
         }
+      } else {
+        // Fail open - don't block on API error
+        setIsBlocked(false);
+      }
+
+      // Fetch paywall config for display
+      const configRes = await fetch('/api/paywall/config');
+      if (configRes.ok) {
+        const configData = await configRes.json();
+        setConfig(configData);
       }
     } catch (error) {
       console.error('Paywall check failed:', error);
@@ -119,51 +120,90 @@ export default function PaywallGate({
     return (
       <div className={styles.paywallContainer}>
         {/* Show preview of content */}
-        <div className={styles.contentPreview}>
-          <div className={styles.fade}>
-            {children}
+        {showPreview && (
+          <div className={styles.contentPreview}>
+            <div className={styles.fade}>
+              {children}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Paywall overlay */}
         <div className={styles.paywallOverlay}>
           <div className={styles.paywallModal}>
-            <div className={styles.paywallIcon}>🔒</div>
-            <h2 className={styles.paywallTitle}>{config.popupTitle}</h2>
-            <p className={styles.paywallMessage}>{config.popupMessage}</p>
-
-            <div className={styles.paywallStats}>
-              <p>You've read <strong>{articleCount}</strong> of <strong>{config.freeArticleLimit}</strong> free articles this month.</p>
+            <div className={styles.paywallIcon}>
+              {isInsiderOnly ? '🌟' : '🔒'}
             </div>
+            <h2 className={styles.paywallTitle}>
+              {isInsiderOnly
+                ? 'Insider Exclusive Content'
+                : accessReason === 'login_required'
+                ? 'Subscribe to Continue Reading'
+                : accessReason === 'article_limit_reached'
+                ? "You've reached your free article limit"
+                : config.popupTitle}
+            </h2>
+            <p className={styles.paywallMessage}>
+              {isInsiderOnly
+                ? 'This premium content is exclusively available to SUCCESS+ Insider members.'
+                : accessReason === 'login_required'
+                ? 'Sign in or subscribe to access this article and thousands more.'
+                : accessReason === 'article_limit_reached'
+                ? 'Upgrade to SUCCESS+ for unlimited access to all articles, courses, and magazines.'
+                : config.popupMessage}
+            </p>
 
-            <div className={styles.paywallActions}>
-              <button
-                onClick={handleSubscribe}
-                className={styles.primaryButton}
-              >
-                {config.ctaButtonText}
-              </button>
-
-              {!session && (
-                <button
-                  onClick={handleLogin}
-                  className={styles.secondaryButton}
-                >
-                  Already a subscriber? Sign In
-                </button>
+            {/* Membership Tier Options */}
+            <div className={styles.tiers}>
+              {requiredTier !== 'INSIDER' && (
+                <div className={styles.tier}>
+                  <h3>Collective</h3>
+                  <p className={styles.price}>
+                    <span className={styles.amount}>$24.99</span>
+                    <span className={styles.period}>/month</span>
+                  </p>
+                  <p className={styles.annualPrice}>or $209/year (save 30%)</p>
+                  <ul className={styles.features}>
+                    <li>✓ Unlimited SUCCESS+ articles</li>
+                    <li>✓ 100+ training courses</li>
+                    <li>✓ Digital magazine issues</li>
+                    <li>✓ Mobile app access</li>
+                  </ul>
+                  <Link href="/subscribe?tier=collective" className={styles.button}>
+                    Subscribe to Collective
+                  </Link>
+                </div>
               )}
+
+              <div className={`${styles.tier} ${styles.featured}`}>
+                <div className={styles.badge}>
+                  {requiredTier === 'INSIDER' ? 'Required' : 'Most Popular'}
+                </div>
+                <h3>Insider</h3>
+                <p className={styles.price}>
+                  <span className={styles.amount}>$64.99</span>
+                  <span className={styles.period}>/month</span>
+                </p>
+                <p className={styles.annualPrice}>or $545/year (save 30%)</p>
+                <ul className={styles.features}>
+                  <li>✓ Everything in Collective</li>
+                  <li>✓ Print magazine delivery</li>
+                  <li>✓ Exclusive articles</li>
+                  <li>✓ Live Q&A sessions</li>
+                  <li>✓ 1-on-1 coaching</li>
+                </ul>
+                <Link href="/subscribe?tier=insider" className={styles.button}>
+                  Subscribe to Insider
+                </Link>
+              </div>
             </div>
 
-            <div className={styles.paywallBenefits}>
-              <h3>SUCCESS+ Benefits:</h3>
-              <ul>
-                <li>✓ Unlimited access to all articles</li>
-                <li>✓ Exclusive magazine content</li>
-                <li>✓ Members-only newsletters</li>
-                <li>✓ Ad-free reading experience</li>
-                <li>✓ Access to video & podcast library</li>
-              </ul>
-            </div>
+            {accessReason === 'login_required' && !session && (
+              <p className={styles.signin}>
+                Already a member?{' '}
+                <Link href="/auth/signin">Sign in</Link>
+              </p>
+            )}
           </div>
         </div>
       </div>

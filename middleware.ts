@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { getToken } from 'next-auth/jwt';
 
 /**
- * Next.js Middleware for handling 301/302 redirects from WordPress URLs
- *
- * This middleware runs on every request and checks if the URL matches
- * any old WordPress URLs that need to be redirected to new Next.js routes.
+ * Next.js Middleware for:
+ * 1. Route protection (admin/dashboard)
+ * 2. First-login password reset enforcement
+ * 3. WordPress URL redirects
  */
 
 export async function middleware(request: NextRequest) {
@@ -20,6 +21,47 @@ export async function middleware(request: NextRequest) {
     pathname === '/favicon.ico'
   ) {
     return NextResponse.next();
+  }
+
+  // AUTHENTICATION & AUTHORIZATION
+  const protectedRoutes = ['/admin', '/dashboard'];
+  const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route));
+
+  if (isProtectedRoute) {
+    try {
+      const token = await getToken({
+        req: request,
+        secret: process.env.NEXTAUTH_SECRET,
+      });
+
+      // Not authenticated - redirect to login
+      if (!token) {
+        const loginUrl = new URL('/admin/login', request.url);
+        loginUrl.searchParams.set('callbackUrl', pathname);
+        return NextResponse.redirect(loginUrl);
+      }
+
+      // Check if user needs to change default password
+      const requiresPasswordChange = !token.hasChangedDefaultPassword;
+      const isChangePasswordPage = pathname === '/admin/change-password';
+
+      if (requiresPasswordChange && !isChangePasswordPage) {
+        // Force redirect to password change page
+        const changePasswordUrl = new URL('/admin/change-password', request.url);
+        changePasswordUrl.searchParams.set('required', 'true');
+        return NextResponse.redirect(changePasswordUrl);
+      }
+
+      // User has changed password but is on change-password page - allow access to admin
+      if (!requiresPasswordChange && isChangePasswordPage && request.nextUrl.searchParams.get('required') === 'true') {
+        return NextResponse.redirect(new URL('/admin', request.url));
+      }
+
+    } catch (error) {
+      console.error('Middleware auth error:', error);
+      // On auth error, redirect to login
+      return NextResponse.redirect(new URL('/admin/login', request.url));
+    }
   }
 
   try {
@@ -160,12 +202,12 @@ export const config = {
   matcher: [
     /*
      * Match all request paths except:
-     * - api routes
+     * - api routes (handled separately)
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      * - public folder files
      */
-    '/((?!api|_next/static|_next/image|favicon.ico|.*\\..*$).*)',
+    '/((?!api/auth|_next/static|_next/image|favicon.ico|.*\\.(?:jpg|jpeg|png|gif|svg|ico|webp)$).*)',
   ],
 };

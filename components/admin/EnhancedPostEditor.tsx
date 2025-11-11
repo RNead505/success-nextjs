@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import { useEditor, EditorContent } from '@tiptap/react';
@@ -10,6 +10,8 @@ import Underline from '@tiptap/extension-underline';
 import { TextStyle } from '@tiptap/extension-text-style';
 import { Color } from '@tiptap/extension-color';
 import Highlight from '@tiptap/extension-highlight';
+import MediaLibraryPicker from './MediaLibraryPicker';
+import RevisionHistory from './RevisionHistory';
 import styles from './EnhancedPostEditor.module.css';
 
 interface Category {
@@ -39,6 +41,11 @@ export default function EnhancedPostEditor({ postId }: EnhancedPostEditorProps) 
   const [saving, setSaving] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [activePanel, setActivePanel] = useState<'settings' | 'seo' | 'media'>('settings');
+  const [showMediaPicker, setShowMediaPicker] = useState(false);
+  const [showFeaturedImagePicker, setShowFeaturedImagePicker] = useState(false);
+  const [showRevisionHistory, setShowRevisionHistory] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const editor = useEditor({
     extensions: [
@@ -146,9 +153,113 @@ export default function EnhancedPostEditor({ postId }: EnhancedPostEditorProps) 
   };
 
   const addImage = () => {
-    const url = window.prompt('Enter image URL');
-    if (url && editor) {
-      editor.chain().focus().setImage({ src: url }).run();
+    setShowMediaPicker(true);
+  };
+
+  const handleMediaSelect = (media: any) => {
+    if (editor) {
+      editor.chain().focus().setImage({
+        src: media.url,
+        alt: media.alt || media.filename
+      }).run();
+    }
+  };
+
+  const handleFeaturedImageSelect = (media: any) => {
+    setFeaturedImage(media.url);
+    setFeaturedImageAlt(media.alt || media.filename);
+  };
+
+  const handleRestoreRevision = (revision: any) => {
+    setTitle(revision.title);
+    setExcerpt(revision.excerpt || '');
+    setFeaturedImage(revision.featuredImage || '');
+    setFeaturedImageAlt(revision.featuredImageAlt || '');
+    setStatus(revision.status);
+    setSeoTitle(revision.seoTitle || '');
+    setSeoDescription(revision.seoDescription || '');
+
+    if (editor) {
+      editor.commands.setContent(revision.content);
+    }
+
+    alert('Revision restored! Remember to save to make the changes permanent.');
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setUploading(true);
+
+    try {
+      for (const file of Array.from(files)) {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('alt', file.name.replace(/\.[^/.]+$/, ''));
+
+        const res = await fetch('/api/media/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (res.ok) {
+          const media = await res.json();
+          if (editor) {
+            editor.chain().focus().setImage({
+              src: media.url,
+              alt: media.alt || media.filename
+            }).run();
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Upload error:', error);
+      alert('Failed to upload image');
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
+
+  const handleEditorDrop = async (e: React.DragEvent) => {
+    const files = Array.from(e.dataTransfer.files).filter(file =>
+      file.type.startsWith('image/')
+    );
+
+    if (files.length === 0) return;
+
+    e.preventDefault();
+    setUploading(true);
+
+    try {
+      for (const file of files) {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('alt', file.name.replace(/\.[^/.]+$/, ''));
+
+        const res = await fetch('/api/media/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (res.ok) {
+          const media = await res.json();
+          if (editor) {
+            editor.chain().focus().setImage({
+              src: media.url,
+              alt: media.alt || media.filename
+            }).run();
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Upload error:', error);
+      alert('Failed to upload images');
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -170,6 +281,17 @@ To save to WordPress, you'll need to set up WordPress REST API authentication.`)
     setSaving(false);
   };
 
+  const handlePreview = () => {
+    // For existing posts, use postId
+    if (postId) {
+      window.open(`/preview/post/${postId}`, '_blank');
+      return;
+    }
+
+    // For new posts, save draft first then preview
+    alert('Save as draft first to preview. Preview functionality requires the post to be saved.');
+  };
+
   if (loading) {
     return <div className={styles.loading}>Loading post...</div>;
   }
@@ -188,8 +310,13 @@ To save to WordPress, you'll need to set up WordPress REST API authentication.`)
           </button>
         </div>
         <div className={styles.topRight}>
-          <button onClick={() => setShowPreview(!showPreview)} className={styles.previewButton}>
-            {showPreview ? '📝 Edit' : '👁 Preview'}
+          {postId && (
+            <button onClick={() => setShowRevisionHistory(true)} className={styles.previewButton}>
+              📜 History
+            </button>
+          )}
+          <button onClick={handlePreview} className={styles.previewButton}>
+            👁 Preview
           </button>
           <button onClick={() => handleSave('draft')} disabled={saving} className={styles.draftButton}>
             {saving ? 'Saving...' : 'Save Draft'}
@@ -316,9 +443,20 @@ To save to WordPress, you'll need to set up WordPress REST API authentication.`)
                   <button onClick={setLink} className={styles.toolbarButton} title="Insert Link">
                     🔗
                   </button>
-                  <button onClick={addImage} className={styles.toolbarButton} title="Insert Image">
-                    🖼
+                  <button onClick={addImage} className={styles.toolbarButton} title="Browse Media Library">
+                    🖼️ Library
                   </button>
+                  <label className={styles.toolbarButton} title="Upload Image">
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={handleImageUpload}
+                      style={{ display: 'none' }}
+                    />
+                    📤 {uploading ? 'Uploading...' : 'Upload'}
+                  </label>
                 </div>
 
                 <div className={styles.toolbarDivider}></div>
@@ -348,8 +486,20 @@ To save to WordPress, you'll need to set up WordPress REST API authentication.`)
                 </div>
               </div>
 
-              {/* Editor Content */}
-              <EditorContent editor={editor} className={styles.editor} />
+              {/* Editor Content with Drag & Drop */}
+              <div
+                onDrop={handleEditorDrop}
+                onDragOver={(e) => e.preventDefault()}
+                className={styles.editorWrapper}
+              >
+                {uploading && (
+                  <div className={styles.uploadingOverlay}>
+                    <div className={styles.uploadingSpinner}></div>
+                    <p>Uploading images...</p>
+                  </div>
+                )}
+                <EditorContent editor={editor} className={styles.editor} />
+              </div>
             </>
           ) : (
             /* Preview Mode */
@@ -438,25 +588,48 @@ To save to WordPress, you'll need to set up WordPress REST API authentication.`)
             <div className={styles.panel}>
               <div className={styles.panelSection}>
                 <h3 className={styles.panelTitle}>Featured Image</h3>
-                <input
-                  type="text"
-                  value={featuredImage}
-                  onChange={(e) => setFeaturedImage(e.target.value)}
-                  placeholder="Image URL"
-                  className={styles.input}
-                />
-                {featuredImage && (
-                  <div className={styles.imagePreview}>
-                    <img src={featuredImage} alt="Featured" />
-                  </div>
+                {featuredImage ? (
+                  <>
+                    <div className={styles.imagePreview}>
+                      <img src={featuredImage} alt={featuredImageAlt || 'Featured'} />
+                    </div>
+                    <input
+                      type="text"
+                      value={featuredImageAlt}
+                      onChange={(e) => setFeaturedImageAlt(e.target.value)}
+                      placeholder="Alt text"
+                      className={styles.input}
+                      style={{ marginTop: '12px' }}
+                    />
+                    <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
+                      <button
+                        onClick={() => setShowFeaturedImagePicker(true)}
+                        className={styles.previewButton}
+                        style={{ flex: 1 }}
+                      >
+                        Replace Image
+                      </button>
+                      <button
+                        onClick={() => {
+                          setFeaturedImage('');
+                          setFeaturedImageAlt('');
+                        }}
+                        className={styles.draftButton}
+                        style={{ flex: 1 }}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <button
+                    onClick={() => setShowFeaturedImagePicker(true)}
+                    className={styles.publishButton}
+                    style={{ width: '100%' }}
+                  >
+                    Set Featured Image
+                  </button>
                 )}
-                <input
-                  type="text"
-                  value={featuredImageAlt}
-                  onChange={(e) => setFeaturedImageAlt(e.target.value)}
-                  placeholder="Alt text"
-                  className={styles.input}
-                />
               </div>
             </div>
           )}
@@ -493,6 +666,32 @@ To save to WordPress, you'll need to set up WordPress REST API authentication.`)
           )}
         </div>
       </div>
+
+      {/* Media Library Picker Modal - For Editor Content */}
+      <MediaLibraryPicker
+        isOpen={showMediaPicker}
+        onClose={() => setShowMediaPicker(false)}
+        onSelect={handleMediaSelect}
+        filterType="image"
+      />
+
+      {/* Media Library Picker Modal - For Featured Image */}
+      <MediaLibraryPicker
+        isOpen={showFeaturedImagePicker}
+        onClose={() => setShowFeaturedImagePicker(false)}
+        onSelect={handleFeaturedImageSelect}
+        filterType="image"
+      />
+
+      {/* Revision History Modal */}
+      {postId && (
+        <RevisionHistory
+          isOpen={showRevisionHistory}
+          onClose={() => setShowRevisionHistory(false)}
+          postId={postId}
+          onRestore={handleRestoreRevision}
+        />
+      )}
     </div>
   );
 }
