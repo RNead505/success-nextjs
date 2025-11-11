@@ -37,6 +37,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     {
       title: 'SUCCESS+',
       items: [
+        { name: 'Content Hub', href: '/admin/success-plus', icon: '✨' },
+        { name: 'Exclusive Articles', href: '/admin/success-plus/articles', icon: '📰' },
         { name: 'Members', href: '/admin/members', icon: '⭐' },
         { name: 'Subscriptions', href: '/admin/subscriptions', icon: '💳' },
         { name: 'Revenue', href: '/admin/revenue', icon: '💰' },
