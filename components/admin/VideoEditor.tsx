@@ -21,6 +21,10 @@ export default function VideoEditor({ videoId }: VideoEditorProps) {
   const [status, setStatus] = useState('DRAFT');
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [videoSource, setVideoSource] = useState<'url' | 'upload'>('url');
+  const [uploadingVideo, setUploadingVideo] = useState(false);
+  const [uploadingThumbnail, setUploadingThumbnail] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   useEffect(() => {
     if (videoId) {
@@ -64,9 +68,106 @@ export default function VideoEditor({ videoId }: VideoEditorProps) {
     }
   };
 
+  const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Check file size (max 500MB)
+    if (file.size > 500 * 1024 * 1024) {
+      alert('Video file is too large. Maximum size is 500MB.');
+      return;
+    }
+
+    // Check file type
+    const allowedTypes = ['video/mp4', 'video/quicktime', 'video/x-msvideo', 'video/webm'];
+    if (!allowedTypes.includes(file.type)) {
+      alert('Invalid video format. Supported formats: MP4, MOV, AVI, WebM');
+      return;
+    }
+
+    setUploadingVideo(true);
+    setUploadProgress(0);
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('type', 'video');
+
+    try {
+      const res = await fetch('/api/media/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setVideoUrl(data.url);
+
+        // Try to get video duration
+        const video = document.createElement('video');
+        video.preload = 'metadata';
+        video.onloadedmetadata = () => {
+          setDuration(Math.floor(video.duration).toString());
+          URL.revokeObjectURL(video.src);
+        };
+        video.src = URL.createObjectURL(file);
+      } else {
+        throw new Error('Upload failed');
+      }
+    } catch (error) {
+      console.error('Error uploading video:', error);
+      alert('Failed to upload video. Please try again or use a video URL instead.');
+    } finally {
+      setUploadingVideo(false);
+      setUploadProgress(0);
+    }
+  };
+
+  const handleThumbnailUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Check file size (max 5MB for thumbnails)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Thumbnail image is too large. Maximum size is 5MB.');
+      return;
+    }
+
+    // Check file type
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    if (!allowedTypes.includes(file.type)) {
+      alert('Invalid image format. Supported formats: JPG, PNG, WebP, GIF');
+      return;
+    }
+
+    setUploadingThumbnail(true);
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('type', 'image');
+
+    try {
+      const res = await fetch('/api/media/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setThumbnail(data.url);
+      } else {
+        throw new Error('Upload failed');
+      }
+    } catch (error) {
+      console.error('Error uploading thumbnail:', error);
+      alert('Failed to upload thumbnail');
+    } finally {
+      setUploadingThumbnail(false);
+    }
+  };
+
   const handleSave = async (publishStatus: string) => {
     if (!title || !videoUrl) {
-      alert('Title and video URL are required');
+      alert('Title and video are required');
       return;
     }
 
@@ -170,15 +271,115 @@ export default function VideoEditor({ videoId }: VideoEditorProps) {
           </div>
 
           <div className={styles.field}>
-            <label htmlFor="videoUrl">Video URL * (YouTube, Vimeo, etc.)</label>
-            <input
-              id="videoUrl"
-              type="url"
-              value={videoUrl}
-              onChange={(e) => setVideoUrl(e.target.value)}
-              placeholder="https://www.youtube.com/watch?v=..."
-              className={styles.input}
-            />
+            <label>Video Source *</label>
+            <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
+              <button
+                type="button"
+                onClick={() => setVideoSource('url')}
+                className={videoSource === 'url' ? styles.activeTab : styles.inactiveTab}
+                style={{
+                  padding: '0.5rem 1rem',
+                  border: '1px solid #ddd',
+                  background: videoSource === 'url' ? '#c41e3a' : 'white',
+                  color: videoSource === 'url' ? 'white' : '#333',
+                  cursor: 'pointer',
+                  borderRadius: '4px'
+                }}
+              >
+                Video URL
+              </button>
+              <button
+                type="button"
+                onClick={() => setVideoSource('upload')}
+                className={videoSource === 'upload' ? styles.activeTab : styles.inactiveTab}
+                style={{
+                  padding: '0.5rem 1rem',
+                  border: '1px solid #ddd',
+                  background: videoSource === 'upload' ? '#c41e3a' : 'white',
+                  color: videoSource === 'upload' ? 'white' : '#333',
+                  cursor: 'pointer',
+                  borderRadius: '4px'
+                }}
+              >
+                Upload Video
+              </button>
+            </div>
+
+            {videoSource === 'url' ? (
+              <div>
+                <label htmlFor="videoUrl" style={{ fontSize: '0.9rem', color: '#666' }}>
+                  YouTube, Vimeo, or direct video URL
+                </label>
+                <input
+                  id="videoUrl"
+                  type="url"
+                  value={videoUrl}
+                  onChange={(e) => setVideoUrl(e.target.value)}
+                  placeholder="https://www.youtube.com/watch?v=..."
+                  className={styles.input}
+                />
+              </div>
+            ) : (
+              <div>
+                <label htmlFor="videoFile" style={{ fontSize: '0.9rem', color: '#666', display: 'block', marginBottom: '0.5rem' }}>
+                  Upload video file (MP4, MOV, AVI, WebM - max 500MB)
+                </label>
+                <input
+                  id="videoFile"
+                  type="file"
+                  accept="video/mp4,video/quicktime,video/x-msvideo,video/webm"
+                  onChange={handleVideoUpload}
+                  disabled={uploadingVideo}
+                  style={{
+                    display: 'block',
+                    marginBottom: '0.5rem',
+                    padding: '0.5rem',
+                    border: '1px solid #ddd',
+                    borderRadius: '4px',
+                    width: '100%'
+                  }}
+                />
+                {uploadingVideo && (
+                  <div style={{ marginTop: '0.5rem' }}>
+                    <div style={{
+                      background: '#f0f0f0',
+                      borderRadius: '4px',
+                      overflow: 'hidden',
+                      height: '24px'
+                    }}>
+                      <div style={{
+                        background: '#c41e3a',
+                        height: '100%',
+                        width: `${uploadProgress}%`,
+                        transition: 'width 0.3s',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: 'white',
+                        fontSize: '12px'
+                      }}>
+                        {uploadProgress > 0 && `${uploadProgress}%`}
+                      </div>
+                    </div>
+                    <p style={{ fontSize: '0.85rem', color: '#666', marginTop: '0.5rem' }}>
+                      Uploading video... This may take a few minutes for large files.
+                    </p>
+                  </div>
+                )}
+                {videoUrl && !uploadingVideo && (
+                  <div style={{
+                    marginTop: '0.5rem',
+                    padding: '0.5rem',
+                    background: '#e8f5e9',
+                    border: '1px solid #4caf50',
+                    borderRadius: '4px',
+                    fontSize: '0.85rem'
+                  }}>
+                    ✅ Video uploaded successfully
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           <div className={styles.field}>
@@ -197,7 +398,7 @@ export default function VideoEditor({ videoId }: VideoEditorProps) {
           <div className={styles.panel}>
             <h3>Video Details</h3>
             <div className={styles.field}>
-              <label htmlFor="thumbnail">Thumbnail URL</label>
+              <label htmlFor="thumbnail">Thumbnail Image</label>
               <input
                 id="thumbnail"
                 type="url"
@@ -205,11 +406,35 @@ export default function VideoEditor({ videoId }: VideoEditorProps) {
                 onChange={(e) => setThumbnail(e.target.value)}
                 placeholder="https://..."
                 className={styles.input}
+                style={{ marginBottom: '0.5rem' }}
               />
+              <div style={{ fontSize: '0.85rem', color: '#666', marginBottom: '0.5rem' }}>
+                or
+              </div>
+              <input
+                id="thumbnailFile"
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/gif"
+                onChange={handleThumbnailUpload}
+                disabled={uploadingThumbnail}
+                style={{
+                  display: 'block',
+                  padding: '0.5rem',
+                  border: '1px solid #ddd',
+                  borderRadius: '4px',
+                  width: '100%',
+                  fontSize: '0.85rem'
+                }}
+              />
+              {uploadingThumbnail && (
+                <p style={{ fontSize: '0.85rem', color: '#666', marginTop: '0.5rem' }}>
+                  Uploading thumbnail...
+                </p>
+              )}
             </div>
             {thumbnail && (
               <div className={styles.imagePreview}>
-                <img src={thumbnail} alt="Preview" />
+                <img src={thumbnail} alt="Preview" style={{ maxWidth: '100%', borderRadius: '4px' }} />
               </div>
             )}
             <div className={styles.field}>
