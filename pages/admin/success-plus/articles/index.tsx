@@ -5,10 +5,22 @@ import Link from 'next/link';
 import AdminLayout from '../../../../components/admin/AdminLayout';
 import styles from '../../posts/PostsList.module.css';
 
+interface Article {
+  id: string;
+  title: string;
+  slug: string;
+  status: string;
+  views?: number;
+  publishedAt?: string;
+  author?: {
+    name: string;
+  };
+}
+
 export default function ExclusiveArticles() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const [articles, setArticles] = useState([]);
+  const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
 
@@ -131,7 +143,7 @@ export default function ExclusiveArticles() {
                 </tr>
               </thead>
               <tbody>
-                {articles.map((article: any) => (
+                {articles.map((article) => (
                   <tr key={article.id}>
                     <td>
                       <div className={styles.postTitle}>
