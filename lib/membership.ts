@@ -91,7 +91,16 @@ export async function getUserTier(userId: string): Promise<MembershipTier> {
     include: { subscriptions: true },
   });
 
-  if (!user || !user.subscriptions) {
+  if (!user) {
+    return MembershipTier.FREE;
+  }
+
+  // ADMINS AND SUPER_ADMINS GET FULL INSIDER ACCESS
+  if (user.role === 'ADMIN' || user.role === 'SUPER_ADMIN') {
+    return MembershipTier.INSIDER;
+  }
+
+  if (!user.subscriptions) {
     return MembershipTier.FREE;
   }
 
