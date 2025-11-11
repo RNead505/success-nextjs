@@ -8,11 +8,15 @@ interface AnalyticsTrackerProps {
 
 export default function AnalyticsTracker({ contentId, contentType }: AnalyticsTrackerProps) {
   const router = useRouter();
-  const startTime = useRef<number>(Date.now());
+  const startTime = useRef<number>(typeof window !== 'undefined' ? Date.now() : 0);
   const tracked = useRef<boolean>(false);
 
   useEffect(() => {
-    // Track pageview
+    // Don't track during SSR/SSG
+    if (typeof window === 'undefined') {
+      return;
+    }
+
     if (!tracked.current) {
       trackEvent('pageview');
       tracked.current = true;
