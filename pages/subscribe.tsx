@@ -17,61 +17,53 @@ export default function SubscribePage() {
         <section className={styles.section}>
           <div className={styles.container}>
             <div className={styles.plansGrid}>
-              {/* Digital Plan */}
+              {/* SUCCESS+ Insider - Monthly Plan */}
               <div className={styles.plan}>
                 <div className={styles.planHeader}>
-                  <h3 className={styles.planName}>Digital</h3>
+                  <h3 className={styles.planName}>SUCCESS+ Insider</h3>
                   <div className={styles.planPrice}>
-                    <span className={styles.price}>$9.99</span>
+                    <span className={styles.price}>$7.99</span>
                     <span className={styles.period}>/month</span>
                   </div>
+                  <p className={styles.billingNote}>Billed monthly ($95.88/year)</p>
                 </div>
                 <ul className={styles.features}>
-                  <li>✓ Unlimited digital magazine access</li>
-                  <li>✓ Mobile & tablet apps</li>
-                  <li>✓ Exclusive online content</li>
-                  <li>✓ Archive access</li>
+                  <li>✓ 6 Print + 6 Digital magazine editions/year</li>
+                  <li>✓ Digital access to each print issue</li>
+                  <li>✓ Exclusive interviews with cover talent</li>
+                  <li>✓ Discounted access to paid courses</li>
+                  <li>✓ Free course library (select titles)</li>
+                  <li>✓ E-books, guides & worksheets</li>
+                  <li>✓ Insider Newsletter (4/month)</li>
+                  <li>✓ Legacy SUCCESS video training</li>
+                  <li>✓ Additional member discounts</li>
                 </ul>
-                <button className={styles.planButton}>Choose Digital</button>
+                <button className={styles.planButton}>Subscribe Monthly</button>
               </div>
 
-              {/* Print + Digital Plan */}
+              {/* SUCCESS+ Insider - Annual Plan (Featured) */}
               <div className={`${styles.plan} ${styles.featured}`}>
-                <div className={styles.badge}>Most Popular</div>
+                <div className={styles.badge}>Save 22% - Best Value!</div>
                 <div className={styles.planHeader}>
-                  <h3 className={styles.planName}>Print + Digital</h3>
+                  <h3 className={styles.planName}>SUCCESS+ Insider</h3>
                   <div className={styles.planPrice}>
-                    <span className={styles.price}>$19.99</span>
-                    <span className={styles.period}>/month</span>
+                    <span className={styles.price}>$75</span>
+                    <span className={styles.period}>/year</span>
                   </div>
+                  <p className={styles.savings}>Save over $20 compared to monthly!</p>
                 </div>
                 <ul className={styles.features}>
-                  <li>✓ Everything in Digital</li>
-                  <li>✓ Print magazine delivery</li>
-                  <li>✓ Collector's editions</li>
-                  <li>✓ Early access to content</li>
-                  <li>✓ Members-only events</li>
+                  <li>✓ 6 Print + 6 Digital magazine editions/year</li>
+                  <li>✓ Digital access to each print issue</li>
+                  <li>✓ Exclusive interviews with cover talent</li>
+                  <li>✓ Discounted access to paid courses</li>
+                  <li>✓ Free course library (select titles)</li>
+                  <li>✓ E-books, guides & worksheets</li>
+                  <li>✓ Insider Newsletter (4/month)</li>
+                  <li>✓ Legacy SUCCESS video training</li>
+                  <li>✓ Additional member discounts</li>
                 </ul>
-                <button className={styles.planButtonFeatured}>Choose Print + Digital</button>
-              </div>
-
-              {/* SUCCESS+ Plan */}
-              <div className={styles.plan}>
-                <div className={styles.planHeader}>
-                  <h3 className={styles.planName}>SUCCESS+</h3>
-                  <div className={styles.planPrice}>
-                    <span className={styles.price}>$29.99</span>
-                    <span className={styles.period}>/month</span>
-                  </div>
-                </div>
-                <ul className={styles.features}>
-                  <li>✓ Everything in Print + Digital</li>
-                  <li>✓ Video courses & workshops</li>
-                  <li>✓ 1-on-1 coaching sessions</li>
-                  <li>✓ Premium community access</li>
-                  <li>✓ VIP event invitations</li>
-                </ul>
-                <button className={styles.planButton}>Choose SUCCESS+</button>
+                <button className={styles.planButtonFeatured}>Subscribe Annually</button>
               </div>
             </div>
 

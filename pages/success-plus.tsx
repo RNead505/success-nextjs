@@ -1,194 +1,189 @@
+import { useState } from 'react';
 import Layout from '../components/Layout';
+import Link from 'next/link';
 import styles from './SuccessPlus.module.css';
 
 export default function SuccessPlusPage() {
+  const [billingCycle, setBillingCycle] = useState<'annual' | 'monthly'>('annual');
+
   return (
     <Layout>
       <div className={styles.successPlus}>
+        {/* Hero Section */}
         <section className={styles.hero}>
           <div className={styles.heroContent}>
-            <h1 className={styles.heroTitle}>Online Learning That Plays to Your Strengths</h1>
+            <h1 className={styles.heroTitle}>
+              128 Years of SUCCESS® — Reimagined for What's Next
+            </h1>
             <p className={styles.heroSubtitle}>
-              Curated resources and expert insights based on your DISC profile to help you stay relevant in the modern working world
+              For more than a century, SUCCESS® has been the source of wisdom for those building meaningful lives and lasting impact.
             </p>
-            <a href="#plans" className={styles.heroCTA}>JOIN SUCCESS+ NOW</a>
+            <p className={styles.heroDescription}>
+              With SUCCESS+™, that tradition continues—uniting print and digital experiences to bring you closer to the ideas, people, and insights shaping success today.
+            </p>
+            <Link href="/subscribe?plan=annual" className={styles.heroCTA}>
+              Start Your Free Trial
+            </Link>
           </div>
         </section>
 
-        <section className={styles.statsSection}>
-          <div className={styles.container}>
-            <div className={styles.statsGrid}>
-              <div className={styles.stat}>
-                <div className={styles.statNumber}>98,000+</div>
-                <div className={styles.statLabel}>People using courses</div>
-              </div>
-              <div className={styles.stat}>
-                <div className={styles.statNumber}>120+</div>
-                <div className={styles.statLabel}>Years of growth system</div>
-              </div>
-              <div className={styles.stat}>
-                <div className={styles.statNumber}>80+</div>
-                <div className={styles.statLabel}>Hours of on-demand training</div>
-              </div>
-              <div className={styles.stat}>
-                <div className={styles.statNumber}>30-Day</div>
-                <div className={styles.statLabel}>Risk-free trial</div>
-              </div>
-            </div>
-          </div>
-        </section>
-
+        {/* Features Section */}
         <section className={styles.section}>
           <div className={styles.container}>
-            <h2 className={styles.sectionTitle}>What You Can Achieve With SUCCESS+</h2>
-            <div className={styles.benefits}>
-              <div className={styles.benefit}>
-                <span className={styles.bulletIcon}>✓</span>
-                <p>Find clarity on your career goals</p>
-              </div>
-              <div className={styles.benefit}>
-                <span className={styles.bulletIcon}>✓</span>
-                <p>Multiply your earning potential</p>
-              </div>
-              <div className={styles.benefit}>
-                <span className={styles.bulletIcon}>✓</span>
-                <p>Enable a "digital nomad" lifestyle</p>
-              </div>
-              <div className={styles.benefit}>
-                <span className={styles.bulletIcon}>✓</span>
-                <p>Protect yourself against inflation</p>
-              </div>
-              <div className={styles.benefit}>
-                <span className={styles.bulletIcon}>✓</span>
-                <p>Land your dream job</p>
-              </div>
-              <div className={styles.benefit}>
-                <span className={styles.bulletIcon}>✓</span>
-                <p>Build 6-7 figure income</p>
-              </div>
-              <div className={styles.benefit}>
-                <span className={styles.bulletIcon}>✓</span>
-                <p>Develop professional relationships</p>
-              </div>
-            </div>
-          </div>
-        </section>
+            <h2 className={styles.sectionTitle}>Your SUCCESS+ Insider Membership Includes</h2>
 
-        <section className={styles.plansSection} id="plans">
-          <div className={styles.container}>
-            <h2 className={styles.sectionTitle}>Choose Your Membership</h2>
-            <div className={styles.plansGrid}>
-              {/* Collective Membership */}
-              <div className={styles.plan}>
-                <div className={styles.planBadge}>YOUR CURRENT PLAN</div>
-                <h3 className={styles.planName}>SUCCESS+ Collective Membership</h3>
-                <p className={styles.planDescription}>
-                  Stay on your growth journey and relevant in the modern working world with your current Collective Membership.
-                </p>
-
-                <div className={styles.planFeatures}>
-                  <div className={styles.feature}>
-                    <div className={styles.value}>$1,000+ VALUE</div>
-                    <div><strong>On-demand training library</strong> with 80+ hours of upskilling content</div>
-                  </div>
-                  <div className={styles.feature}>
-                    <div className={styles.value}>$24.99 VALUE</div>
-                    <div>Digital subscription to our new <strong><em>SUCCESS+</em> magazine and historic <em>SUCCESS®</em> magazine</strong></div>
-                  </div>
-                  <div className={styles.feature}>
-                    <div className={styles.value}>$95+ VALUE</div>
-                    <div><strong>SUCCESS+ app</strong> to keep momentum anytime, anywhere</div>
-                  </div>
-                  <div className={styles.feature}>
-                    <div className={styles.value}>$99+ VALUE</div>
-                    <div><strong>Daily inspiration texts</strong> to keep you fired up</div>
-                  </div>
-                  <div className={styles.feature}>
-                    <div className={styles.value}>$499+ VALUE</div>
-                    <div>NEW weekly articles, e-books, and <strong>exclusive content releases</strong></div>
-                  </div>
-                  <div className={styles.feature}>
-                    <div className={styles.value}>$60+ VALUE</div>
-                    <div><strong>Members-only newsletter</strong> to supplement your daily progress</div>
-                  </div>
-                  <div className={styles.feature}>
-                    <div className={styles.value}>$199 VALUE</div>
-                    <div><strong>Jim Rohn's Timeless Wisdom, Powered By AI</strong></div>
-                  </div>
-                </div>
-
-                <div className={styles.pricing}>
-                  <div className={styles.totalValue}>Total value of $2,100+/year</div>
-                  <div className={styles.price}>$209</div>
-                  <div className={styles.billed}>billed annually</div>
-                  <a href="#" className={styles.joinButton}>Join Now</a>
-                  <div className={styles.monthly}>Or $24.99/month</div>
+            <div className={styles.features}>
+              <div className={styles.feature}>
+                <div className={styles.featureIcon}>📰</div>
+                <div className={styles.featureContent}>
+                  <h3 className={styles.featureTitle}>Six Print Issues a Year</h3>
+                  <p className={styles.featureDescription}>
+                    The magazine that's shaped modern personal development—delivered to your door every other month. Each SUCCESS® magazine print issue dives deep into leadership, mindset, wealth, and well-being with stories and strategies you can put into action.
+                  </p>
                 </div>
               </div>
 
-              {/* Insider Membership */}
-              <div className={`${styles.plan} ${styles.recommended}`}>
-                <div className={`${styles.planBadge} ${styles.recommendedBadge}`}>RECOMMENDED</div>
-                <h3 className={styles.planName}>SUCCESS+ Insider Membership</h3>
-                <p className={styles.planDescription}>
-                  Upgrade to our all-inclusive Insider Membership and reach your goals faster! A $3,500 value, all yours for less than $1.50 per day.
-                </p>
-
-                <div className={styles.planFeatures}>
-                  <div className={styles.feature}>
-                    <div><strong>Everything in Collective, PLUS:</strong></div>
-                  </div>
-                  <div className={styles.feature}>
-                    <div className={styles.value}>$599 VALUE</div>
-                    <div><strong>LIVE weekly Accountability Workshops</strong></div>
-                  </div>
-                  <div className={styles.feature}>
-                    <div className={styles.value}>$299 VALUE</div>
-                    <div><strong>Monthly growth challenges</strong> to ensure you're consistently hitting your goals month after month</div>
-                  </div>
-                  <div className={styles.feature}>
-                    <div className={styles.value}>$49+ VALUE</div>
-                    <div><strong>Exclusive <em>SUCCESS®</em> magazine cover talent video interviews</strong> on cutting-edge industry insights</div>
-                  </div>
-                  <div className={styles.feature}>
-                    <div className={styles.value}>$499 VALUE</div>
-                    <div><strong>LIVE training webinars</strong> with top industry experts to accelerate your career, business, and financial growth</div>
-                  </div>
-                  <div className={styles.feature}>
-                    <div className={styles.value}>$24.99 VALUE</div>
-                    <div>Print edition of <strong><em>SUCCESS®</em> magazine</strong> delivered right to your door</div>
-                  </div>
-                  <div className={styles.feature}>
-                    <div className={styles.value}>$50+ VALUE</div>
-                    <div><strong>Exclusive SUCCESS Store discounts</strong></div>
-                  </div>
-                  <div className={styles.feature}>
-                    <div className={styles.value}>$999+ VALUE</div>
-                    <div><strong>Exclusive members-only event pricing and access</strong></div>
-                  </div>
+              <div className={styles.feature}>
+                <div className={styles.featureIcon}>📱</div>
+                <div className={styles.featureContent}>
+                  <h3 className={styles.featureTitle}>Six Digital Editions</h3>
+                  <p className={styles.featureDescription}>
+                    Enjoy every issue of SUCCESS® Digital Edition on your favorite device. Read, highlight, and revisit the ideas that move you—wherever you are. Your membership also includes digital access to recent print issues.
+                  </p>
                 </div>
+              </div>
 
-                <div className={styles.pricing}>
-                  <div className={styles.totalValue}>Total value of $3,500+/year</div>
-                  <div className={styles.price}>$545</div>
-                  <div className={styles.billed}>billed annually</div>
-                  <a href="#" className={`${styles.joinButton} ${styles.joinButtonPrimary}`}>Join Now</a>
-                  <div className={styles.monthly}>Or $64.99/month</div>
+              <div className={styles.feature}>
+                <div className={styles.featureIcon}>🌟</div>
+                <div className={styles.featureContent}>
+                  <h3 className={styles.featureTitle}>Exclusive Access to SUCCESS® Magazine Features</h3>
+                  <p className={styles.featureDescription}>
+                    SUCCESS+ gives you the full experience of the magazine. You'll go beyond the headlines with deeper access to cover stories, interviews, and features from thought leaders and innovators such as <strong>Mel Robbins, Tony Robbins, Daymond John, and many more!</strong>
+                  </p>
+                  <p className={styles.featureDescription}>
+                    These exclusive interviews and in-depth pieces live outside the magazine—available only to members.
+                  </p>
+                </div>
+              </div>
+
+              <div className={styles.feature}>
+                <div className={styles.featureIcon}>📚</div>
+                <div className={styles.featureContent}>
+                  <h3 className={styles.featureTitle}>Practical Resources for Real Progress</h3>
+                  <p className={styles.featureDescription}>
+                    Alongside your magazine access, your membership includes exclusive downloadable guides, e-books, and worksheets created by the SUCCESS® editorial and coaching teams—tools designed to help you apply what you read.
+                  </p>
+                  <p className={styles.featureDescription}>
+                    You'll also find a growing library of on-demand courses and micro-courses, as well as exclusive discounts on premium SUCCESS® programs.
+                  </p>
+                </div>
+              </div>
+
+              <div className={styles.feature}>
+                <div className={styles.featureIcon}>✉️</div>
+                <div className={styles.featureContent}>
+                  <h3 className={styles.featureTitle}>Insider Perspective from the SUCCESS Leadership Team</h3>
+                  <p className={styles.featureDescription}>
+                    Stay connected with members-only newsletters and insights from:
+                  </p>
+                  <ul className={styles.leadershipList}>
+                    <li><strong>Glenn Sanford</strong> – Managing Director & Publisher</li>
+                    <li><strong>Kerrie Lee Brown</strong> – Chief Content Officer & Editor-in-Chief</li>
+                    <li><strong>Courtland Warren</strong> – Founding Faculty & Program Lead, SUCCESS Coaching™</li>
+                    <li><strong>Rachel Nead</strong> – Vice President of Innovations</li>
+                  </ul>
+                  <p className={styles.featureDescription}>
+                    Their expert commentary connects the dots between timeless SUCCESS® principles and today's evolving world — and keeps you in the know on where the brand is headed next.
+                  </p>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
+        {/* Why SUCCESS+ Section */}
         <section className={styles.whySection}>
           <div className={styles.container}>
-            <h2 className={styles.sectionTitle}>Why Keep Your Membership?</h2>
+            <h2 className={styles.sectionTitle}>Why SUCCESS+</h2>
             <p className={styles.whyText}>
-              Think of it as a steady source of connection and growth. SUCCESS+ is here to help you engage with what matters, stay informed, and seize new opportunities.
+              The world moves faster than ever before—but wisdom still matters.
             </p>
             <p className={styles.whyText}>
-              <strong>Don't Miss What's Coming Up:</strong> Get back to the people, resources, and ideas that support your goals.
+              SUCCESS+ bridges that gap. It's where heritage meets progress: the magazine that built the personal development movement, now expanded for the digital age.
             </p>
+            <p className={styles.whyText}>
+              You'll stay inspired by exclusive content, grounded by trusted voices, and equipped with practical tools that help you grow with focus and purpose.
+            </p>
+          </div>
+        </section>
+
+        {/* Pricing Section */}
+        <section className={styles.plansSection} id="plans">
+          <div className={styles.container}>
+            <h2 className={styles.sectionTitle}>Join the Movement of Modern Achievers</h2>
+            <p className={styles.pricingSubtitle}>Start your 14-day free trial today.</p>
+
+            <div className={styles.billingToggle}>
+              <button
+                className={billingCycle === 'monthly' ? styles.active : ''}
+                onClick={() => setBillingCycle('monthly')}
+              >
+                Monthly
+              </button>
+              <button
+                className={billingCycle === 'annual' ? styles.active : ''}
+                onClick={() => setBillingCycle('annual')}
+              >
+                Annual <span className={styles.saveBadge}>Save 22%</span>
+              </button>
+            </div>
+
+            <div className={styles.pricingCard}>
+              {billingCycle === 'annual' ? (
+                <>
+                  <div className={styles.price}>
+                    <span className={styles.amount}>$75</span>
+                    <span className={styles.period}>/year</span>
+                  </div>
+                  <p className={styles.savings}>Save over $20 compared to monthly!</p>
+                </>
+              ) : (
+                <>
+                  <div className={styles.price}>
+                    <span className={styles.amount}>$7.99</span>
+                    <span className={styles.period}>/month</span>
+                  </div>
+                  <p className={styles.savings}>Billed monthly ($95.88/year)</p>
+                </>
+              )}
+              <p className={styles.cancellation}>Cancel anytime.</p>
+              <ul className={styles.pricingFeatures}>
+                <li>✓ Print and digital magazine issues</li>
+                <li>✓ Member-only resources and courses</li>
+                <li>✓ Exclusive interviews and features</li>
+                <li>✓ Insider newsletters from leadership</li>
+                <li>✓ Full depth of what SUCCESS® represents</li>
+              </ul>
+              <Link
+                href={`/subscribe?plan=${billingCycle}`}
+                className={styles.joinButton}
+              >
+                Start Your Free Trial Today
+              </Link>
+            </div>
+
+            <p className={styles.tagline}>
+              Receive print and digital issues, member-only resources, and the full depth of what SUCCESS® represents—<strong>legacy insight for modern achievement.</strong>
+            </p>
+            <p className={styles.finalCta}>Your next chapter of growth starts here.</p>
+          </div>
+        </section>
+
+        {/* Footer Tagline */}
+        <section className={styles.footerTagline}>
+          <div className={styles.container}>
+            <h2 className={styles.brandTitle}>SUCCESS+</h2>
+            <p className={styles.brandSubtitle}>Built on Legacy. Designed for the Digital Age.</p>
           </div>
         </section>
       </div>

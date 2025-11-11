@@ -155,45 +155,43 @@ export default function PaywallGate({
 
             {/* Membership Tier Options */}
             <div className={styles.tiers}>
-              {requiredTier !== 'INSIDER' && (
-                <div className={styles.tier}>
-                  <h3>Collective</h3>
-                  <p className={styles.price}>
-                    <span className={styles.amount}>$24.99</span>
-                    <span className={styles.period}>/month</span>
-                  </p>
-                  <p className={styles.annualPrice}>or $209/year (save 30%)</p>
-                  <ul className={styles.features}>
-                    <li>✓ Unlimited SUCCESS+ articles</li>
-                    <li>✓ 100+ training courses</li>
-                    <li>✓ Digital magazine issues</li>
-                    <li>✓ Mobile app access</li>
-                  </ul>
-                  <Link href="/subscribe?tier=collective" className={styles.button}>
-                    Subscribe to Collective
-                  </Link>
-                </div>
-              )}
-
-              <div className={`${styles.tier} ${styles.featured}`}>
-                <div className={styles.badge}>
-                  {requiredTier === 'INSIDER' ? 'Required' : 'Most Popular'}
-                </div>
-                <h3>Insider</h3>
+              <div className={styles.tier}>
+                <h3>SUCCESS+ Insider</h3>
                 <p className={styles.price}>
-                  <span className={styles.amount}>$64.99</span>
+                  <span className={styles.amount}>$7.99</span>
                   <span className={styles.period}>/month</span>
                 </p>
-                <p className={styles.annualPrice}>or $545/year (save 30%)</p>
+                <p className={styles.annualPrice}>Billed monthly ($95.88/year)</p>
                 <ul className={styles.features}>
-                  <li>✓ Everything in Collective</li>
-                  <li>✓ Print magazine delivery</li>
-                  <li>✓ Exclusive articles</li>
-                  <li>✓ Live Q&A sessions</li>
-                  <li>✓ 1-on-1 coaching</li>
+                  <li>✓ 6 Print + 6 Digital magazines/year</li>
+                  <li>✓ Exclusive interviews & content</li>
+                  <li>✓ Discounted course access</li>
+                  <li>✓ E-books, guides & resources</li>
+                  <li>✓ Insider Newsletter (4/month)</li>
                 </ul>
-                <Link href="/subscribe?tier=insider" className={styles.button}>
-                  Subscribe to Insider
+                <Link href="/subscribe?plan=monthly" className={styles.button}>
+                  Subscribe Monthly
+                </Link>
+              </div>
+
+              <div className={`${styles.tier} ${styles.featured}`}>
+                <div className={styles.badge}>Save 22% - Best Value!</div>
+                <h3>SUCCESS+ Insider</h3>
+                <p className={styles.price}>
+                  <span className={styles.amount}>$75</span>
+                  <span className={styles.period}>/year</span>
+                </p>
+                <p className={styles.annualPrice}>Save over $20!</p>
+                <ul className={styles.features}>
+                  <li>✓ 6 Print + 6 Digital magazines/year</li>
+                  <li>✓ Exclusive interviews & content</li>
+                  <li>✓ Discounted course access</li>
+                  <li>✓ E-books, guides & resources</li>
+                  <li>✓ Insider Newsletter (4/month)</li>
+                  <li>✓ Legacy video training library</li>
+                </ul>
+                <Link href="/subscribe?plan=annual" className={styles.button}>
+                  Subscribe Annually
                 </Link>
               </div>
             </div>
