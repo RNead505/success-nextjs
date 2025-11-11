@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import AdminLayout from '../../../../components/admin/AdminLayout';
-import styles from '../../posts/PostsList.module.css';
+import styles from '../../posts/AdminPosts.module.css';
 
 interface Article {
   id: string;
