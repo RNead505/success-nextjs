@@ -32,3 +32,10 @@ export default function NewVideo() {
     </AdminLayout>
   );
 }
+
+// Force SSR to prevent NextRouter errors during build
+export async function getServerSideProps() {
+  return {
+    props: {},
+  };
+}

@@ -24,3 +24,10 @@ export default function EditPost() {
 
   return <EnhancedPostEditor postId={id as string} />;
 }
+
+// Force SSR to prevent NextRouter errors during build
+export async function getServerSideProps() {
+  return {
+    props: {},
+  };
+}
