@@ -23,6 +23,8 @@ const nextConfig = {
   productionBrowserSourceMaps: false,
   // Enable SWC minification for faster builds
   swcMinify: true,
+  // Use standalone output for Vercel deployments (fixes NextRouter issues)
+  output: 'standalone',
 };
 
 module.exports = nextConfig;
