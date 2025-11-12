@@ -23,8 +23,7 @@ const nextConfig = {
   productionBrowserSourceMaps: false,
   // Enable SWC minification for faster builds
   swcMinify: true,
-  // Use standalone output for Vercel deployments (fixes NextRouter issues)
-  output: 'standalone',
+  // AWS Amplify has native Next.js SSR support - no output mode needed
 };
 
 module.exports = nextConfig;

@@ -1,0 +1,6 @@
+{
+  "hosting": {
+    "framework": "nextjs",
+    "ssg": false
+  }
+}
