@@ -38,8 +38,7 @@ export async function getServerSideProps() {
     return {
       props: {
         page,
-      },
-      revalidate: 86400,
+      }
     };
   } catch (error) {
     console.error('Error fetching terms of use page:', error);

@@ -64,16 +64,14 @@ export async function getServerSideProps() {
     return {
       props: {
         magazines,
-      },
-      revalidate: 86400,
+      }
     };
   } catch (error) {
     console.error('Error fetching magazines:', error);
     return {
       props: {
         magazines: [],
-      },
-      revalidate: 86400,
+      }
     };
   }
 }

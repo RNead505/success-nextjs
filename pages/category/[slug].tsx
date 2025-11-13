@@ -106,8 +106,7 @@ export async function getServerSideProps({ params }: any) {
         posts,
         totalPages: 1,
         currentPage: 1,
-      },
-      revalidate: 86400,
+      }
     };
   } catch (error) {
     console.error('Error fetching category:', error);

@@ -396,8 +396,7 @@ export async function getServerSideProps({ params }: any) {
       props: {
         post,
         relatedPosts,
-      },
-      revalidate: 86400,
+      }
     };
   } catch (error) {
     console.error('Error fetching post:', error);

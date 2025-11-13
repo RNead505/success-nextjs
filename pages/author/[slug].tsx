@@ -99,8 +99,7 @@ export async function getServerSideProps({ params }: any) {
       props: {
         author,
         posts,
-      },
-      revalidate: 86400,
+      }
     };
   } catch (error) {
     return {

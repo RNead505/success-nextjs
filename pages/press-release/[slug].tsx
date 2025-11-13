@@ -105,8 +105,7 @@ export async function getServerSideProps({ params }: any) {
     return {
       props: {
         pressRelease,
-      },
-      revalidate: 3600,
+      }
     };
   } catch (error) {
     return {

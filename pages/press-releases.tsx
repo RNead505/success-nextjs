@@ -122,8 +122,7 @@ export async function getServerSideProps() {
       props: {
         pressReleases: pressReleases || [],
         totalPages: 1,
-      },
-      revalidate: 3600, // Revalidate every hour
+      }
     };
   } catch (error) {
     console.error('Error fetching press releases:', error);
@@ -131,8 +130,7 @@ export async function getServerSideProps() {
       props: {
         pressReleases: [],
         totalPages: 1,
-      },
-      revalidate: 3600,
+      }
     };
   }
 }

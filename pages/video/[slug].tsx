@@ -110,8 +110,7 @@ export async function getServerSideProps({ params }: any) {
       props: {
         video,
         relatedVideos: relatedVideos.filter((v: any) => v.id !== video.id).slice(0, 3),
-      },
-      revalidate: 86400,
+      }
     };
   } catch (error) {
     return {

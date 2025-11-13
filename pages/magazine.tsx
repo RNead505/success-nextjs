@@ -206,16 +206,14 @@ export async function getServerSideProps() {
       props: {
         currentIssue,
         pastIssues,
-      },
-      revalidate: 86400,
+      }
     };
   } catch (error) {
     return {
       props: {
         currentIssue: null,
         pastIssues: [],
-      },
-      revalidate: 86400,
+      }
     };
   }
 }

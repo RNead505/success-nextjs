@@ -315,8 +315,7 @@ export async function getServerSideProps() {
       podcasts: podcasts || [],
       latestMagazine,
       bestsellers: bestsellers || [],
-    },
-    revalidate: 3600, // Revalidate every hour (daily cron handles full sync)
+    }
   };
 }
 

@@ -55,15 +55,13 @@ export async function getServerSideProps() {
     return {
       props: {
         podcasts: podcasts || [],
-      },
-      revalidate: 86400,
+      }
     };
   } catch (error) {
     return {
       props: {
         podcasts: [],
-      },
-      revalidate: 86400,
+      }
     };
   }
 }

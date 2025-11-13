@@ -35,15 +35,13 @@ export async function getServerSideProps() {
     return {
       props: {
         videos: videos || [],
-      },
-      revalidate: 86400,
+      }
     };
   } catch (error) {
     return {
       props: {
         videos: [],
-      },
-      revalidate: 86400,
+      }
     };
   }
 }

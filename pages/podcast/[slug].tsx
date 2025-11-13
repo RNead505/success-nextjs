@@ -110,8 +110,7 @@ export async function getServerSideProps({ params }: any) {
       props: {
         podcast,
         relatedPodcasts: relatedPodcasts.filter((p: any) => p.id !== podcast.id).slice(0, 3),
-      },
-      revalidate: 86400,
+      }
     };
   } catch (error) {
     return {
