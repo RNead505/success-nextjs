@@ -95,6 +95,5 @@ export const getServerSideProps: GetServerSideProps = async () => {
     props: {
       speakers,
     },
-    revalidate: 86400, // 24 hours
   };
 };
