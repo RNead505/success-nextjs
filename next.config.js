@@ -3,14 +3,16 @@ const nextConfig = {
   // Required for AWS Amplify SSR deployment
   output: 'standalone',
   
-  // Skip static generation for error pages to prevent build failures
-  experimental: {
-    skipTrailingSlashRedirect: true,
-  },
-  
-  // Configure build to skip error page pre-rendering
+  // Configure build ID
   generateBuildId: async () => {
     return 'build-' + Date.now();
+  },
+  
+  // Disable static page generation for error pages
+  exportPathMap: async function (defaultPathMap) {
+    // Remove error pages from static generation
+    const { '/_error': removed, ...pathMap } = defaultPathMap;
+    return pathMap;
   },
   
   eslint: {
