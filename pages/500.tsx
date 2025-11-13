@@ -1,4 +1,4 @@
-export default function Custom500() {
+function Custom500() {
   return (
     <div style={{
       minHeight: '100vh',
@@ -83,4 +83,7 @@ export default function Custom500() {
     </div>
   );
 }
+
+Custom500.displayName = 'Custom500';
+export default Custom500;
 

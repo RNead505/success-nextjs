@@ -1,4 +1,4 @@
-export default function Custom404() {
+function Custom404() {
   return (
     <div style={{
       minHeight: '100vh',
@@ -67,4 +67,7 @@ export default function Custom404() {
     </div>
   );
 }
+
+Custom404.displayName = 'Custom404';
+export default Custom404;
 

@@ -5,6 +5,19 @@ import Script from 'next/script';
 import '../styles/globals.css';
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+  // Check if this is an error page (404 or 500)
+  // Error pages need minimal rendering to avoid build-time issues in AWS Amplify
+  const isErrorPage = Component.displayName === 'Custom404' || 
+                       Component.displayName === 'Custom500' ||
+                       (Component as any).name === 'Custom404' ||
+                       (Component as any).name === 'Custom500';
+
+  // For error pages, render without any wrappers to prevent SSR issues
+  if (isErrorPage) {
+    return <Component {...pageProps} />;
+  }
+
+  // Normal pages get full app wrapper with auth and analytics
   return (
     <>
       <Head>
