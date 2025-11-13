@@ -16,5 +16,3 @@ frontend:
     paths:
       - node_modules/**/*
       - .next/cache/**/*
-  buildSettings:
-    nextConfigPath: next.config.js

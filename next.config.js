@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Required for AWS Amplify SSR deployment
+  output: 'standalone',
+  
   eslint: {
     // Warning: This allows production builds to successfully complete even if
     // your project has ESLint errors.
@@ -23,7 +26,6 @@ const nextConfig = {
   productionBrowserSourceMaps: false,
   // Enable SWC minification for faster builds
   swcMinify: true,
-  // AWS Amplify has native Next.js SSR support - no output mode needed
 };
 
 module.exports = nextConfig;
