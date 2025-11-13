@@ -1,5 +1,20 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Required for AWS Amplify SSR deployment
+  output: 'standalone',
+  
+  // Configure build ID
+  generateBuildId: async () => {
+    return 'build-' + Date.now();
+  },
+  
+  // Disable static page generation for error pages
+  exportPathMap: async function (defaultPathMap) {
+    // Remove error pages from static generation
+    const { '/_error': removed, ...pathMap } = defaultPathMap;
+    return pathMap;
+  },
+  
   eslint: {
     // Warning: This allows production builds to successfully complete even if
     // your project has ESLint errors.
@@ -23,7 +38,18 @@ const nextConfig = {
   productionBrowserSourceMaps: false,
   // Enable SWC minification for faster builds
   swcMinify: true,
-  // AWS Amplify has native Next.js SSR support - no output mode needed
+  
+  // Webpack config to optimize chunks and prevent Html import issues
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      // Prevent Html component from being bundled in client chunks
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        'next/document': false,
+      };
+    }
+    return config;
+  },
 };
 
 module.exports = nextConfig;

@@ -196,7 +196,7 @@ export default function MagazinePage({ currentIssue, pastIssues }: MagazinePageP
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   try {
     const magazines = await fetchWordPressData('magazines?per_page=100&_embed');
     const currentIssue = magazines && magazines.length > 0 ? magazines[0] : null;
@@ -206,16 +206,14 @@ export async function getStaticProps() {
       props: {
         currentIssue,
         pastIssues,
-      },
-      revalidate: 86400,
+      }
     };
   } catch (error) {
     return {
       props: {
         currentIssue: null,
         pastIssues: [],
-      },
-      revalidate: 86400,
+      }
     };
   }
 }

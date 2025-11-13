@@ -48,22 +48,20 @@ export default function PodcastsPage({ podcasts }: PodcastsPageProps) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   try {
     const podcasts = await fetchWordPressData('podcasts?per_page=20&_embed');
 
     return {
       props: {
         podcasts: podcasts || [],
-      },
-      revalidate: 86400,
+      }
     };
   } catch (error) {
     return {
       props: {
         podcasts: [],
-      },
-      revalidate: 86400,
+      }
     };
   }
 }

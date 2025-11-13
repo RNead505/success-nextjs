@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 import Layout from '../../components/Layout';
 import SEO from '../../components/SEO';
 import styles from './store.module.css';
@@ -182,7 +182,7 @@ export default function StorePage({ products, categories }: StorePageProps) {
   );
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   // Comprehensive product catalog organized by category
   const products: Product[] = [
     // FEATURED BUNDLES
@@ -530,6 +530,5 @@ export const getStaticProps: GetStaticProps = async () => {
       products,
       categories,
     },
-    revalidate: 3600, // 1 hour
   };
 };

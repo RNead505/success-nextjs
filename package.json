@@ -17,6 +17,7 @@
   "dependencies": {
     "@anthropic-ai/claude-agent-sdk": "^0.1.5",
     "@prisma/client": "^6.19.0",
+    "@sendgrid/mail": "^8.1.4",
     "@tiptap/extension-code-block-lowlight": "^3.6.6",
     "@tiptap/extension-color": "^3.6.6",
     "@tiptap/extension-highlight": "^3.6.6",

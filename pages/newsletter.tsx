@@ -80,3 +80,10 @@ export default function NewsletterPage() {
     </Layout>
   );
 }
+
+// Force SSR to prevent build errors on AWS Amplify
+export async function getServerSideProps() {
+  return {
+    props: {},
+  };
+}

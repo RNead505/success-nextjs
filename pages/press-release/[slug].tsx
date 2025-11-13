@@ -89,26 +89,9 @@ export default function PressReleasePage({ pressRelease }: PressReleasePageProps
   );
 }
 
-export async function getStaticPaths() {
-  try {
-    const pressReleases = await fetchWordPressData('press-releases?per_page=50');
-    const paths = pressReleases.map((release: any) => ({
-      params: { slug: release.slug },
-    }));
 
-    return {
-      paths,
-      fallback: true,
-    };
-  } catch (error) {
-    return {
-      paths: [],
-      fallback: true,
-    };
-  }
-}
 
-export async function getStaticProps({ params }: any) {
+export async function getServerSideProps({ params }: any) {
   try {
     const pressReleases = await fetchWordPressData(`press-releases?slug=${params.slug}&_embed`);
     const pressRelease = pressReleases[0];
@@ -122,8 +105,7 @@ export async function getStaticProps({ params }: any) {
     return {
       props: {
         pressRelease,
-      },
-      revalidate: 3600,
+      }
     };
   } catch (error) {
     return {

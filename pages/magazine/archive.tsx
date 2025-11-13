@@ -57,23 +57,21 @@ export default function ArchivePage({ magazines }: ArchivePageProps) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   try {
     const magazines = await fetchWordPressData('magazines?per_page=50&_embed');
 
     return {
       props: {
         magazines,
-      },
-      revalidate: 86400,
+      }
     };
   } catch (error) {
     console.error('Error fetching magazines:', error);
     return {
       props: {
         magazines: [],
-      },
-      revalidate: 86400,
+      }
     };
   }
 }

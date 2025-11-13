@@ -114,7 +114,7 @@ export default function PressReleasesPage({ pressReleases, totalPages }: PressRe
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   try {
     const pressReleases = await fetchWordPressData('press-releases?_embed&per_page=20');
 
@@ -122,8 +122,7 @@ export async function getStaticProps() {
       props: {
         pressReleases: pressReleases || [],
         totalPages: 1,
-      },
-      revalidate: 3600, // Revalidate every hour
+      }
     };
   } catch (error) {
     console.error('Error fetching press releases:', error);
@@ -131,8 +130,7 @@ export async function getStaticProps() {
       props: {
         pressReleases: [],
         totalPages: 1,
-      },
-      revalidate: 3600,
+      }
     };
   }
 }

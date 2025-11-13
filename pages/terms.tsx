@@ -26,7 +26,7 @@ export default function TermsPage({ page }: TermsPageProps) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   try {
     const pages = await fetchWordPressData('pages?slug=terms-of-use');
     const page = pages[0];
@@ -38,8 +38,7 @@ export async function getStaticProps() {
     return {
       props: {
         page,
-      },
-      revalidate: 86400,
+      }
     };
   } catch (error) {
     console.error('Error fetching terms of use page:', error);

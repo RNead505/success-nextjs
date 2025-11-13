@@ -91,26 +91,9 @@ export default function PodcastPage({ podcast, relatedPodcasts }: PodcastPagePro
   );
 }
 
-export async function getStaticPaths() {
-  try {
-    const podcasts = await fetchWordPressData('podcasts?per_page=50');
-    const paths = podcasts.map((podcast: any) => ({
-      params: { slug: podcast.slug },
-    }));
 
-    return {
-      paths,
-      fallback: true,
-    };
-  } catch (error) {
-    return {
-      paths: [],
-      fallback: true,
-    };
-  }
-}
 
-export async function getStaticProps({ params }: any) {
+export async function getServerSideProps({ params }: any) {
   try {
     const podcasts = await fetchWordPressData(`podcasts?slug=${params.slug}&_embed`);
     const podcast = podcasts[0];
@@ -127,8 +110,7 @@ export async function getStaticProps({ params }: any) {
       props: {
         podcast,
         relatedPodcasts: relatedPodcasts.filter((p: any) => p.id !== podcast.id).slice(0, 3),
-      },
-      revalidate: 86400,
+      }
     };
   } catch (error) {
     return {

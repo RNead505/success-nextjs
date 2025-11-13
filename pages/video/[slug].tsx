@@ -91,26 +91,9 @@ export default function VideoPage({ video, relatedVideos }: VideoPageProps) {
   );
 }
 
-export async function getStaticPaths() {
-  try {
-    const videos = await fetchWordPressData('videos?per_page=50');
-    const paths = videos.map((video: any) => ({
-      params: { slug: video.slug },
-    }));
 
-    return {
-      paths,
-      fallback: true,
-    };
-  } catch (error) {
-    return {
-      paths: [],
-      fallback: true,
-    };
-  }
-}
 
-export async function getStaticProps({ params }: any) {
+export async function getServerSideProps({ params }: any) {
   try {
     const videos = await fetchWordPressData(`videos?slug=${params.slug}&_embed`);
     const video = videos[0];
@@ -127,8 +110,7 @@ export async function getStaticProps({ params }: any) {
       props: {
         video,
         relatedVideos: relatedVideos.filter((v: any) => v.id !== video.id).slice(0, 3),
-      },
-      revalidate: 86400,
+      }
     };
   } catch (error) {
     return {

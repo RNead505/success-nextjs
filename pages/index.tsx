@@ -272,7 +272,7 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, bu
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const posts = await fetchWordPressData('posts?_embed&per_page=30');
 
   const featuredPost = posts[0];
@@ -315,8 +315,7 @@ export async function getStaticProps() {
       podcasts: podcasts || [],
       latestMagazine,
       bestsellers: bestsellers || [],
-    },
-    revalidate: 3600, // Revalidate every hour (daily cron handles full sync)
+    }
   };
 }
 
