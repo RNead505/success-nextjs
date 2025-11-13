@@ -111,3 +111,10 @@ export default function ForgotPasswordPage() {
     </div>
   );
 }
+
+// Force SSR to prevent build errors on AWS Amplify
+export async function getServerSideProps() {
+  return {
+    props: {},
+  };
+}
