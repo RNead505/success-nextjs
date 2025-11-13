@@ -214,7 +214,7 @@ export default function AboutPage() {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   return {
     props: {},
     revalidate: 86400, // 24 hours

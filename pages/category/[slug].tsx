@@ -81,21 +81,9 @@ export default function CategoryPage({ category, posts, totalPages, currentPage 
   );
 }
 
-export async function getStaticPaths() {
-  // Fetch all categories
-  const categories = await fetchWordPressData('categories?per_page=100');
 
-  const paths = categories.map((category: any) => ({
-    params: { slug: category.slug },
-  }));
 
-  return {
-    paths,
-    fallback: true,
-  };
-}
-
-export async function getStaticProps({ params }: any) {
+export async function getServerSideProps({ params }: any) {
   const { slug } = params;
 
   try {

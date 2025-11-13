@@ -114,7 +114,7 @@ export default function PressReleasesPage({ pressReleases, totalPages }: PressRe
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   try {
     const pressReleases = await fetchWordPressData('press-releases?_embed&per_page=20');
 

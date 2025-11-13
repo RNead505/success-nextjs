@@ -1,4 +1,4 @@
-import { GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 import Layout from '../components/Layout';
 import SEO from '../components/SEO';
 import { fetchWordPressData } from '../lib/wordpress';
@@ -79,7 +79,7 @@ export default function BestsellersPage({ categories }: BestsellersPageProps) {
   );
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   // In a real scenario, this data would come from WordPress or an API
   // For now, we'll use static data based on what we see on the homepage
   const categories: BestsellerCategory[] = [

@@ -368,20 +368,9 @@ export default function PostPage({ post, relatedPosts }: PostPageProps) {
   );
 }
 
-export async function getStaticPaths() {
-  const posts = await fetchWordPressData('posts?per_page=100');
 
-  const paths = posts.map((post: any) => ({
-    params: { slug: post.slug },
-  }));
 
-  return {
-    paths,
-    fallback: true,
-  };
-}
-
-export async function getStaticProps({ params }: any) {
+export async function getServerSideProps({ params }: any) {
   const { slug } = params;
 
   try {

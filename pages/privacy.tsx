@@ -26,7 +26,7 @@ export default function PrivacyPage({ page }: PrivacyPageProps) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   try {
     const pages = await fetchWordPressData('pages?slug=privacy-policy');
     const page = pages[0];

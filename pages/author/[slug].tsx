@@ -78,20 +78,9 @@ export default function AuthorPage({ author, posts }: AuthorPageProps) {
   );
 }
 
-export async function getStaticPaths() {
-  const authors = await fetchWordPressData('users?per_page=20');
 
-  const paths = authors.map((author: any) => ({
-    params: { slug: author.slug },
-  }));
 
-  return {
-    paths,
-    fallback: true,
-  };
-}
-
-export async function getStaticProps({ params }: any) {
+export async function getServerSideProps({ params }: any) {
   try {
     const authors = await fetchWordPressData(`users?slug=${params.slug}`);
     const author = authors[0];

@@ -57,7 +57,7 @@ export default function ArchivePage({ magazines }: ArchivePageProps) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   try {
     const magazines = await fetchWordPressData('magazines?per_page=50&_embed');
 

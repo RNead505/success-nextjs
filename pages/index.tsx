@@ -272,7 +272,7 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, bu
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const posts = await fetchWordPressData('posts?_embed&per_page=30');
 
   const featuredPost = posts[0];

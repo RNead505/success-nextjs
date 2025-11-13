@@ -1,4 +1,4 @@
-import { GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 import Layout from '../components/Layout';
 import SEO from '../components/SEO';
 import styles from './Store.module.css';
@@ -133,7 +133,7 @@ export default function StorePage({ products, categories }: StorePageProps) {
   );
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   // Comprehensive product catalog from SUCCESS Store
   const products: Product[] = [
     // Featured Products

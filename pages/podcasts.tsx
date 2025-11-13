@@ -48,7 +48,7 @@ export default function PodcastsPage({ podcasts }: PodcastsPageProps) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   try {
     const podcasts = await fetchWordPressData('podcasts?per_page=20&_embed');
 

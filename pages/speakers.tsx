@@ -1,4 +1,4 @@
-import { GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 import Layout from '../components/Layout';
 import SEO from '../components/SEO';
 import styles from './Speakers.module.css';
@@ -57,7 +57,7 @@ export default function SpeakersPage({ speakers }: SpeakersPageProps) {
   );
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   const speakers: Speaker[] = [
     {
       id: '1',

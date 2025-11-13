@@ -154,7 +154,7 @@ export default function AdvertisePage() {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   return {
     props: {},
     revalidate: 86400, // Revalidate daily
