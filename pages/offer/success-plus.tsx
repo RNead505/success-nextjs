@@ -278,3 +278,10 @@ export default function SuccessPlusOffer() {
     </Layout>
   );
 }
+
+// Force SSR for AWS Amplify deployment compatibility
+export async function getServerSideProps() {
+  return {
+    props: {},
+  };
+}

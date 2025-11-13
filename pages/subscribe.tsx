@@ -110,3 +110,10 @@ export default function SubscribePage() {
     </Layout>
   );
 }
+
+// Force SSR for AWS Amplify deployment compatibility
+export async function getServerSideProps() {
+  return {
+    props: {},
+  };
+}

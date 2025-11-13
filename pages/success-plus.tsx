@@ -190,3 +190,10 @@ export default function SuccessPlusPage() {
     </Layout>
   );
 }
+
+// Force SSR for AWS Amplify deployment compatibility
+export async function getServerSideProps() {
+  return {
+    props: {},
+  };
+}
