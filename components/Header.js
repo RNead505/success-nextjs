@@ -35,6 +35,9 @@ export default function Header() {
                 <path d="M9 17A8 8 0 1 0 9 1a8 8 0 0 0 0 16zM19 19l-4.35-4.35" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </Link>
+            <Link href="/admin/login" className={styles.staffButton}>
+              STAFF
+            </Link>
             <Link href="/login" className={styles.signInButton}>
               SIGN IN
             </Link>
