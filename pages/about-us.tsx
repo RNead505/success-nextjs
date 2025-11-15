@@ -108,7 +108,7 @@ const teamMembers = [
     name: 'Ava Leach',
     title: 'Social Media Manager',
     bio: 'Ava is a seasoned social media manager with over six years of industry experience. She specializes in driving engagement and brand visibility across diverse platforms, leveraging her expertise to create impactful digital strategies.',
-    image: 'https://www.success.com/wp-content/uploads/2024/03/staff_ava-leach.jpg',
+    image: 'https://www.success.com/wp-content/uploads/2025/03/Ava-Leach.jpg',
     linkedIn: '',
   },
   {
@@ -129,7 +129,7 @@ const teamMembers = [
     name: 'Rena Machani',
     title: 'Editorial Assistant',
     bio: 'Rena grew up in Colorado, graduated from The University of Colorado Boulder in English, and pursed media and journalism. She recently joined SUCCESS magazine as their editorial assistant.',
-    image: 'https://www.success.com/wp-content/uploads/2024/03/staff_rena-machani.jpg',
+    image: 'https://www.success.com/wp-content/uploads/2025/03/Rena-Machani.jpg',
     linkedIn: '',
   },
   {
@@ -157,7 +157,7 @@ const teamMembers = [
     name: 'Pablo Urdiales Antelo',
     title: 'News Writer',
     bio: 'As news writer at SUCCESS®, Pablo explores how AI, emerging technologies, and today\'s strategic choices are shaping the way we live, work, and build the future. He translates complex innovations into clear insights that help leaders and professionals anticipate tomorrow\'s opportunities.',
-    image: 'https://www.success.com/wp-content/uploads/2024/03/staff_pablo-urdiales-antelo.jpg',
+    image: 'https://www.success.com/wp-content/uploads/2025/03/Pablo-Urdiales-Antelo.jpg',
     linkedIn: '',
   },
 ];

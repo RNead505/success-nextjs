@@ -11,6 +11,18 @@ type TeamMemberProps = {
 
 export default function TeamMember({ name, title, bio, image, linkedIn }: TeamMemberProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [imgError, setImgError] = useState(false);
+
+  // Create placeholder image with initials
+  const getInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map(n => n[0])
+      .join('')
+      .toUpperCase();
+  };
+
+  const placeholderUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&size=400&background=1a1a1a&color=fff&bold=true`;
 
   return (
     <div
@@ -19,7 +31,12 @@ export default function TeamMember({ name, title, bio, image, linkedIn }: TeamMe
       onMouseLeave={() => setIsExpanded(false)}
     >
       <div className={styles.imageWrapper}>
-        <img src={image} alt={name} className={styles.image} />
+        <img
+          src={imgError ? placeholderUrl : image}
+          alt={name}
+          className={styles.image}
+          onError={() => setImgError(true)}
+        />
       </div>
 
       <div className={styles.info}>
