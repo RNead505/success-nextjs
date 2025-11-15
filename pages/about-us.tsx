@@ -157,7 +157,7 @@ const teamMembers = [
     name: 'Pablo Urdiales Antelo',
     title: 'News Writer',
     bio: 'As news writer at SUCCESS®, Pablo explores how AI, emerging technologies, and today\'s strategic choices are shaping the way we live, work, and build the future. He translates complex innovations into clear insights that help leaders and professionals anticipate tomorrow\'s opportunities.',
-    image: 'https://www.success.com/wp-content/uploads/2025/03/Pablo-Urdiales-Antelo.jpg',
+    image: 'https://www.success.com/wp-content/uploads/2025/09/Pablo-Urdiales-Antelo.jpeg',
     linkedIn: '',
   },
 ];
