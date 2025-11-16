@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import styles from './Trending.module.css';
 import { decodeHtmlEntities } from '../lib/htmlDecode';
+import UpsellAd from './UpsellAd';
 
 export default function Trending({ posts }) {
   return (
@@ -24,6 +25,9 @@ export default function Trending({ posts }) {
           );
         })}
       </ol>
+
+      {/* Sidebar Upsell Ad */}
+      <UpsellAd variant="sidebar" />
     </div>
   );
 }
