@@ -39,11 +39,12 @@ export default function MemberLogin() {
         console.log('Session data after login:', sessionData);
 
         // Redirect based on user role
-        if (sessionData?.user?.role === 'ADMIN') {
-          console.log('Redirecting to /admin');
+        const staffRoles = ['SUPER_ADMIN', 'ADMIN', 'EDITOR', 'AUTHOR'];
+        if (staffRoles.includes(sessionData?.user?.role)) {
+          console.log('Redirecting staff to /admin');
           router.push('/admin');
         } else {
-          console.log('Redirecting to /dashboard');
+          console.log('Redirecting member to /dashboard');
           const callbackUrl = router.query.callbackUrl as string || '/dashboard';
           router.push(callbackUrl);
         }
