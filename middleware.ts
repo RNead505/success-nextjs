@@ -25,7 +25,11 @@ export async function middleware(request: NextRequest) {
 
   // AUTHENTICATION & AUTHORIZATION
   const protectedRoutes = ['/admin', '/dashboard'];
-  const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route));
+  const publicAuthRoutes = ['/admin/login', '/login', '/register', '/forgot-password'];
+
+  // Check if route is protected (but exclude public auth routes)
+  const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route)) &&
+                           !publicAuthRoutes.some(route => pathname === route);
 
   if (isProtectedRoute) {
     try {
