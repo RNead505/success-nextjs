@@ -198,12 +198,26 @@ export default function MemberLogin() {
             </p>
             <button
               type="button"
-              onClick={handleStaffLoginClick}
+              onClick={(e) => {
+                console.log('🟢 INLINE CLICK DETECTED');
+                alert('Button clicked! Navigating...');
+                window.location.href = '/admin/login';
+              }}
               className={styles.staffLoginButton}
-              style={{ border: '2px solid #d32f2f', background: '#fff', color: '#d32f2f' }}
+              style={{
+                border: '2px solid #d32f2f',
+                background: '#fff',
+                color: '#d32f2f',
+                cursor: 'pointer',
+                position: 'relative',
+                zIndex: 99999
+              }}
             >
               STAFF LOGIN →
             </button>
+            <div style={{ marginTop: '1rem', fontSize: '0.75rem', color: '#999' }}>
+              Debug: Click should show alert then navigate
+            </div>
           </div>
         </div>
       </div>
