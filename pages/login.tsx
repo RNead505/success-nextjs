@@ -13,11 +13,33 @@ export default function MemberLogin() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Handle staff login navigation
-  const handleStaffLoginClick = (e: React.MouseEvent) => {
+  // Handle staff login navigation with multiple fallbacks
+  const handleStaffLoginClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    console.log('🔵 Staff login button clicked');
+    console.log('🔵 Router object:', router);
+    console.log('🔵 Router.push type:', typeof router.push);
+
     e.preventDefault();
-    console.log('Staff login clicked - navigating to /admin/login');
-    router.push('/admin/login');
+    e.stopPropagation();
+
+    console.log('🔵 Attempting navigation to /admin/login');
+
+    try {
+      // Attempt 1: Use router.push
+      router.push('/admin/login').then(() => {
+        console.log('✅ Navigation successful via router.push');
+      }).catch((error) => {
+        console.error('❌ router.push failed:', error);
+        // Fallback: Use window.location
+        console.log('🔄 Falling back to window.location.href');
+        window.location.href = '/admin/login';
+      });
+    } catch (error) {
+      console.error('❌ Exception during navigation:', error);
+      // Emergency fallback
+      console.log('🔄 Emergency fallback to window.location.href');
+      window.location.href = '/admin/login';
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -174,13 +196,14 @@ export default function MemberLogin() {
             <p style={{ margin: '0 0 1rem 0', color: '#666', fontSize: '0.875rem' }}>
               Are you a staff member?
             </p>
-            <a
-              href="/admin/login"
+            <button
+              type="button"
               onClick={handleStaffLoginClick}
               className={styles.staffLoginButton}
+              style={{ border: '2px solid #d32f2f', background: '#fff', color: '#d32f2f' }}
             >
               STAFF LOGIN →
-            </a>
+            </button>
           </div>
         </div>
       </div>
