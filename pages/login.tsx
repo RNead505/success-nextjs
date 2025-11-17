@@ -162,13 +162,13 @@ export default function MemberLogin() {
             </ul>
           </div>
 
-          {/* Staff/Admin Login Link */}
+          {/* Staff Login - Direct link to admin login page */}
           <div className={styles.adminLink}>
             <p style={{ margin: '0 0 1rem 0', color: '#666', fontSize: '0.875rem' }}>
               Are you a staff member?
             </p>
             <Link href="/admin/login" className={styles.staffLoginLink}>
-              STAFF LOGIN →
+              Staff Login →
             </Link>
           </div>
         </div>
