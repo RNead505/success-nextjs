@@ -13,6 +13,13 @@ export default function MemberLogin() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // Handle staff login navigation
+  const handleStaffLoginClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    console.log('Staff login clicked - navigating to /admin/login');
+    router.push('/admin/login');
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -167,9 +174,13 @@ export default function MemberLogin() {
             <p style={{ margin: '0 0 1rem 0', color: '#666', fontSize: '0.875rem' }}>
               Are you a staff member?
             </p>
-            <Link href="/admin/login">
+            <a
+              href="/admin/login"
+              onClick={handleStaffLoginClick}
+              className={styles.staffLoginButton}
+            >
               STAFF LOGIN →
-            </Link>
+            </a>
           </div>
         </div>
       </div>
