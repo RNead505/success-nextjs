@@ -256,38 +256,31 @@
   pointer-events: auto !important;
 }
 
-.staffLoginButton {
-  color: #d32f2f !important;
-  text-decoration: none !important;
+.staffLoginLink {
+  color: #d32f2f;
+  text-decoration: none;
   font-size: 1rem;
   font-weight: 800;
   transition: all 0.3s;
-  cursor: pointer !important;
-  display: inline-block !important;
+  cursor: pointer;
+  display: inline-block;
   padding: 1rem 2.5rem;
   border-radius: 8px;
   border: 2px solid #d32f2f;
   background-color: #fff;
-  pointer-events: auto !important;
-  position: relative;
-  z-index: 10000;
   letter-spacing: 0.5px;
   text-transform: uppercase;
   box-shadow: 0 2px 8px rgba(211, 47, 47, 0.2);
-  user-select: none;
-  -webkit-user-select: none;
-  -webkit-tap-highlight-color: transparent;
 }
 
-.staffLoginButton:hover,
-.staffLoginButton:focus,
-.staffLoginButton:active {
-  color: #fff !important;
-  background-color: #d32f2f !important;
-  border-color: #d32f2f !important;
+.staffLoginLink:hover,
+.staffLoginLink:focus,
+.staffLoginLink:active {
+  color: #fff;
+  background-color: #d32f2f;
+  border-color: #d32f2f;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(211, 47, 47, 0.4);
-  outline: none;
 }
 
 /* Legacy support for Link component if needed */
