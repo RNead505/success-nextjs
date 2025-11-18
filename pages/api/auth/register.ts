@@ -3,7 +3,7 @@ import { prisma } from '../../../lib/prisma';
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 import { isSuccessEmail, DEFAULT_PASSWORD, AUTH_ERRORS } from '../../../lib/auth-validation';
-import { validateInviteCode, useInviteCode } from '../../../lib/auth-utils';
+import { validateInviteCode, markInviteCodeAsUsed } from '../../../lib/auth-utils';
 import { sendStaffWelcomeEmail } from '../../../lib/resend-email';
 
 export default async function handler(
@@ -79,7 +79,7 @@ export default async function handler(
     // Mark invite code as used if provided
     if (inviteCode) {
       try {
-        await useInviteCode(inviteCode, userId);
+        await markInviteCodeAsUsed(inviteCode, userId);
       } catch (err) {
         console.error('Failed to mark invite code as used:', err);
         // Don't fail registration if this fails

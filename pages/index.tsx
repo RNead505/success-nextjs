@@ -4,6 +4,7 @@ import MagazineHero from '../components/MagazineHero';
 import Bestsellers from '../components/Bestsellers';
 import PostCard from '../components/PostCard';
 import Trending from '../components/Trending';
+import UpsellAd from '../components/UpsellAd';
 import styles from './Home.module.css';
 import { fetchWordPressData } from '../lib/wordpress';
 
@@ -101,6 +102,15 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, bu
         </div>
       </section>
 
+      {/* SUCCESS+ Upsell Ad #1 */}
+      <UpsellAd
+        variant="secondary"
+        title="Level Up Your Success Journey"
+        description="Join 50,000+ high achievers with exclusive SUCCESS+ membership"
+        ctaText="Get Started Free"
+        ctaLink="/success-plus"
+      />
+
       {/* Future of Work Section */}
       <section className={styles.categorySectionGray}>
         <div className={styles.sectionContainer}>
@@ -145,6 +155,15 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, bu
           </div>
         </div>
       </section>
+
+      {/* SUCCESS+ Upsell Ad #2 - Primary Banner */}
+      <UpsellAd
+        variant="primary"
+        title="Transform Your Success with Expert Guidance"
+        description="Access premium content, exclusive courses, and personalized coaching from industry leaders"
+        ctaText="Start Your 14-Day Free Trial"
+        ctaLink="/success-plus"
+      />
 
       {/* Personal Development Section */}
       <section className={styles.categorySection}>

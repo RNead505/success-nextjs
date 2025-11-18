@@ -56,12 +56,13 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       title: 'Management',
       items: [
         { name: 'Editorial Calendar', href: '/admin/editorial-calendar', icon: '📅' },
+        { name: 'Staff Management', href: '/admin/staff', icon: '👥' },
         { name: 'WordPress Sync', href: '/admin/wordpress-sync', icon: '🔄' },
         { name: 'Activity Log', href: '/admin/activity-log', icon: '📋' },
         { name: 'Site Monitor', href: '/admin/site-monitor', icon: '🔍' },
         { name: 'Content Viewer', href: '/admin/content-viewer', icon: '👁' },
         { name: 'Email Manager', href: '/admin/email-manager', icon: '✉️' },
-        { name: 'Users', href: '/admin/users', icon: '👥' },
+        { name: 'Users', href: '/admin/users', icon: '👤' },
       ]
     },
     {

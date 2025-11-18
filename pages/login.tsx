@@ -39,11 +39,12 @@ export default function MemberLogin() {
         console.log('Session data after login:', sessionData);
 
         // Redirect based on user role
-        if (sessionData?.user?.role === 'ADMIN') {
-          console.log('Redirecting to /admin');
+        const staffRoles = ['SUPER_ADMIN', 'ADMIN', 'EDITOR', 'AUTHOR'];
+        if (staffRoles.includes(sessionData?.user?.role)) {
+          console.log('Redirecting staff to /admin');
           router.push('/admin');
         } else {
-          console.log('Redirecting to /dashboard');
+          console.log('Redirecting member to /dashboard');
           const callbackUrl = router.query.callbackUrl as string || '/dashboard';
           router.push(callbackUrl);
         }
@@ -161,9 +162,14 @@ export default function MemberLogin() {
             </ul>
           </div>
 
-          {/* Admin Link */}
+          {/* Staff Login - Direct link to admin login page */}
           <div className={styles.adminLink}>
-            <Link href="/admin/login">Staff Login →</Link>
+            <p style={{ margin: '0 0 1rem 0', color: '#666', fontSize: '0.875rem' }}>
+              Are you a staff member?
+            </p>
+            <Link href="/admin/login" className={styles.staffLoginLink}>
+              Staff Login →
+            </Link>
           </div>
         </div>
       </div>
