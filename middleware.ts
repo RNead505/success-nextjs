@@ -5,8 +5,7 @@ import { getToken } from 'next-auth/jwt';
 /**
  * Next.js Middleware for:
  * 1. Route protection (admin/dashboard)
- * 2. First-login password reset enforcement
- * 3. WordPress URL redirects
+ * 2. WordPress URL redirects
  */
 
 export async function middleware(request: NextRequest) {
@@ -43,22 +42,6 @@ export async function middleware(request: NextRequest) {
         const loginUrl = new URL('/admin/login', request.url);
         loginUrl.searchParams.set('callbackUrl', pathname);
         return NextResponse.redirect(loginUrl);
-      }
-
-      // Check if user needs to change default password
-      const requiresPasswordChange = !token.hasChangedDefaultPassword;
-      const isChangePasswordPage = pathname === '/admin/change-password';
-
-      if (requiresPasswordChange && !isChangePasswordPage) {
-        // Force redirect to password change page
-        const changePasswordUrl = new URL('/admin/change-password', request.url);
-        changePasswordUrl.searchParams.set('required', 'true');
-        return NextResponse.redirect(changePasswordUrl);
-      }
-
-      // User has changed password but is on change-password page - allow access to admin
-      if (!requiresPasswordChange && isChangePasswordPage && request.nextUrl.searchParams.get('required') === 'true') {
-        return NextResponse.redirect(new URL('/admin', request.url));
       }
 
     } catch (error) {
