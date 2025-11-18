@@ -206,12 +206,13 @@ export const config = {
   matcher: [
     /*
      * Match all request paths except:
-     * - api routes (handled separately)
+     * - api routes (all API routes including auth)
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      * - public folder files
+     * - auth pages (login, register, forgot-password)
      */
-    '/((?!api/auth|_next/static|_next/image|favicon.ico|.*\\.(?:jpg|jpeg|png|gif|svg|ico|webp)$).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|login|register|forgot-password|admin/login|admin/change-password|.*\\.(?:jpg|jpeg|png|gif|svg|ico|webp)$).*)',
   ],
 };
