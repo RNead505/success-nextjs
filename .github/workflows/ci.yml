@@ -43,7 +43,7 @@ jobs:
           NEXT_PUBLIC_WORDPRESS_API_URL: https://www.success.com/wp-json/wp/v2
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: success()
         with:
           name: build-output
