@@ -22,8 +22,8 @@ export default function ChangePasswordPage() {
           router.push('/admin/login');
           return;
         }
-        const data = await res.json();
-        setIsForced(!data.user.hasChangedDefaultPassword);
+        // User is authenticated, allow voluntary password change
+        setIsForced(false);
       } catch (err) {
         router.push('/admin/login');
       }
@@ -95,9 +95,7 @@ export default function ChangePasswordPage() {
   };
 
   const handleCancel = () => {
-    if (!isForced) {
-      router.push('/admin');
-    }
+    router.push('/admin');
   };
 
   return (
@@ -105,11 +103,6 @@ export default function ChangePasswordPage() {
       <div className={styles.authBox}>
         <div className={styles.authHeader}>
           <h1>Change Password</h1>
-          {isForced && (
-            <p className={styles.warningText}>
-              For security, you must change your password before accessing the admin
-            </p>
-          )}
         </div>
 
         <form onSubmit={handleSubmit} className={styles.authForm}>
@@ -167,16 +160,14 @@ export default function ChangePasswordPage() {
             >
               {loading ? 'Changing Password...' : 'Change Password'}
             </button>
-            {!isForced && (
-              <button
-                type="button"
-                className={styles.secondaryButton}
-                onClick={handleCancel}
-                disabled={loading}
-              >
-                Cancel
-              </button>
-            )}
+            <button
+              type="button"
+              className={styles.secondaryButton}
+              onClick={handleCancel}
+              disabled={loading}
+            >
+              Cancel
+            </button>
           </div>
         </form>
       </div>
