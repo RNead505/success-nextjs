@@ -20,13 +20,11 @@ type HomePageProps = {
   futureOfWorkPosts: any[];
   healthPosts: any[];
   entertainmentPosts: any[];
-  videos: any[];
-  podcasts: any[];
   latestMagazine: any;
   bestsellers: any[];
 };
 
-function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, aiTechPosts, businessPosts, lifestylePosts, moneyPosts, futureOfWorkPosts, healthPosts, entertainmentPosts, videos, podcasts, latestMagazine, bestsellers }: HomePageProps) {
+function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, aiTechPosts, businessPosts, lifestylePosts, moneyPosts, futureOfWorkPosts, healthPosts, entertainmentPosts, latestMagazine, bestsellers }: HomePageProps) {
   if (!featuredPost) {
     return <Layout><p>Loading...</p></Layout>;
   }
@@ -324,10 +322,6 @@ export async function getServerSideProps() {
   const healthPosts = await fetchWordPressData('posts?categories=14059&_embed&per_page=3');
   const entertainmentPosts = await fetchWordPressData('posts?categories=14382&_embed&per_page=3');
 
-  // Fetch custom post types
-  const videos = await fetchWordPressData('videos?_embed&per_page=3');
-  const podcasts = await fetchWordPressData('podcasts?_embed&per_page=3');
-
   // Fetch latest magazine issue
   const magazines = await fetchWordPressData('magazines?per_page=1&_embed');
   const latestMagazine = magazines?.[0] || null;
@@ -348,8 +342,6 @@ export async function getServerSideProps() {
       futureOfWorkPosts,
       healthPosts,
       entertainmentPosts,
-      videos: videos || [],
-      podcasts: podcasts || [],
       latestMagazine,
       bestsellers: bestsellers || [],
     }
