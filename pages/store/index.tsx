@@ -195,7 +195,7 @@ export default function StorePage({ products, categories }: StorePageProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  // Helper function to generate placeholder image data URIs (inline SVG)
+  // Helper function to generate placeholder image data URIs for products without images (inline SVG)
   const getPlaceholderImage = (name: string, category: string) => {
     const colors: Record<string, string> = {
       'Books': '#2c5282',
@@ -220,7 +220,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
     return `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`;
   };
 
-  // Comprehensive product catalog organized by category
+  // Comprehensive product catalog organized by category - using real images from SUCCESS Store
   const products: Product[] = [
     // FEATURED BUNDLES
     {
@@ -228,7 +228,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       name: 'Jim Rohn Book Bundle',
       price: 181.69,
       salePrice: 97.00,
-      image: getPlaceholderImage('Jim Rohn Bundle', 'Bundles'),
+      image: '/images/jim-rohn-book-bundle.jpg',
       category: 'Bundles',
       link: '/store/jim-rohn-bundle',
       featured: true
@@ -257,7 +257,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'book-3',
       name: 'Twelve Pillars',
       price: 22.99,
-      image: getPlaceholderImage('Twelve Pillars', 'Books'),
+      image: '/images/twelve-pillars.jpg',
       category: 'Books',
       subcategory: 'Jim Rohn',
       link: '/store/twelve-pillars'
@@ -266,7 +266,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'book-4',
       name: 'Leading an Inspired Life',
       price: 29.99,
-      image: getPlaceholderImage('Inspired Life', 'Books'),
+      image: '/images/leading-inspired-life.jpg',
       category: 'Books',
       subcategory: 'Jim Rohn',
       link: '/store/leading-inspired-life',
@@ -294,7 +294,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'book-7',
       name: 'The Treasury of Quotes',
       price: 19.99,
-      image: getPlaceholderImage('Treasury of Quotes', 'Books'),
+      image: '/images/treasury-of-quotes.jpg',
       category: 'Books',
       subcategory: 'Jim Rohn',
       link: '/store/treasury-quotes'
@@ -436,6 +436,24 @@ export const getServerSideProps: GetServerSideProps = async () => {
       featured: true
     },
     {
+      id: 'merch-planner-1',
+      name: 'Jim Rohn One-Year Success Planner',
+      price: 29.99,
+      image: '/images/jim-rohn-planner.png',
+      category: 'Merchandise',
+      subcategory: 'Journals & Planners',
+      link: '/store/jim-rohn-planner'
+    },
+    {
+      id: 'book-guides-1',
+      name: 'The Jim Rohn Guides Complete Set',
+      price: 18.71,
+      image: '/images/jim-rohn-guides-complete.jpg',
+      category: 'Books',
+      subcategory: 'Jim Rohn',
+      link: '/store/jim-rohn-guides'
+    },
+    {
       id: 'merch-2',
       name: 'SUCCESS EST. 1897 Stone Cap',
       price: 24.99,
@@ -528,6 +546,15 @@ export const getServerSideProps: GetServerSideProps = async () => {
     },
     {
       id: 'mag-2',
+      name: 'SUCCESS Magazine - March/April 2023 (Lewis Howes)',
+      price: 9.99,
+      image: '/images/success-magazine-lewis-howes.jpg',
+      category: 'Magazines',
+      link: '/magazine/archive',
+      featured: true
+    },
+    {
+      id: 'mag-3',
       name: 'SUCCESS Magazine - January/February 2025',
       price: 9.99,
       image: getPlaceholderImage('Jan/Feb 2025', 'Magazines'),
@@ -535,7 +562,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       link: '/magazine/archive'
     },
     {
-      id: 'mag-3',
+      id: 'mag-4',
       name: 'SUCCESS Magazine - March/April 2025',
       price: 9.99,
       image: getPlaceholderImage('Mar/Apr 2025', 'Magazines'),
