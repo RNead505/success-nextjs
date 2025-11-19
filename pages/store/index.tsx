@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { GetServerSideProps } from 'next';
-import Image from 'next/image';
 import Layout from '../../components/Layout';
 import SEO from '../../components/SEO';
 import styles from './store.module.css';
@@ -68,7 +67,7 @@ export default function StorePage({ products, categories }: StorePageProps) {
                     <div className={styles.saleBadge}>Sale</div>
                   )}
                   <div className={styles.productImage}>
-                    <Image
+                    <img
                       src={product.image}
                       alt={product.name}
                       width={400}
@@ -143,7 +142,7 @@ export default function StorePage({ products, categories }: StorePageProps) {
                   <div className={styles.saleBadge}>Sale</div>
                 )}
                 <div className={styles.productImage}>
-                  <Image
+                  <img
                     src={product.image}
                     alt={product.name}
                     width={400}
