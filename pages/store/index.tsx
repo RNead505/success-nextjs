@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { GetServerSideProps } from 'next';
+import Image from 'next/image';
 import Layout from '../../components/Layout';
 import SEO from '../../components/SEO';
 import styles from './store.module.css';
@@ -67,7 +68,13 @@ export default function StorePage({ products, categories }: StorePageProps) {
                     <div className={styles.saleBadge}>Sale</div>
                   )}
                   <div className={styles.productImage}>
-                    <img src={product.image} alt={product.name} loading="lazy" />
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      width={400}
+                      height={400}
+                      style={{ objectFit: 'cover' }}
+                    />
                   </div>
                   <div className={styles.productInfo}>
                     <h3>{product.name}</h3>
@@ -136,7 +143,13 @@ export default function StorePage({ products, categories }: StorePageProps) {
                   <div className={styles.saleBadge}>Sale</div>
                 )}
                 <div className={styles.productImage}>
-                  <img src={product.image} alt={product.name} loading="lazy" />
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    width={400}
+                    height={400}
+                    style={{ objectFit: 'cover' }}
+                  />
                 </div>
                 <div className={styles.productInfo}>
                   <p className={styles.productCategory}>{product.subcategory || product.category}</p>
@@ -183,6 +196,19 @@ export default function StorePage({ products, categories }: StorePageProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
+  // Helper function to generate placeholder image URLs
+  const getPlaceholderImage = (name: string, category: string) => {
+    const colors: Record<string, string> = {
+      'Books': '2c5282/ffffff',
+      'Courses': '2c7a7b/ffffff',
+      'Merchandise': '744210/ffffff',
+      'Magazines': 'c53030/ffffff',
+      'Bundles': '5f370e/ffffff',
+    };
+    const color = colors[category] || '1a1a1a/ffffff';
+    return `https://via.placeholder.com/400x400/${color}?text=${encodeURIComponent(name)}`;
+  };
+
   // Comprehensive product catalog organized by category
   const products: Product[] = [
     // FEATURED BUNDLES
@@ -191,7 +217,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       name: 'Jim Rohn Book Bundle',
       price: 181.69,
       salePrice: 97.00,
-      image: 'https://www.success.com/wp-content/uploads/2023/jim-rohn-bundle.jpg',
+      image: getPlaceholderImage('Jim Rohn Bundle', 'Bundles'),
       category: 'Bundles',
       link: '/store/jim-rohn-bundle',
       featured: true
@@ -202,7 +228,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'book-1',
       name: 'The Five Major Pieces to the Life Puzzle',
       price: 24.99,
-      image: 'https://www.success.com/wp-content/uploads/books/five-pieces.jpg',
+      image: getPlaceholderImage('Five Pieces', 'Books'),
       category: 'Books',
       subcategory: 'Jim Rohn',
       link: '/store/five-pieces-puzzle'
@@ -211,7 +237,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'book-2',
       name: 'The Seasons of Life',
       price: 19.99,
-      image: 'https://www.success.com/wp-content/uploads/books/seasons-life.jpg',
+      image: getPlaceholderImage('Seasons of Life', 'Books'),
       category: 'Books',
       subcategory: 'Jim Rohn',
       link: '/store/seasons-of-life'
@@ -220,7 +246,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'book-3',
       name: 'Twelve Pillars',
       price: 22.99,
-      image: 'https://www.success.com/wp-content/uploads/books/twelve-pillars.jpg',
+      image: getPlaceholderImage('Twelve Pillars', 'Books'),
       category: 'Books',
       subcategory: 'Jim Rohn',
       link: '/store/twelve-pillars'
@@ -229,7 +255,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'book-4',
       name: 'Leading an Inspired Life',
       price: 29.99,
-      image: 'https://www.success.com/wp-content/uploads/books/inspired-life.jpg',
+      image: getPlaceholderImage('Inspired Life', 'Books'),
       category: 'Books',
       subcategory: 'Jim Rohn',
       link: '/store/leading-inspired-life',
@@ -239,7 +265,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'book-5',
       name: '7 Strategies for Wealth & Happiness',
       price: 26.99,
-      image: 'https://www.success.com/wp-content/uploads/books/7-strategies.jpg',
+      image: getPlaceholderImage('7 Strategies', 'Books'),
       category: 'Books',
       subcategory: 'Jim Rohn',
       link: '/store/7-strategies'
@@ -248,7 +274,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'book-6',
       name: 'The Art of Exceptional Living',
       price: 24.99,
-      image: 'https://www.success.com/wp-content/uploads/books/exceptional-living.jpg',
+      image: getPlaceholderImage('Exceptional Living', 'Books'),
       category: 'Books',
       subcategory: 'Jim Rohn',
       link: '/store/exceptional-living'
@@ -257,7 +283,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'book-7',
       name: 'The Treasury of Quotes',
       price: 19.99,
-      image: 'https://www.success.com/wp-content/uploads/books/treasury-quotes.jpg',
+      image: getPlaceholderImage('Treasury of Quotes', 'Books'),
       category: 'Books',
       subcategory: 'Jim Rohn',
       link: '/store/treasury-quotes'
@@ -266,7 +292,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'book-8',
       name: 'My Philosophy for Successful Living',
       price: 22.99,
-      image: 'https://www.success.com/wp-content/uploads/books/philosophy-living.jpg',
+      image: getPlaceholderImage('Philosophy', 'Books'),
       category: 'Books',
       subcategory: 'Jim Rohn',
       link: '/store/philosophy-living'
@@ -275,7 +301,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'book-9',
       name: 'The Challenge to Succeed',
       price: 21.99,
-      image: 'https://www.success.com/wp-content/uploads/books/challenge-succeed.jpg',
+      image: getPlaceholderImage('Challenge', 'Books'),
       category: 'Books',
       subcategory: 'Jim Rohn',
       link: '/store/challenge-succeed'
@@ -284,7 +310,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'book-10',
       name: 'Building Your Network Marketing Business',
       price: 23.99,
-      image: 'https://www.success.com/wp-content/uploads/books/network-marketing.jpg',
+      image: getPlaceholderImage('Network Marketing', 'Books'),
       category: 'Books',
       subcategory: 'Jim Rohn',
       link: '/store/network-marketing'
@@ -295,7 +321,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'book-11',
       name: 'Think and Grow Rich',
       price: 18.99,
-      image: 'https://www.success.com/wp-content/uploads/books/think-grow-rich.jpg',
+      image: getPlaceholderImage('Think and Grow Rich', 'Books'),
       category: 'Books',
       subcategory: 'Classics',
       link: '/store/think-grow-rich'
@@ -304,7 +330,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'book-12',
       name: 'How to Win Friends and Influence People',
       price: 16.99,
-      image: 'https://www.success.com/wp-content/uploads/books/win-friends.jpg',
+      image: getPlaceholderImage('Win Friends', 'Books'),
       category: 'Books',
       subcategory: 'Classics',
       link: '/store/win-friends'
@@ -313,7 +339,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'book-13',
       name: 'The 7 Habits of Highly Effective People',
       price: 19.99,
-      image: 'https://www.success.com/wp-content/uploads/books/7-habits.jpg',
+      image: getPlaceholderImage('7 Habits', 'Books'),
       category: 'Books',
       subcategory: 'Leadership',
       link: '/store/7-habits'
@@ -322,7 +348,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'book-14',
       name: 'Atomic Habits',
       price: 27.99,
-      image: 'https://www.success.com/wp-content/uploads/books/atomic-habits.jpg',
+      image: getPlaceholderImage('Atomic Habits', 'Books'),
       category: 'Books',
       subcategory: 'Personal Development',
       link: '/store/atomic-habits',
@@ -334,7 +360,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'course-1',
       name: "Jim Rohn's Foundations for Success",
       price: 199.99,
-      image: 'https://www.success.com/wp-content/uploads/courses/foundations.jpg',
+      image: getPlaceholderImage('Foundations', 'Courses'),
       category: 'Courses',
       subcategory: 'Personal Development',
       link: '/store/foundations-success',
@@ -344,7 +370,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'course-2',
       name: 'Leadership Masterclass',
       price: 149.99,
-      image: 'https://www.success.com/wp-content/uploads/courses/leadership.jpg',
+      image: getPlaceholderImage('Leadership', 'Courses'),
       category: 'Courses',
       subcategory: 'Leadership',
       link: '/store/leadership-masterclass'
@@ -353,7 +379,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'course-3',
       name: 'Personal Development Blueprint',
       price: 179.99,
-      image: 'https://www.success.com/wp-content/uploads/courses/personal-dev.jpg',
+      image: getPlaceholderImage('Personal Dev', 'Courses'),
       category: 'Courses',
       subcategory: 'Personal Development',
       link: '/store/personal-dev-blueprint'
@@ -362,7 +388,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'course-4',
       name: 'Time Management Mastery',
       price: 99.99,
-      image: 'https://www.success.com/wp-content/uploads/courses/time-management.jpg',
+      image: getPlaceholderImage('Time Management', 'Courses'),
       category: 'Courses',
       subcategory: 'Productivity',
       link: '/store/time-management'
@@ -371,7 +397,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'course-5',
       name: 'Goal Setting for Success',
       price: 79.99,
-      image: 'https://www.success.com/wp-content/uploads/courses/goal-setting.jpg',
+      image: getPlaceholderImage('Goal Setting', 'Courses'),
       category: 'Courses',
       subcategory: 'Personal Development',
       link: '/store/goal-setting'
@@ -380,7 +406,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'course-6',
       name: 'Communication Skills Bootcamp',
       price: 129.99,
-      image: 'https://www.success.com/wp-content/uploads/courses/communication.jpg',
+      image: getPlaceholderImage('Communication', 'Courses'),
       category: 'Courses',
       subcategory: 'Leadership',
       link: '/store/communication-bootcamp'
@@ -392,7 +418,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       name: 'The SUCCESS Starts Here Journal',
       price: 14.99,
       salePrice: 9.71,
-      image: 'https://www.success.com/wp-content/uploads/merch/journal.jpg',
+      image: getPlaceholderImage('Journal', 'Merchandise'),
       category: 'Merchandise',
       subcategory: 'Journals & Planners',
       link: '/store/journal',
@@ -402,7 +428,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'merch-2',
       name: 'SUCCESS EST. 1897 Stone Cap',
       price: 24.99,
-      image: 'https://www.success.com/wp-content/uploads/merch/stone-cap.jpg',
+      image: getPlaceholderImage('Cap', 'Merchandise'),
       category: 'Merchandise',
       subcategory: 'Apparel',
       link: '/store/stone-cap'
@@ -411,7 +437,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'merch-3',
       name: 'SUCCESS Classic Covers 15-oz Ceramic Mug',
       price: 16.99,
-      image: 'https://www.success.com/wp-content/uploads/merch/ceramic-mug.jpg',
+      image: getPlaceholderImage('Mug', 'Merchandise'),
       category: 'Merchandise',
       subcategory: 'Drinkware',
       link: '/store/ceramic-mug'
@@ -420,7 +446,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'merch-4',
       name: 'SUCCESS Logo T-Shirt (Black)',
       price: 19.99,
-      image: 'https://www.success.com/wp-content/uploads/merch/tshirt-black.jpg',
+      image: getPlaceholderImage('T-Shirt Black', 'Merchandise'),
       category: 'Merchandise',
       subcategory: 'Apparel',
       link: '/store/tshirt-black'
@@ -429,7 +455,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'merch-5',
       name: 'SUCCESS Logo T-Shirt (White)',
       price: 19.99,
-      image: 'https://www.success.com/wp-content/uploads/merch/tshirt-white.jpg',
+      image: getPlaceholderImage('T-Shirt White', 'Merchandise'),
       category: 'Merchandise',
       subcategory: 'Apparel',
       link: '/store/tshirt-white'
@@ -438,7 +464,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'merch-6',
       name: 'SUCCESS Hoodie (Navy)',
       price: 39.99,
-      image: 'https://www.success.com/wp-content/uploads/merch/hoodie-navy.jpg',
+      image: getPlaceholderImage('Hoodie', 'Merchandise'),
       category: 'Merchandise',
       subcategory: 'Apparel',
       link: '/store/hoodie-navy'
@@ -447,7 +473,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'merch-7',
       name: 'SUCCESS Notepad Set',
       price: 14.99,
-      image: 'https://www.success.com/wp-content/uploads/merch/notepad.jpg',
+      image: getPlaceholderImage('Notepad', 'Merchandise'),
       category: 'Merchandise',
       subcategory: 'Office Supplies',
       link: '/store/notepad'
@@ -456,7 +482,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'merch-8',
       name: 'SUCCESS Water Bottle',
       price: 17.99,
-      image: 'https://www.success.com/wp-content/uploads/merch/water-bottle.jpg',
+      image: getPlaceholderImage('Water Bottle', 'Merchandise'),
       category: 'Merchandise',
       subcategory: 'Drinkware',
       link: '/store/water-bottle'
@@ -465,7 +491,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'merch-9',
       name: 'SUCCESS Tote Bag',
       price: 16.99,
-      image: 'https://www.success.com/wp-content/uploads/merch/tote-bag.jpg',
+      image: getPlaceholderImage('Tote Bag', 'Merchandise'),
       category: 'Merchandise',
       subcategory: 'Bags & Accessories',
       link: '/store/tote-bag'
@@ -474,7 +500,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'merch-10',
       name: 'SUCCESS Pen Set (3-pack)',
       price: 12.99,
-      image: 'https://www.success.com/wp-content/uploads/merch/pen-set.jpg',
+      image: getPlaceholderImage('Pen Set', 'Merchandise'),
       category: 'Merchandise',
       subcategory: 'Office Supplies',
       link: '/store/pen-set'
@@ -485,7 +511,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'mag-1',
       name: 'SUCCESS Magazine - November/December 2025',
       price: 9.99,
-      image: 'https://www.success.com/wp-content/uploads/magazines/nov-dec-2025.jpg',
+      image: getPlaceholderImage('Nov/Dec 2025', 'Magazines'),
       category: 'Magazines',
       link: '/magazine'
     },
@@ -493,7 +519,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'mag-2',
       name: 'SUCCESS Magazine - January/February 2025',
       price: 9.99,
-      image: 'https://www.success.com/wp-content/uploads/magazines/jan-feb-2025.jpg',
+      image: getPlaceholderImage('Jan/Feb 2025', 'Magazines'),
       category: 'Magazines',
       link: '/magazine/archive'
     },
@@ -501,7 +527,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'mag-3',
       name: 'SUCCESS Magazine - March/April 2025',
       price: 9.99,
-      image: 'https://www.success.com/wp-content/uploads/magazines/mar-apr-2025.jpg',
+      image: getPlaceholderImage('Mar/Apr 2025', 'Magazines'),
       category: 'Magazines',
       link: '/magazine/archive'
     },
@@ -509,7 +535,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'mag-4',
       name: 'SUCCESS Magazine - May/June 2025',
       price: 9.99,
-      image: 'https://www.success.com/wp-content/uploads/magazines/may-jun-2025.jpg',
+      image: getPlaceholderImage('May/Jun 2025', 'Magazines'),
       category: 'Magazines',
       link: '/magazine/archive'
     },
@@ -517,7 +543,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'mag-5',
       name: 'SUCCESS Magazine - July/August 2025',
       price: 9.99,
-      image: 'https://www.success.com/wp-content/uploads/magazines/jul-aug-2025.jpg',
+      image: getPlaceholderImage('Jul/Aug 2025', 'Magazines'),
       category: 'Magazines',
       link: '/magazine/archive'
     },
