@@ -12,8 +12,6 @@ const navItems = [
   { label: 'ENTERTAINMENT', path: '/category/entertainment' },
   { label: 'HEALTH & WELLNESS', path: '/category/health' },
   { label: 'FUTURE OF WORK', path: '/category/future-of-work' },
-  { label: 'VIDEOS', path: '/videos' },
-  { label: 'PODCASTS', path: '/podcasts' },
   { label: 'BESTSELLERS', path: '/bestsellers' },
   { label: 'STORE', path: '/store' },
 ];
