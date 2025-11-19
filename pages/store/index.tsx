@@ -196,17 +196,29 @@ export default function StorePage({ products, categories }: StorePageProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  // Helper function to generate placeholder image URLs
+  // Helper function to generate placeholder image data URIs (inline SVG)
   const getPlaceholderImage = (name: string, category: string) => {
     const colors: Record<string, string> = {
-      'Books': '2c5282/ffffff',
-      'Courses': '2c7a7b/ffffff',
-      'Merchandise': '744210/ffffff',
-      'Magazines': 'c53030/ffffff',
-      'Bundles': '5f370e/ffffff',
+      'Books': '#2c5282',
+      'Courses': '#2c7a7b',
+      'Merchandise': '#744210',
+      'Magazines': '#c53030',
+      'Bundles': '#5f370e',
     };
-    const color = colors[category] || '1a1a1a/ffffff';
-    return `https://via.placeholder.com/400x400/${color}?text=${encodeURIComponent(name)}`;
+    const bgColor = colors[category] || '#1a1a1a';
+    const textColor = '#ffffff';
+
+    // Create an inline SVG as a data URI
+    const svg = `
+      <svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+        <rect width="400" height="400" fill="${bgColor}"/>
+        <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="24" fill="${textColor}" text-anchor="middle" dy=".3em">
+          ${name}
+        </text>
+      </svg>
+    `.trim();
+
+    return `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`;
   };
 
   // Comprehensive product catalog organized by category
