@@ -34,13 +34,14 @@ jobs:
         continue-on-error: true
 
       - name: Build project
-        run: npm run build
+        run: npx next build
         env:
           DATABASE_URL: postgresql://user:password@localhost:5432/test?schema=public
           NEXTAUTH_SECRET: test-secret-for-ci-builds-only
           NEXTAUTH_URL: http://localhost:3000
           WORDPRESS_API_URL: https://www.success.com/wp-json/wp/v2
           NEXT_PUBLIC_WORDPRESS_API_URL: https://www.success.com/wp-json/wp/v2
+          SKIP_STANDALONE: "true"
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4

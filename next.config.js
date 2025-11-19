@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Required for AWS Amplify SSR deployment
-  output: 'standalone',
+  // Required for AWS Amplify SSR deployment (skip in CI)
+  ...(process.env.SKIP_STANDALONE !== 'true' && { output: 'standalone' }),
   
   // Configure build ID
   generateBuildId: async () => {
