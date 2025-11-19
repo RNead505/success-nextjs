@@ -80,12 +80,17 @@ export async function getStaticPaths() {
 
 Key category IDs used in the homepage:
 
-- Business: 4
-- Lifestyle: 14056
-- Money: 14060
+- AI & Technology: 14681 (NEW)
+- Business & Branding: 4
+- Culture & Workplace: 14677 (NEW)
+- Entertainment: 14382
+- Entrepreneurship: 14680 (NEW)
 - Future of Work: 14061
 - Health & Wellness: 14059
-- Entertainment: 14382
+- Lifestyle: 14056
+- Money: 14060
+
+**Note**: SUCCESS.com category structure was updated in November 2025. The site now emphasizes AI & Technology as a primary content pillar.
 
 ### Styling
 

@@ -13,6 +13,7 @@ type HomePageProps = {
   secondaryPosts: any[];
   trendingPosts: any[];
   latestPosts: any[];
+  aiTechPosts: any[];
   businessPosts: any[];
   lifestylePosts: any[];
   moneyPosts: any[];
@@ -25,7 +26,7 @@ type HomePageProps = {
   bestsellers: any[];
 };
 
-function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, businessPosts, lifestylePosts, moneyPosts, futureOfWorkPosts, healthPosts, entertainmentPosts, videos, podcasts, latestMagazine, bestsellers }: HomePageProps) {
+function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, aiTechPosts, businessPosts, lifestylePosts, moneyPosts, futureOfWorkPosts, healthPosts, entertainmentPosts, videos, podcasts, latestMagazine, bestsellers }: HomePageProps) {
   if (!featuredPost) {
     return <Layout><p>Loading...</p></Layout>;
   }
@@ -60,6 +61,21 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, bu
 
       {/* Bestsellers Section */}
       <Bestsellers books={bestsellers} />
+
+      {/* AI & Technology Section - NEW */}
+      <section className={styles.categorySection}>
+        <div className={styles.sectionContainer}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>AI & Technology</h2>
+            <a href="/category/ai-technology" className={styles.viewAllLink}>View All →</a>
+          </div>
+          <div className={styles.postsGrid}>
+            {aiTechPosts.map((post: any) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Join the Inner Circle CTA */}
       <section className={styles.innerCircleCTA}>
@@ -300,6 +316,7 @@ export async function getServerSideProps() {
   const latestPosts = posts.slice(8, 14); // 6 more posts
 
   // Fetch category-specific posts
+  const aiTechPosts = await fetchWordPressData('posts?categories=14681&_embed&per_page=3');
   const businessPosts = await fetchWordPressData('posts?categories=4&_embed&per_page=3');
   const lifestylePosts = await fetchWordPressData('posts?categories=14056&_embed&per_page=3');
   const moneyPosts = await fetchWordPressData('posts?categories=14060&_embed&per_page=3');
@@ -324,6 +341,7 @@ export async function getServerSideProps() {
       secondaryPosts,
       trendingPosts,
       latestPosts,
+      aiTechPosts: aiTechPosts || [],
       businessPosts,
       lifestylePosts,
       moneyPosts,
