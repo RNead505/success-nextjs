@@ -220,7 +220,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
     return `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`;
   };
 
-  // Comprehensive product catalog organized by category - using real images from SUCCESS Store
+  // Comprehensive product catalog organized by category - using direct image URLs from SUCCESS Store
   const products: Product[] = [
     // FEATURED BUNDLES
     {
@@ -228,7 +228,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       name: 'Jim Rohn Book Bundle',
       price: 181.69,
       salePrice: 97.00,
-      image: '/images/jim-rohn-book-bundle.jpg',
+      image: 'https://mysuccessplus.com/wp-content/uploads/nc/s-3rvn7wzn3w/product_images/e/848/jr_book-bundle__68973.jpg',
       category: 'Bundles',
       link: '/store/jim-rohn-bundle',
       featured: true
@@ -257,7 +257,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'book-3',
       name: 'Twelve Pillars',
       price: 22.99,
-      image: '/images/twelve-pillars.jpg',
+      image: 'https://mysuccessplus.com/wp-content/uploads/nc/s-3rvn7wzn3w/product_images/f/057/jr010-010_1__00354.jpg',
       category: 'Books',
       subcategory: 'Jim Rohn',
       link: '/store/twelve-pillars'
@@ -266,7 +266,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'book-4',
       name: 'Leading an Inspired Life',
       price: 29.99,
-      image: '/images/leading-inspired-life.jpg',
+      image: 'https://mysuccessplus.com/wp-content/uploads/nc/s-3rvn7wzn3w/product_images/w/124/jr010-004__26100.jpg',
       category: 'Books',
       subcategory: 'Jim Rohn',
       link: '/store/leading-inspired-life',
@@ -294,7 +294,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'book-7',
       name: 'The Treasury of Quotes',
       price: 19.99,
-      image: '/images/treasury-of-quotes.jpg',
+      image: 'https://mysuccessplus.com/wp-content/uploads/nc/s-3rvn7wzn3w/product_images/z/244/jr-thetreasuryofquotes-lg__76474.jpg',
       category: 'Books',
       subcategory: 'Jim Rohn',
       link: '/store/treasury-quotes'
@@ -439,7 +439,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'merch-planner-1',
       name: 'Jim Rohn One-Year Success Planner',
       price: 29.99,
-      image: '/images/jim-rohn-planner.png',
+      image: 'https://mysuccessplus.com/wp-content/uploads/nc/s-3rvn7wzn3w/product_images/z/364/JRohn_One_Year_Success_Planner_strapped__74510.png',
       category: 'Merchandise',
       subcategory: 'Journals & Planners',
       link: '/store/jim-rohn-planner'
@@ -448,7 +448,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'book-guides-1',
       name: 'The Jim Rohn Guides Complete Set',
       price: 18.71,
-      image: '/images/jim-rohn-guides-complete.jpg',
+      image: 'https://mysuccessplus.com/wp-content/uploads/nc/s-3rvn7wzn3w/product_images/s/745/jr_complete-guide-set-3d__33414.jpg',
       category: 'Books',
       subcategory: 'Jim Rohn',
       link: '/store/jim-rohn-guides'
@@ -548,7 +548,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'mag-2',
       name: 'SUCCESS Magazine - March/April 2023 (Lewis Howes)',
       price: 9.99,
-      image: '/images/success-magazine-lewis-howes.jpg',
+      image: 'https://mysuccessplus.com/wp-content/uploads/2024/07/SM23_02_MARAPR_LEWIS_HOWES_NO_BARCODE_WEB_r1__33203-1.jpg',
       category: 'Magazines',
       link: '/magazine/archive',
       featured: true
