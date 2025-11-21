@@ -159,7 +159,7 @@ export default function MagazineManager() {
       fetchMagazines();
     } catch (error) {
       console.error('Error uploading magazine:', error);
-      alert(`Failed to upload magazine issue: ${error.message || 'Unknown error'}`);
+      alert(`Failed to upload magazine issue: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setUploadingPDF(false);
     }
