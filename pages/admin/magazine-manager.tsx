@@ -139,11 +139,12 @@ export default function MagazineManager() {
         body: formData,
       });
 
+      const result = await response.json();
+
       if (!response.ok) {
-        throw new Error('Upload failed');
+        throw new Error(result.message || result.error || 'Upload failed');
       }
 
-      const result = await response.json();
       alert('Magazine issue uploaded successfully!');
 
       // Reset form
@@ -158,7 +159,7 @@ export default function MagazineManager() {
       fetchMagazines();
     } catch (error) {
       console.error('Error uploading magazine:', error);
-      alert('Failed to upload magazine issue');
+      alert(`Failed to upload magazine issue: ${error.message || 'Unknown error'}`);
     } finally {
       setUploadingPDF(false);
     }

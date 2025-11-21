@@ -94,9 +94,21 @@ export default async function handler(req, res) {
     });
   } catch (error) {
     console.error('Error uploading magazine:', error);
+
+    // Provide more detailed error messages
+    let errorMessage = 'Upload failed';
+    if (error.message.includes('BLOB_READ_WRITE_TOKEN')) {
+      errorMessage = 'Blob storage not configured. Please set BLOB_READ_WRITE_TOKEN in Vercel environment variables.';
+    } else if (error.message.includes('prisma')) {
+      errorMessage = 'Database error. Please check your database connection.';
+    } else if (error.message) {
+      errorMessage = error.message;
+    }
+
     return res.status(500).json({
-      message: 'Upload failed',
-      error: error.message
+      message: errorMessage,
+      error: error.message,
+      details: process.env.NODE_ENV === 'development' ? error.stack : undefined
     });
   }
 }
