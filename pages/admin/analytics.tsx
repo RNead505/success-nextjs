@@ -47,7 +47,7 @@ export default function Analytics() {
     setLoading(true);
     setError(null);
     try {
-      // Fetch from analytics API (Vercel Analytics, Google Analytics, or custom)
+      // Fetch real analytics data from database
       const res = await fetch(`/api/analytics?range=${timeRange}`);
 
       if (!res.ok) {
@@ -58,51 +58,7 @@ export default function Analytics() {
       setAnalytics(data);
     } catch (error) {
       console.error('Error fetching analytics:', error);
-      // Set mock data for demonstration
-      setAnalytics({
-        pageViews: 45678,
-        uniqueVisitors: 12345,
-        avgSessionDuration: '3m 24s',
-        bounceRate: '42.5%',
-        topPages: [
-          { path: '/blog/success-mindset', views: 5432, clicks: 1234 },
-          { path: '/magazine', views: 4321, clicks: 987 },
-          { path: '/category/business', views: 3456, clicks: 765 },
-          { path: '/about', views: 2345, clicks: 543 },
-          { path: '/subscribe', views: 1987, clicks: 456 }
-        ],
-        topReferrers: [
-          { source: 'Google', visits: 8765 },
-          { source: 'Direct', visits: 5432 },
-          { source: 'Facebook', visits: 2345 },
-          { source: 'Twitter', visits: 1234 },
-          { source: 'LinkedIn', visits: 987 }
-        ],
-        userStats: {
-          totalUsers: 12345,
-          activeUsers: 3456,
-          newUsers: 1234
-        },
-        linkClicks: [
-          { url: 'https://mysuccessplus.com/shop', clicks: 2345, page: '/store' },
-          { url: 'https://www.success.com/subscribe', clicks: 1876, page: '/subscribe' },
-          { url: 'https://www.success.com/magazine', clicks: 1543, page: '/magazine' },
-          { url: 'External Article Link', clicks: 987, page: '/blog/*' },
-          { url: 'Social Media Links', clicks: 654, page: '/*' }
-        ],
-        deviceStats: {
-          desktop: 58,
-          mobile: 35,
-          tablet: 7
-        },
-        geographicData: [
-          { country: 'United States', visits: 8765 },
-          { country: 'United Kingdom', visits: 1234 },
-          { country: 'Canada', visits: 987 },
-          { country: 'Australia', visits: 765 },
-          { country: 'Germany', visits: 543 }
-        ]
-      });
+      setError('Failed to load analytics data. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -382,7 +338,7 @@ export default function Analytics() {
 
         <div className={styles.footer}>
           <p className={styles.footerNote}>
-            📊 Analytics data is updated every hour. For real-time analytics, integrate with Google Analytics or Vercel Analytics.
+            📊 Analytics data is sourced from real page views tracked in the database. Data updates automatically as users visit content.
           </p>
           <button onClick={fetchAnalytics} className={styles.refreshButton}>
             🔄 Refresh Data
