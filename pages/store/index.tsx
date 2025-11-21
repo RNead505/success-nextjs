@@ -239,7 +239,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'book-1',
       name: 'The Five Major Pieces to the Life Puzzle',
       price: 24.99,
-      image: getPlaceholderImage('Five Pieces', 'Books'),
+      image: 'https://mysuccessplus.com/wp-content/uploads/nc/s-3rvn7wzn3w/product_images/i/808/jr010-002__12948.jpg',
       category: 'Books',
       subcategory: 'Jim Rohn',
       link: '/store/five-pieces-puzzle'
@@ -248,7 +248,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'book-2',
       name: 'The Seasons of Life',
       price: 19.99,
-      image: getPlaceholderImage('Seasons of Life', 'Books'),
+      image: 'https://mysuccessplus.com/wp-content/uploads/nc/s-3rvn7wzn3w/product_images/n/765/jr010-008_1_1__09293.jpg',
       category: 'Books',
       subcategory: 'Jim Rohn',
       link: '/store/seasons-of-life'
@@ -276,7 +276,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'book-5',
       name: '7 Strategies for Wealth & Happiness',
       price: 26.99,
-      image: getPlaceholderImage('7 Strategies', 'Books'),
+      image: 'https://mysuccessplus.com/wp-content/uploads/2024/07/jr010-007__74951-1.jpg',
       category: 'Books',
       subcategory: 'Jim Rohn',
       link: '/store/7-strategies'
@@ -285,7 +285,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'book-6',
       name: 'The Art of Exceptional Living',
       price: 24.99,
-      image: getPlaceholderImage('Exceptional Living', 'Books'),
+      image: 'https://mysuccessplus.com/wp-content/uploads/2024/07/The_Art_of_Exceptinal_Living_MP3_product_image__39905-1.jpg',
       category: 'Books',
       subcategory: 'Jim Rohn',
       link: '/store/exceptional-living'
@@ -312,7 +312,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'book-9',
       name: 'The Challenge to Succeed',
       price: 21.99,
-      image: getPlaceholderImage('Challenge', 'Books'),
+      image: 'https://mysuccessplus.com/wp-content/uploads/2024/07/sm24-04-july-aug-featured-1.jpg',
       category: 'Books',
       subcategory: 'Jim Rohn',
       link: '/store/challenge-succeed'
@@ -325,45 +325,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
       category: 'Books',
       subcategory: 'Jim Rohn',
       link: '/store/network-marketing'
-    },
-
-    // BOOKS - Classics & Bestsellers
-    {
-      id: 'book-11',
-      name: 'Think and Grow Rich',
-      price: 18.99,
-      image: getPlaceholderImage('Think and Grow Rich', 'Books'),
-      category: 'Books',
-      subcategory: 'Classics',
-      link: '/store/think-grow-rich'
-    },
-    {
-      id: 'book-12',
-      name: 'How to Win Friends and Influence People',
-      price: 16.99,
-      image: getPlaceholderImage('Win Friends', 'Books'),
-      category: 'Books',
-      subcategory: 'Classics',
-      link: '/store/win-friends'
-    },
-    {
-      id: 'book-13',
-      name: 'The 7 Habits of Highly Effective People',
-      price: 19.99,
-      image: getPlaceholderImage('7 Habits', 'Books'),
-      category: 'Books',
-      subcategory: 'Leadership',
-      link: '/store/7-habits'
-    },
-    {
-      id: 'book-14',
-      name: 'Atomic Habits',
-      price: 27.99,
-      image: getPlaceholderImage('Atomic Habits', 'Books'),
-      category: 'Books',
-      subcategory: 'Personal Development',
-      link: '/store/atomic-habits',
-      featured: true
     },
 
     // COURSES
@@ -429,7 +390,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       name: 'The SUCCESS Starts Here Journal',
       price: 14.99,
       salePrice: 9.71,
-      image: getPlaceholderImage('Journal', 'Merchandise'),
+      image: 'https://mysuccessplus.com/wp-content/uploads/2024/07/S23_Journal_SUCCESS-STARTS-HERE__48992-1.png',
       category: 'Merchandise',
       subcategory: 'Journals & Planners',
       link: '/store/journal',
