@@ -92,15 +92,24 @@ model campaigns {
 }
 
 model categories {
-  id          String   @id
-  name        String
-  slug        String   @unique
-  description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime
-  posts       posts[]  @relation("PostCategories")
+  id           String       @id
+  name         String
+  slug         String       @unique
+  description  String?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  wordpressId  Int?         @unique
+  color        String?
+  icon         String?
+  order        Int          @default(0)
+  parentId     String?
+  posts        posts[]      @relation("PostCategories")
+  parent       categories?  @relation("CategoryHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children     categories[] @relation("CategoryHierarchy")
 
   @@index([slug])
+  @@index([wordpressId])
+  @@index([order])
 }
 
 model comments {
@@ -379,11 +388,16 @@ model pages {
   status         PostStatus @default(DRAFT)
   publishedAt    DateTime?
   createdAt      DateTime   @default(now())
-  updatedAt      DateTime
+  updatedAt      DateTime   @updatedAt
   seoTitle       String?
   seoDescription String?
+  wordpressId    Int?       @unique
+  template       String?
+  parentId       String?
+  order          Int        @default(0)
 
   @@index([slug])
+  @@index([wordpressId])
 }
 
 model paywall_config {
@@ -411,36 +425,46 @@ model podcasts {
   status      PostStatus @default(DRAFT)
   publishedAt DateTime?
   createdAt   DateTime   @default(now())
-  updatedAt   DateTime
+  updatedAt   DateTime   @updatedAt
+  wordpressId Int?       @unique
 
   @@index([slug])
+  @@index([wordpressId])
 }
 
 model posts {
-  id               String          @id
-  title            String
-  slug             String          @unique
-  content          String
-  excerpt          String?
-  featuredImage    String?
-  featuredImageAlt String?
-  status           PostStatus      @default(DRAFT)
-  authorId         String
-  publishedAt      DateTime?
-  createdAt        DateTime        @default(now())
-  updatedAt        DateTime
-  seoTitle         String?
-  seoDescription   String?
-  readTime         Int?
-  views            Int             @default(0)
-  users            users           @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  categories       categories[]    @relation("PostCategories")
-  tags             tags[]          @relation("PostTags")
-  post_revisions   post_revisions[]
+  id                   String           @id
+  title                String
+  slug                 String           @unique
+  content              String
+  excerpt              String?
+  featuredImage        String?
+  featuredImageAlt     String?
+  featuredImageCaption String?
+  status               PostStatus       @default(DRAFT)
+  authorId             String
+  publishedAt          DateTime?
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
+  seoTitle             String?
+  seoDescription       String?
+  metaKeywords         String?
+  canonicalUrl         String?
+  readTime             Int?
+  views                Int              @default(0)
+  customExcerpt        Boolean          @default(false)
+  wordpressId          Int?             @unique
+  wordpressSlug        String?
+  wordpressAuthor      String?
+  users                users            @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  categories           categories[]     @relation("PostCategories")
+  tags                 tags[]           @relation("PostTags")
+  post_revisions       post_revisions[]
 
   @@index([publishedAt])
   @@index([slug])
   @@index([status])
+  @@index([wordpressId])
 }
 
 model post_revisions {
@@ -644,7 +668,7 @@ model users {
   bio                       String?
   avatar                    String?
   createdAt                 DateTime             @default(now())
-  updatedAt                 DateTime
+  updatedAt                 DateTime             @updatedAt
   stripeCustomerId          String?              @unique
   subscriptionStatus        SubscriptionStatus   @default(INACTIVE)
   subscriptionExpiry        DateTime?
@@ -657,6 +681,13 @@ model users {
   invitedBy                 String?
   inviteCode                String?
   membershipTier            MembershipTier       @default(FREE)
+  wordpressId               Int?                 @unique
+  socialTwitter             String?
+  socialLinkedin            String?
+  socialFacebook            String?
+  website                   String?
+  jobTitle                  String?
+  authorPageSlug            String?              @unique
   activity_logs             activity_logs[]
   bookmarks                 bookmarks[]
   bulk_actions              bulk_actions[]
@@ -667,10 +698,14 @@ model users {
   subscriptions             subscriptions?
   user_activities           user_activities[]
   pay_links                 pay_links[]
+  assigned_projects         projects[]     @relation("AssignedProjects")
+  created_projects          projects[]     @relation("CreatedProjects")
 
   @@index([email])
   @@index([subscriptionStatus])
   @@index([inviteCode])
+  @@index([wordpressId])
+  @@index([authorPageSlug])
 }
 
 model invite_codes {
@@ -702,9 +737,69 @@ model videos {
   status      PostStatus @default(DRAFT)
   publishedAt DateTime?
   createdAt   DateTime   @default(now())
-  updatedAt   DateTime
+  updatedAt   DateTime   @updatedAt
+  wordpressId Int?       @unique
 
   @@index([slug])
+  @@index([wordpressId])
+}
+
+model press_releases {
+  id             String     @id @default(uuid())
+  title          String
+  slug           String     @unique
+  content        String
+  excerpt        String?
+  featuredImage  String?
+  status         PostStatus @default(DRAFT)
+  publishedAt    DateTime?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  seoTitle       String?
+  seoDescription String?
+  wordpressId    Int?       @unique
+
+  @@index([slug])
+  @@index([publishedAt])
+  @@index([wordpressId])
+}
+
+model wordpress_migration {
+  id           String   @id @default(uuid())
+  contentType  String
+  wordpressId  Int
+  localId      String
+  migratedAt   DateTime @default(now())
+  status       String   @default("completed")
+  errorMessage String?
+
+  @@unique([contentType, wordpressId])
+  @@index([contentType])
+  @@index([status])
+}
+
+model projects {
+  id              String        @id @default(uuid())
+  title           String
+  description     String?
+  status          ProjectStatus @default(BACKLOG)
+  assignedToId    String?
+  priority        Priority      @default(MEDIUM)
+  dueDate         DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  createdBy       String
+  order           Int           @default(0)
+  tags            String[]
+  notes           String?
+  users           users?        @relation("AssignedProjects", fields: [assignedToId], references: [id], onDelete: SetNull)
+  creator         users         @relation("CreatedProjects", fields: [createdBy], references: [id], onDelete: Cascade)
+
+  @@index([status])
+  @@index([assignedToId])
+  @@index([createdBy])
+  @@index([priority])
+  @@index([dueDate])
 }
 
 enum ActivityType {
@@ -843,4 +938,12 @@ enum PayLinkStatus {
   INACTIVE
   EXPIRED
   ARCHIVED
+}
+
+enum ProjectStatus {
+  BACKLOG
+  TODO
+  IN_PROGRESS
+  REVIEW
+  DONE
 }

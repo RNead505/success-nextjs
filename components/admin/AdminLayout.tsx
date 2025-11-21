@@ -56,6 +56,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       title: 'Management',
       items: [
         { name: 'Editorial Calendar', href: '/admin/editorial-calendar', icon: '📅' },
+        { name: 'Projects', href: '/admin/projects', icon: '📋' },
         { name: 'Staff Management', href: '/admin/staff', icon: '👥' },
         { name: 'WordPress Sync', href: '/admin/wordpress-sync', icon: '🔄' },
         { name: 'Activity Log', href: '/admin/activity-log', icon: '📋' },

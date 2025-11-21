@@ -109,7 +109,13 @@
       "Bash(pnpm install:*)",
       "Bash(git restore:*)",
       "Bash(git reset:*)",
-      "WebFetch(domain:main-qa.d1wyvvb2uue8p8.amplifyapp.com)"
+      "WebFetch(domain:main-qa.d1wyvvb2uue8p8.amplifyapp.com)",
+      "Bash(git merge:*)",
+      "WebFetch(domain:store.success.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(git config:*)",
+      "Bash(git fetch:*)",
+      "Bash(git show:*)"
     ],
     "deny": [],
     "ask": []
