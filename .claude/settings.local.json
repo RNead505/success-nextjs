@@ -117,7 +117,11 @@
       "Bash(git fetch:*)",
       "Bash(git show:*)",
       "Bash(del /f \"C:\\Users\\RachelNead\\success-next\\pages\\admin\\wordpress-sync.tsx\")",
-      "Bash(del /f \"C:\\Users\\RachelNead\\success-next\\pages\\admin\\sync.tsx\")"
+      "Bash(del /f \"C:\\Users\\RachelNead\\success-next\\pages\\admin\\sync.tsx\")",
+      "Bash(dir /b pagesapimedia*)",
+      "Bash(del /f \"C:\\Users\\RachelNead\\success-next\\pages\\api\\media.ts\")",
+      "Bash(rm:*)",
+      "Bash(xargs:*)"
     ],
     "deny": [],
     "ask": []
