@@ -93,7 +93,17 @@ export default function SuccessPlusPage() {
                     <li><strong>Rachel Nead</strong> – Vice President of Innovations</li>
                   </ul>
                   <p className={styles.featureDescription}>
-                    Their expert commentary connects the dots between timeless SUCCESS® principles and today's evolving world — and keeps you in the know on where the brand is headed next.
+                    Receive four newsletters per month with expert commentary that connects timeless SUCCESS® principles to today's evolving world — and keeps you in the know on where the brand is headed next.
+                  </p>
+                </div>
+              </div>
+
+              <div className={styles.feature}>
+                <div className={styles.featureIcon}>🎥</div>
+                <div className={styles.featureContent}>
+                  <h3 className={styles.featureTitle}>Legacy Material — Brought to the Forefront</h3>
+                  <p className={styles.featureDescription}>
+                    Access historic SUCCESS® content and video training that has stood the test of time. Learn from decades of proven wisdom and success strategies that continue to shape modern achievement.
                   </p>
                 </div>
               </div>
@@ -158,11 +168,14 @@ export default function SuccessPlusPage() {
               )}
               <p className={styles.cancellation}>Cancel anytime.</p>
               <ul className={styles.pricingFeatures}>
-                <li>✓ Print and digital magazine issues</li>
-                <li>✓ Member-only resources and courses</li>
-                <li>✓ Exclusive interviews and features</li>
-                <li>✓ Insider newsletters from leadership</li>
-                <li>✓ Full depth of what SUCCESS® represents</li>
+                <li>✓ Six Print Issues & Six Digital Editions a year</li>
+                <li>✓ Digital access to each print issue</li>
+                <li>✓ Exclusive interviews with cover talent</li>
+                <li>✓ On-demand courses (member discounts available)</li>
+                <li>✓ Downloadable e-books, guides, and worksheets</li>
+                <li>✓ Insider Newsletters (4 per month from leadership)</li>
+                <li>✓ Legacy video training and historic content</li>
+                <li>✓ Additional member discounts on premium programs</li>
               </ul>
               <Link
                 href={`/subscribe?plan=${billingCycle}`}
