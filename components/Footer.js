@@ -96,7 +96,7 @@ export default function Footer() {
 
           <div className={styles.column}>
             <h4>Content</h4>
-            <Link href="/category/business">Business</Link>
+            <Link href="/category/business-branding">Business & Branding</Link>
             <Link href="/category/money">Money</Link>
             <Link href="/category/lifestyle">Lifestyle</Link>
             <Link href="/category/entertainment">Entertainment</Link>
