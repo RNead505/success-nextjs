@@ -115,7 +115,9 @@
       "WebFetch(domain:github.com)",
       "Bash(git config:*)",
       "Bash(git fetch:*)",
-      "Bash(git show:*)"
+      "Bash(git show:*)",
+      "Bash(del /f \"C:\\Users\\RachelNead\\success-next\\pages\\admin\\wordpress-sync.tsx\")",
+      "Bash(del /f \"C:\\Users\\RachelNead\\success-next\\pages\\admin\\sync.tsx\")"
     ],
     "deny": [],
     "ask": []

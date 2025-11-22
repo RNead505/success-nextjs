@@ -35,16 +35,22 @@ export default function ContentViewer() {
   const fetchContent = async () => {
     setLoading(true);
     try {
-      const wpApiUrl = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || 'https://www.success.com/wp-json/wp/v2';
       const endpoints = filter === 'all'
         ? ['posts', 'pages', 'videos', 'podcasts']
         : [filter];
 
-      const promises = endpoints.map(endpoint =>
-        fetch(`${wpApiUrl}/${endpoint}?_embed&per_page=20`)
-          .then(res => res.json())
-          .then(data => data.map((item: any) => ({ ...item, type: endpoint })))
-      );
+      const promises = endpoints.map(async endpoint => {
+        const res = await fetch(`/api/${endpoint}?per_page=20&status=all&_embed=true`);
+        if (!res.ok) return [];
+        const data = await res.json();
+        return data.map((item: any) => ({
+          ...item,
+          type: endpoint,
+          title: { rendered: item.title?.rendered || item.title },
+          date: item.publishedAt || item.createdAt,
+          link: `/${endpoint.slice(0, -1)}/${item.slug}`, // Convert 'posts' to 'post'
+        }));
+      });
 
       const results = await Promise.all(promises);
       const allContent = results.flat().sort((a, b) =>

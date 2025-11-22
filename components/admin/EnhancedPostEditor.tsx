@@ -92,8 +92,7 @@ export default function EnhancedPostEditor({ postId }: EnhancedPostEditorProps) 
 
   const fetchCategories = async () => {
     try {
-      const wpApiUrl = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || 'https://www.success.com/wp-json/wp/v2';
-      const res = await fetch(`${wpApiUrl}/categories?per_page=100`);
+      const res = await fetch('/api/categories?per_page=100');
       const data = await res.json();
       setCategories(data);
     } catch (error) {
@@ -105,21 +104,30 @@ export default function EnhancedPostEditor({ postId }: EnhancedPostEditorProps) 
     if (!postId) return;
     setLoading(true);
     try {
-      const wpApiUrl = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || 'https://www.success.com/wp-json/wp/v2';
-      const res = await fetch(`${wpApiUrl}/posts/${postId}?_embed`);
+      const res = await fetch(`/api/posts/${postId}?_embed=true`);
       const post = await res.json();
 
-      setTitle(post.title.rendered);
+      setTitle(post.title.rendered || post.title);
       setSlug(post.slug);
       if (editor) {
-        editor.commands.setContent(post.content.rendered);
+        editor.commands.setContent(post.content.rendered || post.content);
       }
-      setExcerpt(post.excerpt?.rendered || '');
-      setFeaturedImage(post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '');
-      setFeaturedImageAlt(post._embedded?.['wp:featuredmedia']?.[0]?.alt_text || '');
+      setExcerpt(post.excerpt?.rendered || post.excerpt || '');
+      setFeaturedImage(post._embedded?.['wp:featuredmedia']?.[0]?.source_url || post.featured_media_url || '');
+      setFeaturedImageAlt(post._embedded?.['wp:featuredmedia']?.[0]?.alt_text || post.featuredImageAlt || '');
       setStatus(post.status);
-      setSeoTitle(post.yoast_head_json?.title || '');
-      setSeoDescription(post.yoast_head_json?.description || '');
+
+      // Get category IDs if available
+      if (post._embedded?.['wp:term']?.[0]) {
+        const categoryIds = post._embedded['wp:term'][0].map((cat: any) => cat.id);
+        setSelectedCategories(categoryIds);
+      } else if (post.categories) {
+        const categoryIds = post.categories.map((cat: any) => cat.id);
+        setSelectedCategories(categoryIds);
+      }
+
+      setSeoTitle(post.seoTitle || '');
+      setSeoDescription(post.seoDescription || '');
     } catch (error) {
       console.error('Error fetching post:', error);
       alert('Failed to load post');
@@ -269,16 +277,58 @@ export default function EnhancedPostEditor({ postId }: EnhancedPostEditorProps) 
       return;
     }
 
+    if (!session?.user?.id) {
+      alert('You must be logged in to save posts');
+      return;
+    }
+
     setSaving(true);
-    alert(`Note: This will save to local database. WordPress integration requires API authentication.
 
-Post Data:
-- Title: ${title}
-- Status: ${publishStatus}
-- Content: ${editor.getHTML().substring(0, 100)}...
+    try {
+      const postData = {
+        title,
+        slug,
+        content: editor.getHTML(),
+        excerpt: excerpt,
+        featuredImage: featuredImage || null,
+        featuredImageAlt: featuredImageAlt || null,
+        status: publishStatus,
+        authorId: session.user.id,
+        categories: selectedCategories,
+        seoTitle: seoTitle || null,
+        seoDescription: seoDescription || null,
+      };
 
-To save to WordPress, you'll need to set up WordPress REST API authentication.`);
-    setSaving(false);
+      const method = postId ? 'PUT' : 'POST';
+      const url = postId ? `/api/posts/${postId}` : '/api/posts';
+
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(postData),
+      });
+
+      if (res.ok) {
+        const savedPost = await res.json();
+        alert(`Post ${postId ? 'updated' : 'created'} successfully!`);
+
+        // If it's a new post, redirect to edit page
+        if (!postId && savedPost.id) {
+          router.push(`/admin/posts/${savedPost.id}/edit`);
+        } else {
+          // Refresh the post data
+          fetchPost();
+        }
+      } else {
+        const error = await res.json();
+        alert(`Failed to save post: ${error.message || 'Unknown error'}`);
+      }
+    } catch (error) {
+      console.error('Error saving post:', error);
+      alert('Failed to save post');
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handlePreview = () => {

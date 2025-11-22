@@ -19,7 +19,7 @@ interface PerformanceMetrics {
 
 interface SystemStatus {
   database: HealthCheck;
-  wordpressApi: HealthCheck;
+  apiServer: HealthCheck;
   staticGeneration: HealthCheck;
   cdn: HealthCheck;
   ssl: HealthCheck;
@@ -68,9 +68,9 @@ export default function SiteMonitor() {
             message: 'Database connected and responding',
             lastChecked: new Date().toISOString()
           },
-          wordpressApi: {
+          apiServer: {
             status: 'healthy',
-            message: 'WordPress API accessible',
+            message: 'Next.js API routes responding',
             lastChecked: new Date().toISOString()
           },
           staticGeneration: {
@@ -268,20 +268,20 @@ export default function SiteMonitor() {
                 <div className={styles.statusHeader}>
                   <div className={styles.statusTitle}>
                     <span className={styles.statusIcon}>
-                      {getStatusIcon(systemStatus.wordpressApi.status)}
+                      {getStatusIcon(systemStatus.apiServer.status)}
                     </span>
-                    <h3>WordPress API</h3>
+                    <h3>Next.js API Server</h3>
                   </div>
                   <span
                     className={styles.statusBadge}
-                    style={{ background: getStatusColor(systemStatus.wordpressApi.status) }}
+                    style={{ background: getStatusColor(systemStatus.apiServer.status) }}
                   >
-                    {systemStatus.wordpressApi.status}
+                    {systemStatus.apiServer.status}
                   </span>
                 </div>
-                <p className={styles.statusMessage}>{systemStatus.wordpressApi.message}</p>
+                <p className={styles.statusMessage}>{systemStatus.apiServer.message}</p>
                 <span className={styles.statusTime}>
-                  Last checked: {new Date(systemStatus.wordpressApi.lastChecked).toLocaleTimeString()}
+                  Last checked: {new Date(systemStatus.apiServer.lastChecked).toLocaleTimeString()}
                 </span>
               </div>
 
