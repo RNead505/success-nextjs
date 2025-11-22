@@ -33,7 +33,7 @@ export default function SuccessPlusOffer() {
     <Layout>
       <Head>
         <title>SUCCESS+ Membership - Unlock Your Full Potential</title>
-        <meta name="description" content="Join SUCCESS+ for exclusive training, insider content, and a thriving community. Plans starting at $24.99/month." />
+        <meta name="description" content="Join SUCCESS+ for exclusive magazine access, member-only resources, and insider content. Only $7.99/month." />
       </Head>
 
       <div className={styles.successPlusPage}>
@@ -152,7 +152,7 @@ export default function SuccessPlusOffer() {
               <div className={styles.pricingPrice}>
                 <span className={styles.currency}>$</span>
                 <span className={styles.amount}>
-                  {billingCycle === 'annual' ? '209' : '24.99'}
+                  {billingCycle === 'annual' ? '75' : '7.99'}
                 </span>
                 <span className={styles.period}>
                   /{billingCycle === 'annual' ? 'year' : 'month'}
@@ -189,7 +189,7 @@ export default function SuccessPlusOffer() {
               <div className={styles.pricingPrice}>
                 <span className={styles.currency}>$</span>
                 <span className={styles.amount}>
-                  {billingCycle === 'annual' ? '545' : '64.99'}
+                  {billingCycle === 'annual' ? '75' : '7.99'}
                 </span>
                 <span className={styles.period}>
                   /{billingCycle === 'annual' ? 'year' : 'month'}

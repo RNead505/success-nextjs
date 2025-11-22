@@ -121,7 +121,10 @@
       "Bash(dir /b pagesapimedia*)",
       "Bash(del /f \"C:\\Users\\RachelNead\\success-next\\pages\\api\\media.ts\")",
       "Bash(rm:*)",
-      "Bash(xargs:*)"
+      "Bash(xargs:*)",
+      "Bash(for path in magazine magazine/archive subscribe advertise about-us contact press press-releases help privacy terms accessibility)",
+      "Bash(do echo -n \"$path: \")",
+      "Bash(ls:*)"
     ],
     "deny": [],
     "ask": []
