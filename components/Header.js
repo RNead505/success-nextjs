@@ -6,11 +6,11 @@ import styles from './Header.module.css';
 const navItems = [
   { label: 'MAGAZINE', path: '/magazine' },
   { label: 'SUCCESS+', path: '/success-plus' },
-  { label: 'BUSINESS', path: '/category/business' },
+  { label: 'BUSINESS', path: '/category/business-branding' },
   { label: 'MONEY', path: '/category/money' },
   { label: 'LIFESTYLE', path: '/category/lifestyle' },
   { label: 'ENTERTAINMENT', path: '/category/entertainment' },
-  { label: 'HEALTH & WELLNESS', path: '/category/health' },
+  { label: 'LONGEVITY', path: '/category/longevity-performance' },
   { label: 'FUTURE OF WORK', path: '/category/future-of-work' },
   { label: 'BESTSELLERS', path: '/bestsellers' },
   { label: 'STORE', path: '/store' },

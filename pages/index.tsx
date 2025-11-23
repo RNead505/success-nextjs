@@ -105,8 +105,8 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, ai
       <section className={styles.categorySection}>
         <div className={styles.sectionContainer}>
           <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Business</h2>
-            <a href="/category/business" className={styles.viewAllLink}>View All →</a>
+            <h2 className={styles.sectionTitle}>Business & Branding</h2>
+            <a href="/category/business-branding" className={styles.viewAllLink}>View All →</a>
           </div>
           <div className={styles.postsGrid}>
             {businessPosts.map((post: any) => (
