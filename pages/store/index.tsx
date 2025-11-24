@@ -77,14 +77,16 @@ export default function StorePage({ products, categories }: StorePageProps) {
                         const target = e.target as HTMLImageElement;
                         if (!target.src.startsWith('data:')) {
                           // Fallback to placeholder if real image fails to load
-                          target.src = `data:image/svg+xml;base64,${Buffer.from(`
-                            <svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
-                              <rect width="400" height="400" fill="#1a1a1a"/>
-                              <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="20" fill="#ffffff" text-anchor="middle" dy=".3em">
-                                ${product.name.substring(0, 30)}
-                              </text>
-                            </svg>
-                          `.trim()).toString('base64')}`;
+                          const categoryColors: Record<string, string> = {
+                            'Books': '#2c5282',
+                            'Courses': '#2c7a7b',
+                            'Merchandise': '#744210',
+                            'Magazines': '#c53030',
+                            'Bundles': '#5f370e',
+                          };
+                          const bgColor = categoryColors[product.category] || '#1a1a1a';
+                          const svg = `<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="400" fill="${bgColor}"/><text x="50%" y="50%" font-family="Arial, sans-serif" font-size="20" fill="#ffffff" text-anchor="middle" dy=".3em">${product.name.substring(0, 30)}</text></svg>`;
+                          target.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
                         }
                       }}
                     />
@@ -166,14 +168,16 @@ export default function StorePage({ products, categories }: StorePageProps) {
                       const target = e.target as HTMLImageElement;
                       if (!target.src.startsWith('data:')) {
                         // Fallback to placeholder if real image fails to load
-                        target.src = `data:image/svg+xml;base64,${Buffer.from(`
-                          <svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="400" height="400" fill="#1a1a1a"/>
-                            <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="20" fill="#ffffff" text-anchor="middle" dy=".3em">
-                              ${product.name.substring(0, 30)}
-                            </text>
-                          </svg>
-                        `.trim()).toString('base64')}`;
+                        const categoryColors: Record<string, string> = {
+                          'Books': '#2c5282',
+                          'Courses': '#2c7a7b',
+                          'Merchandise': '#744210',
+                          'Magazines': '#c53030',
+                          'Bundles': '#5f370e',
+                        };
+                        const bgColor = categoryColors[product.category] || '#1a1a1a';
+                        const svg = `<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="400" fill="${bgColor}"/><text x="50%" y="50%" font-family="Arial, sans-serif" font-size="20" fill="#ffffff" text-anchor="middle" dy=".3em">${product.name.substring(0, 30)}</text></svg>`;
+                        target.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
                       }
                     }}
                   />
@@ -235,17 +239,10 @@ export const getServerSideProps: GetServerSideProps = async () => {
     const bgColor = colors[category] || '#1a1a1a';
     const textColor = '#ffffff';
 
-    // Create an inline SVG as a data URI
-    const svg = `
-      <svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
-        <rect width="400" height="400" fill="${bgColor}"/>
-        <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="24" fill="${textColor}" text-anchor="middle" dy=".3em">
-          ${name}
-        </text>
-      </svg>
-    `.trim();
+    // Create an inline SVG as a data URI - using encodeURIComponent for browser compatibility
+    const svg = `<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="400" fill="${bgColor}"/><text x="50%" y="50%" font-family="Arial, sans-serif" font-size="24" fill="${textColor}" text-anchor="middle" dy=".3em">${name}</text></svg>`;
 
-    return `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}`;
+    return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
   };
 
   // Comprehensive product catalog organized by category - using direct image URLs from SUCCESS Store
