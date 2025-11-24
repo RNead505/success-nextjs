@@ -79,7 +79,7 @@ export default function MemberDashboard() {
 
             <button
               className={activeSection === 'labs' ? styles.active : ''}
-              onClick={() => router.push('/dashboard/labs')}
+              onClick={() => window.open('https://labs.success.com/', '_blank')}
             >
               <span className={styles.icon}>🔬</span>
               Success Labs
@@ -212,7 +212,14 @@ export default function MemberDashboard() {
             <div className={styles.coursesGrid}>
               <div className={styles.courseCard}>
                 <div className={styles.courseImage}>
-                  <img src="/placeholder-course.jpg" alt="Course" />
+                  <img
+                    src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&h=300&fit=crop"
+                    alt="Jim Rohn's Foundations for Success"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = 'data:image/svg+xml;charset=utf-8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect width="400" height="300" fill="%23f5f5f5"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23999" font-family="Arial" font-size="16"%3ECourse Image%3C/text%3E%3C/svg%3E';
+                    }}
+                  />
                   <div className={styles.progressBadge}>45% Complete</div>
                 </div>
                 <div className={styles.courseInfo}>
@@ -227,7 +234,14 @@ export default function MemberDashboard() {
 
               <div className={styles.courseCard}>
                 <div className={styles.courseImage}>
-                  <img src="/placeholder-course.jpg" alt="Course" />
+                  <img
+                    src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=300&fit=crop"
+                    alt="Leadership Masterclass"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = 'data:image/svg+xml;charset=utf-8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect width="400" height="300" fill="%23f5f5f5"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23999" font-family="Arial" font-size="16"%3ECourse Image%3C/text%3E%3C/svg%3E';
+                    }}
+                  />
                   <div className={styles.progressBadge}>20% Complete</div>
                 </div>
                 <div className={styles.courseInfo}>
@@ -242,7 +256,14 @@ export default function MemberDashboard() {
 
               <div className={styles.courseCard}>
                 <div className={styles.courseImage}>
-                  <img src="/placeholder-course.jpg" alt="Course" />
+                  <img
+                    src="https://images.unsplash.com/photo-1501139083538-0139583c060f?w=400&h=300&fit=crop"
+                    alt="Time Management Mastery"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = 'data:image/svg+xml;charset=utf-8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect width="400" height="300" fill="%23f5f5f5"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23999" font-family="Arial" font-size="16"%3ECourse Image%3C/text%3E%3C/svg%3E';
+                    }}
+                  />
                   <div className={styles.progressBadge}>80% Complete</div>
                 </div>
                 <div className={styles.courseInfo}>
@@ -292,11 +313,18 @@ export default function MemberDashboard() {
             <h2>Latest Magazine Issue</h2>
             <div className={styles.magazineCard}>
               <div className={styles.magazineCover}>
-                <img src="/magazine-cover.jpg" alt="SUCCESS Magazine" />
+                <img
+                  src="https://mysuccessplus.com/wp-content/uploads/2024/10/SUCCESS-NovDec-2024-Eva-Longoria-Digital-Cover.jpg"
+                  alt="SUCCESS Magazine November/December 2024"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = 'data:image/svg+xml;charset=utf-8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="400"%3E%3Crect width="300" height="400" fill="%23f5f5f5"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23999" font-family="Arial" font-size="18" font-weight="bold"%3ESUCCESS%3C/text%3E%3C/svg%3E';
+                  }}
+                />
               </div>
               <div className={styles.magazineInfo}>
-                <h3>November/December 2025</h3>
-                <p className={styles.featured}>Featuring: Russell Brunson</p>
+                <h3>November/December 2024</h3>
+                <p className={styles.featured}>Featuring: Eva Longoria</p>
                 <p>Discover the secrets to building a thriving business and living your best life.</p>
                 <button className={styles.readBtn}>Read Now</button>
               </div>
@@ -308,28 +336,56 @@ export default function MemberDashboard() {
             <h2>Recommended for You</h2>
             <div className={styles.recommendedGrid}>
               <div className={styles.recommendCard}>
-                <img src="/placeholder-course.jpg" alt="Course" />
+                <img
+                  src="https://images.unsplash.com/photo-1507925921958-8a62f3d1a50d?w=400&h=300&fit=crop"
+                  alt="Personal Development Blueprint"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = 'data:image/svg+xml;charset=utf-8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect width="400" height="300" fill="%23f5f5f5"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23999" font-family="Arial" font-size="16"%3ECourse Image%3C/text%3E%3C/svg%3E';
+                  }}
+                />
                 <h4>Personal Development Blueprint</h4>
                 <p>8 modules • Beginner</p>
                 <button className={styles.startBtn}>Start Course</button>
               </div>
 
               <div className={styles.recommendCard}>
-                <img src="/placeholder-course.jpg" alt="Course" />
+                <img
+                  src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400&h=300&fit=crop"
+                  alt="Communication Skills Bootcamp"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = 'data:image/svg+xml;charset=utf-8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect width="400" height="300" fill="%23f5f5f5"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23999" font-family="Arial" font-size="16"%3ECourse Image%3C/text%3E%3C/svg%3E';
+                  }}
+                />
                 <h4>Communication Skills Bootcamp</h4>
                 <p>12 lessons • Intermediate</p>
                 <button className={styles.startBtn}>Start Course</button>
               </div>
 
               <div className={styles.recommendCard}>
-                <img src="/placeholder-course.jpg" alt="Course" />
+                <img
+                  src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=400&h=300&fit=crop"
+                  alt="Goal Setting for Success"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = 'data:image/svg+xml;charset=utf-8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect width="400" height="300" fill="%23f5f5f5"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23999" font-family="Arial" font-size="16"%3ECourse Image%3C/text%3E%3C/svg%3E';
+                  }}
+                />
                 <h4>Goal Setting for Success</h4>
                 <p>6 modules • All Levels</p>
                 <button className={styles.startBtn}>Start Course</button>
               </div>
 
               <div className={styles.recommendCard}>
-                <img src="/placeholder-course.jpg" alt="Course" />
+                <img
+                  src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=400&h=300&fit=crop"
+                  alt="Financial Freedom Fundamentals"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = 'data:image/svg+xml;charset=utf-8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect width="400" height="300" fill="%23f5f5f5"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23999" font-family="Arial" font-size="16"%3ECourse Image%3C/text%3E%3C/svg%3E';
+                  }}
+                />
                 <h4>Financial Freedom Fundamentals</h4>
                 <p>10 modules • Beginner</p>
                 <button className={styles.startBtn}>Start Course</button>
