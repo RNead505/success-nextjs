@@ -54,27 +54,19 @@ export default function MemberDashboard() {
             </button>
 
             <button
-              className={activeSection === 'disc' ? styles.active : ''}
-              onClick={() => router.push('/dashboard/disc-profile')}
-            >
-              <span className={styles.icon}>📋</span>
-              My DISC Profile
-            </button>
-
-            <button
               className={activeSection === 'resources' ? styles.active : ''}
               onClick={() => router.push('/dashboard/resources')}
             >
               <span className={styles.icon}>📚</span>
-              Resource Library
+              Resources
             </button>
 
             <button
-              className={activeSection === 'community' ? styles.active : ''}
-              onClick={() => router.push('/dashboard/community')}
+              className={activeSection === 'labs' ? styles.active : ''}
+              onClick={() => router.push('/dashboard/labs')}
             >
-              <span className={styles.icon}>👥</span>
-              Community
+              <span className={styles.icon}>🔬</span>
+              Success Labs
             </button>
 
             <button
@@ -82,47 +74,31 @@ export default function MemberDashboard() {
               onClick={() => router.push('/dashboard/events')}
             >
               <span className={styles.icon}>📅</span>
-              Events Calendar
+              Events
             </button>
 
             <button
-              className={activeSection === 'magazine' ? styles.active : ''}
-              onClick={() => router.push('/magazine')}
+              className={activeSection === 'videos' ? styles.active : ''}
+              onClick={() => router.push('/dashboard/videos')}
             >
-              <span className={styles.icon}>📖</span>
-              Magazine
+              <span className={styles.icon}>🎥</span>
+              Videos
             </button>
 
             <button
-              className={activeSection === 'podcast' ? styles.active : ''}
-              onClick={() => router.push('/podcasts')}
+              className={activeSection === 'podcasts' ? styles.active : ''}
+              onClick={() => router.push('/dashboard/podcasts')}
             >
               <span className={styles.icon}>🎙️</span>
-              Podcast
+              Podcasts
             </button>
 
             <button
-              className={activeSection === 'shop' ? styles.active : ''}
-              onClick={() => router.push('/store')}
+              className={activeSection === 'magazines' ? styles.active : ''}
+              onClick={() => router.push('/dashboard/magazines')}
             >
-              <span className={styles.icon}>🛒</span>
-              Shop
-            </button>
-
-            <button
-              className={activeSection === 'help' ? styles.active : ''}
-              onClick={() => router.push('/dashboard/help')}
-            >
-              <span className={styles.icon}>❓</span>
-              Help Center
-            </button>
-
-            <button
-              className={activeSection === 'billing' ? styles.active : ''}
-              onClick={() => router.push('/dashboard/billing')}
-            >
-              <span className={styles.icon}>💳</span>
-              Billing & Orders
+              <span className={styles.icon}>📖</span>
+              Magazines
             </button>
 
             <button

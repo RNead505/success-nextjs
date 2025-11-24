@@ -688,6 +688,8 @@ model users {
   website                   String?
   jobTitle                  String?
   authorPageSlug            String?              @unique
+  onboardingCompleted       Boolean              @default(false)
+  interests                 String[]
   activity_logs             activity_logs[]
   bookmarks                 bookmarks[]
   bulk_actions              bulk_actions[]
@@ -698,8 +700,9 @@ model users {
   subscriptions             subscriptions?
   user_activities           user_activities[]
   pay_links                 pay_links[]
-  assigned_projects         projects[]     @relation("AssignedProjects")
-  created_projects          projects[]     @relation("CreatedProjects")
+  assigned_projects         projects[]            @relation("AssignedProjects")
+  created_projects          projects[]            @relation("CreatedProjects")
+  course_enrollments        course_enrollments[]
 
   @@index([email])
   @@index([subscriptionStatus])
@@ -946,4 +949,227 @@ enum ProjectStatus {
   IN_PROGRESS
   REVIEW
   DONE
+}
+
+model courses {
+  id                String              @id @default(uuid())
+  title             String
+  slug              String              @unique
+  description       String?
+  thumbnail         String?
+  instructorName    String?
+  instructorBio     String?
+  instructorImage   String?
+  duration          Int?                // in minutes
+  level             CourseLevel         @default(BEGINNER)
+  category          String?
+  isPremium         Boolean             @default(true)
+  isPublished       Boolean             @default(false)
+  order             Int                 @default(0)
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  modules           course_modules[]
+  enrollments       course_enrollments[]
+
+  @@index([slug])
+  @@index([isPremium])
+  @@index([isPublished])
+}
+
+model course_modules {
+  id          String          @id @default(uuid())
+  courseId    String
+  title       String
+  description String?
+  order       Int
+  duration    Int?            // in minutes
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  course      courses         @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lessons     course_lessons[]
+
+  @@index([courseId])
+  @@index([order])
+}
+
+model course_lessons {
+  id             String               @id @default(uuid())
+  moduleId       String
+  title          String
+  description    String?
+  videoUrl       String?
+  content        String?
+  duration       Int?                 // in minutes
+  order          Int
+  isFree         Boolean              @default(false)
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+  module         course_modules       @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  progress       lesson_progress[]
+
+  @@index([moduleId])
+  @@index([order])
+}
+
+model course_enrollments {
+  id              String      @id @default(uuid())
+  userId          String
+  courseId        String
+  progress        Int         @default(0) // percentage
+  completedAt     DateTime?
+  lastAccessedAt  DateTime?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  users           users       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course          courses     @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, courseId])
+  @@index([userId])
+  @@index([courseId])
+}
+
+model lesson_progress {
+  id              String          @id @default(uuid())
+  userId          String
+  lessonId        String
+  completed       Boolean         @default(false)
+  progress        Int             @default(0) // percentage for video
+  watchTime       Int             @default(0) // in seconds
+  lastWatchedAt   DateTime?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  lesson          course_lessons  @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+  @@index([userId])
+  @@index([lessonId])
+}
+
+model resources {
+  id          String           @id @default(uuid())
+  title       String
+  description String?
+  category    ResourceCategory
+  fileUrl     String
+  fileType    String
+  fileSize    Int?
+  thumbnail   String?
+  isPremium   Boolean          @default(true)
+  downloads   Int              @default(0)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@index([category])
+  @@index([isPremium])
+}
+
+model success_labs {
+  id          String   @id @default(uuid())
+  title       String
+  slug        String   @unique
+  description String?
+  category    String?
+  thumbnail   String?
+  toolUrl     String
+  isPremium   Boolean  @default(true)
+  isActive    Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([slug])
+  @@index([isPremium])
+  @@index([isActive])
+}
+
+model events {
+  id               String         @id @default(uuid())
+  title            String
+  slug             String         @unique
+  description      String?
+  eventType        EventType      @default(WEBINAR)
+  startDateTime    DateTime
+  endDateTime      DateTime?
+  timezone         String         @default("America/New_York")
+  location         String?        // For virtual events, this could be the meeting link
+  thumbnail        String?
+  hostName         String?
+  hostBio          String?
+  hostImage        String?
+  isPremium        Boolean        @default(true)
+  maxAttendees     Int?
+  currentAttendees Int            @default(0)
+  isPublished      Boolean        @default(false)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  registrations    event_registrations[]
+
+  @@index([slug])
+  @@index([startDateTime])
+  @@index([isPremium])
+  @@index([isPublished])
+}
+
+model event_registrations {
+  id              String    @id @default(uuid())
+  userId          String
+  eventId         String
+  status          EventRegistrationStatus @default(REGISTERED)
+  attended        Boolean   @default(false)
+  registeredAt    DateTime  @default(now())
+  canceledAt      DateTime?
+  event           events    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, eventId])
+  @@index([userId])
+  @@index([eventId])
+  @@index([status])
+}
+
+model magazine_progress {
+  id          String    @id @default(uuid())
+  userId      String
+  magazineId  String
+  currentPage Int       @default(1)
+  totalPages  Int
+  completed   Boolean   @default(false)
+  lastReadAt  DateTime  @default(now())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([userId, magazineId])
+  @@index([userId])
+  @@index([magazineId])
+}
+
+enum CourseLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  ALL_LEVELS
+}
+
+enum ResourceCategory {
+  TEMPLATES
+  GUIDES
+  WORKSHEETS
+  EBOOKS
+  TOOLS
+  CHECKLISTS
+}
+
+enum EventType {
+  WEBINAR
+  WORKSHOP
+  QA_SESSION
+  NETWORKING
+  MASTERCLASS
+  CONFERENCE
+}
+
+enum EventRegistrationStatus {
+  REGISTERED
+  WAITLISTED
+  CANCELED
+  ATTENDED
 }
