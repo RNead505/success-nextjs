@@ -18,6 +18,12 @@ export default function MemberDashboard() {
     return null;
   }
 
+  // Check user role and membership
+  const isAdmin = session.user?.role === 'ADMIN' || session.user?.role === 'SUPER_ADMIN';
+  const hasPremiumAccess = session.user?.membershipTier === 'PREMIUM' ||
+                           session.user?.membershipTier === 'SUCCESS_PLUS' ||
+                           isAdmin;
+
   const handleLogout = async () => {
     await fetch('/api/auth/signout', { method: 'POST' });
     router.push('/');
@@ -44,6 +50,16 @@ export default function MemberDashboard() {
               <span className={styles.icon}>📊</span>
               Dashboard
             </button>
+
+            {isAdmin && (
+              <button
+                className={styles.adminLink}
+                onClick={() => router.push('/admin')}
+              >
+                <span className={styles.icon}>🔧</span>
+                Admin Dashboard
+              </button>
+            )}
 
             <button
               className={activeSection === 'courses' ? styles.active : ''}
@@ -122,8 +138,18 @@ export default function MemberDashboard() {
         {/* Main Content */}
         <main className={styles.mainContent}>
           <div className={styles.header}>
-            <h1>Welcome back, {session.user?.name}!</h1>
-            <p className={styles.subtitle}>Continue your journey to success</p>
+            <h1>Welcome back, {session.user?.name || 'Member'}!</h1>
+            <p className={styles.subtitle}>
+              {hasPremiumAccess
+                ? 'Continue your journey to success with exclusive SUCCESS+ content'
+                : 'Upgrade to SUCCESS+ to unlock exclusive courses, resources, and events'}
+            </p>
+            {isAdmin && (
+              <div className={styles.adminBadge}>
+                <span className={styles.badgeIcon}>👤</span>
+                {session.user?.role === 'SUPER_ADMIN' ? 'Super Admin' : 'Admin'} Access
+              </div>
+            )}
           </div>
 
           {/* Quick Stats */}
@@ -160,6 +186,25 @@ export default function MemberDashboard() {
               </div>
             </div>
           </div>
+
+          {/* Premium Upgrade CTA for non-premium users */}
+          {!hasPremiumAccess && (
+            <div className={styles.upgradeSection}>
+              <div className={styles.upgradeCard}>
+                <div className={styles.upgradeIcon}>⭐</div>
+                <div className={styles.upgradeContent}>
+                  <h3>Unlock Full Access with SUCCESS+</h3>
+                  <p>Get unlimited courses, exclusive resources, live events, and more!</p>
+                  <button
+                    className={styles.upgradeBtn}
+                    onClick={() => router.push('/offer/success-plus')}
+                  >
+                    Upgrade to SUCCESS+ Now
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Continue Learning */}
           <section className={styles.section}>
