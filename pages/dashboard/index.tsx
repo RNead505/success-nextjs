@@ -51,15 +51,6 @@ export default function MemberDashboard() {
               Dashboard
             </button>
 
-            {isAdmin && (
-              <button
-                className={styles.adminLink}
-                onClick={() => router.push('/admin')}
-              >
-                <span className={styles.icon}>🔧</span>
-                Admin Dashboard
-              </button>
-            )}
 
             <button
               className={activeSection === 'courses' ? styles.active : ''}
@@ -314,8 +305,8 @@ export default function MemberDashboard() {
             <div className={styles.magazineCard}>
               <div className={styles.magazineCover}>
                 <img
-                  src="https://mysuccessplus.com/wp-content/uploads/2024/10/SUCCESS-NovDec-2024-Eva-Longoria-Digital-Cover.jpg"
-                  alt="SUCCESS Magazine November/December 2024"
+                  src="https://www.success.com/wp-content/uploads/2025/11/SD25_06_NOV_DIGITAL-ED-_-COVER-_-RORY-VADEN_2048x1082-1.jpg"
+                  alt="SUCCESS Magazine November 2025 - Guide to Philanthropy"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
                     target.src = 'data:image/svg+xml;charset=utf-8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="400"%3E%3Crect width="300" height="400" fill="%23f5f5f5"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23999" font-family="Arial" font-size="18" font-weight="bold"%3ESUCCESS%3C/text%3E%3C/svg%3E';
@@ -323,10 +314,10 @@ export default function MemberDashboard() {
                 />
               </div>
               <div className={styles.magazineInfo}>
-                <h3>November/December 2024</h3>
-                <p className={styles.featured}>Featuring: Eva Longoria</p>
-                <p>Discover the secrets to building a thriving business and living your best life.</p>
-                <button className={styles.readBtn}>Read Now</button>
+                <h3>November 2025</h3>
+                <p className={styles.featured}>Featuring: Rory Vaden</p>
+                <p>Discover how purpose and generosity define true success in the Guide to Philanthropy. Read it free on SUCCESS Labs.</p>
+                <button className={styles.readBtn} onClick={() => window.open('https://labs.success.com/november2025', '_blank')}>Read Now</button>
               </div>
             </div>
           </section>
