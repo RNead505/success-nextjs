@@ -20,7 +20,6 @@
 
 /* Dashboard Layout */
 .dashboardLayout {
-  display: flex;
   min-height: 100vh;
   background: linear-gradient(135deg, #fafbfc 0%, #f0f2f5 50%, #e8eef4 100%);
   position: relative;
@@ -30,7 +29,7 @@
   content: '';
   position: absolute;
   top: 0;
-  left: 300px;
+  left: 260px;
   right: 0;
   height: 400px;
   background: radial-gradient(ellipse at top, rgba(211, 47, 47, 0.08), transparent 70%);
