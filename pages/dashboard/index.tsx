@@ -1,13 +1,12 @@
-import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import Head from 'next/head';
 import styles from './dashboard.module.css';
 
 export default function MemberDashboard() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const [activeSection, setActiveSection] = useState('dashboard');
 
   if (status === 'loading') {
     return <div className={styles.loading}>Loading...</div>;
@@ -43,78 +42,66 @@ export default function MemberDashboard() {
           </div>
 
           <nav className={styles.nav}>
-            <button
-              className={activeSection === 'dashboard' ? styles.active : ''}
-              onClick={() => setActiveSection('dashboard')}
-            >
-              <span className={styles.icon}>📊</span>
-              Dashboard
-            </button>
+            <Link href="/dashboard">
+              <button className={router.pathname === '/dashboard' ? styles.active : ''}>
+                <span className={styles.icon}>📊</span>
+                Dashboard
+              </button>
+            </Link>
 
+            <Link href="/dashboard/courses">
+              <button className={router.pathname === '/dashboard/courses' ? styles.active : ''}>
+                <span className={styles.icon}>🎓</span>
+                Courses
+              </button>
+            </Link>
 
-            <button
-              className={activeSection === 'courses' ? styles.active : ''}
-              onClick={() => router.push('/dashboard/courses')}
-            >
-              <span className={styles.icon}>🎓</span>
-              Courses
-            </button>
+            <Link href="/dashboard/resources">
+              <button className={router.pathname === '/dashboard/resources' ? styles.active : ''}>
+                <span className={styles.icon}>📚</span>
+                Resources
+              </button>
+            </Link>
 
-            <button
-              className={activeSection === 'resources' ? styles.active : ''}
-              onClick={() => router.push('/dashboard/resources')}
-            >
-              <span className={styles.icon}>📚</span>
-              Resources
-            </button>
-
-            <button
-              className={activeSection === 'labs' ? styles.active : ''}
-              onClick={() => window.open('https://labs.success.com/', '_blank')}
-            >
+            <button onClick={() => window.open('https://labs.success.com/', '_blank')}>
               <span className={styles.icon}>🔬</span>
               Success Labs
             </button>
 
-            <button
-              className={activeSection === 'events' ? styles.active : ''}
-              onClick={() => router.push('/dashboard/events')}
-            >
-              <span className={styles.icon}>📅</span>
-              Events
-            </button>
+            <Link href="/dashboard/events">
+              <button className={router.pathname === '/dashboard/events' ? styles.active : ''}>
+                <span className={styles.icon}>📅</span>
+                Events
+              </button>
+            </Link>
 
-            <button
-              className={activeSection === 'videos' ? styles.active : ''}
-              onClick={() => router.push('/dashboard/videos')}
-            >
-              <span className={styles.icon}>🎥</span>
-              Videos
-            </button>
+            <Link href="/dashboard/videos">
+              <button className={router.pathname === '/dashboard/videos' ? styles.active : ''}>
+                <span className={styles.icon}>🎥</span>
+                Videos
+              </button>
+            </Link>
 
-            <button
-              className={activeSection === 'podcasts' ? styles.active : ''}
-              onClick={() => router.push('/dashboard/podcasts')}
-            >
-              <span className={styles.icon}>🎙️</span>
-              Podcasts
-            </button>
+            <Link href="/dashboard/podcasts">
+              <button className={router.pathname === '/dashboard/podcasts' ? styles.active : ''}>
+                <span className={styles.icon}>🎙️</span>
+                Podcasts
+              </button>
+            </Link>
 
-            <button
-              className={activeSection === 'magazines' ? styles.active : ''}
-              onClick={() => router.push('/dashboard/magazines')}
-            >
-              <span className={styles.icon}>📖</span>
-              Magazines
-            </button>
+            <Link href="/dashboard/magazines">
+              <button className={router.pathname === '/dashboard/magazines' ? styles.active : ''}>
+                <span className={styles.icon}>📖</span>
+                Magazines
+              </button>
+            </Link>
 
-            <button
-              className={activeSection === 'settings' ? styles.active : ''}
-              onClick={() => router.push('/dashboard/settings')}
-            >
-              <span className={styles.icon}>⚙️</span>
-              Settings
-            </button>
+            <Link href="/dashboard/settings">
+              <button className={router.pathname === '/dashboard/settings' ? styles.active : ''}>
+                <span className={styles.icon}>⚙️</span>
+                Settings
+              </button>
+            </Link>
 
             <button
               className={styles.logoutBtn}
