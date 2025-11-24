@@ -328,7 +328,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'book-8',
       name: 'My Philosophy for Successful Living',
       price: 22.99,
-      image: getPlaceholderImage('Philosophy', 'Books'),
+      image: 'https://mysuccessplus.com/wp-content/uploads/nc/s-3rvn7wzn3w/product_images/h/235/jr010-006__17735.jpg',
       category: 'Books',
       subcategory: 'Jim Rohn',
       link: '/store/philosophy-living'
@@ -346,7 +346,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'book-10',
       name: 'Building Your Network Marketing Business',
       price: 23.99,
-      image: getPlaceholderImage('Network Marketing', 'Books'),
+      image: 'https://mysuccessplus.com/wp-content/uploads/nc/s-3rvn7wzn3w/product_images/x/826/jr010-009_1__98084.jpg',
       category: 'Books',
       subcategory: 'Jim Rohn',
       link: '/store/network-marketing'
@@ -357,7 +357,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'course-1',
       name: "Jim Rohn's Foundations for Success",
       price: 199.99,
-      image: getPlaceholderImage('Foundations', 'Courses'),
+      image: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&h=400&fit=crop',
       category: 'Courses',
       subcategory: 'Personal Development',
       link: '/store/foundations-success',
@@ -367,7 +367,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'course-2',
       name: 'Leadership Masterclass',
       price: 149.99,
-      image: getPlaceholderImage('Leadership', 'Courses'),
+      image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=400&fit=crop',
       category: 'Courses',
       subcategory: 'Leadership',
       link: '/store/leadership-masterclass'
@@ -376,7 +376,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'course-3',
       name: 'Personal Development Blueprint',
       price: 179.99,
-      image: getPlaceholderImage('Personal Dev', 'Courses'),
+      image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=400&fit=crop',
       category: 'Courses',
       subcategory: 'Personal Development',
       link: '/store/personal-dev-blueprint'
@@ -385,7 +385,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'course-4',
       name: 'Time Management Mastery',
       price: 99.99,
-      image: getPlaceholderImage('Time Management', 'Courses'),
+      image: 'https://images.unsplash.com/photo-1501139083538-0139583c060f?w=400&h=400&fit=crop',
       category: 'Courses',
       subcategory: 'Productivity',
       link: '/store/time-management'
@@ -394,7 +394,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'course-5',
       name: 'Goal Setting for Success',
       price: 79.99,
-      image: getPlaceholderImage('Goal Setting', 'Courses'),
+      image: 'https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=400&h=400&fit=crop',
       category: 'Courses',
       subcategory: 'Personal Development',
       link: '/store/goal-setting'
@@ -403,7 +403,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'course-6',
       name: 'Communication Skills Bootcamp',
       price: 129.99,
-      image: getPlaceholderImage('Communication', 'Courses'),
+      image: 'https://images.unsplash.com/photo-1560439513-74b037a25d84?w=400&h=400&fit=crop',
       category: 'Courses',
       subcategory: 'Leadership',
       link: '/store/communication-bootcamp'
@@ -443,7 +443,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'merch-2',
       name: 'SUCCESS EST. 1897 Stone Cap',
       price: 24.99,
-      image: getPlaceholderImage('Cap', 'Merchandise'),
+      image: 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=400&h=400&fit=crop',
       category: 'Merchandise',
       subcategory: 'Apparel',
       link: '/store/stone-cap'
@@ -452,7 +452,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'merch-3',
       name: 'SUCCESS Classic Covers 15-oz Ceramic Mug',
       price: 16.99,
-      image: getPlaceholderImage('Mug', 'Merchandise'),
+      image: 'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=400&h=400&fit=crop',
       category: 'Merchandise',
       subcategory: 'Drinkware',
       link: '/store/ceramic-mug'
@@ -461,7 +461,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'merch-4',
       name: 'SUCCESS Logo T-Shirt (Black)',
       price: 19.99,
-      image: getPlaceholderImage('T-Shirt Black', 'Merchandise'),
+      image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop',
       category: 'Merchandise',
       subcategory: 'Apparel',
       link: '/store/tshirt-black'
@@ -470,7 +470,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'merch-5',
       name: 'SUCCESS Logo T-Shirt (White)',
       price: 19.99,
-      image: getPlaceholderImage('T-Shirt White', 'Merchandise'),
+      image: 'https://images.unsplash.com/photo-1562157873-818bc0726f68?w=400&h=400&fit=crop',
       category: 'Merchandise',
       subcategory: 'Apparel',
       link: '/store/tshirt-white'
@@ -479,7 +479,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'merch-6',
       name: 'SUCCESS Hoodie (Navy)',
       price: 39.99,
-      image: getPlaceholderImage('Hoodie', 'Merchandise'),
+      image: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=400&fit=crop',
       category: 'Merchandise',
       subcategory: 'Apparel',
       link: '/store/hoodie-navy'
@@ -488,7 +488,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'merch-7',
       name: 'SUCCESS Notepad Set',
       price: 14.99,
-      image: getPlaceholderImage('Notepad', 'Merchandise'),
+      image: 'https://images.unsplash.com/photo-1517842645767-c639042777db?w=400&h=400&fit=crop',
       category: 'Merchandise',
       subcategory: 'Office Supplies',
       link: '/store/notepad'
@@ -497,7 +497,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'merch-8',
       name: 'SUCCESS Water Bottle',
       price: 17.99,
-      image: getPlaceholderImage('Water Bottle', 'Merchandise'),
+      image: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400&h=400&fit=crop',
       category: 'Merchandise',
       subcategory: 'Drinkware',
       link: '/store/water-bottle'
@@ -506,7 +506,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'merch-9',
       name: 'SUCCESS Tote Bag',
       price: 16.99,
-      image: getPlaceholderImage('Tote Bag', 'Merchandise'),
+      image: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=400&h=400&fit=crop',
       category: 'Merchandise',
       subcategory: 'Bags & Accessories',
       link: '/store/tote-bag'
@@ -515,7 +515,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       id: 'merch-10',
       name: 'SUCCESS Pen Set (3-pack)',
       price: 12.99,
-      image: getPlaceholderImage('Pen Set', 'Merchandise'),
+      image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400&h=400&fit=crop',
       category: 'Merchandise',
       subcategory: 'Office Supplies',
       link: '/store/pen-set'
@@ -524,9 +524,9 @@ export const getServerSideProps: GetServerSideProps = async () => {
     // MAGAZINES
     {
       id: 'mag-1',
-      name: 'SUCCESS Magazine - November/December 2025',
+      name: 'SUCCESS Magazine - November/December 2024',
       price: 9.99,
-      image: getPlaceholderImage('Nov/Dec 2025', 'Magazines'),
+      image: 'https://mysuccessplus.com/wp-content/uploads/2024/10/SUCCESS-NovDec-2024-Eva-Longoria-Digital-Cover.jpg',
       category: 'Magazines',
       link: '/magazine'
     },
@@ -541,33 +541,33 @@ export const getServerSideProps: GetServerSideProps = async () => {
     },
     {
       id: 'mag-3',
-      name: 'SUCCESS Magazine - January/February 2025',
+      name: 'SUCCESS Magazine - September/October 2024',
       price: 9.99,
-      image: getPlaceholderImage('Jan/Feb 2025', 'Magazines'),
+      image: 'https://mysuccessplus.com/wp-content/uploads/2024/09/SUCCESS-SeptOct-2024-Shark-Tank-Digital-Cover.jpg',
       category: 'Magazines',
       link: '/magazine/archive'
     },
     {
       id: 'mag-4',
-      name: 'SUCCESS Magazine - March/April 2025',
+      name: 'SUCCESS Magazine - July/August 2024',
       price: 9.99,
-      image: getPlaceholderImage('Mar/Apr 2025', 'Magazines'),
-      category: 'Magazines',
-      link: '/magazine/archive'
-    },
-    {
-      id: 'mag-4',
-      name: 'SUCCESS Magazine - May/June 2025',
-      price: 9.99,
-      image: getPlaceholderImage('May/Jun 2025', 'Magazines'),
+      image: 'https://mysuccessplus.com/wp-content/uploads/2024/07/sm24-04-july-aug-featured-1.jpg',
       category: 'Magazines',
       link: '/magazine/archive'
     },
     {
       id: 'mag-5',
-      name: 'SUCCESS Magazine - July/August 2025',
+      name: 'SUCCESS Magazine - May/June 2024',
       price: 9.99,
-      image: getPlaceholderImage('Jul/Aug 2025', 'Magazines'),
+      image: 'https://mysuccessplus.com/wp-content/uploads/2024/05/SUCCESS-MayJun-2024-Bethany-Hamilton-Digital-Cover.jpg',
+      category: 'Magazines',
+      link: '/magazine/archive'
+    },
+    {
+      id: 'mag-6',
+      name: 'SUCCESS Magazine - March/April 2024',
+      price: 9.99,
+      image: 'https://mysuccessplus.com/wp-content/uploads/2024/03/SUCCESS-MarApr-2024-Emily-Calandrelli-Digital-Cover.jpg',
       category: 'Magazines',
       link: '/magazine/archive'
     },
