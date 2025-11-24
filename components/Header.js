@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './Header.module.css';
@@ -18,6 +19,7 @@ const navItems = [
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { data: session } = useSession();
 
   return (
     <header className={styles.header}>
@@ -33,12 +35,20 @@ export default function Header() {
                 <path d="M9 17A8 8 0 1 0 9 1a8 8 0 0 0 0 16zM19 19l-4.35-4.35" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </Link>
-            <Link href="/login" className={styles.signInButton}>
-              SIGN IN
-            </Link>
-            <Link href="/subscribe" className={styles.subscribeButton}>
-              SUBSCRIBE
-            </Link>
+            {session ? (
+              <Link href="/dashboard" className={styles.dashboardButton}>
+                MY DASHBOARD
+              </Link>
+            ) : (
+              <>
+                <Link href="/login" className={styles.signInButton}>
+                  SIGN IN
+                </Link>
+                <Link href="/subscribe" className={styles.subscribeButton}>
+                  SUBSCRIBE
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>
