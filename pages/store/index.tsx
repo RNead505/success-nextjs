@@ -73,6 +73,20 @@ export default function StorePage({ products, categories }: StorePageProps) {
                       width={400}
                       height={400}
                       style={{ objectFit: 'cover' }}
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        if (!target.src.startsWith('data:')) {
+                          // Fallback to placeholder if real image fails to load
+                          target.src = `data:image/svg+xml;base64,${Buffer.from(`
+                            <svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+                              <rect width="400" height="400" fill="#1a1a1a"/>
+                              <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="20" fill="#ffffff" text-anchor="middle" dy=".3em">
+                                ${product.name.substring(0, 30)}
+                              </text>
+                            </svg>
+                          `.trim()).toString('base64')}`;
+                        }
+                      }}
                     />
                   </div>
                   <div className={styles.productInfo}>
@@ -148,6 +162,20 @@ export default function StorePage({ products, categories }: StorePageProps) {
                     width={400}
                     height={400}
                     style={{ objectFit: 'cover' }}
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      if (!target.src.startsWith('data:')) {
+                        // Fallback to placeholder if real image fails to load
+                        target.src = `data:image/svg+xml;base64,${Buffer.from(`
+                          <svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="400" height="400" fill="#1a1a1a"/>
+                            <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="20" fill="#ffffff" text-anchor="middle" dy=".3em">
+                              ${product.name.substring(0, 30)}
+                            </text>
+                          </svg>
+                        `.trim()).toString('base64')}`;
+                      }
+                    }}
                   />
                 </div>
                 <div className={styles.productInfo}>
