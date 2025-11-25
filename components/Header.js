@@ -6,15 +6,12 @@ import styles from './Header.module.css';
 
 const navItems = [
   { label: 'MAGAZINE', path: '/magazine' },
+  { label: 'COACHING', path: 'https://coaching.success.com/', external: true },
   { label: 'SUCCESS+', path: '/success-plus' },
-  { label: 'BUSINESS', path: '/category/business-branding' },
-  { label: 'MONEY', path: '/category/money' },
-  { label: 'LIFESTYLE', path: '/category/lifestyle' },
-  { label: 'ENTERTAINMENT', path: '/category/entertainment' },
-  { label: 'LONGEVITY', path: '/category/longevity-performance' },
-  { label: 'FUTURE OF WORK', path: '/category/future-of-work' },
-  { label: 'BESTSELLERS', path: '/bestsellers' },
-  { label: 'STORE', path: '/store' },
+  { label: 'PROFESSIONAL GROWTH', path: '/category/professional-growth' },
+  { label: 'AI & TECHNOLOGY', path: '/category/ai-technology' },
+  { label: 'BUSINESS & BRANDING', path: '/category/business-branding' },
+  { label: 'STORE', path: 'https://store.success.com', external: true },
 ];
 
 export default function Header() {
