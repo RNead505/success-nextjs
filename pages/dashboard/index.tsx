@@ -63,10 +63,12 @@ export default function MemberDashboard() {
               </button>
             </Link>
 
-            <button onClick={() => window.open('https://labs.success.com/', '_blank')}>
-              <span className={styles.icon}>🔬</span>
-              Success Labs
-            </button>
+            <Link href="/dashboard/labs">
+              <button className={router.pathname === '/dashboard/labs' ? styles.active : ''}>
+                <span className={styles.icon}>🔬</span>
+                Success Labs
+              </button>
+            </Link>
 
             <Link href="/dashboard/events">
               <button className={router.pathname === '/dashboard/events' ? styles.active : ''}>
