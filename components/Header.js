@@ -11,7 +11,7 @@ const navItems = [
   { label: 'PROFESSIONAL GROWTH', path: '/category/professional-growth' },
   { label: 'AI & TECHNOLOGY', path: '/category/ai-technology' },
   { label: 'BUSINESS & BRANDING', path: '/category/business-branding' },
-  { label: 'STORE', path: 'https://store.success.com', external: true },
+  { label: 'STORE', path: '/store' },
 ];
 
 export default function Header() {
