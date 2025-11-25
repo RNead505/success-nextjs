@@ -116,7 +116,7 @@ export default function MemberDashboard() {
         {/* Main Content */}
         <main className={styles.mainContent}>
           <div className={styles.header}>
-            <h1>Welcome back, {session.user?.name || 'Member'}!</h1>
+            <h1>Welcome back{session.user?.name ? `, ${session.user.name.replace(/admin/gi, '').trim()}` : ''}!</h1>
             <p className={styles.subtitle}>
               {hasPremiumAccess
                 ? 'Continue your journey to success with exclusive SUCCESS+ content'
