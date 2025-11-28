@@ -1,8 +1,17 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styles from './AdminLayout.module.css';
+
+type Department =
+  | 'SUPER_ADMIN'
+  | 'CUSTOMER_SERVICE'
+  | 'EDITORIAL'
+  | 'SUCCESS_PLUS'
+  | 'DEV'
+  | 'MARKETING'
+  | 'COACHING';
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -11,6 +20,41 @@ interface AdminLayoutProps {
 export default function AdminLayout({ children }: AdminLayoutProps) {
   const { data: session } = useSession();
   const router = useRouter();
+  const [userDepartments, setUserDepartments] = useState<Department[]>([]);
+  const [loadingDepartments, setLoadingDepartments] = useState(true);
+
+  useEffect(() => {
+    async function fetchDepartments() {
+      if (session?.user?.id) {
+        try {
+          const res = await fetch('/api/admin/departments/user-departments');
+          if (res.ok) {
+            const data = await res.json();
+            setUserDepartments(data.departments || []);
+          }
+        } catch (error) {
+          console.error('Error fetching user departments:', error);
+        } finally {
+          setLoadingDepartments(false);
+        }
+      }
+    }
+    fetchDepartments();
+  }, [session]);
+
+  // Department links
+  const departmentLinks = userDepartments.map((dept) => {
+    const deptConfig: Record<Department, { name: string; href: string; icon: string }> = {
+      SUPER_ADMIN: { name: 'Super Admin', href: '/admin/super', icon: '👑' },
+      CUSTOMER_SERVICE: { name: 'Customer Service', href: '/admin/customer-service', icon: '🎧' },
+      EDITORIAL: { name: 'Editorial', href: '/admin/editorial', icon: '✍️' },
+      SUCCESS_PLUS: { name: 'SUCCESS+', href: '/admin/success-plus', icon: '✨' },
+      DEV: { name: 'Dev', href: '/admin/dev', icon: '💻' },
+      MARKETING: { name: 'Marketing', href: '/admin/marketing', icon: '📣' },
+      COACHING: { name: 'Coaching', href: '/admin/coaching', icon: '🎯' },
+    };
+    return deptConfig[dept];
+  });
 
   const navigationSections = [
     {
@@ -86,6 +130,26 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         </div>
 
         <nav className={styles.nav}>
+          {/* Department Dashboards */}
+          {!loadingDepartments && departmentLinks.length > 0 && (
+            <div className={styles.navSection}>
+              <div className={styles.navSectionTitle}>My Departments</div>
+              {departmentLinks.map((item) => {
+                const isActive = router.pathname === item.href || router.pathname.startsWith(item.href + '/');
+                return (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className={`${styles.navItem} ${isActive ? styles.navItemActive : ''}`}
+                  >
+                    <span className={styles.navIcon}>{item.icon}</span>
+                    <span>{item.name}</span>
+                  </Link>
+                );
+              })}
+            </div>
+          )}
+
           {navigationSections.map((section) => (
             <div key={section.title} className={styles.navSection}>
               <div className={styles.navSectionTitle}>{section.title}</div>

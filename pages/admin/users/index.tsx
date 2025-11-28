@@ -12,7 +12,27 @@ interface User {
   role: string;
   createdAt: string;
   avatar?: string;
+  departments?: string[];
 }
+
+type Department =
+  | 'SUPER_ADMIN'
+  | 'CUSTOMER_SERVICE'
+  | 'EDITORIAL'
+  | 'SUCCESS_PLUS'
+  | 'DEV'
+  | 'MARKETING'
+  | 'COACHING';
+
+const DEPARTMENTS: { value: Department; label: string }[] = [
+  { value: 'SUPER_ADMIN', label: 'Super Admin' },
+  { value: 'CUSTOMER_SERVICE', label: 'Customer Service' },
+  { value: 'EDITORIAL', label: 'Editorial' },
+  { value: 'SUCCESS_PLUS', label: 'SUCCESS+' },
+  { value: 'DEV', label: 'Dev' },
+  { value: 'MARKETING', label: 'Marketing' },
+  { value: 'COACHING', label: 'Coaching' },
+];
 
 export default function AdminUsers() {
   const { data: session, status } = useSession();
@@ -29,7 +49,9 @@ export default function AdminUsers() {
   const [role, setRole] = useState('EDITOR');
   const [bio, setBio] = useState('');
   const [avatar, setAvatar] = useState('');
+  const [selectedDepartments, setSelectedDepartments] = useState<Department[]>([]);
   const [saving, setSaving] = useState(false);
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -40,6 +62,8 @@ export default function AdminUsers() {
   useEffect(() => {
     if (session) {
       fetchUsers();
+      // Check if current user is Super Admin
+      setIsSuperAdmin(session.user?.role === 'SUPER_ADMIN');
     }
   }, [session]);
 
@@ -47,11 +71,44 @@ export default function AdminUsers() {
     try {
       const res = await fetch('/api/users?per_page=100');
       const data = await res.json();
-      setUsers(data);
+
+      // Fetch departments for each user if we're super admin
+      if (isSuperAdmin) {
+        const usersWithDepts = await Promise.all(
+          data.map(async (user: User) => {
+            try {
+              const deptsRes = await fetch(`/api/admin/departments/user-departments?userId=${user.id}`);
+              if (deptsRes.ok) {
+                const deptsData = await deptsRes.json();
+                return { ...user, departments: deptsData.departments };
+              }
+            } catch (err) {
+              console.error(`Error fetching departments for user ${user.id}:`, err);
+            }
+            return { ...user, departments: [] };
+          })
+        );
+        setUsers(usersWithDepts);
+      } else {
+        setUsers(data);
+      }
     } catch (error) {
       console.error('Error fetching users:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchUserDepartments = async (userId: string) => {
+    try {
+      const res = await fetch(`/api/admin/departments/user-departments?userId=${userId}`);
+      if (res.ok) {
+        const data = await res.json();
+        setSelectedDepartments(data.departments || []);
+      }
+    } catch (error) {
+      console.error('Error fetching user departments:', error);
+      setSelectedDepartments([]);
     }
   };
 
@@ -92,6 +149,21 @@ export default function AdminUsers() {
       });
 
       if (res.ok) {
+        const savedUser = await res.json();
+        const userId = editingId || savedUser.id;
+
+        // Update departments if super admin
+        if (isSuperAdmin && userId) {
+          await fetch('/api/admin/departments/assign', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              userId,
+              departments: selectedDepartments,
+            }),
+          });
+        }
+
         await fetchUsers();
         resetForm();
         setShowAddForm(false);
@@ -107,7 +179,7 @@ export default function AdminUsers() {
     }
   };
 
-  const handleEdit = (user: User) => {
+  const handleEdit = async (user: User) => {
     setEditingId(user.id);
     setName(user.name);
     setEmail(user.email);
@@ -115,6 +187,12 @@ export default function AdminUsers() {
     setBio('');
     setAvatar(user.avatar || '');
     setPassword('');
+
+    // Fetch user's departments if super admin
+    if (isSuperAdmin) {
+      await fetchUserDepartments(user.id);
+    }
+
     setShowAddForm(true);
   };
 
@@ -146,6 +224,7 @@ export default function AdminUsers() {
     setRole('EDITOR');
     setBio('');
     setAvatar('');
+    setSelectedDepartments([]);
     setEditingId(null);
   };
 
@@ -245,6 +324,34 @@ export default function AdminUsers() {
                 </div>
               </div>
 
+              {isSuperAdmin && (
+                <div className={styles.formGroup}>
+                  <label>Department Access</label>
+                  <div className={styles.departmentGrid}>
+                    {DEPARTMENTS.map((dept) => (
+                      <label key={dept.value} className={styles.checkboxLabel}>
+                        <input
+                          type="checkbox"
+                          checked={selectedDepartments.includes(dept.value)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSelectedDepartments([...selectedDepartments, dept.value]);
+                            } else {
+                              setSelectedDepartments(
+                                selectedDepartments.filter((d) => d !== dept.value)
+                              );
+                            }
+                          }}
+                          className={styles.checkbox}
+                        />
+                        {dept.label}
+                      </label>
+                    ))}
+                  </div>
+                  <small>Select one or more departments this user can access</small>
+                </div>
+              )}
+
               <div className={styles.formGroup}>
                 <label htmlFor="avatar">Avatar URL</label>
                 <input
@@ -293,6 +400,7 @@ export default function AdminUsers() {
                   <th>User</th>
                   <th>Email</th>
                   <th>Role</th>
+                  {isSuperAdmin && <th>Departments</th>}
                   <th>Created</th>
                   <th>Actions</th>
                 </tr>
@@ -318,6 +426,24 @@ export default function AdminUsers() {
                         {user.role.replace('_', ' ')}
                       </span>
                     </td>
+                    {isSuperAdmin && (
+                      <td>
+                        {user.departments && user.departments.length > 0 ? (
+                          <div className={styles.departmentBadges}>
+                            {user.departments.map((dept) => {
+                              const deptInfo = DEPARTMENTS.find((d) => d.value === dept);
+                              return (
+                                <span key={dept} className={styles.deptBadge}>
+                                  {deptInfo?.label || dept}
+                                </span>
+                              );
+                            })}
+                          </div>
+                        ) : (
+                          <span className={styles.noDepartments}>No departments</span>
+                        )}
+                      </td>
+                    )}
                     <td>{new Date(user.createdAt).toLocaleDateString()}</td>
                     <td className={styles.actions}>
                       <button

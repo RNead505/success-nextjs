@@ -703,6 +703,7 @@ model users {
   assigned_projects         projects[]            @relation("AssignedProjects")
   created_projects          projects[]            @relation("CreatedProjects")
   course_enrollments        course_enrollments[]
+  staff_departments         staff_departments[]
 
   @@index([email])
   @@index([subscriptionStatus])
@@ -934,6 +935,16 @@ enum UserRole {
   ADMIN
   EDITOR
   AUTHOR
+}
+
+enum Department {
+  SUPER_ADMIN
+  CUSTOMER_SERVICE
+  EDITORIAL
+  SUCCESS_PLUS
+  DEV
+  MARKETING
+  COACHING
 }
 
 enum PayLinkStatus {
@@ -1172,4 +1183,17 @@ enum EventRegistrationStatus {
   WAITLISTED
   CANCELED
   ATTENDED
+}
+
+model staff_departments {
+  id           String     @id @default(uuid())
+  userId       String
+  department   Department
+  assignedBy   String     // User ID of Super Admin who assigned
+  assignedAt   DateTime   @default(now())
+  user         users      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, department])
+  @@index([userId])
+  @@index([department])
 }

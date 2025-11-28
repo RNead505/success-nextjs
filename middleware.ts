@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
+import { getDepartmentFromPath } from '@/lib/auth/departmentAccess';
 
 /**
  * Next.js Middleware for:
@@ -42,6 +43,16 @@ export async function middleware(request: NextRequest) {
         const loginUrl = new URL('/admin/login', request.url);
         loginUrl.searchParams.set('callbackUrl', pathname);
         return NextResponse.redirect(loginUrl);
+      }
+
+      // Check department access for department-specific routes
+      const department = getDepartmentFromPath(pathname);
+      if (department) {
+        // We'll check department access via API route
+        // Pass the department in the request headers for the page to verify
+        const response = NextResponse.next();
+        response.headers.set('x-required-department', department);
+        return response;
       }
 
     } catch (error) {
