@@ -12,6 +12,12 @@
   font-size: 2rem;
   font-weight: 700;
   color: #1a1a1a;
+  margin: 0 0 0.5rem 0;
+}
+
+.header p {
+  color: #666;
+  font-size: 1rem;
   margin: 0;
 }
 
@@ -28,11 +34,17 @@
   padding: 1.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s;
+  cursor: pointer;
 }
 
 .card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.cardIcon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
 }
 
 .card h3 {
@@ -50,8 +62,11 @@
 }
 
 .cardButton {
+  display: inline-block;
   background: #000;
   color: #fff;
+  text-decoration: none;
+  text-align: center;
   border: none;
   padding: 0.75rem 1.5rem;
   border-radius: 6px;
@@ -64,6 +79,7 @@
 
 .cardButton:hover {
   background: #333;
+  color: #fff;
 }
 
 .statsGrid {
