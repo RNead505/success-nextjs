@@ -1197,3 +1197,57 @@ model staff_departments {
   @@index([userId])
   @@index([department])
 }
+
+// Page Permissions System
+model page_permissions {
+  id          String   @id @default(uuid())
+  pagePath    String   // e.g., "/admin/posts", "/admin/media", "/admin/analytics"
+  displayName String   // Human-readable name for the page
+  description String?  // Description of what this page does
+  category    String   // e.g., "Content", "User Management", "Analytics", "System"
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  role_permissions       role_permissions[]
+  department_permissions department_permissions[]
+
+  @@unique([pagePath])
+  @@index([category])
+  @@index([isActive])
+}
+
+// Role-based permissions (e.g., all EDITORs can access /admin/posts)
+model role_permissions {
+  id           String           @id @default(uuid())
+  pageId       String
+  role         UserRole
+  canAccess    Boolean          @default(true)
+  canCreate    Boolean          @default(false)
+  canEdit      Boolean          @default(false)
+  canDelete    Boolean          @default(false)
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  page         page_permissions @relation(fields: [pageId], references: [id], onDelete: Cascade)
+
+  @@unique([pageId, role])
+  @@index([role])
+}
+
+// Department-based permissions (e.g., EDITORIAL department can access /admin/editorial)
+model department_permissions {
+  id           String           @id @default(uuid())
+  pageId       String
+  department   Department
+  canAccess    Boolean          @default(true)
+  canCreate    Boolean          @default(false)
+  canEdit      Boolean          @default(false)
+  canDelete    Boolean          @default(false)
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  page         page_permissions @relation(fields: [pageId], references: [id], onDelete: Cascade)
+
+  @@unique([pageId, department])
+  @@index([department])
+}
