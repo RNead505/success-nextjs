@@ -60,7 +60,7 @@ export async function getUserDepartments(userId: string): Promise<Department[]> 
     select: { department: true },
   });
 
-  return assignments.map(a => a.department);
+  return assignments.map((a: { department: Department }) => a.department);
 }
 
 /**

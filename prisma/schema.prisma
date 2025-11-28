@@ -92,20 +92,20 @@ model campaigns {
 }
 
 model categories {
-  id           String       @id
-  name         String
-  slug         String       @unique
-  description  String?
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
-  wordpressId  Int?         @unique
-  color        String?
-  icon         String?
-  order        Int          @default(0)
-  parentId     String?
-  posts        posts[]      @relation("PostCategories")
-  parent       categories?  @relation("CategoryHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
-  children     categories[] @relation("CategoryHierarchy")
+  id          String       @id
+  name        String
+  slug        String       @unique
+  description String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  wordpressId Int?         @unique
+  color       String?
+  icon        String?
+  order       Int          @default(0)
+  parentId    String?
+  posts       posts[]      @relation("PostCategories")
+  parent      categories?  @relation("CategoryHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children    categories[] @relation("CategoryHierarchy")
 
   @@index([slug])
   @@index([wordpressId])
@@ -468,7 +468,7 @@ model posts {
 }
 
 model post_revisions {
-  id               String    @id
+  id               String   @id
   postId           String
   title            String
   content          String
@@ -481,8 +481,8 @@ model post_revisions {
   authorId         String
   authorName       String
   changeNote       String?
-  createdAt        DateTime  @default(now())
-  posts            posts     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  createdAt        DateTime @default(now())
+  posts            posts    @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@index([postId])
   @@index([createdAt])
@@ -595,24 +595,24 @@ model site_settings {
 }
 
 model subscriptions {
-  id                      String                  @id
-  userId                  String?                 @unique
-  stripeCustomerId        String?                 @unique
-  stripeSubscriptionId    String?                 @unique
-  stripePriceId           String?
-  paykickstartCustomerId  String?                 @unique
-  paykickstartSubscriptionId String?              @unique
-  provider                String                  @default("stripe")
-  currentPeriodStart      DateTime?
-  currentPeriodEnd        DateTime?
-  cancelAtPeriodEnd       Boolean                 @default(false)
-  createdAt               DateTime                @default(now())
-  updatedAt               DateTime
-  billingCycle            String?
-  tier                    String?
-  status                  String                  @default("inactive")
-  magazine_subscriptions  magazine_subscriptions?
-  users                   users?                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                         String                  @id
+  userId                     String?                 @unique
+  stripeCustomerId           String?                 @unique
+  stripeSubscriptionId       String?                 @unique
+  stripePriceId              String?
+  paykickstartCustomerId     String?                 @unique
+  paykickstartSubscriptionId String?                 @unique
+  provider                   String                  @default("stripe")
+  currentPeriodStart         DateTime?
+  currentPeriodEnd           DateTime?
+  cancelAtPeriodEnd          Boolean                 @default(false)
+  createdAt                  DateTime                @default(now())
+  updatedAt                  DateTime
+  billingCycle               String?
+  tier                       String?
+  status                     String                  @default("inactive")
+  magazine_subscriptions     magazine_subscriptions?
+  users                      users?                  @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([paykickstartCustomerId])
   @@index([paykickstartSubscriptionId])
@@ -700,8 +700,8 @@ model users {
   subscriptions             subscriptions?
   user_activities           user_activities[]
   pay_links                 pay_links[]
-  assigned_projects         projects[]            @relation("AssignedProjects")
-  created_projects          projects[]            @relation("CreatedProjects")
+  assigned_projects         projects[]           @relation("AssignedProjects")
+  created_projects          projects[]           @relation("CreatedProjects")
   course_enrollments        course_enrollments[]
   staff_departments         staff_departments[]
 
@@ -783,21 +783,21 @@ model wordpress_migration {
 }
 
 model projects {
-  id              String        @id @default(uuid())
-  title           String
-  description     String?
-  status          ProjectStatus @default(BACKLOG)
-  assignedToId    String?
-  priority        Priority      @default(MEDIUM)
-  dueDate         DateTime?
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-  createdBy       String
-  order           Int           @default(0)
-  tags            String[]
-  notes           String?
-  users           users?        @relation("AssignedProjects", fields: [assignedToId], references: [id], onDelete: SetNull)
-  creator         users         @relation("CreatedProjects", fields: [createdBy], references: [id], onDelete: Cascade)
+  id           String        @id @default(uuid())
+  title        String
+  description  String?
+  status       ProjectStatus @default(BACKLOG)
+  assignedToId String?
+  priority     Priority      @default(MEDIUM)
+  dueDate      DateTime?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  createdBy    String
+  order        Int           @default(0)
+  tags         String[]
+  notes        String?
+  users        users?        @relation("AssignedProjects", fields: [assignedToId], references: [id], onDelete: SetNull)
+  creator      users         @relation("CreatedProjects", fields: [createdBy], references: [id], onDelete: Cascade)
 
   @@index([status])
   @@index([assignedToId])
@@ -963,24 +963,24 @@ enum ProjectStatus {
 }
 
 model courses {
-  id                String              @id @default(uuid())
-  title             String
-  slug              String              @unique
-  description       String?
-  thumbnail         String?
-  instructorName    String?
-  instructorBio     String?
-  instructorImage   String?
-  duration          Int?                // in minutes
-  level             CourseLevel         @default(BEGINNER)
-  category          String?
-  isPremium         Boolean             @default(true)
-  isPublished       Boolean             @default(false)
-  order             Int                 @default(0)
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
-  modules           course_modules[]
-  enrollments       course_enrollments[]
+  id              String               @id @default(uuid())
+  title           String
+  slug            String               @unique
+  description     String?
+  thumbnail       String?
+  instructorName  String?
+  instructorBio   String?
+  instructorImage String?
+  duration        Int? // in minutes
+  level           CourseLevel          @default(BEGINNER)
+  category        String?
+  isPremium       Boolean              @default(true)
+  isPublished     Boolean              @default(false)
+  order           Int                  @default(0)
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+  modules         course_modules[]
+  enrollments     course_enrollments[]
 
   @@index([slug])
   @@index([isPremium])
@@ -988,15 +988,15 @@ model courses {
 }
 
 model course_modules {
-  id          String          @id @default(uuid())
+  id          String           @id @default(uuid())
   courseId    String
   title       String
   description String?
   order       Int
-  duration    Int?            // in minutes
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
-  course      courses         @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  duration    Int? // in minutes
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  course      courses          @relation(fields: [courseId], references: [id], onDelete: Cascade)
   lessons     course_lessons[]
 
   @@index([courseId])
@@ -1004,35 +1004,35 @@ model course_modules {
 }
 
 model course_lessons {
-  id             String               @id @default(uuid())
-  moduleId       String
-  title          String
-  description    String?
-  videoUrl       String?
-  content        String?
-  duration       Int?                 // in minutes
-  order          Int
-  isFree         Boolean              @default(false)
-  createdAt      DateTime             @default(now())
-  updatedAt      DateTime             @updatedAt
-  module         course_modules       @relation(fields: [moduleId], references: [id], onDelete: Cascade)
-  progress       lesson_progress[]
+  id          String            @id @default(uuid())
+  moduleId    String
+  title       String
+  description String?
+  videoUrl    String?
+  content     String?
+  duration    Int? // in minutes
+  order       Int
+  isFree      Boolean           @default(false)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  module      course_modules    @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  progress    lesson_progress[]
 
   @@index([moduleId])
   @@index([order])
 }
 
 model course_enrollments {
-  id              String      @id @default(uuid())
-  userId          String
-  courseId        String
-  progress        Int         @default(0) // percentage
-  completedAt     DateTime?
-  lastAccessedAt  DateTime?
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
-  users           users       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  course          courses     @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  id             String    @id @default(uuid())
+  userId         String
+  courseId       String
+  progress       Int       @default(0) // percentage
+  completedAt    DateTime?
+  lastAccessedAt DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  users          users     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course         courses   @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   @@unique([userId, courseId])
   @@index([userId])
@@ -1040,16 +1040,16 @@ model course_enrollments {
 }
 
 model lesson_progress {
-  id              String          @id @default(uuid())
-  userId          String
-  lessonId        String
-  completed       Boolean         @default(false)
-  progress        Int             @default(0) // percentage for video
-  watchTime       Int             @default(0) // in seconds
-  lastWatchedAt   DateTime?
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
-  lesson          course_lessons  @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  id            String         @id @default(uuid())
+  userId        String
+  lessonId      String
+  completed     Boolean        @default(false)
+  progress      Int            @default(0) // percentage for video
+  watchTime     Int            @default(0) // in seconds
+  lastWatchedAt DateTime?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  lesson        course_lessons @relation(fields: [lessonId], references: [id], onDelete: Cascade)
 
   @@unique([userId, lessonId])
   @@index([userId])
@@ -1094,25 +1094,25 @@ model success_labs {
 }
 
 model events {
-  id               String         @id @default(uuid())
+  id               String                @id @default(uuid())
   title            String
-  slug             String         @unique
+  slug             String                @unique
   description      String?
-  eventType        EventType      @default(WEBINAR)
+  eventType        EventType             @default(WEBINAR)
   startDateTime    DateTime
   endDateTime      DateTime?
-  timezone         String         @default("America/New_York")
-  location         String?        // For virtual events, this could be the meeting link
+  timezone         String                @default("America/New_York")
+  location         String? // For virtual events, this could be the meeting link
   thumbnail        String?
   hostName         String?
   hostBio          String?
   hostImage        String?
-  isPremium        Boolean        @default(true)
+  isPremium        Boolean               @default(true)
   maxAttendees     Int?
-  currentAttendees Int            @default(0)
-  isPublished      Boolean        @default(false)
-  createdAt        DateTime       @default(now())
-  updatedAt        DateTime       @updatedAt
+  currentAttendees Int                   @default(0)
+  isPublished      Boolean               @default(false)
+  createdAt        DateTime              @default(now())
+  updatedAt        DateTime              @updatedAt
   registrations    event_registrations[]
 
   @@index([slug])
@@ -1122,14 +1122,14 @@ model events {
 }
 
 model event_registrations {
-  id              String    @id @default(uuid())
-  userId          String
-  eventId         String
-  status          EventRegistrationStatus @default(REGISTERED)
-  attended        Boolean   @default(false)
-  registeredAt    DateTime  @default(now())
-  canceledAt      DateTime?
-  event           events    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  id           String                  @id @default(uuid())
+  userId       String
+  eventId      String
+  status       EventRegistrationStatus @default(REGISTERED)
+  attended     Boolean                 @default(false)
+  registeredAt DateTime                @default(now())
+  canceledAt   DateTime?
+  event        events                  @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
   @@unique([userId, eventId])
   @@index([userId])
@@ -1138,15 +1138,15 @@ model event_registrations {
 }
 
 model magazine_progress {
-  id          String    @id @default(uuid())
+  id          String   @id @default(uuid())
   userId      String
   magazineId  String
-  currentPage Int       @default(1)
+  currentPage Int      @default(1)
   totalPages  Int
-  completed   Boolean   @default(false)
-  lastReadAt  DateTime  @default(now())
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  completed   Boolean  @default(false)
+  lastReadAt  DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@unique([userId, magazineId])
   @@index([userId])
@@ -1186,12 +1186,12 @@ enum EventRegistrationStatus {
 }
 
 model staff_departments {
-  id           String     @id @default(uuid())
-  userId       String
-  department   Department
-  assignedBy   String     // User ID of Super Admin who assigned
-  assignedAt   DateTime   @default(now())
-  user         users      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id         String     @id @default(uuid())
+  userId     String
+  department Department
+  assignedBy String // User ID of Super Admin who assigned
+  assignedAt DateTime   @default(now())
+  user       users      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, department])
   @@index([userId])

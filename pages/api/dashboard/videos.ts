@@ -30,37 +30,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     if (req.method === 'GET') {
-      // Get all videos with user's watch history
+      // Get all published videos
       const videos = await prisma.videos.findMany({
-        where: { isPublished: true },
-        include: {
-          watch_history: {
-            where: { userId: user.id },
-          },
-        },
+        where: { status: 'PUBLISHED' },
         orderBy: { publishedAt: 'desc' },
       });
 
-      const videosWithProgress = videos.map((video) => {
-        const watchHistory = video.watch_history[0];
-
-        return {
-          id: video.id,
-          title: video.title,
-          slug: video.slug,
-          description: video.description,
-          thumbnail: video.thumbnail,
-          videoUrl: video.videoUrl,
-          duration: video.duration,
-          category: video.category,
-          publishedAt: video.publishedAt,
-          watched: watchHistory?.completed || false,
-          progress: watchHistory?.progress || 0,
-          lastWatchedAt: watchHistory?.lastWatchedAt,
-        };
-      });
-
-      return res.status(200).json(videosWithProgress);
+      return res.status(200).json(videos);
     }
 
     if (req.method === 'POST') {
@@ -76,33 +52,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         where: { id: videoId },
       });
 
-      if (!video || !video.isPublished) {
+      if (!video || video.status !== 'PUBLISHED') {
         return res.status(404).json({ error: 'Video not found' });
       }
 
-      // Upsert watch history
-      const watchHistory = await prisma.video_watch_history.upsert({
-        where: {
-          userId_videoId: {
-            userId: user.id,
-            videoId,
-          },
-        },
-        update: {
-          progress: progress || 0,
-          completed: completed || false,
-          lastWatchedAt: new Date(),
-        },
-        create: {
-          userId: user.id,
-          videoId,
-          progress: progress || 0,
-          completed: completed || false,
-          lastWatchedAt: new Date(),
-        },
-      });
-
-      return res.status(200).json(watchHistory);
+      // Feature coming soon
+      return res.status(200).json({ message: 'Watch history tracking coming soon' });
     }
 
     return res.status(405).json({ error: 'Method not allowed' });

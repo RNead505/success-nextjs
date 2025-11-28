@@ -30,37 +30,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     if (req.method === 'GET') {
-      // Get all podcasts with user's listen history
+      // Get all published podcasts
       const podcasts = await prisma.podcasts.findMany({
-        where: { isPublished: true },
-        include: {
-          listen_history: {
-            where: { userId: user.id },
-          },
-        },
+        where: { status: 'PUBLISHED' },
         orderBy: { publishedAt: 'desc' },
       });
 
-      const podcastsWithProgress = podcasts.map((podcast) => {
-        const listenHistory = podcast.listen_history[0];
-
-        return {
-          id: podcast.id,
-          title: podcast.title,
-          slug: podcast.slug,
-          description: podcast.description,
-          thumbnail: podcast.thumbnail,
-          audioUrl: podcast.audioUrl,
-          duration: podcast.duration,
-          category: podcast.category,
-          publishedAt: podcast.publishedAt,
-          listened: listenHistory?.completed || false,
-          progress: listenHistory?.progress || 0,
-          lastListenedAt: listenHistory?.lastListenedAt,
-        };
-      });
-
-      return res.status(200).json(podcastsWithProgress);
+      return res.status(200).json(podcasts);
     }
 
     if (req.method === 'POST') {
@@ -76,33 +52,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         where: { id: podcastId },
       });
 
-      if (!podcast || !podcast.isPublished) {
+      if (!podcast || podcast.status !== 'PUBLISHED') {
         return res.status(404).json({ error: 'Podcast not found' });
       }
 
-      // Upsert listen history
-      const listenHistory = await prisma.podcast_listen_history.upsert({
-        where: {
-          userId_podcastId: {
-            userId: user.id,
-            podcastId,
-          },
-        },
-        update: {
-          progress: progress || 0,
-          completed: completed || false,
-          lastListenedAt: new Date(),
-        },
-        create: {
-          userId: user.id,
-          podcastId,
-          progress: progress || 0,
-          completed: completed || false,
-          lastListenedAt: new Date(),
-        },
-      });
-
-      return res.status(200).json(listenHistory);
+      // Feature coming soon
+      return res.status(200).json({ message: 'Listen history tracking coming soon' });
     }
 
     return res.status(405).json({ error: 'Method not allowed' });
