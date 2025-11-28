@@ -67,6 +67,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     {
       title: 'Sales & Customer Service',
       items: [
+        { name: 'Sales & CS Dashboard', href: '/admin/sales-cs', icon: '🎯' },
         { name: 'Sales & Transactions', href: '/admin/sales', icon: '💰' },
         { name: 'Members', href: '/admin/members', icon: '⭐' },
         { name: 'Subscribers', href: '/admin/subscribers', icon: '👥' },

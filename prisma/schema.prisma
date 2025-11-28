@@ -1201,10 +1201,10 @@ model staff_departments {
 // Page Permissions System
 model page_permissions {
   id          String   @id @default(uuid())
-  pagePath    String   // e.g., "/admin/posts", "/admin/media", "/admin/analytics"
-  displayName String   // Human-readable name for the page
-  description String?  // Description of what this page does
-  category    String   // e.g., "Content", "User Management", "Analytics", "System"
+  pagePath    String // e.g., "/admin/posts", "/admin/media", "/admin/analytics"
+  displayName String // Human-readable name for the page
+  description String? // Description of what this page does
+  category    String // e.g., "Content", "User Management", "Analytics", "System"
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -1220,16 +1220,16 @@ model page_permissions {
 
 // Role-based permissions (e.g., all EDITORs can access /admin/posts)
 model role_permissions {
-  id           String           @id @default(uuid())
-  pageId       String
-  role         UserRole
-  canAccess    Boolean          @default(true)
-  canCreate    Boolean          @default(false)
-  canEdit      Boolean          @default(false)
-  canDelete    Boolean          @default(false)
-  createdAt    DateTime         @default(now())
-  updatedAt    DateTime         @updatedAt
-  page         page_permissions @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  id        String           @id @default(uuid())
+  pageId    String
+  role      UserRole
+  canAccess Boolean          @default(true)
+  canCreate Boolean          @default(false)
+  canEdit   Boolean          @default(false)
+  canDelete Boolean          @default(false)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  page      page_permissions @relation(fields: [pageId], references: [id], onDelete: Cascade)
 
   @@unique([pageId, role])
   @@index([role])
@@ -1237,17 +1237,21 @@ model role_permissions {
 
 // Department-based permissions (e.g., EDITORIAL department can access /admin/editorial)
 model department_permissions {
-  id           String           @id @default(uuid())
-  pageId       String
-  department   Department
-  canAccess    Boolean          @default(true)
-  canCreate    Boolean          @default(false)
-  canEdit      Boolean          @default(false)
-  canDelete    Boolean          @default(false)
-  createdAt    DateTime         @default(now())
-  updatedAt    DateTime         @updatedAt
-  page         page_permissions @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  id         String           @id @default(uuid())
+  pageId     String
+  department Department
+  canAccess  Boolean          @default(true)
+  canCreate  Boolean          @default(false)
+  canEdit    Boolean          @default(false)
+  canDelete  Boolean          @default(false)
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+  page       page_permissions @relation(fields: [pageId], references: [id], onDelete: Cascade)
 
   @@unique([pageId, department])
   @@index([department])
 }
+
+// Note: This project already has existing orders, subscription-related tables.
+// The Sales & CS admin section will use and extend the existing tables.
+// See existing: orders, subscriptions, magazine_subscriptions, email_subscribers, users
