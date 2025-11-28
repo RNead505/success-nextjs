@@ -23,7 +23,7 @@ export default async function handler(
       return res.status(403).json({ error: 'Only admins can create invite codes' });
     }
 
-    const { email, role, expiresInDays, maxUses } = req.body;
+    const { email, role, expiresInDays, maxUses, departments } = req.body;
 
     const invite = await createInviteCode({
       email: email || undefined,
@@ -32,6 +32,10 @@ export default async function handler(
       expiresInDays: expiresInDays || 7,
       maxUses: maxUses || 1,
     });
+
+    // TODO: Store departments with invite for future implementation
+    // This would require updating the invite_codes table schema
+    // For now, departments can be assigned manually after registration
 
     return res.status(201).json({
       success: true,
@@ -42,6 +46,9 @@ export default async function handler(
         expiresAt: invite.expiresAt,
         maxUses: invite.maxUses,
       },
+      note: departments && departments.length > 0
+        ? 'Departments will need to be assigned manually after user registration'
+        : undefined,
     });
 
   } catch (error) {
