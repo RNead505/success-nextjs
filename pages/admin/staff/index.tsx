@@ -1,8 +1,8 @@
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import AdminLayout from '../../components/admin/AdminLayout';
-import BulkStaffOperations from '../../components/admin/BulkStaffOperations';
+import AdminLayout from '../../../components/admin/AdminLayout';
+import BulkStaffOperations from '../../../components/admin/BulkStaffOperations';
 import styles from './Staff.module.css';
 
 interface StaffMember {
