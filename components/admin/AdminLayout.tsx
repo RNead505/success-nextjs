@@ -85,7 +85,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         { name: 'Exclusive Articles', href: '/admin/success-plus/articles', icon: '📰' },
         { name: 'Members', href: '/admin/members', icon: '⭐' },
         { name: 'Subscriptions', href: '/admin/subscriptions', icon: '💳' },
-        { name: 'Revenue', href: '/admin/revenue', icon: '💰' },
+        { name: 'Sales & Transactions', href: '/admin/sales', icon: '💰' },
+        { name: 'Revenue Analytics', href: '/admin/revenue', icon: '📊' },
       ]
     },
     {
