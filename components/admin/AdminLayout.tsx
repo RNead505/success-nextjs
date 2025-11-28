@@ -65,6 +65,18 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       ]
     },
     {
+      title: 'Sales & Customer Service',
+      items: [
+        { name: 'Sales & Transactions', href: '/admin/sales', icon: '💰' },
+        { name: 'Members', href: '/admin/members', icon: '⭐' },
+        { name: 'Subscribers', href: '/admin/subscribers', icon: '👥' },
+        { name: 'Subscriptions', href: '/admin/subscriptions', icon: '💳' },
+        { name: 'Revenue Analytics', href: '/admin/revenue', icon: '📊' },
+        { name: 'Orders & Fulfillment', href: '/admin/orders', icon: '📦' },
+        { name: 'Refunds & Disputes', href: '/admin/refunds', icon: '🔄' },
+      ]
+    },
+    {
       title: 'SUCCESS.com',
       items: [
         { name: 'Posts', href: '/admin/posts', icon: '📝' },
@@ -83,10 +95,6 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       items: [
         { name: 'Content Hub', href: '/admin/success-plus', icon: '✨' },
         { name: 'Exclusive Articles', href: '/admin/success-plus/articles', icon: '📰' },
-        { name: 'Members', href: '/admin/members', icon: '⭐' },
-        { name: 'Subscriptions', href: '/admin/subscriptions', icon: '💳' },
-        { name: 'Sales & Transactions', href: '/admin/sales', icon: '💰' },
-        { name: 'Revenue Analytics', href: '/admin/revenue', icon: '📊' },
       ]
     },
     {
