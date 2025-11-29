@@ -311,30 +311,32 @@ model order_items {
 }
 
 model orders {
-  id              String        @id
-  orderNumber     String        @unique
-  userId          String?
+  id              String            @id
+  orderNumber     String            @unique
+  memberId        String            // Changed from userId to memberId
   userName        String
   userEmail       String
-  total           Decimal       @db.Decimal(10, 2)
-  subtotal        Decimal       @db.Decimal(10, 2)
-  tax             Decimal       @default(0) @db.Decimal(10, 2)
-  shipping        Decimal       @default(0) @db.Decimal(10, 2)
-  discount        Decimal       @default(0) @db.Decimal(10, 2)
-  status          OrderStatus   @default(PENDING)
+  total           Decimal           @db.Decimal(10, 2)
+  subtotal        Decimal           @db.Decimal(10, 2)
+  tax             Decimal           @default(0) @db.Decimal(10, 2)
+  shipping        Decimal           @default(0) @db.Decimal(10, 2)
+  discount        Decimal           @default(0) @db.Decimal(10, 2)
+  status          OrderStatus       @default(PENDING)
   paymentMethod   String
   paymentId       String?
   shippingAddress String?
   billingAddress  String?
   notes           String?
-  createdAt       DateTime      @default(now())
+  createdAt       DateTime          @default(now())
   updatedAt       DateTime
   order_items     order_items[]
+  member          members           @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  refund_disputes refund_disputes[]
 
   @@index([createdAt])
   @@index([orderNumber])
   @@index([status])
-  @@index([userId])
+  @@index([memberId])
 }
 
 model page_views {
@@ -596,11 +598,11 @@ model site_settings {
 
 model subscriptions {
   id                         String                  @id
-  userId                     String?                 @unique
-  stripeCustomerId           String?                 @unique
+  memberId                   String                  // Changed from userId to memberId
+  stripeCustomerId           String?
   stripeSubscriptionId       String?                 @unique
   stripePriceId              String?
-  paykickstartCustomerId     String?                 @unique
+  paykickstartCustomerId     String?
   paykickstartSubscriptionId String?                 @unique
   provider                   String                  @default("stripe")
   currentPeriodStart         DateTime?
@@ -612,11 +614,14 @@ model subscriptions {
   tier                       String?
   status                     String                  @default("inactive")
   magazine_subscriptions     magazine_subscriptions?
-  users                      users?                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  member                     members                 @relation(fields: [memberId], references: [id], onDelete: Cascade)
 
+  @@index([memberId])
+  @@index([stripeCustomerId])
   @@index([paykickstartCustomerId])
   @@index([paykickstartSubscriptionId])
   @@index([provider])
+  @@index([status])
 }
 
 model tags {
@@ -659,6 +664,7 @@ model user_activities {
   @@index([userId])
 }
 
+// Platform Access - Admin, Staff, Editors
 model users {
   id                        String               @id
   name                      String
@@ -669,9 +675,6 @@ model users {
   avatar                    String?
   createdAt                 DateTime             @default(now())
   updatedAt                 DateTime             @updatedAt
-  stripeCustomerId          String?              @unique
-  subscriptionStatus        SubscriptionStatus   @default(INACTIVE)
-  subscriptionExpiry        DateTime?
   lastLoginAt               DateTime?
   emailVerified             Boolean              @default(false)
   emailVerificationToken    String?
@@ -680,7 +683,9 @@ model users {
   hasChangedDefaultPassword Boolean              @default(false)
   invitedBy                 String?
   inviteCode                String?
-  membershipTier            MembershipTier       @default(FREE)
+  isActive                  Boolean              @default(true)
+
+  // WordPress author fields (for content creators)
   wordpressId               Int?                 @unique
   socialTwitter             String?
   socialLinkedin            String?
@@ -690,6 +695,11 @@ model users {
   authorPageSlug            String?              @unique
   onboardingCompleted       Boolean              @default(false)
   interests                 String[]
+
+  // Link to Member if this user is ALSO a customer
+  memberId                  String?              @unique
+  member                    members?             @relation("UserMemberLink", fields: [memberId], references: [id], onDelete: SetNull)
+
   activity_logs             activity_logs[]
   bookmarks                 bookmarks[]
   bulk_actions              bulk_actions[]
@@ -697,7 +707,6 @@ model users {
   posts                     posts[]
   reading_progress          reading_progress[]
   sessions                  sessions[]
-  subscriptions             subscriptions?
   user_activities           user_activities[]
   pay_links                 pay_links[]
   assigned_projects         projects[]           @relation("AssignedProjects")
@@ -706,10 +715,134 @@ model users {
   staff_departments         staff_departments[]
 
   @@index([email])
-  @@index([subscriptionStatus])
   @@index([inviteCode])
   @@index([wordpressId])
   @@index([authorPageSlug])
+  @@index([role])
+  @@index([memberId])
+}
+
+// Commerce & Customers - People who have purchased/subscribed
+model members {
+  id                        String              @id
+  firstName                 String
+  lastName                  String
+  email                     String              @unique
+  phone                     String?
+  joinDate                  DateTime            @default(now())
+
+  // Customer-specific roles (based on purchases/subscriptions)
+  membershipTier            MembershipTier      @default(Free)
+  membershipStatus          MemberStatus        @default(Active)
+
+  // Platform user link (if they ALSO have admin/staff access)
+  platformUser              users?              @relation("UserMemberLink")
+
+  // Customer metrics
+  lastLoginDate             DateTime?
+  totalSpent                Decimal             @db.Decimal(10, 2) @default(0)
+  lifetimeValue             Decimal             @db.Decimal(10, 2) @default(0)
+  engagementScore           Int                 @default(0)
+  tags                      String[]
+  billingAddress            Json?
+  shippingAddress           Json?
+  communicationPreferences  Json?
+  assignedCSRep             String?
+  priorityLevel             PriorityLevel       @default(Standard)
+  internalNotes             String?             @db.Text
+
+  // Payment provider IDs
+  stripeCustomerId          String?             @unique
+  paykickstartCustomerId    String?             @unique
+  woocommerceCustomerId     Int?                @unique
+
+  lastContactDate           DateTime?
+  createdAt                 DateTime            @default(now())
+  updatedAt                 DateTime            @updatedAt
+
+  transactions              transactions[]
+  subscriptions             subscriptions[]
+  subscribers               subscribers[]
+  orders                    orders[]
+  refund_disputes           refund_disputes[]
+
+  @@index([email])
+  @@index([membershipStatus])
+  @@index([membershipTier])
+  @@index([stripeCustomerId])
+  @@index([paykickstartCustomerId])
+  @@index([totalSpent])
+}
+
+// Transaction history for members
+model transactions {
+  id              String   @id @default(uuid())
+  memberId        String
+  amount          Decimal  @db.Decimal(10, 2)
+  currency        String   @default("USD")
+  status          String   // succeeded, failed, pending, refunded
+  type            String   // subscription, one-time, refund
+  description     String?
+  paymentMethod   String?  // card, paypal, etc.
+  provider        String   // stripe, paykickstart, woocommerce
+  providerTxnId   String?  // Provider's transaction ID
+  metadata        Json?
+  createdAt       DateTime @default(now())
+
+  member          members  @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@index([memberId])
+  @@index([status])
+  @@index([createdAt])
+  @@index([provider])
+}
+
+// Newsletter subscribers (separate from members)
+model subscribers {
+  id              String           @id @default(uuid())
+  email           String           @unique
+  firstName       String?
+  lastName        String?
+  status          SubscriberStatus @default(ACTIVE)
+  source          String?          // website, import, api
+  subscribedAt    DateTime         @default(now())
+  unsubscribedAt  DateTime?
+  memberId        String?          // Link to member if they're also a customer
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  member          members?         @relation(fields: [memberId], references: [id], onDelete: SetNull)
+
+  @@index([email])
+  @@index([status])
+  @@index([memberId])
+}
+
+// Refund & dispute tracking
+model refund_disputes {
+  id              String          @id @default(uuid())
+  memberId        String
+  orderId         String?
+  transactionId   String?
+  type            DisputeType
+  status          DisputeStatus   @default(OPEN)
+  amount          Decimal         @db.Decimal(10, 2)
+  reason          String?
+  description     String?         @db.Text
+  resolution      String?         @db.Text
+  assignedTo      String?         // Staff user ID
+  priority        Priority        @default(MEDIUM)
+  createdAt       DateTime        @default(now())
+  resolvedAt      DateTime?
+  updatedAt       DateTime        @updatedAt
+
+  member          members         @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  order           orders?         @relation(fields: [orderId], references: [id], onDelete: SetNull)
+
+  @@index([memberId])
+  @@index([status])
+  @@index([type])
+  @@index([createdAt])
 }
 
 model invite_codes {
@@ -870,9 +1003,591 @@ enum EditorialStatus {
 }
 
 enum MembershipTier {
-  FREE
-  INSIDER
-  COLLECTIVE
+  Free              // Free account, no purchases
+  Customer          // Made a purchase
+  SUCCESSPlus       // Active SUCCESS+ subscription
+  VIP               // VIP tier
+  Enterprise        // Enterprise tier
+}
+
+enum MemberStatus {
+  Active
+  Inactive
+  Suspended
+  Cancelled
+}
+
+enum PriorityLevel {
+  Standard
+  High
+  VIP
+  Enterprise
+}
+
+enum DisputeType {
+  REFUND
+  CHARGEBACK
+  DISPUTE
+  CANCELLATION
+}
+
+enum DisputeStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+  ESCALATED
+}
+
+// ============================================
+// ENTERPRISE ADMIN FEATURES
+// ============================================
+
+// Audit Logging - Track every action for compliance
+model audit_logs {
+  id          String   @id @default(uuid())
+  userId      String?
+  userEmail   String
+  userName    String?
+  action      String   // "user.created", "transaction.refunded", "content.published"
+  entityType  String   // "User", "Transaction", "Member", "Post"
+  entityId    String?
+  changes     Json?    // {before: {...}, after: {...}}
+  ipAddress   String?
+  userAgent   String?
+  requestUrl  String?
+  method      String?  // GET, POST, PUT, DELETE
+  statusCode  Int?
+  duration    Int?     // milliseconds
+  metadata    Json?
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@index([userEmail])
+  @@index([action])
+  @@index([entityType])
+  @@index([createdAt])
+}
+
+// System Alerts & Notifications
+model system_alerts {
+  id           String      @id @default(uuid())
+  type         AlertType   // Error, Warning, Info, Critical
+  category     AlertCategory
+  title        String
+  message      String      @db.Text
+  severity     Int         // 1-5 (5 = critical)
+  isRead       Boolean     @default(false)
+  isResolved   Boolean     @default(false)
+  assignedTo   String?
+  assignedToEmail String?
+  resolvedBy   String?
+  metadata     Json?
+  stackTrace   String?     @db.Text
+  errorCount   Int         @default(1)
+  firstSeen    DateTime    @default(now())
+  lastSeen     DateTime    @default(now())
+  createdAt    DateTime    @default(now())
+  resolvedAt   DateTime?
+
+  @@index([type])
+  @@index([category])
+  @@index([isRead])
+  @@index([isResolved])
+  @@index([severity])
+  @@index([createdAt])
+  @@index([assignedTo])
+}
+
+// User Notifications (in-app)
+model notifications {
+  id          String             @id @default(uuid())
+  userId      String
+  type        NotificationType
+  title       String
+  message     String             @db.Text
+  actionUrl   String?
+  icon        String?
+  isRead      Boolean            @default(false)
+  priority    NotificationPriority @default(NORMAL)
+  metadata    Json?
+  expiresAt   DateTime?
+  createdAt   DateTime           @default(now())
+  readAt      DateTime?
+
+  @@index([userId])
+  @@index([isRead])
+  @@index([createdAt])
+  @@index([priority])
+}
+
+// Workflow Automation Engine
+model workflows {
+  id          String        @id @default(uuid())
+  name        String
+  description String?       @db.Text
+  isActive    Boolean       @default(true)
+  trigger     Json          // {type: "payment.received", conditions: {...}}
+  actions     Json[]        // [{type: "send.email", config: {...}}]
+  createdBy   String
+  createdByEmail String
+  lastRun     DateTime?
+  nextRun     DateTime?
+  runCount    Int           @default(0)
+  successCount Int          @default(0)
+  failureCount Int          @default(0)
+  lastError   String?       @db.Text
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  executions  workflow_executions[]
+
+  @@index([isActive])
+  @@index([createdBy])
+}
+
+model workflow_executions {
+  id          String          @id @default(uuid())
+  workflowId  String
+  status      ExecutionStatus
+  triggeredBy Json            // event data
+  results     Json?           // action results
+  error       String?         @db.Text
+  duration    Int?            // milliseconds
+  startedAt   DateTime        @default(now())
+  completedAt DateTime?
+  workflow    workflows       @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+
+  @@index([workflowId])
+  @@index([status])
+  @@index([startedAt])
+}
+
+// Webhook Delivery Logs
+model webhook_logs {
+  id            String          @id @default(uuid())
+  provider      String          // Stripe, PayKickstart, WooCommerce, Custom
+  eventType     String
+  eventId       String?         // Provider's event ID
+  payload       Json
+  headers       Json?
+  status        WebhookStatus
+  attempts      Int             @default(0)
+  maxAttempts   Int             @default(3)
+  lastAttempt   DateTime?
+  nextAttempt   DateTime?
+  errorMessage  String?         @db.Text
+  responseCode  Int?
+  responseBody  String?         @db.Text
+  processedAt   DateTime?
+  createdAt     DateTime        @default(now())
+
+  @@index([provider])
+  @@index([eventType])
+  @@index([status])
+  @@index([createdAt])
+}
+
+// Scheduled Tasks / Cron Jobs
+model scheduled_tasks {
+  id            String      @id @default(uuid())
+  name          String
+  description   String?     @db.Text
+  schedule      String      // cron expression (e.g., "0 0 * * *")
+  taskType      String      // "email.digest", "data.sync", "cleanup"
+  config        Json?
+  isActive      Boolean     @default(true)
+  lastRun       DateTime?
+  nextRun       DateTime?
+  runCount      Int         @default(0)
+  successCount  Int         @default(0)
+  failureCount  Int         @default(0)
+  lastStatus    String?     // success, failed, running
+  lastError     String?     @db.Text
+  lastDuration  Int?        // milliseconds
+  createdBy     String
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([isActive])
+  @@index([taskType])
+  @@index([nextRun])
+}
+
+// Custom Reports
+model custom_reports {
+  id          String   @id @default(uuid())
+  name        String
+  description String?  @db.Text
+  createdBy   String
+  createdByEmail String
+  dataSource  String   // "transactions", "members", "content"
+  config      Json     // {filters, grouping, charts, columns}
+  chartType   String?  // bar, line, pie, table
+  isPublic    Boolean  @default(false)
+  isFavorite  Boolean  @default(false)
+  schedule    String?  // cron for scheduled reports
+  lastRun     DateTime?
+  runCount    Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([createdBy])
+  @@index([dataSource])
+  @@index([isPublic])
+}
+
+// API Keys Management
+model api_keys {
+  id          String      @id @default(uuid())
+  name        String
+  key         String      @unique  // Hashed API key
+  keyPreview  String      // Last 4 characters for display
+  userId      String
+  userEmail   String
+  scopes      String[]    // ["read:members", "write:transactions"]
+  isActive    Boolean     @default(true)
+  expiresAt   DateTime?
+  lastUsedAt  DateTime?
+  usageCount  Int         @default(0)
+  rateLimit   Int         @default(1000)  // requests per hour
+  ipWhitelist String[]    @default([])
+  metadata    Json?
+  createdAt   DateTime    @default(now())
+  revokedAt   DateTime?
+
+  @@index([userId])
+  @@index([isActive])
+}
+
+// Security Sessions
+model security_sessions {
+  id          String   @id @default(uuid())
+  userId      String
+  userEmail   String
+  deviceInfo  Json     // {browser, os, device}
+  ipAddress   String
+  location    Json?    // {country, city, lat, lon}
+  isActive    Boolean  @default(true)
+  isTrusted   Boolean  @default(false)
+  lastActivity DateTime @default(now())
+  expiresAt   DateTime
+  createdAt   DateTime @default(now())
+  revokedAt   DateTime?
+
+  @@index([userId])
+  @@index([isActive])
+  @@index([expiresAt])
+}
+
+// Failed Login Attempts (Security)
+model login_attempts {
+  id          String   @id @default(uuid())
+  email       String
+  ipAddress   String
+  userAgent   String?
+  success     Boolean
+  failReason  String?
+  metadata    Json?
+  createdAt   DateTime @default(now())
+
+  @@index([email])
+  @@index([ipAddress])
+  @@index([success])
+  @@index([createdAt])
+}
+
+// GDPR Data Requests
+model gdpr_requests {
+  id          String       @id @default(uuid())
+  userId      String?
+  email       String
+  requestType GDPRRequestType
+  status      GDPRStatus   @default(PENDING)
+  requestedBy String?      // User ID who made request
+  processedBy String?      // Admin who processed
+  dataExport  Json?        // Exported data
+  deletedData Json?        // What was deleted
+  notes       String?      @db.Text
+  createdAt   DateTime     @default(now())
+  processedAt DateTime?
+  completedAt DateTime?
+
+  @@index([email])
+  @@index([requestType])
+  @@index([status])
+  @@index([createdAt])
+}
+
+// System Metrics (Performance Monitoring)
+model system_metrics {
+  id          String   @id @default(uuid())
+  metricType  String   // cpu, memory, disk, db_connections, api_latency
+  value       Float
+  unit        String   // percent, mb, ms, count
+  metadata    Json?
+  timestamp   DateTime @default(now())
+
+  @@index([metricType])
+  @@index([timestamp])
+}
+
+// Error Tracking
+model error_logs {
+  id          String   @id @default(uuid())
+  errorType   String   // TypeError, ValidationError, APIError
+  message     String   @db.Text
+  stackTrace  String?  @db.Text
+  userId      String?
+  userEmail   String?
+  url         String?
+  method      String?
+  statusCode  Int?
+  environment String   @default("production")
+  severity    String   // low, medium, high, critical
+  isResolved  Boolean  @default(false)
+  resolvedBy  String?
+  resolvedAt  DateTime?
+  occurrences Int      @default(1)
+  firstSeen   DateTime @default(now())
+  lastSeen    DateTime @default(now())
+  metadata    Json?
+
+  @@index([errorType])
+  @@index([severity])
+  @@index([isResolved])
+  @@index([firstSeen])
+  @@index([userId])
+}
+
+// Database Backups
+model database_backups {
+  id          String        @id @default(uuid())
+  filename    String
+  fileSize    BigInt        // bytes
+  backupType  BackupType
+  status      BackupStatus
+  s3Url       String?
+  localPath   String?
+  checksum    String?
+  triggeredBy String?
+  error       String?       @db.Text
+  startedAt   DateTime      @default(now())
+  completedAt DateTime?
+  expiresAt   DateTime?
+
+  @@index([backupType])
+  @@index([status])
+  @@index([startedAt])
+}
+
+// Email Deliverability Tracking
+model email_deliverability {
+  id              String   @id @default(uuid())
+  provider        String   // SendGrid, Mailchimp, AWS SES
+  campaignId      String?
+  emailId         String?
+  recipientEmail  String
+  subject         String?
+  status          EmailDeliveryStatus
+  bounceType      String?  // hard, soft, transient
+  bounceReason    String?  @db.Text
+  spamReport      Boolean  @default(false)
+  opened          Boolean  @default(false)
+  clicked         Boolean  @default(false)
+  openedAt        DateTime?
+  clickedAt       DateTime?
+  sentAt          DateTime  @default(now())
+  deliveredAt     DateTime?
+  bouncedAt       DateTime?
+
+  @@index([recipientEmail])
+  @@index([status])
+  @@index([provider])
+  @@index([sentAt])
+}
+
+// Content Approval Workflow
+model content_approvals {
+  id          String          @id @default(uuid())
+  contentType String          // post, page, video, podcast
+  contentId   String
+  contentTitle String
+  submittedBy String
+  submitterEmail String
+  currentStep Int             @default(1)
+  totalSteps  Int             @default(1)
+  status      ApprovalStatus  @default(PENDING)
+  approvers   Json[]          // [{userId, email, step, approved, comments}]
+  metadata    Json?
+  submittedAt DateTime        @default(now())
+  approvedAt  DateTime?
+  rejectedAt  DateTime?
+
+  @@index([contentType])
+  @@index([contentId])
+  @@index([status])
+  @@index([submittedBy])
+}
+
+// Content Version History
+model content_versions {
+  id          String   @id @default(uuid())
+  contentType String
+  contentId   String
+  version     Int
+  title       String
+  content     String   @db.Text
+  excerpt     String?  @db.Text
+  metadata    Json?
+  changedBy   String
+  changerEmail String
+  changeNote  String?  @db.Text
+  diff        Json?    // Calculated differences
+  createdAt   DateTime @default(now())
+
+  @@unique([contentType, contentId, version])
+  @@index([contentType])
+  @@index([contentId])
+  @@index([createdAt])
+}
+
+// SUCCESS Labs Analytics
+model success_labs_sessions {
+  id              String   @id @default(uuid())
+  userId          String?
+  memberId        String?
+  sessionType     String   // victor_ai, notebooklm, tool_usage
+  toolName        String?  // Which SUCCESS Lab tool
+  duration        Int?     // seconds
+  messagesCount   Int      @default(0)
+  satisfaction    Int?     // 1-5 rating
+  outcome         String?  // completed, abandoned, error
+  metadata        Json?
+  startedAt       DateTime @default(now())
+  endedAt         DateTime?
+
+  @@index([userId])
+  @@index([memberId])
+  @@index([sessionType])
+  @@index([toolName])
+  @@index([startedAt])
+}
+
+// KPI Tracking
+model kpi_metrics {
+  id          String   @id @default(uuid())
+  name        String
+  category    String   // revenue, growth, engagement, retention
+  value       Float
+  target      Float?
+  unit        String   // dollars, percent, count
+  period      String   // daily, weekly, monthly, quarterly
+  periodStart DateTime
+  periodEnd   DateTime
+  metadata    Json?
+  calculatedAt DateTime @default(now())
+
+  @@index([name])
+  @@index([category])
+  @@index([periodStart])
+}
+
+// Enums for Enterprise Features
+enum AlertType {
+  Error
+  Warning
+  Info
+  Critical
+  Success
+}
+
+enum AlertCategory {
+  Security
+  Payment
+  System
+  Content
+  CustomerService
+  Integration
+  Performance
+  Compliance
+}
+
+enum NotificationType {
+  TASK_ASSIGNED
+  MENTION
+  PAYMENT_FAILED
+  SLA_BREACH
+  SYSTEM_ERROR
+  APPROVAL_NEEDED
+  COMMENT_REPLY
+  REPORT_READY
+}
+
+enum NotificationPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+enum WebhookStatus {
+  Success
+  Failed
+  Pending
+  Retrying
+  MaxAttemptsReached
+}
+
+enum ExecutionStatus {
+  RUNNING
+  SUCCESS
+  FAILED
+  CANCELLED
+}
+
+enum GDPRRequestType {
+  DATA_EXPORT
+  DATA_DELETION
+  DATA_CORRECTION
+  CONSENT_WITHDRAWAL
+}
+
+enum GDPRStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  REJECTED
+}
+
+enum BackupType {
+  FULL
+  INCREMENTAL
+  MANUAL
+  SCHEDULED
+}
+
+enum BackupStatus {
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+}
+
+enum EmailDeliveryStatus {
+  SENT
+  DELIVERED
+  BOUNCED
+  DEFERRED
+  SPAM
+  DROPPED
+}
+
+enum ApprovalStatus {
+  PENDING
+  IN_REVIEW
+  APPROVED
+  REJECTED
+  CHANGES_REQUESTED
 }
 
 enum OrderStatus {

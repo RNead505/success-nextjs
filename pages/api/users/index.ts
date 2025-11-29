@@ -24,12 +24,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           avatar: true,
           createdAt: true,
           lastLoginAt: true,
-          subscriptionStatus: true,
+          memberId: true,
+          member: {
+            select: {
+              membershipTier: true,
+              membershipStatus: true,
+              totalSpent: true,
+            },
+          },
         },
         orderBy: { createdAt: 'desc' },
       });
 
-      return res.status(200).json(users);
+      // Transform member data to include membership tier
+      const transformedUsers = users.map((user) => ({
+        ...user,
+        membershipTier: user.member?.membershipTier || null,
+        membershipStatus: user.member?.membershipStatus || null,
+        totalSpent: user.member?.totalSpent ? user.member.totalSpent.toNumber() : 0,
+        member: undefined, // Remove the nested member object
+      }));
+
+      return res.status(200).json(transformedUsers);
     } catch (error: any) {
       console.error('Error fetching users:', error);
       return res.status(500).json({ error: 'Failed to fetch users', message: error.message });

@@ -2,17 +2,24 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import AdminLayout from '../../../components/admin/AdminLayout';
+import RoleBadges from '../../../components/admin/RoleBadges';
 import Link from 'next/link';
 import styles from './AdminUsers.module.css';
+
+type UserRole = 'SUPER_ADMIN' | 'ADMIN' | 'EDITOR' | 'AUTHOR' | 'STAFF';
+type MembershipTier = 'Free' | 'Customer' | 'SUCCESSPlus' | 'VIP' | 'Enterprise';
 
 interface User {
   id: string;
   name: string;
   email: string;
-  role: string;
+  role: UserRole;
   createdAt: string;
   avatar?: string;
   departments?: string[];
+  membershipTier?: MembershipTier | null;
+  membershipStatus?: string | null;
+  totalSpent?: number;
 }
 
 type Department =
@@ -422,9 +429,10 @@ export default function AdminUsers() {
                     </td>
                     <td>{user.email}</td>
                     <td>
-                      <span className={`${styles.roleBadge} ${styles[`role-${user.role.toLowerCase()}`]}`}>
-                        {user.role.replace('_', ' ')}
-                      </span>
+                      <RoleBadges
+                        userRole={user.role}
+                        membershipTier={user.membershipTier}
+                      />
                     </td>
                     {isSuperAdmin && (
                       <td>
