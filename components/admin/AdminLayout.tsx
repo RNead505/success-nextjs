@@ -22,6 +22,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   const router = useRouter();
   const [userDepartments, setUserDepartments] = useState<Department[]>([]);
   const [loadingDepartments, setLoadingDepartments] = useState(true);
+  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     async function fetchDepartments() {
@@ -56,8 +57,72 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     return deptConfig[dept];
   });
 
+  // Load expanded state from localStorage and determine which section to auto-expand
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('adminNavExpanded');
+      if (saved) {
+        try {
+          setExpandedSections(JSON.parse(saved));
+        } catch (e) {
+          // If parsing fails, determine active section
+          determineActiveSection();
+        }
+      } else {
+        // First load - determine which section should be expanded
+        determineActiveSection();
+      }
+    }
+  }, [router.pathname]);
+
+  // Determine which section contains the current page
+  const determineActiveSection = () => {
+    const allSections = [
+      { title: 'OVERVIEW', paths: ['/admin', '/admin/analytics'] },
+      {
+        title: 'SALES_CS',
+        paths: ['/admin/sales-cs', '/admin/sales', '/admin/members', '/admin/subscribers', '/admin/subscriptions', '/admin/revenue', '/admin/orders', '/admin/refunds']
+      },
+      {
+        title: 'SUCCESS_COM',
+        paths: ['/admin/posts', '/admin/pages', '/admin/videos', '/admin/podcasts', '/admin/comments', '/admin/magazine-manager', '/admin/categories', '/admin/tags', '/admin/media']
+      },
+      { title: 'SUCCESS_PLUS', paths: ['/admin/success-plus'] },
+      { title: 'CRM_EMAIL', paths: ['/admin/crm'] },
+      {
+        title: 'MANAGEMENT',
+        paths: ['/admin/editorial-calendar', '/admin/projects', '/admin/staff', '/admin/activity-log', '/admin/site-monitor', '/admin/content-viewer', '/admin/email-manager', '/admin/users']
+      },
+      { title: 'CONFIGURATION', paths: ['/admin/seo', '/admin/plugins', '/admin/cache', '/admin/settings'] },
+    ];
+
+    const newExpanded: Record<string, boolean> = {};
+
+    for (const section of allSections) {
+      const isActive = section.paths.some(path =>
+        router.pathname === path || router.pathname.startsWith(path + '/')
+      );
+      newExpanded[section.title] = isActive;
+    }
+
+    setExpandedSections(newExpanded);
+  };
+
+  // Toggle section and save to localStorage
+  const toggleSection = (sectionKey: string) => {
+    const newExpanded = {
+      ...expandedSections,
+      [sectionKey]: !expandedSections[sectionKey],
+    };
+    setExpandedSections(newExpanded);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('adminNavExpanded', JSON.stringify(newExpanded));
+    }
+  };
+
   const navigationSections = [
     {
+      key: 'OVERVIEW',
       title: 'Overview',
       items: [
         { name: 'Dashboard', href: '/admin', icon: '📊' },
@@ -65,11 +130,11 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       ]
     },
     {
+      key: 'SALES_CS',
       title: 'Sales & Customer Service',
       items: [
         { name: 'Sales & CS Dashboard', href: '/admin/sales-cs', icon: '🎯' },
-        { name: 'Sales & Transactions', href: '/admin/sales', icon: '💰' },
-        { name: 'Members', href: '/admin/members', icon: '⭐' },
+        { name: 'Members', href: '/admin/members', icon: '➕' },
         { name: 'Subscribers', href: '/admin/subscribers', icon: '👥' },
         { name: 'Subscriptions', href: '/admin/subscriptions', icon: '💳' },
         { name: 'Revenue Analytics', href: '/admin/revenue', icon: '📊' },
@@ -78,6 +143,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       ]
     },
     {
+      key: 'SUCCESS_COM',
       title: 'SUCCESS.com',
       items: [
         { name: 'Posts', href: '/admin/posts', icon: '📝' },
@@ -92,13 +158,16 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       ]
     },
     {
+      key: 'SUCCESS_PLUS',
       title: 'SUCCESS+',
       items: [
         { name: 'Content Hub', href: '/admin/success-plus', icon: '✨' },
         { name: 'Exclusive Articles', href: '/admin/success-plus/articles', icon: '📰' },
+        { name: 'SUCCESS+ Members', href: '/admin/members?tier=SUCCESSPlus', icon: '⭐' },
       ]
     },
     {
+      key: 'CRM_EMAIL',
       title: 'CRM & Email',
       items: [
         { name: 'Contacts', href: '/admin/crm/contacts', icon: '👤' },
@@ -107,6 +176,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       ]
     },
     {
+      key: 'MANAGEMENT',
       title: 'Management',
       items: [
         { name: 'Editorial Calendar', href: '/admin/editorial-calendar', icon: '📅' },
@@ -120,6 +190,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       ]
     },
     {
+      key: 'CONFIGURATION',
       title: 'Configuration',
       items: [
         { name: 'SEO Manager', href: '/admin/seo', icon: '🎯' },
@@ -160,24 +231,34 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             </div>
           )}
 
-          {navigationSections.map((section) => (
-            <div key={section.title} className={styles.navSection}>
-              <div className={styles.navSectionTitle}>{section.title}</div>
-              {section.items.map((item) => {
-                const isActive = router.pathname === item.href || router.pathname.startsWith(item.href + '/');
-                return (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className={`${styles.navItem} ${isActive ? styles.navItemActive : ''}`}
-                  >
-                    <span className={styles.navIcon}>{item.icon}</span>
-                    <span>{item.name}</span>
-                  </Link>
-                );
-              })}
-            </div>
-          ))}
+          {navigationSections.map((section) => {
+            const isExpanded = expandedSections[section.key] ?? false;
+            return (
+              <div key={section.title} className={styles.navSection}>
+                <div
+                  className={styles.navSectionTitle}
+                  onClick={() => toggleSection(section.key)}
+                  style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+                >
+                  <span>{section.title}</span>
+                  <span className={styles.chevron}>{isExpanded ? '▼' : '▶'}</span>
+                </div>
+                {isExpanded && section.items.map((item) => {
+                  const isActive = router.pathname === item.href || router.pathname.startsWith(item.href + '/');
+                  return (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      className={`${styles.navItem} ${isActive ? styles.navItemActive : ''}`}
+                    >
+                      <span className={styles.navIcon}>{item.icon}</span>
+                      <span>{item.name}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            );
+          })}
         </nav>
 
         <div className={styles.sidebarFooter}>

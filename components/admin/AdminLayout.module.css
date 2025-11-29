@@ -90,6 +90,18 @@
   letter-spacing: 1px;
   color: #666;
   margin-bottom: 0.25rem;
+  user-select: none;
+  transition: color 0.2s;
+}
+
+.navSectionTitle:hover {
+  color: #999;
+}
+
+.chevron {
+  font-size: 0.625rem;
+  color: #666;
+  transition: transform 0.2s;
 }
 
 .navItem {

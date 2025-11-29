@@ -803,6 +803,9 @@ model subscribers {
   email           String           @unique
   firstName       String?
   lastName        String?
+  type            SubscriberType   @default(EmailNewsletter)
+  recipientType   RecipientType    @default(Customer)
+  isComplimentary Boolean          @default(false)
   status          SubscriberStatus @default(ACTIVE)
   source          String?          // website, import, api
   subscribedAt    DateTime         @default(now())
@@ -815,6 +818,9 @@ model subscribers {
 
   @@index([email])
   @@index([status])
+  @@index([type])
+  @@index([recipientType])
+  @@index([isComplimentary])
   @@index([memberId])
 }
 
@@ -1635,6 +1641,24 @@ enum SubscriberStatus {
   ACTIVE
   UNSUBSCRIBED
   BOUNCED
+}
+
+enum SubscriberType {
+  MagazinePrint
+  MagazineDigital
+  SUCCESSPlus
+  CoachingProgram
+  EmailNewsletter
+  All
+}
+
+enum RecipientType {
+  Customer
+  Agent
+  Staff
+  Partner
+  Press
+  Other
 }
 
 enum SubscriptionStatus {
