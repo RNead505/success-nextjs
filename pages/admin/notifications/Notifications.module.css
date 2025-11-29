@@ -1,0 +1,480 @@
+.notificationsPage {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.header h1 {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.subtitle {
+  color: #9ca3af;
+  font-size: 14px;
+  margin: 0;
+}
+
+.headerActions {
+  display: flex;
+  gap: 12px;
+}
+
+.markAllReadBtn {
+  padding: 10px 16px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.markAllReadBtn:hover {
+  background: #2563eb;
+}
+
+/* Stats Grid */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.statCard {
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.statIcon {
+  font-size: 36px;
+  flex-shrink: 0;
+}
+
+.statContent h3 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: #9ca3af;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.statNumber {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  border-bottom: 2px solid #374151;
+}
+
+.tab,
+.tabActive {
+  padding: 12px 20px;
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tabActive {
+  color: #3b82f6;
+  border-bottom-color: #3b82f6;
+}
+
+.tab:hover {
+  color: #d1d5db;
+}
+
+.badge {
+  background: #3b82f6;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.badgeDanger {
+  background: #ef4444;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* Filters */
+.filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.filterButton,
+.filterActive {
+  padding: 8px 16px;
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 8px;
+  color: #9ca3af;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filterActive {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: white;
+}
+
+.filterButton:hover {
+  background: #374151;
+}
+
+/* Notifications List */
+.notificationsList,
+.alertsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.notificationCard {
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  gap: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.notificationCard.unread {
+  background: #1e3a5f;
+  border-color: #3b82f6;
+}
+
+.notificationCard:hover {
+  border-color: #4b5563;
+  transform: translateY(-2px);
+}
+
+.notificationIcon {
+  font-size: 24px;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #374151;
+  border-radius: 10px;
+}
+
+.notificationContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.notificationHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  gap: 12px;
+}
+
+.notificationHeader h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.priorityBadge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.notificationMessage {
+  color: #d1d5db;
+  font-size: 14px;
+  margin: 0 0 12px 0;
+  line-height: 1.5;
+}
+
+.notificationMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.time {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.actionLink {
+  color: #3b82f6;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.actionLink:hover {
+  color: #60a5fa;
+  text-decoration: underline;
+}
+
+.notificationActions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.iconButton {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid #374151;
+  background: transparent;
+  color: #9ca3af;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconButton:hover {
+  background: #374151;
+  color: #fff;
+}
+
+/* System Alerts */
+.alertCard {
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  gap: 16px;
+  transition: all 0.2s;
+}
+
+.alertCard.resolved {
+  opacity: 0.6;
+}
+
+.alertCard.severity5 {
+  border-left: 4px solid #ef4444;
+  background: linear-gradient(90deg, rgba(239, 68, 68, 0.1) 0%, #1f2937 10%);
+}
+
+.alertCard.severity4 {
+  border-left: 4px solid #f59e0b;
+  background: linear-gradient(90deg, rgba(245, 158, 11, 0.1) 0%, #1f2937 10%);
+}
+
+.alertIcon {
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.alertContent {
+  flex: 1;
+}
+
+.alertHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  gap: 16px;
+}
+
+.alertHeader h4 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.alertBadges {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.typeBadge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.typeBadge.critical {
+  background: #ef4444;
+  color: white;
+}
+
+.typeBadge.error {
+  background: #dc2626;
+  color: white;
+}
+
+.typeBadge.warning {
+  background: #f59e0b;
+  color: white;
+}
+
+.typeBadge.info {
+  background: #3b82f6;
+  color: white;
+}
+
+.typeBadge.success {
+  background: #10b981;
+  color: white;
+}
+
+.categoryBadge {
+  background: #374151;
+  color: #d1d5db;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.countBadge {
+  background: #1f2937;
+  border: 1px solid #ef4444;
+  color: #ef4444;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.alertMessage {
+  color: #d1d5db;
+  font-size: 14px;
+  margin: 0 0 12px 0;
+  line-height: 1.6;
+}
+
+.alertMeta {
+  display: flex;
+  gap: 16px;
+}
+
+.severity {
+  color: #f59e0b;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.alertActions {
+  display: flex;
+  align-items: center;
+}
+
+.resolveButton {
+  padding: 8px 16px;
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.resolveButton:hover {
+  background: #059669;
+}
+
+/* Empty State */
+.emptyState {
+  text-align: center;
+  padding: 60px 20px;
+  color: #6b7280;
+  font-size: 16px;
+}
+
+.loading {
+  text-align: center;
+  padding: 60px 20px;
+  color: #6b7280;
+  font-size: 16px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .notificationCard,
+  .alertCard {
+    flex-direction: column;
+  }
+
+  .alertHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

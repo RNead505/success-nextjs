@@ -76,21 +76,54 @@ export default async function handler(req, res) {
 async function handleSubscriptionCreated(subscription) {
   const customerId = subscription.customer;
 
-  // Find user by Stripe customer ID
-  const user = await prisma.users.findFirst({
-    where: { stripeCustomerId: customerId },
+  // Get customer details from Stripe
+  const customer = await stripe.customers.retrieve(customerId);
+
+  // Check if Member exists by Stripe customer ID or email
+  let member = await prisma.members.findFirst({
+    where: {
+      OR: [
+        { stripeCustomerId: customerId },
+        { email: customer.email },
+      ],
+    },
   });
 
-  if (!user) {
-    console.error('User not found for customer:', customerId);
-    return;
+  if (!member) {
+    // Create new Member (this is a new customer)
+    console.log('Creating new member for:', customer.email);
+
+    const name = customer.name || customer.email.split('@')[0];
+    const nameParts = name.split(' ');
+
+    member = await prisma.members.create({
+      data: {
+        firstName: nameParts[0] || name,
+        lastName: nameParts.slice(1).join(' ') || '',
+        email: customer.email,
+        phone: customer.phone || null,
+        stripeCustomerId: customerId,
+        membershipTier: 'SUCCESSPlus',
+        membershipStatus: 'Active',
+      },
+    });
+  } else {
+    // Update existing member
+    await prisma.members.update({
+      where: { id: member.id },
+      data: {
+        stripeCustomerId: customerId,
+        membershipTier: 'SUCCESSPlus',
+        membershipStatus: 'Active',
+      },
+    });
   }
 
   // Create or update subscription record
   await prisma.subscriptions.upsert({
-    where: { userId: user.id },
+    where: { stripeSubscriptionId: subscription.id },
     create: {
-      userId: user.id,
+      memberId: member.id,
       stripeCustomerId: customerId,
       stripeSubscriptionId: subscription.id,
       stripePriceId: subscription.items.data[0].price.id,
@@ -98,9 +131,9 @@ async function handleSubscriptionCreated(subscription) {
       currentPeriodStart: new Date(subscription.current_period_start * 1000),
       currentPeriodEnd: new Date(subscription.current_period_end * 1000),
       cancelAtPeriodEnd: subscription.cancel_at_period_end,
+      provider: 'stripe',
     },
     update: {
-      stripeSubscriptionId: subscription.id,
       stripePriceId: subscription.items.data[0].price.id,
       status: subscription.status.toUpperCase(),
       currentPeriodStart: new Date(subscription.current_period_start * 1000),
@@ -109,24 +142,39 @@ async function handleSubscriptionCreated(subscription) {
     },
   });
 
-  console.log('Subscription created for user:', user.id);
+  // Check if this member is also a platform user
+  const platformUser = await prisma.users.findUnique({
+    where: { email: member.email },
+  });
+
+  if (platformUser && !platformUser.memberId) {
+    // Link platform user to member
+    await prisma.users.update({
+      where: { id: platformUser.id },
+      data: { memberId: member.id },
+    });
+    console.log('Linked platform user to member:', platformUser.email);
+  }
+
+  console.log('Subscription created for member:', member.id);
 }
 
 // Handle subscription updated
 async function handleSubscriptionUpdated(subscription) {
   const customerId = subscription.customer;
 
-  const user = await prisma.users.findFirst({
+  const member = await prisma.members.findFirst({
     where: { stripeCustomerId: customerId },
   });
 
-  if (!user) {
-    console.error('User not found for customer:', customerId);
+  if (!member) {
+    console.error('Member not found for customer:', customerId);
     return;
   }
 
+  // Update subscription
   await prisma.subscriptions.update({
-    where: { userId: user.id },
+    where: { stripeSubscriptionId: subscription.id },
     data: {
       status: subscription.status.toUpperCase(),
       currentPeriodStart: new Date(subscription.current_period_start * 1000),
@@ -135,89 +183,161 @@ async function handleSubscriptionUpdated(subscription) {
     },
   });
 
-  console.log('Subscription updated for user:', user.id);
+  // Update member tier based on subscription status
+  const newTier = subscription.status === 'active' ? 'SUCCESSPlus' : 'Customer';
+  await prisma.members.update({
+    where: { id: member.id },
+    data: {
+      membershipTier: newTier,
+      membershipStatus: subscription.status === 'active' ? 'Active' : 'Inactive',
+    },
+  });
+
+  console.log('Subscription updated for member:', member.id);
 }
 
 // Handle subscription deleted
 async function handleSubscriptionDeleted(subscription) {
   const customerId = subscription.customer;
 
-  const user = await prisma.users.findFirst({
+  const member = await prisma.members.findFirst({
     where: { stripeCustomerId: customerId },
   });
 
-  if (!user) {
-    console.error('User not found for customer:', customerId);
+  if (!member) {
+    console.error('Member not found for customer:', customerId);
     return;
   }
 
   await prisma.subscriptions.update({
-    where: { userId: user.id },
+    where: { stripeSubscriptionId: subscription.id },
     data: {
       status: 'CANCELED',
       cancelAtPeriodEnd: false,
     },
   });
 
-  console.log('Subscription deleted for user:', user.id);
+  // Downgrade member tier
+  await prisma.members.update({
+    where: { id: member.id },
+    data: {
+      membershipTier: 'Customer',
+      membershipStatus: 'Cancelled',
+    },
+  });
+
+  console.log('Subscription deleted for member:', member.id);
 }
 
 // Handle successful payment
 async function handlePaymentSucceeded(invoice) {
   const customerId = invoice.customer;
 
-  const user = await prisma.users.findFirst({
+  const member = await prisma.members.findFirst({
     where: { stripeCustomerId: customerId },
     include: { subscriptions: true },
   });
 
-  if (!user) {
-    console.error('User not found for customer:', customerId);
+  if (!member) {
+    console.error('Member not found for customer:', customerId);
     return;
   }
 
-  // Send confirmation email
-  const { sendEmail, getSubscriptionConfirmationHTML } = require('../../../lib/email');
-  const amount = (invoice.amount_paid / 100).toFixed(2);
-  const plan = user.subscriptions?.stripePriceId || 'SUCCESS+';
-
-  await sendEmail({
-    to: user.email,
-    subject: 'Payment Successful - SUCCESS+ Subscription',
-    html: getSubscriptionConfirmationHTML(user.name || 'Subscriber', plan, amount),
+  // Create transaction record
+  const amount = invoice.amount_paid / 100;
+  await prisma.transactions.create({
+    data: {
+      memberId: member.id,
+      amount: amount,
+      currency: invoice.currency.toUpperCase(),
+      status: 'succeeded',
+      type: 'subscription',
+      description: invoice.description || 'SUCCESS+ Subscription Payment',
+      paymentMethod: invoice.payment_method_types?.[0] || 'card',
+      provider: 'stripe',
+      providerTxnId: invoice.id,
+      metadata: {
+        invoiceId: invoice.id,
+        subscriptionId: invoice.subscription,
+      },
+    },
   });
 
-  console.log('Payment succeeded and email sent for user:', user.id);
+  // Update member's total spent and lifetime value
+  await prisma.members.update({
+    where: { id: member.id },
+    data: {
+      totalSpent: { increment: amount },
+      lifetimeValue: { increment: amount },
+    },
+  });
+
+  // Send confirmation email
+  const { sendEmail, getSubscriptionConfirmationHTML } = require('../../../lib/email');
+  const fullName = `${member.firstName} ${member.lastName}`.trim();
+  const plan = member.subscriptions?.[0]?.stripePriceId || 'SUCCESS+';
+
+  await sendEmail({
+    to: member.email,
+    subject: 'Payment Successful - SUCCESS+ Subscription',
+    html: getSubscriptionConfirmationHTML(fullName || 'Subscriber', plan, amount.toFixed(2)),
+  });
+
+  console.log('Payment succeeded and email sent for member:', member.id);
 }
 
 // Handle failed payment
 async function handlePaymentFailed(invoice) {
   const customerId = invoice.customer;
 
-  const user = await prisma.users.findFirst({
+  const member = await prisma.members.findFirst({
     where: { stripeCustomerId: customerId },
   });
 
-  if (!user) {
-    console.error('User not found for customer:', customerId);
+  if (!member) {
+    console.error('Member not found for customer:', customerId);
     return;
   }
 
   await prisma.subscriptions.update({
-    where: { userId: user.id },
+    where: { stripeSubscriptionId: invoice.subscription },
     data: {
       status: 'PAST_DUE',
     },
   });
 
-  // Send payment failed email
-  const { sendEmail, getPaymentFailedHTML } = require('../../../lib/email');
-
-  await sendEmail({
-    to: user.email,
-    subject: 'Payment Failed - Action Required',
-    html: getPaymentFailedHTML(user.name || 'Subscriber'),
+  // Update member status
+  await prisma.members.update({
+    where: { id: member.id },
+    data: {
+      membershipStatus: 'Inactive',
+    },
   });
 
-  console.log('Payment failed and email sent for user:', user.id);
+  // Create failed transaction record
+  const amount = invoice.amount_due / 100;
+  await prisma.transactions.create({
+    data: {
+      memberId: member.id,
+      amount: amount,
+      currency: invoice.currency.toUpperCase(),
+      status: 'failed',
+      type: 'subscription',
+      description: 'Failed subscription payment',
+      provider: 'stripe',
+      providerTxnId: invoice.id,
+    },
+  });
+
+  // Send payment failed email
+  const { sendEmail, getPaymentFailedHTML } = require('../../../lib/email');
+  const fullName = `${member.firstName} ${member.lastName}`.trim();
+
+  await sendEmail({
+    to: member.email,
+    subject: 'Payment Failed - Action Required',
+    html: getPaymentFailedHTML(fullName || 'Subscriber'),
+  });
+
+  console.log('Payment failed and email sent for member:', member.id);
 }

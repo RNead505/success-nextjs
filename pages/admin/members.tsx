@@ -3,18 +3,33 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import AdminLayout from '../../components/admin/AdminLayout';
+import RoleBadges from '../../components/admin/RoleBadges';
 import styles from './Members.module.css';
+
+type MembershipTier = 'Free' | 'Customer' | 'SUCCESSPlus' | 'VIP' | 'Enterprise';
+type UserRole = 'SUPER_ADMIN' | 'ADMIN' | 'EDITOR' | 'AUTHOR' | 'STAFF';
 
 interface Member {
   id: string;
   name: string;
+  firstName: string;
+  lastName: string;
   email: string;
+  phone?: string;
+  membershipTier: MembershipTier;
+  membershipStatus: string;
+  totalSpent: number;
+  lifetimeValue: number;
   createdAt: string;
+  joinDate: string;
   subscription?: {
     status: string;
     currentPeriodEnd?: string;
     stripePriceId?: string;
-  };
+    provider?: string;
+  } | null;
+  platformRole?: UserRole | null;
+  isPlatformUser: boolean;
 }
 
 export default function MembersPage() {
@@ -66,12 +81,12 @@ export default function MembersPage() {
     return null;
   }
 
-  // Filter members based on subscription status and search term
+  // Filter members based on membership status and search term
   const filteredMembers = members.filter((member) => {
     const matchesFilter =
       filter === 'all' ||
-      (filter === 'active' && member.subscription?.status === 'ACTIVE') ||
-      (filter === 'inactive' && member.subscription?.status !== 'ACTIVE');
+      (filter === 'active' && (member.membershipStatus === 'Active' || member.subscription?.status === 'ACTIVE')) ||
+      (filter === 'inactive' && member.membershipStatus !== 'Active' && member.subscription?.status !== 'ACTIVE');
 
     const matchesSearch =
       searchTerm === '' ||
@@ -82,7 +97,7 @@ export default function MembersPage() {
   });
 
   const activeCount = members.filter(
-    (m) => m.subscription?.status === 'ACTIVE'
+    (m) => m.membershipStatus === 'Active' || m.subscription?.status === 'ACTIVE'
   ).length;
   const inactiveCount = members.length - activeCount;
 
@@ -91,14 +106,11 @@ export default function MembersPage() {
       <div className={styles.membersPage}>
         <div className={styles.header}>
           <div>
-            <h1>SUCCESS+ Members</h1>
+            <h1>Customers</h1>
             <p className={styles.subtitle}>
-              Manage member subscriptions and access
+              Members who have purchased products or subscriptions
             </p>
           </div>
-          <Link href="/admin/members/invite" className={styles.primaryButton}>
-            ➕ Invite Member
-          </Link>
         </div>
 
         {/* Stats Cards */}
@@ -176,11 +188,11 @@ export default function MembersPage() {
             <table className={styles.table}>
               <thead>
                 <tr>
-                  <th>Member</th>
+                  <th>Customer</th>
                   <th>Email</th>
-                  <th>Status</th>
-                  <th>Member Since</th>
-                  <th>Next Billing</th>
+                  <th>Membership</th>
+                  <th>Total Spent</th>
+                  <th>Customer Since</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -192,36 +204,30 @@ export default function MembersPage() {
                         <div className={styles.memberAvatar}>
                           {member.name.charAt(0).toUpperCase()}
                         </div>
-                        <strong>{member.name}</strong>
+                        <div>
+                          <strong>{member.name}</strong>
+                          {member.isPlatformUser && (
+                            <div className={styles.platformIndicator}>
+                              (Also has platform access)
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </td>
                     <td>{member.email}</td>
                     <td>
-                      {member.subscription?.status === 'ACTIVE' ? (
-                        <span className={styles.badgeActive}>Active</span>
-                      ) : member.subscription?.status === 'PAST_DUE' ? (
-                        <span className={styles.badgePastDue}>Past Due</span>
-                      ) : member.subscription?.status === 'CANCELED' ? (
-                        <span className={styles.badgeCanceled}>Canceled</span>
-                      ) : (
-                        <span className={styles.badgeInactive}>Inactive</span>
-                      )}
+                      <RoleBadges
+                        memberTier={member.membershipTier}
+                        platformRole={member.platformRole}
+                      />
                     </td>
+                    <td>${member.totalSpent.toFixed(2)}</td>
                     <td>
-                      {new Date(member.createdAt).toLocaleDateString('en-US', {
+                      {new Date(member.joinDate).toLocaleDateString('en-US', {
                         month: 'short',
                         day: 'numeric',
                         year: 'numeric',
                       })}
-                    </td>
-                    <td>
-                      {member.subscription?.currentPeriodEnd
-                        ? new Date(member.subscription.currentPeriodEnd).toLocaleDateString('en-US', {
-                            month: 'short',
-                            day: 'numeric',
-                            year: 'numeric',
-                          })
-                        : '—'}
                     </td>
                     <td>
                       <div className={styles.actions}>
