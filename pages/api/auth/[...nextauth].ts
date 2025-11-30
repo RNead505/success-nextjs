@@ -16,11 +16,18 @@ export const authOptions: AuthOptions = {
           throw new Error('Email and password required');
         }
 
-        const user = await prisma.users.findUnique({
-          where: { email: credentials.email },
-        });
+        // Use raw query to avoid schema mismatch
+        const users = await prisma.$queryRaw<any[]>`
+          SELECT id, email, name, password, role, avatar,
+                 "hasChangedDefaultPassword", "lastLoginAt"
+          FROM users
+          WHERE email = ${credentials.email}
+        `;
+
+        const user = users[0];
 
         if (!user) {
+          console.log('User not found:', credentials.email);
           throw new Error('Invalid credentials');
         }
 
@@ -30,19 +37,18 @@ export const authOptions: AuthOptions = {
         );
 
         if (!isPasswordValid) {
+          console.log('Invalid password for:', credentials.email);
           throw new Error('Invalid credentials');
         }
 
         console.log('User authenticated:', { email: user.email, role: user.role });
 
-        // Update last login timestamp
-        await prisma.users.update({
-          where: { id: user.id },
-          data: {
-            lastLoginAt: new Date(),
-            updatedAt: new Date(),
-          },
-        });
+        // Update last login timestamp with raw query
+        await prisma.$executeRaw`
+          UPDATE users
+          SET "lastLoginAt" = ${new Date()}, "updatedAt" = ${new Date()}
+          WHERE id = ${user.id}
+        `;
 
         return {
           id: user.id,
@@ -50,8 +56,8 @@ export const authOptions: AuthOptions = {
           name: user.name,
           role: user.role,
           avatar: user.avatar,
-          hasChangedDefaultPassword: user.hasChangedDefaultPassword,
-          membershipTier: user.membershipTier,
+          hasChangedDefaultPassword: user.hasChangedDefaultPassword || false,
+          membershipTier: 'FREE', // Default for now
         };
       },
     }),
