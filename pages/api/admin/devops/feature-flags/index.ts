@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../../auth/[...nextauth]';
+import { prisma } from '../../../../../lib/prisma';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = await getServerSession(req, res, authOptions);
@@ -9,13 +10,48 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   if (req.method === 'GET') {
-    const flags = [
-      { id: '1', name: 'New Dashboard UI', description: 'Enable the redesigned admin dashboard', enabled: true, affectedUsers: 47, lastModifiedBy: 'Admin User', lastModifiedAt: new Date().toISOString() },
-      { id: '2', name: 'AI Content Suggestions', description: 'Show AI-powered content recommendations', enabled: false, affectedUsers: 1247, lastModifiedBy: 'Admin User', lastModifiedAt: new Date().toISOString() },
-      { id: '3', name: 'Advanced Analytics', description: 'Enable premium analytics features', enabled: true, affectedUsers: 523, lastModifiedBy: 'Admin User', lastModifiedAt: new Date().toISOString() },
-      { id: '4', name: 'Beta Features', description: 'Enable experimental beta features', enabled: false, affectedUsers: 89, lastModifiedBy: 'Admin User', lastModifiedAt: new Date().toISOString() },
-    ];
-    return res.status(200).json({ flags, maintenanceMode: false });
+    try {
+      // Fetch real feature flags from database
+      const flags = await prisma.$queryRaw<any[]>`
+        SELECT
+          id,
+          name,
+          description,
+          enabled,
+          "affectedUsers",
+          "lastModifiedBy",
+          "lastModifiedAt",
+          "createdAt"
+        FROM feature_flags
+        ORDER BY "createdAt" DESC
+      `;
+
+      // Get maintenance mode from system_settings
+      const maintenanceSettings = await prisma.$queryRaw<any[]>`
+        SELECT value
+        FROM system_settings
+        WHERE key = 'maintenance_mode'
+        LIMIT 1
+      `;
+
+      const maintenanceMode = maintenanceSettings[0]?.value === 'true';
+
+      return res.status(200).json({
+        flags: flags.map(flag => ({
+          id: flag.id,
+          name: flag.name,
+          description: flag.description,
+          enabled: flag.enabled,
+          affectedUsers: Number(flag.affectedUsers),
+          lastModifiedBy: flag.lastModifiedBy || session.user.name,
+          lastModifiedAt: flag.lastModifiedAt?.toISOString() || flag.createdAt?.toISOString()
+        })),
+        maintenanceMode
+      });
+    } catch (error) {
+      console.error('Error fetching feature flags:', error);
+      return res.status(500).json({ error: 'Failed to fetch feature flags' });
+    }
   }
 
   return res.status(405).json({ error: 'Method not allowed' });
