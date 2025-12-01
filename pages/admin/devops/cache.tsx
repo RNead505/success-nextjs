@@ -14,7 +14,7 @@ export default function CacheManagementPage() {
   const [clearing, setClearing] = useState(false);
 
   useEffect(() => {
-    if (session?.user?.role !== 'SUPER_ADMIN') {
+    if (session?.user?.role !== 'SUPER_ADMIN' && session?.user?.role !== 'ADMIN') {
       router.push('/admin');
       return;
     }

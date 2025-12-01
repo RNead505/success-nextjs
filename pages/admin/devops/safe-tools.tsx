@@ -13,7 +13,7 @@ export default function SafeToolsPage() {
   const [selectedTool, setSelectedTool] = useState<any>(null);
 
   useEffect(() => {
-    if (session?.user?.role !== 'SUPER_ADMIN') {
+    if (session?.user?.role !== 'SUPER_ADMIN' && session?.user?.role !== 'ADMIN') {
       router.push('/admin');
     }
   }, [session]);

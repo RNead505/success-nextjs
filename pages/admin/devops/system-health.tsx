@@ -19,7 +19,7 @@ export default function SystemHealthPage() {
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    if (session?.user?.role !== 'SUPER_ADMIN') {
+    if (session?.user?.role !== 'SUPER_ADMIN' && session?.user?.role !== 'ADMIN' && session?.user?.role !== 'ADMIN') {
       router.push('/admin');
       return;
     }

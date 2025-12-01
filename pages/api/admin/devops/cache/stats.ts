@@ -5,7 +5,7 @@ import { prisma } from '../../../../../lib/prisma';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = await getServerSession(req, res, authOptions);
-  if (!session || session.user.role !== 'SUPER_ADMIN') {
+  if (!session || session.user.role !== 'SUPER_ADMIN' && session.user.role !== 'ADMIN') {
     return res.status(403).json({ error: 'Forbidden' });
   }
 

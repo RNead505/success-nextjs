@@ -9,7 +9,7 @@ export default function DocumentationPage() {
   const router = useRouter();
 
   useEffect(() => {
-    if (session?.user?.role !== 'SUPER_ADMIN') {
+    if (session?.user?.role !== 'SUPER_ADMIN' && session?.user?.role !== 'ADMIN') {
       router.push('/admin');
     }
   }, [session]);
