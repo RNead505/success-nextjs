@@ -1994,3 +1994,54 @@ model department_permissions {
 // Note: This project already has existing orders, subscription-related tables.
 // The Sales & CS admin section will use and extend the existing tables.
 // See existing: orders, subscriptions, magazine_subscriptions, email_subscribers, users
+
+// ============================================
+// DEVOPS & SYSTEM MANAGEMENT
+// ============================================
+
+// Feature Flags for toggling features on/off
+model feature_flags {
+  id            String   @id @default(uuid())
+  name          String   @unique
+  description   String
+  enabled       Boolean  @default(false)
+  affectedUsers Int      @default(0)
+  lastModifiedBy String?
+  lastModifiedAt DateTime @updatedAt
+  createdAt     DateTime @default(now())
+
+  @@index([enabled])
+}
+
+// Deployment History
+model deployments {
+  id          String           @id @default(uuid())
+  version     String
+  branch      String
+  commit      String
+  deployedBy  String
+  deployedAt  DateTime         @default(now())
+  status      DeploymentStatus @default(IN_PROGRESS)
+  environment String           @default("production")
+  buildTime   Int?             // seconds
+  errorMessage String?         @db.Text
+
+  @@index([deployedAt])
+  @@index([status])
+  @@index([environment])
+}
+
+enum DeploymentStatus {
+  IN_PROGRESS
+  SUCCESS
+  FAILED
+}
+
+// System Settings for cache, maintenance mode, etc.
+model system_settings {
+  id    String @id @default(uuid())
+  key   String @unique
+  value String @db.Text
+  updatedAt DateTime @updatedAt
+  updatedBy String?
+}

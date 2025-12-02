@@ -94,6 +94,10 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         paths: ['/admin/editorial-calendar', '/admin/projects', '/admin/staff', '/admin/activity-log', '/admin/site-monitor', '/admin/content-viewer', '/admin/email-manager', '/admin/users']
       },
       { title: 'CONFIGURATION', paths: ['/admin/seo', '/admin/plugins', '/admin/cache', '/admin/settings'] },
+      {
+        title: 'DEVOPS',
+        paths: ['/admin/devops']
+      },
     ];
 
     const newExpanded: Record<string, boolean> = {};
@@ -197,6 +201,16 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         { name: 'Plugins', href: '/admin/plugins', icon: '🔌' },
         { name: 'Cache Management', href: '/admin/cache', icon: '🚀' },
         { name: 'Settings', href: '/admin/settings', icon: '⚙️' },
+      ]
+    },
+    {
+      key: 'DEVOPS',
+      title: 'DevOps & Developer',
+      items: [
+        { name: 'Error Logs', href: '/admin/devops/error-logs', icon: '🐛' },
+        { name: 'System Health', href: '/admin/devops/system-health', icon: '💚' },
+        { name: 'Cache Management', href: '/admin/devops/cache', icon: '💾' },
+        { name: 'Safe Tools', href: '/admin/devops/safe-tools', icon: '🔧' },
       ]
     }
   ];
