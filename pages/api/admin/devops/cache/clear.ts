@@ -2,7 +2,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../../auth/[...nextauth]';
 import { prisma } from '../../../../../lib/prisma';
-import { revalidatePath } from 'next/cache';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = await getServerSession(req, res, authOptions);
@@ -14,24 +13,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       console.log(`Cache cleared by ${session.user.name}`);
 
-      // Clear Next.js cache for all pages
+      // Pages Router cache clearing - trigger on-demand ISR revalidation
       const pagesToRevalidate = [
         '/',
         '/blog',
-        '/category',
-        '/admin',
-        '/dashboard',
-        // Add more critical pages as needed
+        '/videos',
+        '/podcasts',
+        '/magazine',
       ];
 
-      // Revalidate all paths (this clears ISR cache)
+      let revalidatedCount = 0;
+      const errors: string[] = [];
+
+      // Attempt to revalidate each path
       for (const path of pagesToRevalidate) {
         try {
-          // Note: revalidatePath is for App Router, for Pages Router we need different approach
-          // For Pages Router, we'll trigger res.revalidate() in getStaticProps
-          console.log(`Clearing cache for: ${path}`);
+          await res.revalidate(path);
+          revalidatedCount++;
+          console.log(`✓ Cache cleared for: ${path}`);
         } catch (error) {
-          console.error(`Failed to clear cache for ${path}:`, error);
+          const errorMsg = `Failed to clear cache for ${path}: ${error}`;
+          console.error(errorMsg);
+          errors.push(errorMsg);
         }
       }
 
@@ -60,7 +63,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       `;
 
       return res.status(200).json({
-        message: 'Cache cleared successfully',
+        message: `Cache cleared for ${revalidatedCount}/${pagesToRevalidate.length} pages`,
+        revalidatedCount,
+        totalPages: pagesToRevalidate.length,
+        errors: errors.length > 0 ? errors : undefined,
         clearedAt: new Date().toISOString(),
         clearedBy: session.user.name
       });

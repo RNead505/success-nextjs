@@ -2,11 +2,13 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import { getDepartmentFromPath } from '@/lib/auth/departmentAccess';
+import { isPremiumRoute } from '@/lib/access-control';
 
 /**
  * Next.js Middleware for:
  * 1. Route protection (admin/dashboard)
- * 2. WordPress URL redirects
+ * 2. Premium content access control
+ * 3. WordPress URL redirects
  */
 
 export async function middleware(request: NextRequest) {
@@ -26,6 +28,40 @@ export async function middleware(request: NextRequest) {
   // AUTHENTICATION & AUTHORIZATION
   const protectedRoutes = ['/admin', '/dashboard'];
   const publicAuthRoutes = ['/admin/login', '/login', '/register', '/forgot-password'];
+
+  // Check if route requires premium access (magazine, courses, etc.)
+  const requiresPremiumAccess = isPremiumRoute(pathname);
+
+  if (requiresPremiumAccess) {
+    try {
+      const token = await getToken({
+        req: request,
+        secret: process.env.NEXTAUTH_SECRET,
+      });
+
+      // Premium routes require login
+      if (!token) {
+        const loginUrl = new URL('/login', request.url);
+        loginUrl.searchParams.set('callbackUrl', pathname);
+        return NextResponse.redirect(loginUrl);
+      }
+
+      // Check if user has premium access
+      // This is a lightweight check - detailed validation happens on the page
+      const isPaidMember = token.membershipTier && token.membershipTier !== 'FREE' && token.membershipTier !== 'free';
+
+      if (!isPaidMember) {
+        // Redirect free users to upgrade page
+        const upgradeUrl = new URL('/subscribe', request.url);
+        upgradeUrl.searchParams.set('required', 'true');
+        upgradeUrl.searchParams.set('returnTo', pathname);
+        return NextResponse.redirect(upgradeUrl);
+      }
+    } catch (error) {
+      console.error('Middleware premium access error:', error);
+      return NextResponse.redirect(new URL('/subscribe', request.url));
+    }
+  }
 
   // Check if route is protected (but exclude public auth routes)
   const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route)) &&

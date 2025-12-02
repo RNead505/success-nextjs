@@ -207,12 +207,9 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       key: 'DEVOPS',
       title: 'DevOps & Developer',
       items: [
-        { name: 'Deployments', href: '/admin/devops/deployments', icon: '🚀' },
         { name: 'Error Logs', href: '/admin/devops/error-logs', icon: '🐛' },
-        { name: 'Cache Management', href: '/admin/devops/cache', icon: '💾' },
         { name: 'System Health', href: '/admin/devops/system-health', icon: '💚' },
-        { name: 'Feature Flags', href: '/admin/devops/feature-flags', icon: '🚩' },
-        { name: 'Documentation', href: '/admin/devops/documentation', icon: '📚' },
+        { name: 'Cache Management', href: '/admin/devops/cache', icon: '💾' },
         { name: 'Safe Tools', href: '/admin/devops/safe-tools', icon: '🔧' },
       ]
     }

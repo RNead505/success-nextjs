@@ -3,16 +3,19 @@ import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import Layout from '../../components/Layout';
 import SEO from '../../components/SEO';
+import Paywall from '../../components/Paywall';
 import styles from './Post.module.css';
 import { fetchWordPressData } from '../../lib/wordpress';
 import { decodeHtmlEntities, decodeHtmlContent } from '../../lib/htmlDecode';
+import { canAccessContent } from '../../lib/access-control';
 
 type PostPageProps = {
   post: any;
   relatedPosts: any[];
+  hasAccess: boolean;
 };
 
-export default function PostPage({ post, relatedPosts }: PostPageProps) {
+export default function PostPage({ post, relatedPosts, hasAccess }: PostPageProps) {
   const router = useRouter();
   const { data: session } = useSession();
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -130,6 +133,29 @@ export default function PostPage({ post, relatedPosts }: PostPageProps) {
   const category = post._embedded?.['wp:term']?.[0]?.[0];
   const author = post._embedded?.author?.[0];
   const featuredImage = post._embedded?.['wp:featuredmedia']?.[0];
+
+  // Check if this is premium content and user doesn't have access
+  const isPremium = post.isPremium || post.meta?.isPremium || false;
+  const requiredTier = (post.requiredTier || post.meta?.requiredTier || 'collective') as 'collective' | 'insider';
+
+  if (isPremium && !hasAccess) {
+    return (
+      <Layout>
+        <SEO
+          title={decodeHtmlEntities(post.title.rendered)}
+          description={decodeHtmlEntities(post.excerpt?.rendered?.replace(/<[^>]*>/g, '') || '')}
+          url={`https://www.success.com/blog/${post.slug}`}
+          type="article"
+          image={featuredImage?.source_url}
+        />
+        <Paywall
+          requiredTier={requiredTier}
+          articleTitle={decodeHtmlEntities(post.title.rendered)}
+          excerpt={decodeHtmlContent(post.excerpt?.rendered || '')}
+        />
+      </Layout>
+    );
+  }
 
   // Format date
   const postDate = new Date(post.date).toLocaleDateString('en-US', {
@@ -370,7 +396,7 @@ export default function PostPage({ post, relatedPosts }: PostPageProps) {
 
 
 
-export async function getServerSideProps({ params }: any) {
+export async function getServerSideProps({ params, req, res }: any) {
   const { slug } = params;
 
   try {
@@ -392,10 +418,30 @@ export async function getServerSideProps({ params }: any) {
       relatedPosts = related;
     }
 
+    // Check access for premium content
+    const { getServerSession } = await import('next-auth/next');
+    const { authOptions } = await import('../api/auth/[...nextauth]');
+    const session = await getServerSession(req, res, authOptions);
+
+    const isPremium = post.isPremium || post.meta?.isPremium || false;
+    const requiredTier = post.requiredTier || post.meta?.requiredTier || 'collective';
+
+    let hasAccess = true; // Default to true for free content
+
+    if (isPremium && session?.user) {
+      hasAccess = await canAccessContent(
+        { id: session.user.id, email: session.user.email, membershipTier: session.user.membershipTier },
+        { isPremium: true, requiredTier: requiredTier as 'collective' | 'insider' }
+      );
+    } else if (isPremium) {
+      hasAccess = false; // Not logged in, can't access premium
+    }
+
     return {
       props: {
         post,
         relatedPosts,
+        hasAccess,
       }
     };
   } catch (error) {

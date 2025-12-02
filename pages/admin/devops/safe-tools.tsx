@@ -19,12 +19,8 @@ export default function SafeToolsPage() {
   }, [session]);
 
   const tools = [
-    { id: 'rebuild-search', name: 'Rebuild Search Index', icon: '🔍', risk: 'medium', description: 'Rebuilds the search index. Takes 5-10 minutes.', confirmationType: 'medium' as const },
-    { id: 'regen-sitemap', name: 'Regenerate Sitemaps', icon: '🗺️', risk: 'low', description: 'Regenerates XML sitemaps for SEO.', confirmationType: 'medium' as const },
-    { id: 'send-test-email', name: 'Send Test Email', icon: '✉️', risk: 'safe', description: 'Sends a test email to verify email configuration.', confirmationType: 'low' as const },
-    { id: 'verify-webhooks', name: 'Verify Webhooks', icon: '⚡', risk: 'safe', description: 'Tests all configured webhooks.', confirmationType: 'low' as const },
-    { id: 'db-health-check', name: 'Database Health Check', icon: '💾', risk: 'safe', description: 'Runs diagnostics on database connections (read-only).', confirmationType: 'low' as const },
-    { id: 'clear-cache', name: 'Clear Application Cache', icon: '🗑️', risk: 'medium', description: 'Clears all application caches. May slow site temporarily.', confirmationType: 'medium' as const },
+    { id: 'send-test-email', name: 'Send Test Email', icon: '✉️', risk: 'safe', description: 'Sends a test email to your admin email to verify email service is working.', confirmationType: 'low' as const, endpoint: '/api/admin/devops/safe-tools/send-test-email' },
+    { id: 'clear-cache', name: 'Clear Page Cache', icon: '🗑️', risk: 'medium', description: 'Clears Next.js ISR cache for all pages. Site may be slower until cache rebuilds.', confirmationType: 'medium' as const, endpoint: '/api/admin/devops/cache/clear' },
   ];
 
   const handleToolClick = (tool: typeof tools[0]) => {
@@ -40,8 +36,11 @@ export default function SafeToolsPage() {
 
   const runTool = async (toolId: string) => {
     setProcessing(toolId);
+    const tool = tools.find(t => t.id === toolId);
+    const endpoint = tool?.endpoint || '/api/admin/devops/safe-tools/run';
+
     try {
-      const res = await fetch('/api/admin/devops/safe-tools/run', {
+      const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ toolId }),
@@ -51,7 +50,8 @@ export default function SafeToolsPage() {
         const data = await res.json();
         alert(`✓ ${data.message}`);
       } else {
-        alert('✗ Tool execution failed');
+        const error = await res.json();
+        alert(`✗ ${error.error || 'Tool execution failed'}`);
       }
     } catch (error) {
       console.error('Error running tool:', error);
