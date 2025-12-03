@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import Link from 'next/link';
 import styles from './Dashboard.module.css';
+import { requireAdminAuth } from '../lib/adminAuth';
 
 export default function DashboardContent() {
   const router = useRouter();
@@ -147,6 +148,5 @@ export default function DashboardContent() {
   );
 }
 
-export async function getServerSideProps() {
-  return { props: {} };
-}
+// Server-side authentication check
+export const getServerSideProps = requireAdminAuth;

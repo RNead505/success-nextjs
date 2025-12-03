@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import AdminLayout from '../../../components/admin/AdminLayout';
 import BulkStaffOperations from '../../../components/admin/BulkStaffOperations';
 import styles from './Staff.module.css';
+import { requireAdminAuth } from '../../lib/adminAuth';
 
 interface StaffMember {
   id: string;
@@ -263,8 +264,6 @@ export default function StaffManagement() {
 }
 
 // Force SSR for AWS Amplify deployment compatibility
-export async function getServerSideProps() {
-  return {
-    props: {},
-  };
-}
+
+// Server-side authentication check
+export const getServerSideProps = requireAdminAuth;

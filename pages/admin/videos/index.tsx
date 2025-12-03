@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import AdminLayout from '../../../components/admin/AdminLayout';
 import Link from 'next/link';
 import styles from './AdminVideos.module.css';
+import { requireAdminAuth } from '../../lib/adminAuth';
 
 interface Video {
   id: string;
@@ -36,7 +37,7 @@ export default function AdminVideos() {
 
   const fetchVideos = async () => {
     try {
-      const res = await fetch('/api/videos?per_page=100');
+      const res = await fetch('/api/admin/videos?per_page=100');
       const data = await res.json();
       setVideos(data);
     } catch (error) {
@@ -50,7 +51,7 @@ export default function AdminVideos() {
     if (!confirm('Are you sure you want to delete this video?')) return;
 
     try {
-      const res = await fetch(`/api/videos/${id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/admin/videos/${id}`, { method: 'DELETE' });
       if (res.ok) {
         setVideos(videos.filter(v => v.id !== id));
       } else {
@@ -115,9 +116,6 @@ export default function AdminVideos() {
                     <Link href={`/admin/videos/${video.id}/edit`} className={styles.editButton}>
                       Edit
                     </Link>
-                    <Link href={`/video/${video.slug}`} className={styles.viewButton} target="_blank">
-                      View
-                    </Link>
                     <button onClick={() => handleDelete(video.id)} className={styles.deleteButton}>
                       Delete
                     </button>
@@ -133,8 +131,6 @@ export default function AdminVideos() {
 }
 
 // Force SSR to prevent NextRouter errors during build
-export async function getServerSideProps() {
-  return {
-    props: {},
-  };
-}
+
+// Server-side authentication check
+export const getServerSideProps = requireAdminAuth;

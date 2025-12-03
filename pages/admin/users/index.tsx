@@ -5,6 +5,7 @@ import AdminLayout from '../../../components/admin/AdminLayout';
 import RoleBadges from '../../../components/admin/RoleBadges';
 import Link from 'next/link';
 import styles from './AdminUsers.module.css';
+import { requireAdminAuth } from '../../lib/adminAuth';
 
 type UserRole = 'SUPER_ADMIN' | 'ADMIN' | 'EDITOR' | 'AUTHOR' | 'STAFF';
 type MembershipTier = 'Free' | 'Customer' | 'SUCCESSPlus' | 'VIP' | 'Enterprise';
@@ -480,8 +481,6 @@ export default function AdminUsers() {
 }
 
 // Force SSR to prevent NextRouter errors during build
-export async function getServerSideProps() {
-  return {
-    props: {},
-  };
-}
+
+// Server-side authentication check
+export const getServerSideProps = requireAdminAuth;

@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import AdminLayout from '../../../components/admin/AdminLayout';
 import ConfirmationModal from '../../../components/admin/ConfirmationModal';
 import styles from './Cache.module.css';
+import { requireAdminAuth } from '../../lib/adminAuth';
 
 export default function CacheManagementPage() {
   const { data: session } = useSession();
@@ -135,3 +136,6 @@ export default function CacheManagementPage() {
     </AdminLayout>
   );
 }
+
+// Server-side authentication check
+export const getServerSideProps = requireAdminAuth;

@@ -50,6 +50,257 @@
   margin-bottom: 2rem;
 }
 
+.badges {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.badgePriority {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  border-radius: 50px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background-color: rgba(255, 193, 7, 0.2);
+  color: #ffd54f;
+  border: 2px solid #ffd54f;
+}
+
+.tagsSection {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.tag {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  background-color: #e3f2fd;
+  color: #1976d2;
+  border-radius: 50px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* CS Notes */
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.editButton {
+  padding: 0.5rem 1rem;
+  background-color: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.editButton:hover {
+  background-color: #1565c0;
+}
+
+.notesEditor {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.notesTextarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 150px;
+  transition: border-color 0.2s;
+}
+
+.notesTextarea:focus {
+  outline: none;
+  border-color: #1976d2;
+}
+
+.notesActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.cancelButton,
+.saveButton {
+  padding: 0.625rem 1.25rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancelButton {
+  background-color: #f5f5f5;
+  color: #666;
+}
+
+.cancelButton:hover:not(:disabled) {
+  background-color: #e0e0e0;
+}
+
+.saveButton {
+  background-color: #1976d2;
+  color: #fff;
+}
+
+.saveButton:hover:not(:disabled) {
+  background-color: #1565c0;
+}
+
+.cancelButton:disabled,
+.saveButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.notesDisplay {
+  min-height: 100px;
+}
+
+.notesText {
+  white-space: pre-wrap;
+  line-height: 1.6;
+  color: #333;
+  margin: 0;
+}
+
+.notesEmpty {
+  color: #999;
+  font-style: italic;
+  margin: 0;
+}
+
+/* Transactions & Orders */
+.transactionsList,
+.ordersList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.transaction,
+.order {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.transaction:hover,
+.order:hover {
+  background-color: #f0f0f0;
+}
+
+.transactionInfo,
+.orderInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.transactionAmount,
+.orderAmount {
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: #000;
+}
+
+.transactionDesc,
+.orderNumber {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.transactionMeta,
+.orderMeta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+}
+
+.transactionStatus,
+.orderStatus {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.transactionDate,
+.orderDate {
+  font-size: 0.8125rem;
+  color: #999;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 2000;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.toast.success {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.toast.error {
+  background-color: #f44336;
+  color: #fff;
+}
+
 .memberAvatar {
   width: 100px;
   height: 100px;

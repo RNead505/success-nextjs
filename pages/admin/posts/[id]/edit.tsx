@@ -2,6 +2,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import EnhancedPostEditor from '../../../../components/admin/EnhancedPostEditor';
+import { requireAdminAuth } from '../../../lib/adminAuth';
 
 export default function EditPost() {
   const { data: session, status } = useSession();
@@ -26,8 +27,6 @@ export default function EditPost() {
 }
 
 // Force SSR to prevent NextRouter errors during build
-export async function getServerSideProps() {
-  return {
-    props: {},
-  };
-}
+
+// Server-side authentication check
+export const getServerSideProps = requireAdminAuth;

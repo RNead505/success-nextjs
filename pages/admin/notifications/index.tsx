@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import AdminLayout from '../../../components/admin/AdminLayout';
 import styles from './Notifications.module.css';
+import { requireAdminAuth } from '../../lib/adminAuth';
 
 type NotificationType =
   | 'TASK_ASSIGNED'
@@ -433,8 +434,5 @@ export default function NotificationsPage() {
   );
 }
 
-export async function getServerSideProps() {
-  return {
-    props: {},
-  };
-}
+// Server-side authentication check
+export const getServerSideProps = requireAdminAuth;

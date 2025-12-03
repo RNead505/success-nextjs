@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import AdminLayout from '../../components/admin/AdminLayout';
 import styles from './ContentViewer.module.css';
 import { decodeHtmlEntities } from '../../lib/htmlDecode';
+import { requireAdminAuth } from '../lib/adminAuth';
 
 interface ContentItem {
   id: number;
@@ -157,8 +158,6 @@ export default function ContentViewer() {
 }
 
 // Force SSR to prevent NextRouter errors during build
-export async function getServerSideProps() {
-  return {
-    props: {},
-  };
-}
+
+// Server-side authentication check
+export const getServerSideProps = requireAdminAuth;

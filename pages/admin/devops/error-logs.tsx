@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import AdminLayout from '../../../components/admin/AdminLayout';
 import ConfirmationModal from '../../../components/admin/ConfirmationModal';
 import styles from './ErrorLogs.module.css';
+import { requireAdminAuth } from '../../lib/adminAuth';
 
 interface ErrorLog {
   id: string;
@@ -222,3 +223,6 @@ export default function ErrorLogsPage() {
     </AdminLayout>
   );
 }
+
+// Server-side authentication check
+export const getServerSideProps = requireAdminAuth;

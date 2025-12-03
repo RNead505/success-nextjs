@@ -19,6 +19,10 @@ export default function VideoEditor({ videoId }: VideoEditorProps) {
   const [thumbnail, setThumbnail] = useState('');
   const [duration, setDuration] = useState('');
   const [status, setStatus] = useState('DRAFT');
+  const [seoTitle, setSeoTitle] = useState('');
+  const [seoDescription, setSeoDescription] = useState('');
+  const [featuredImage, setFeaturedImage] = useState('');
+  const [featuredImageAlt, setFeaturedImageAlt] = useState('');
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [videoSource, setVideoSource] = useState<'url' | 'upload'>('url');
@@ -39,7 +43,7 @@ export default function VideoEditor({ videoId }: VideoEditorProps) {
     if (!videoId) return;
     setLoading(true);
     try {
-      const res = await fetch(`/api/videos/${videoId}`);
+      const res = await fetch(`/api/admin/videos/${videoId}`);
       const video = await res.json();
 
       setTitle(video.title);
@@ -49,6 +53,10 @@ export default function VideoEditor({ videoId }: VideoEditorProps) {
       setThumbnail(video.thumbnail || '');
       setDuration(video.duration ? String(video.duration) : '');
       setStatus(video.status);
+      setSeoTitle(video.seoTitle || '');
+      setSeoDescription(video.seoDescription || '');
+      setFeaturedImage(video.featuredImage || '');
+      setFeaturedImageAlt(video.featuredImageAlt || '');
     } catch (error) {
       console.error('Error fetching video:', error);
       alert('Failed to load video');
@@ -214,10 +222,14 @@ export default function VideoEditor({ videoId }: VideoEditorProps) {
       duration: duration ? parseInt(duration) : null,
       status: publishStatus,
       publishedAt: publishStatus === 'PUBLISHED' ? new Date().toISOString() : null,
+      seoTitle: seoTitle || null,
+      seoDescription: seoDescription || null,
+      featuredImage: featuredImage || null,
+      featuredImageAlt: featuredImageAlt || null,
     };
 
     try {
-      const url = videoId ? `/api/videos/${videoId}` : '/api/videos';
+      const url = videoId ? `/api/admin/videos/${videoId}` : '/api/admin/videos';
       const method = videoId ? 'PUT' : 'POST';
 
       const res = await fetch(url, {
@@ -618,6 +630,37 @@ export default function VideoEditor({ videoId }: VideoEditorProps) {
                 placeholder="300"
                 className={styles.input}
               />
+            </div>
+          </div>
+
+          <div className={styles.panel} style={{ marginTop: '1rem' }}>
+            <h3>SEO Settings</h3>
+            <div className={styles.field}>
+              <label htmlFor="seoTitle">SEO Title</label>
+              <input
+                id="seoTitle"
+                type="text"
+                value={seoTitle}
+                onChange={(e) => setSeoTitle(e.target.value)}
+                placeholder="SEO title for search engines"
+                className={styles.input}
+                maxLength={60}
+              />
+              <small style={{ fontSize: '0.8rem', color: '#666' }}>{seoTitle.length}/60 characters</small>
+            </div>
+            <div className={styles.field}>
+              <label htmlFor="seoDescription">SEO Description</label>
+              <textarea
+                id="seoDescription"
+                value={seoDescription}
+                onChange={(e) => setSeoDescription(e.target.value)}
+                placeholder="Meta description for search engines"
+                className={styles.input}
+                rows={3}
+                maxLength={160}
+                style={{ resize: 'vertical', fontFamily: 'inherit' }}
+              />
+              <small style={{ fontSize: '0.8rem', color: '#666' }}>{seoDescription.length}/160 characters</small>
             </div>
           </div>
         </div>

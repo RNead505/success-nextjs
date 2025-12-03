@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import AdminLayout from '../../../components/admin/AdminLayout';
 import PodcastEditor from '../../../components/admin/PodcastEditor';
+import { requireAdminAuth } from '../../lib/adminAuth';
 
 export default function NewPodcast() {
   const { data: session, status } = useSession();
@@ -34,8 +35,6 @@ export default function NewPodcast() {
 }
 
 // Force SSR to prevent NextRouter errors during build
-export async function getServerSideProps() {
-  return {
-    props: {},
-  };
-}
+
+// Server-side authentication check
+export const getServerSideProps = requireAdminAuth;

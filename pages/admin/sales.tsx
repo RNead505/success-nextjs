@@ -12,6 +12,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import AdminLayout from '../../components/admin/AdminLayout';
 import styles from './Sales.module.css';
+import { requireAdminAuth } from '../lib/adminAuth';
 
 interface SalesStats {
   totalRevenue: number;
@@ -344,8 +345,5 @@ export default function SalesAndSubscriptions() {
   );
 }
 
-export async function getServerSideProps() {
-  return {
-    props: {},
-  };
-}
+// Server-side authentication check
+export const getServerSideProps = requireAdminAuth;

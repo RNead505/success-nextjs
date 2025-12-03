@@ -1,0 +1,161 @@
+import { NextApiRequest, NextApiResponse } from 'next';
+import { prisma } from '../../../../lib/prisma';
+import crypto from 'crypto';
+
+/**
+ * Resend Webhook Handler
+ * Handles: email.sent, email.delivered, email.opened, email.clicked, email.bounced, email.complained
+ *
+ * Setup in Resend:
+ * 1. Go to Webhooks in Resend dashboard
+ * 2. Add webhook: https://yourdomain.com/api/webhooks/resend/route
+ * 3. Select events: email.sent, email.delivered, email.opened, email.clicked, email.bounced, email.complained
+ * 4. Copy webhook secret and add to .env.local as RESEND_WEBHOOK_SECRET
+ */
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  try {
+    // Verify webhook signature (if secret is set)
+    const webhookSecret = process.env.RESEND_WEBHOOK_SECRET;
+    if (webhookSecret) {
+      const signature = req.headers['svix-signature'] as string;
+      const timestamp = req.headers['svix-timestamp'] as string;
+      const payload = JSON.stringify(req.body);
+
+      if (!signature || !timestamp) {
+        return res.status(401).json({ error: 'Missing signature headers' });
+      }
+
+      // Verify signature
+      const signedContent = `${timestamp}.${payload}`;
+      const expectedSignature = crypto
+        .createHmac('sha256', webhookSecret)
+        .update(signedContent)
+        .digest('base64');
+
+      if (signature !== expectedSignature) {
+        return res.status(401).json({ error: 'Invalid signature' });
+      }
+    }
+
+    const event = req.body;
+    const eventType = event.type;
+
+    if (!eventType) {
+      return res.status(400).json({ error: 'Missing event type' });
+    }
+
+    const data = event.data;
+    const emailAddress = data.to?.[0] || data.email;
+
+    if (!emailAddress) {
+      console.warn('Missing email address in Resend webhook', event);
+      return res.status(200).json({ received: true });
+    }
+
+    // Find contact by email
+    const contact = await prisma.contacts.findUnique({
+      where: { email: emailAddress },
+    });
+
+    if (!contact) {
+      console.warn(`Contact not found for email: ${emailAddress}`);
+      return res.status(200).json({ received: true });
+    }
+
+    // Extract campaign ID from tags or metadata
+    const campaignId = data.tags?.campaignId || data.metadata?.campaignId;
+
+    if (!campaignId) {
+      console.warn('No campaign ID in Resend webhook event');
+      return res.status(200).json({ received: true });
+    }
+
+    // Map Resend event types to our event types
+    const eventTypeMap: Record<string, string> = {
+      'email.sent': 'sent',
+      'email.delivered': 'delivered',
+      'email.opened': 'open',
+      'email.clicked': 'click',
+      'email.bounced': 'bounce',
+      'email.complained': 'spam_report',
+    };
+
+    const mappedEventType = eventTypeMap[eventType] || eventType;
+
+    // Create email event
+    await prisma.email_events.create({
+      data: {
+        id: `evt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        campaignId,
+        contactId: contact.id,
+        emailAddress,
+        event: mappedEventType,
+        eventData: data,
+      },
+    });
+
+    // Update campaign stats
+    const campaign = await prisma.campaigns.findUnique({
+      where: { id: campaignId },
+    });
+
+    if (campaign) {
+      const updateData: any = {};
+
+      if (mappedEventType === 'delivered') {
+        updateData.deliveredCount = (campaign.deliveredCount || 0) + 1;
+      } else if (mappedEventType === 'open') {
+        updateData.openedCount = (campaign.openedCount || 0) + 1;
+      } else if (mappedEventType === 'click') {
+        updateData.clickedCount = (campaign.clickedCount || 0) + 1;
+      } else if (mappedEventType === 'bounce') {
+        updateData.bouncedCount = (campaign.bouncedCount || 0) + 1;
+      }
+
+      if (Object.keys(updateData).length > 0) {
+        await prisma.campaigns.update({
+          where: { id: campaignId },
+          data: updateData,
+        });
+      }
+    }
+
+    // Update contact engagement score
+    let scoreChange = 0;
+    if (mappedEventType === 'open') scoreChange = 10;
+    else if (mappedEventType === 'click') scoreChange = 20;
+    else if (mappedEventType === 'bounce') scoreChange = -50;
+    else if (mappedEventType === 'spam_report') scoreChange = -100;
+
+    if (scoreChange !== 0) {
+      await prisma.contacts.update({
+        where: { id: contact.id },
+        data: {
+          emailEngagementScore: (contact.emailEngagementScore || 0) + scoreChange,
+        },
+      });
+    }
+
+    // Mark contact as unsubscribed if complained
+    if (mappedEventType === 'spam_report') {
+      await prisma.contacts.update({
+        where: { id: contact.id },
+        data: {
+          status: 'UNSUBSCRIBED',
+        },
+      });
+    }
+
+    return res.status(200).json({ received: true });
+  } catch (error: any) {
+    console.error('Resend webhook error:', error);
+    return res.status(500).json({ error: error.message });
+  }
+}

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { requireAdminAuth } from '../../../lib/adminAuth';
 
 export default function NewExclusiveArticle() {
   const router = useRouter();
@@ -17,8 +18,6 @@ export default function NewExclusiveArticle() {
 }
 
 // Force SSR to prevent NextRouter errors during build
-export async function getServerSideProps() {
-  return {
-    props: {},
-  };
-}
+
+// Server-side authentication check
+export const getServerSideProps = requireAdminAuth;
