@@ -63,17 +63,29 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       const saved = localStorage.getItem('adminNavExpanded');
       if (saved) {
         try {
-          setExpandedSections(JSON.parse(saved));
+          const parsed = JSON.parse(saved);
+          setExpandedSections(parsed);
         } catch (e) {
           // If parsing fails, determine active section
           determineActiveSection();
         }
       } else {
-        // First load - determine which section should be expanded
-        determineActiveSection();
+        // First load - expand all sections by default
+        const allExpanded: Record<string, boolean> = {
+          'OVERVIEW': true,
+          'SALES_CS': true,
+          'SUCCESS_COM': true,
+          'SUCCESS_PLUS': true,
+          'CRM_EMAIL': true,
+          'MANAGEMENT': true,
+          'CONFIGURATION': true,
+          'DEVOPS': true,
+        };
+        setExpandedSections(allExpanded);
+        localStorage.setItem('adminNavExpanded', JSON.stringify(allExpanded));
       }
     }
-  }, [router.pathname]);
+  }, []);
 
   // Determine which section contains the current page
   const determineActiveSection = () => {

@@ -16,7 +16,13 @@
       "Bash(DATABASE_URL=\"postgres://e731f8c351f1974c788b739203b00113561ca6e26a0a8c0d7d5efcea8cf9b656:sk_LYHdgk8RomZonUpgI9S97@db.prisma.io:5432/postgres?sslmode=require\" npx tsx scripts/add-email-events-table.ts)",
       "Bash(node:*)",
       "Bash(openssl rand:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git checkout:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git pull:*)",
+      "Bash(git merge:*)",
+      "Bash(git restore:*)"
     ],
     "deny": [],
     "ask": []
