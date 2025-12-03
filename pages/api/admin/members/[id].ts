@@ -112,12 +112,145 @@ export default async function handler(
     }
   }
 
+  if (req.method === 'PATCH') {
+    try {
+      const {
+        firstName,
+        lastName,
+        email,
+        phone,
+        tags,
+        internalNotes,
+        priorityLevel,
+      } = req.body;
+
+      // Validate email format if provided
+      if (email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          return res.status(400).json({ message: 'Invalid email format' });
+        }
+
+        // Check for duplicate email (excluding current member)
+        const existingMember = await prisma.members.findUnique({
+          where: { email },
+        });
+
+        if (existingMember && existingMember.id !== id) {
+          return res.status(409).json({ message: 'Email already in use by another member' });
+        }
+      }
+
+      // Validate priorityLevel if provided
+      if (priorityLevel && !['Standard', 'High', 'VIP', 'Enterprise'].includes(priorityLevel)) {
+        return res.status(400).json({ message: 'Invalid priority level' });
+      }
+
+      // Get current member data for audit log
+      const currentMember = await prisma.members.findUnique({
+        where: { id },
+        select: {
+          firstName: true,
+          lastName: true,
+          email: true,
+          phone: true,
+          tags: true,
+          internalNotes: true,
+          priorityLevel: true,
+        },
+      });
+
+      if (!currentMember) {
+        return res.status(404).json({ message: 'Member not found' });
+      }
+
+      // Build update data object (only include fields that were provided)
+      const updateData: any = {
+        updatedAt: new Date(),
+      };
+
+      if (firstName !== undefined) updateData.firstName = firstName;
+      if (lastName !== undefined) updateData.lastName = lastName;
+      if (email !== undefined) updateData.email = email;
+      if (phone !== undefined) updateData.phone = phone;
+      if (tags !== undefined) updateData.tags = tags;
+      if (internalNotes !== undefined) updateData.internalNotes = internalNotes;
+      if (priorityLevel !== undefined) updateData.priorityLevel = priorityLevel;
+
+      // Update member
+      const updatedMember = await prisma.members.update({
+        where: { id },
+        data: updateData,
+      });
+
+      // Log the change in audit_logs
+      await prisma.audit_logs.create({
+        data: {
+          id: `audit_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+          userId: session.user.id,
+          userEmail: session.user.email,
+          userName: session.user.name,
+          action: 'member.updated',
+          entityType: 'Member',
+          entityId: id,
+          changes: {
+            before: currentMember,
+            after: {
+              firstName: updatedMember.firstName,
+              lastName: updatedMember.lastName,
+              email: updatedMember.email,
+              phone: updatedMember.phone,
+              tags: updatedMember.tags,
+              internalNotes: updatedMember.internalNotes,
+              priorityLevel: updatedMember.priorityLevel,
+            },
+          },
+          ipAddress: req.headers['x-forwarded-for'] as string || req.socket.remoteAddress || null,
+          userAgent: req.headers['user-agent'] || null,
+          requestUrl: req.url || null,
+          method: 'PATCH',
+          statusCode: 200,
+        },
+      });
+
+      return res.status(200).json({
+        message: 'Member updated successfully',
+        member: {
+          ...updatedMember,
+          totalSpent: updatedMember.totalSpent.toNumber(),
+          lifetimeValue: updatedMember.lifetimeValue.toNumber(),
+        },
+      });
+    } catch (error: any) {
+      console.error('Error updating member:', error);
+      return res.status(500).json({ message: error.message || 'Failed to update member' });
+    }
+  }
+
   if (req.method === 'DELETE') {
     try {
       // Delete member (cascade will delete subscriptions, transactions, orders)
       await prisma.members.delete({
         where: {
           id: id,
+        },
+      });
+
+      // Log the deletion in audit_logs
+      await prisma.audit_logs.create({
+        data: {
+          id: `audit_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+          userId: session.user.id,
+          userEmail: session.user.email,
+          userName: session.user.name,
+          action: 'member.deleted',
+          entityType: 'Member',
+          entityId: id,
+          ipAddress: req.headers['x-forwarded-for'] as string || req.socket.remoteAddress || null,
+          userAgent: req.headers['user-agent'] || null,
+          requestUrl: req.url || null,
+          method: 'DELETE',
+          statusCode: 200,
         },
       });
 

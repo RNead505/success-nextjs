@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import AdminLayout from '../../../components/admin/AdminLayout';
 import { exportImageToPDF } from '../../../lib/pdfExport';
 import styles from './AdminMedia.module.css';
+import { requireAdminAuth } from '../../lib/adminAuth';
 
 interface MediaItem {
   id: string;
@@ -281,8 +282,6 @@ export default function AdminMedia() {
 }
 
 // Force SSR to prevent NextRouter errors during build
-export async function getServerSideProps() {
-  return {
-    props: {},
-  };
-}
+
+// Server-side authentication check
+export const getServerSideProps = requireAdminAuth;

@@ -16,6 +16,7 @@ import ProjectCard from '../../components/admin/ProjectCard';
 import ProjectColumn from '../../components/admin/ProjectColumn';
 import ProjectModal from '../../components/admin/ProjectModal';
 import styles from './Projects.module.css';
+import { requireAdminAuth } from '../lib/adminAuth';
 
 interface Project {
   id: string;
@@ -375,8 +376,6 @@ export default function ProjectsPage() {
 }
 
 // Force SSR for AWS Amplify deployment compatibility
-export async function getServerSideProps() {
-  return {
-    props: {},
-  };
-}
+
+// Server-side authentication check
+export const getServerSideProps = requireAdminAuth;

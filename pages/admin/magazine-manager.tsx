@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import AdminLayout from '../../components/admin/AdminLayout';
 import { decodeHtmlEntities } from '../../lib/htmlDecode';
 import styles from './MagazineManager.module.css';
+import { requireAdminAuth } from '../lib/adminAuth';
 
 interface Magazine {
   id: number;
@@ -608,8 +609,6 @@ export default function MagazineManager() {
 }
 
 // Force SSR to prevent NextRouter errors during build
-export async function getServerSideProps() {
-  return {
-    props: {},
-  };
-}
+
+// Server-side authentication check
+export const getServerSideProps = requireAdminAuth;

@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import AdminLayout from '../../components/admin/AdminLayout';
 import Link from 'next/link';
 import styles from './SalesCS.module.css';
+import { requireAdminAuth } from '../lib/adminAuth';
 
 interface DashboardStats {
   totalRevenue: number;
@@ -234,8 +235,5 @@ export default function SalesCustomerServiceDashboard() {
   );
 }
 
-export async function getServerSideProps() {
-  return {
-    props: {},
-  };
-}
+// Server-side authentication check
+export const getServerSideProps = requireAdminAuth;

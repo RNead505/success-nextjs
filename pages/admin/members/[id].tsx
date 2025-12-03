@@ -4,13 +4,24 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import AdminLayout from '../../../components/admin/AdminLayout';
 import styles from './MemberDetail.module.css';
+import { requireAdminAuth } from '../../lib/adminAuth';
+
+type PriorityLevel = 'Standard' | 'High' | 'VIP' | 'Enterprise';
 
 interface Member {
   id: string;
+  firstName: string;
+  lastName: string;
   name: string;
   email: string;
+  phone?: string;
+  tags?: string[];
+  priorityLevel?: PriorityLevel;
+  internalNotes?: string;
   createdAt: string;
   updatedAt: string;
+  totalSpent: number;
+  lifetimeValue: number;
   subscription?: {
     status: string;
     currentPeriodStart?: string;
@@ -20,6 +31,23 @@ interface Member {
     stripeCustomerId?: string;
     cancelAtPeriodEnd: boolean;
   };
+  transactions?: Array<{
+    id: string;
+    amount: number;
+    currency: string;
+    status: string;
+    type: string;
+    description: string;
+    provider: string;
+    createdAt: string;
+  }>;
+  orders?: Array<{
+    id: string;
+    orderNumber: string;
+    total: number;
+    status: string;
+    createdAt: string;
+  }>;
 }
 
 export default function MemberDetailPage() {
@@ -28,6 +56,10 @@ export default function MemberDetailPage() {
   const { id } = router.query;
   const [member, setMember] = useState<Member | null>(null);
   const [loading, setLoading] = useState(true);
+  const [editingNotes, setEditingNotes] = useState(false);
+  const [notesText, setNotesText] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -48,6 +80,7 @@ export default function MemberDetailPage() {
       if (res.ok) {
         const data = await res.json();
         setMember(data);
+        setNotesText(data.internalNotes || '');
       } else {
         console.error('Failed to fetch member');
       }
@@ -56,6 +89,38 @@ export default function MemberDetailPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSaveNotes = async () => {
+    if (!member) return;
+
+    setSaving(true);
+    try {
+      const res = await fetch(`/api/admin/members/${member.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ internalNotes: notesText }),
+      });
+
+      if (res.ok) {
+        showToast('Notes saved successfully', 'success');
+        setEditingNotes(false);
+        fetchMember();
+      } else {
+        const error = await res.json();
+        showToast(error.message || 'Failed to save notes', 'error');
+      }
+    } catch (error) {
+      console.error('Error saving notes:', error);
+      showToast('Failed to save notes', 'error');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const showToast = (message: string, type: 'success' | 'error') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3000);
   };
 
   if (status === 'loading' || loading) {
@@ -74,7 +139,7 @@ export default function MemberDetailPage() {
     );
   }
 
-  const hasActiveSubscription = member.subscription?.status === 'ACTIVE';
+  const hasActiveSubscription = member.subscription?.status === 'ACTIVE' || member.subscription?.status === 'active';
 
   return (
     <AdminLayout>
@@ -92,11 +157,16 @@ export default function MemberDetailPage() {
           <div className={styles.memberInfo}>
             <h1>{member.name}</h1>
             <p className={styles.email}>{member.email}</p>
-            {hasActiveSubscription ? (
-              <span className={styles.badgeActive}>Active Subscriber</span>
-            ) : (
-              <span className={styles.badgeInactive}>Inactive</span>
-            )}
+            <div className={styles.badges}>
+              {hasActiveSubscription ? (
+                <span className={styles.badgeActive}>Active Subscriber</span>
+              ) : (
+                <span className={styles.badgeInactive}>Inactive</span>
+              )}
+              {member.priorityLevel && member.priorityLevel !== 'Standard' && (
+                <span className={styles.badgePriority}>{member.priorityLevel}</span>
+              )}
+            </div>
           </div>
         </div>
 
@@ -115,7 +185,25 @@ export default function MemberDetailPage() {
               </div>
               <div className={styles.infoItem}>
                 <span className={styles.label}>Name</span>
-                <span className={styles.value}>{member.name}</span>
+                <span className={styles.value}>{member.firstName} {member.lastName}</span>
+              </div>
+              {member.phone && (
+                <div className={styles.infoItem}>
+                  <span className={styles.label}>Phone</span>
+                  <span className={styles.value}>{member.phone}</span>
+                </div>
+              )}
+              <div className={styles.infoItem}>
+                <span className={styles.label}>Priority Level</span>
+                <span className={styles.value}>{member.priorityLevel || 'Standard'}</span>
+              </div>
+              <div className={styles.infoItem}>
+                <span className={styles.label}>Total Spent</span>
+                <span className={styles.value}>${member.totalSpent?.toFixed(2) || '0.00'}</span>
+              </div>
+              <div className={styles.infoItem}>
+                <span className={styles.label}>Lifetime Value</span>
+                <span className={styles.value}>${member.lifetimeValue?.toFixed(2) || '0.00'}</span>
               </div>
               <div className={styles.infoItem}>
                 <span className={styles.label}>Member Since</span>
@@ -138,6 +226,69 @@ export default function MemberDetailPage() {
                 </span>
               </div>
             </div>
+            {member.tags && member.tags.length > 0 && (
+              <div className={styles.tagsSection}>
+                <span className={styles.label}>Tags:</span>
+                <div className={styles.tags}>
+                  {member.tags.map((tag) => (
+                    <span key={tag} className={styles.tag}>{tag}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* CS Notes */}
+          <div className={styles.card}>
+            <div className={styles.cardHeader}>
+              <h2>Internal CS Notes</h2>
+              {!editingNotes && (
+                <button
+                  onClick={() => setEditingNotes(true)}
+                  className={styles.editButton}
+                >
+                  Edit
+                </button>
+              )}
+            </div>
+            {editingNotes ? (
+              <div className={styles.notesEditor}>
+                <textarea
+                  value={notesText}
+                  onChange={(e) => setNotesText(e.target.value)}
+                  className={styles.notesTextarea}
+                  rows={6}
+                  placeholder="Add internal notes about this customer (visible only to admins)..."
+                />
+                <div className={styles.notesActions}>
+                  <button
+                    onClick={() => {
+                      setEditingNotes(false);
+                      setNotesText(member.internalNotes || '');
+                    }}
+                    className={styles.cancelButton}
+                    disabled={saving}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleSaveNotes}
+                    className={styles.saveButton}
+                    disabled={saving}
+                  >
+                    {saving ? 'Saving...' : 'Save Notes'}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className={styles.notesDisplay}>
+                {member.internalNotes ? (
+                  <p className={styles.notesText}>{member.internalNotes}</p>
+                ) : (
+                  <p className={styles.notesEmpty}>No internal notes yet. Click "Edit" to add notes.</p>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Subscription Information */}
@@ -148,13 +299,13 @@ export default function MemberDetailPage() {
                 <div className={styles.infoItem}>
                   <span className={styles.label}>Status</span>
                   <span className={styles.value}>
-                    {member.subscription.status === 'ACTIVE' && (
+                    {(member.subscription.status === 'ACTIVE' || member.subscription.status === 'active') && (
                       <span className={styles.statusActive}>Active</span>
                     )}
                     {member.subscription.status === 'PAST_DUE' && (
                       <span className={styles.statusPastDue}>Past Due</span>
                     )}
-                    {member.subscription.status === 'CANCELED' && (
+                    {(member.subscription.status === 'CANCELED' || member.subscription.status === 'canceled') && (
                       <span className={styles.statusCanceled}>Canceled</span>
                     )}
                     {member.subscription.status === 'INACTIVE' && (
@@ -239,31 +390,91 @@ export default function MemberDetailPage() {
               </div>
             )}
           </div>
+
+          {/* Recent Transactions */}
+          {member.transactions && member.transactions.length > 0 && (
+            <div className={styles.card}>
+              <h2>Recent Transactions</h2>
+              <div className={styles.transactionsList}>
+                {member.transactions.map((txn) => (
+                  <div key={txn.id} className={styles.transaction}>
+                    <div className={styles.transactionInfo}>
+                      <div className={styles.transactionAmount}>
+                        ${txn.amount.toFixed(2)} {txn.currency}
+                      </div>
+                      <div className={styles.transactionDesc}>
+                        {txn.description || txn.type}
+                      </div>
+                    </div>
+                    <div className={styles.transactionMeta}>
+                      <span className={styles.transactionStatus}>
+                        {txn.status}
+                      </span>
+                      <span className={styles.transactionDate}>
+                        {new Date(txn.createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Recent Orders */}
+          {member.orders && member.orders.length > 0 && (
+            <div className={styles.card}>
+              <h2>Recent Orders</h2>
+              <div className={styles.ordersList}>
+                {member.orders.map((order) => (
+                  <div key={order.id} className={styles.order}>
+                    <div className={styles.orderInfo}>
+                      <div className={styles.orderNumber}>
+                        Order #{order.orderNumber}
+                      </div>
+                      <div className={styles.orderAmount}>
+                        ${order.total.toFixed(2)}
+                      </div>
+                    </div>
+                    <div className={styles.orderMeta}>
+                      <span className={styles.orderStatus}>
+                        {order.status}
+                      </span>
+                      <span className={styles.orderDate}>
+                        {new Date(order.createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Action Buttons */}
         <div className={styles.actionsSection}>
           <h2>Actions</h2>
           <div className={styles.actionButtons}>
-            <button className={styles.actionButton}>
-              Send Email
-            </button>
-            <button className={styles.actionButton}>
-              Reset Password
-            </button>
-            <button className={styles.actionButtonDanger}>
-              Delete Member
-            </button>
+            <Link href={`/admin/members`} className={styles.actionButton}>
+              ← Back to List
+            </Link>
+            <Link href={`/admin/subscriptions`} className={styles.actionButton}>
+              Manage Subscriptions
+            </Link>
           </div>
         </div>
       </div>
+
+      {/* Toast Notification */}
+      {toast && (
+        <div className={`${styles.toast} ${styles[toast.type]}`}>
+          {toast.message}
+        </div>
+      )}
     </AdminLayout>
   );
 }
 
 // Force SSR to prevent NextRouter errors during build
-export async function getServerSideProps() {
-  return {
-    props: {},
-  };
-}
+
+// Server-side authentication check
+export const getServerSideProps = requireAdminAuth;

@@ -91,6 +91,10 @@ export const authOptions: AuthOptions = {
   },
   session: {
     strategy: 'jwt' as const,
+    maxAge: 8 * 60 * 60, // 🔒 SECURITY: 8 hours - session expires
+  },
+  jwt: {
+    maxAge: 8 * 60 * 60, // 🔒 SECURITY: 8 hours - token expires
   },
   secret: process.env.NEXTAUTH_SECRET,
 };

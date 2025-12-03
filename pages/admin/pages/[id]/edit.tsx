@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import AdminLayout from '../../../../components/admin/AdminLayout';
 import PageEditor from '../../../../components/admin/PageEditor';
+import { requireAdminAuth } from '../../../lib/adminAuth';
 
 export default function EditPage() {
   const { data: session, status } = useSession();
@@ -35,8 +36,6 @@ export default function EditPage() {
 }
 
 // Force SSR to prevent NextRouter errors during build
-export async function getServerSideProps() {
-  return {
-    props: {},
-  };
-}
+
+// Server-side authentication check
+export const getServerSideProps = requireAdminAuth;

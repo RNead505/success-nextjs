@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import styles from '../../styles/Auth.module.css';
+import { requireAdminAuth } from '../lib/adminAuth';
 
 export default function ChangePasswordPage() {
   const router = useRouter();
@@ -176,8 +177,6 @@ export default function ChangePasswordPage() {
 }
 
 // Force SSR to prevent NextRouter errors during build
-export async function getServerSideProps() {
-  return {
-    props: {},
-  };
-}
+
+// Server-side authentication check
+export const getServerSideProps = requireAdminAuth;

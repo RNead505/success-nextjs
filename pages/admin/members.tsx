@@ -5,9 +5,11 @@ import Link from 'next/link';
 import AdminLayout from '../../components/admin/AdminLayout';
 import RoleBadges from '../../components/admin/RoleBadges';
 import styles from './Members.module.css';
+import { requireAdminAuth } from '../lib/adminAuth';
 
 type MembershipTier = 'Free' | 'Customer' | 'SUCCESSPlus' | 'VIP' | 'Enterprise';
 type UserRole = 'SUPER_ADMIN' | 'ADMIN' | 'EDITOR' | 'AUTHOR' | 'STAFF';
+type PriorityLevel = 'Standard' | 'High' | 'VIP' | 'Enterprise';
 
 interface Member {
   id: string;
@@ -22,6 +24,9 @@ interface Member {
   lifetimeValue: number;
   createdAt: string;
   joinDate: string;
+  tags?: string[];
+  priorityLevel?: PriorityLevel;
+  internalNotes?: string;
   subscription?: {
     status: string;
     currentPeriodEnd?: string;
@@ -32,6 +37,11 @@ interface Member {
   isPlatformUser: boolean;
 }
 
+interface EditModalState {
+  isOpen: boolean;
+  member: Member | null;
+}
+
 export default function MembersPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -39,6 +49,19 @@ export default function MembersPage() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'active' | 'inactive'>('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const [editModal, setEditModal] = useState<EditModalState>({ isOpen: false, member: null });
+  const [editForm, setEditForm] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    tags: [] as string[],
+    priorityLevel: 'Standard' as PriorityLevel,
+    internalNotes: '',
+  });
+  const [tagInput, setTagInput] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -67,6 +90,76 @@ export default function MembersPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const openEditModal = (member: Member) => {
+    setEditModal({ isOpen: true, member });
+    setEditForm({
+      firstName: member.firstName,
+      lastName: member.lastName,
+      email: member.email,
+      phone: member.phone || '',
+      tags: member.tags || [],
+      priorityLevel: member.priorityLevel || 'Standard',
+      internalNotes: member.internalNotes || '',
+    });
+    setTagInput('');
+  };
+
+  const closeEditModal = () => {
+    setEditModal({ isOpen: false, member: null });
+    setEditForm({
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      tags: [],
+      priorityLevel: 'Standard',
+      internalNotes: '',
+    });
+  };
+
+  const handleSave = async () => {
+    if (!editModal.member) return;
+
+    setSaving(true);
+    try {
+      const res = await fetch(`/api/admin/members/${editModal.member.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editForm),
+      });
+
+      if (res.ok) {
+        showToast('Customer updated successfully', 'success');
+        closeEditModal();
+        fetchMembers();
+      } else {
+        const error = await res.json();
+        showToast(error.message || 'Failed to update customer', 'error');
+      }
+    } catch (error) {
+      console.error('Error updating member:', error);
+      showToast('Failed to update customer', 'error');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const showToast = (message: string, type: 'success' | 'error') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3000);
+  };
+
+  const addTag = () => {
+    if (tagInput.trim() && !editForm.tags.includes(tagInput.trim())) {
+      setEditForm({ ...editForm, tags: [...editForm.tags, tagInput.trim()] });
+      setTagInput('');
+    }
+  };
+
+  const removeTag = (tag: string) => {
+    setEditForm({ ...editForm, tags: editForm.tags.filter((t) => t !== tag) });
   };
 
   if (status === 'loading' || loading) {
@@ -237,6 +330,12 @@ export default function MembersPage() {
                         >
                           View
                         </Link>
+                        <button
+                          onClick={() => openEditModal(member)}
+                          className={styles.actionButtonEdit}
+                        >
+                          Edit
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -246,13 +345,124 @@ export default function MembersPage() {
           )}
         </div>
       </div>
+
+      {/* Edit Customer Modal */}
+      {editModal.isOpen && editModal.member && (
+        <div className={styles.modalOverlay} onClick={closeEditModal}>
+          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.modalHeader}>
+              <h2>Edit Customer</h2>
+              <button onClick={closeEditModal} className={styles.modalClose}>×</button>
+            </div>
+            <div className={styles.modalBody}>
+              <div className={styles.formGrid}>
+                <div className={styles.formGroup}>
+                  <label>First Name</label>
+                  <input
+                    type="text"
+                    value={editForm.firstName}
+                    onChange={(e) => setEditForm({ ...editForm, firstName: e.target.value })}
+                    className={styles.input}
+                  />
+                </div>
+                <div className={styles.formGroup}>
+                  <label>Last Name</label>
+                  <input
+                    type="text"
+                    value={editForm.lastName}
+                    onChange={(e) => setEditForm({ ...editForm, lastName: e.target.value })}
+                    className={styles.input}
+                  />
+                </div>
+                <div className={styles.formGroup}>
+                  <label>Email</label>
+                  <input
+                    type="email"
+                    value={editForm.email}
+                    onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
+                    className={styles.input}
+                  />
+                </div>
+                <div className={styles.formGroup}>
+                  <label>Phone</label>
+                  <input
+                    type="tel"
+                    value={editForm.phone}
+                    onChange={(e) => setEditForm({ ...editForm, phone: e.target.value })}
+                    className={styles.input}
+                    placeholder="Optional"
+                  />
+                </div>
+                <div className={styles.formGroup}>
+                  <label>Priority Level</label>
+                  <select
+                    value={editForm.priorityLevel}
+                    onChange={(e) => setEditForm({ ...editForm, priorityLevel: e.target.value as PriorityLevel })}
+                    className={styles.select}
+                  >
+                    <option value="Standard">Standard</option>
+                    <option value="High">High</option>
+                    <option value="VIP">VIP</option>
+                    <option value="Enterprise">Enterprise</option>
+                  </select>
+                </div>
+                <div className={styles.formGroup}>
+                  <label>Tags</label>
+                  <div className={styles.tagInput}>
+                    <input
+                      type="text"
+                      value={tagInput}
+                      onChange={(e) => setTagInput(e.target.value)}
+                      onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
+                      placeholder="Add tag and press Enter"
+                      className={styles.input}
+                    />
+                    <button onClick={addTag} className={styles.addTagButton}>+</button>
+                  </div>
+                  <div className={styles.tags}>
+                    {editForm.tags.map((tag) => (
+                      <span key={tag} className={styles.tag}>
+                        {tag}
+                        <button onClick={() => removeTag(tag)} className={styles.removeTag}>×</button>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div className={styles.formGroupFull}>
+                  <label>Internal Notes</label>
+                  <textarea
+                    value={editForm.internalNotes}
+                    onChange={(e) => setEditForm({ ...editForm, internalNotes: e.target.value })}
+                    className={styles.textarea}
+                    rows={4}
+                    placeholder="Internal notes visible only to admins..."
+                  />
+                </div>
+              </div>
+            </div>
+            <div className={styles.modalFooter}>
+              <button onClick={closeEditModal} className={styles.cancelButton} disabled={saving}>
+                Cancel
+              </button>
+              <button onClick={handleSave} className={styles.saveButton} disabled={saving}>
+                {saving ? 'Saving...' : 'Save Changes'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Toast Notification */}
+      {toast && (
+        <div className={`${styles.toast} ${styles[toast.type]}`}>
+          {toast.message}
+        </div>
+      )}
     </AdminLayout>
   );
 }
 
 // Force SSR to prevent NextRouter errors during build
-export async function getServerSideProps() {
-  return {
-    props: {},
-  };
-}
+
+// Server-side authentication check
+export const getServerSideProps = requireAdminAuth;

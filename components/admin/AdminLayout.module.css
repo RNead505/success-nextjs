@@ -92,16 +92,33 @@
   margin-bottom: 0.25rem;
   user-select: none;
   transition: color 0.2s;
+  border-radius: 4px;
 }
 
 .navSectionTitle:hover {
   color: #999;
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .chevron {
   font-size: 0.625rem;
   color: #666;
-  transition: transform 0.2s;
+  transition: all 0.3s ease;
+  display: inline-block;
+  margin-left: 8px;
+}
+
+/* Items container for smooth collapse animation */
+.navSectionItems {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  opacity: 0;
+}
+
+.navSectionItems.expanded {
+  max-height: 1000px; /* Large enough to fit all items */
+  opacity: 1;
 }
 
 .navItem {

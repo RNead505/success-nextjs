@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import AdminLayout from '../../components/admin/AdminLayout';
 import styles from './Cache.module.css';
+import { requireAdminAuth } from '../lib/adminAuth';
 
 export default function CacheManagement() {
   const { data: session, status } = useSession();
@@ -251,8 +252,6 @@ export default function CacheManagement() {
 }
 
 // Force SSR to prevent NextRouter errors during build
-export async function getServerSideProps() {
-  return {
-    props: {},
-  };
-}
+
+// Server-side authentication check
+export const getServerSideProps = requireAdminAuth;

@@ -1,9 +1,10 @@
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import AdminLayout from '../../../components/admin/AdminLayout';
 import Link from 'next/link';
-import styles from './AdminPages.module.css';
+import AdminLayout from '../../../components/admin/AdminLayout';
+import styles from '../posts/AdminPosts.module.css';
+import { requireAdminAuth } from '../../lib/adminAuth';
 
 interface Page {
   id: string;
@@ -13,83 +14,56 @@ interface Page {
   createdAt: string;
   updatedAt: string;
   publishedAt?: string;
-  seoTitle?: string;
-  seoDescription?: string;
 }
 
-export default function AdminPages() {
+export default function PagesIndex() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [pages, setPages] = useState<Page[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [filter, setFilter] = useState<'all' | 'PUBLISHED' | 'DRAFT' | 'ARCHIVED'>('all');
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.push('/admin/login');
-    } else if (status === 'authenticated' && session?.user?.role !== 'ADMIN') {
-      router.push('/dashboard');
     }
-  }, [status, session, router]);
+  }, [status, router]);
 
   useEffect(() => {
-    fetchPages();
-  }, [filter]);
+    if (session) {
+      fetchPages();
+    }
+  }, [session, statusFilter]);
 
   const fetchPages = async () => {
-    setLoading(true);
-    setError(null);
     try {
-      const statusParam = filter === 'all' ? '' : `&status=${filter}`;
-      const endpoint = `/api/pages?per_page=100${statusParam}`;
-
-      const res = await fetch(endpoint, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      setLoading(true);
+      const params = new URLSearchParams({
+        per_page: '50',
+        status: statusFilter,
       });
-
-      if (!res.ok) {
-        const errorText = await res.text();
-        console.error('API Error:', res.status, errorText);
-        throw new Error(`Failed to fetch pages: ${res.status} ${res.statusText}`);
-      }
-
-      const data = await res.json();
-
-      if (Array.isArray(data)) {
+      const res = await fetch(`/api/admin/pages?${params}`);
+      if (res.ok) {
+        const data = await res.json();
         setPages(data);
-        setError(null);
-      } else {
-        throw new Error('Invalid data format from API');
       }
     } catch (error) {
       console.error('Error fetching pages:', error);
-      if (error instanceof TypeError && error.message.includes('fetch')) {
-        setError('Network error: Unable to connect to the API. Check your internet connection.');
-      } else {
-        setError(error instanceof Error ? error.message : 'Failed to fetch pages');
-      }
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this page?')) return;
+  const handleDelete = async (id: string, title: string) => {
+    if (!confirm(`Are you sure you want to delete "${title}"?`)) return;
 
     try {
-      const res = await fetch(`/api/pages/${id}`, {
-        method: 'DELETE',
-      });
-
+      const res = await fetch(`/api/admin/pages/${id}`, { method: 'DELETE' });
       if (res.ok) {
-        alert('Page deleted successfully!');
-        fetchPages();
+        setPages(pages.filter(p => p.id !== id));
       } else {
-        throw new Error('Failed to delete page');
+        alert('Failed to delete page');
       }
     } catch (error) {
       console.error('Error deleting page:', error);
@@ -97,7 +71,7 @@ export default function AdminPages() {
     }
   };
 
-  if (loading) {
+  if (status === 'loading' || loading) {
     return (
       <AdminLayout>
         <div className={styles.loading}>Loading pages...</div>
@@ -105,141 +79,161 @@ export default function AdminPages() {
     );
   }
 
-  if (error) {
-    return (
-      <AdminLayout>
-        <div className={styles.container}>
-          <div className={styles.error}>
-            <h2>Error Loading Pages</h2>
-            <p>{error}</p>
-            <button onClick={() => window.location.reload()} className={styles.retryButton}>
-              Retry
-            </button>
-          </div>
-        </div>
-      </AdminLayout>
-    );
+  if (!session) {
+    return null;
   }
+
+  const filteredPages = pages.filter((page) => {
+    const matchesSearch =
+      searchTerm === '' ||
+      page.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      page.slug.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesSearch;
+  });
 
   return (
     <AdminLayout>
-      <div className={styles.container}>
+      <div className={styles.postsPage}>
         <div className={styles.header}>
           <div>
             <h1>Pages</h1>
-            <p style={{ color: '#666', fontSize: '0.875rem', marginTop: '0.5rem' }}>
-              Manage all pages for your Next.js site. Published pages appear on the live site.
-            </p>
+            <p className={styles.subtitle}>Manage static pages</p>
           </div>
-          <Link href="/admin/pages/new" className={styles.addButton}>
-            + Create New Page
+          <Link href="/admin/pages/new" className={styles.newButton}>
+            + New Page
           </Link>
         </div>
 
-        <div className={styles.filters}>
-          <button
-            onClick={() => setFilter('all')}
-            className={filter === 'all' ? styles.filterActive : styles.filter}
-          >
-            All ({pages.length})
-          </button>
-          <button
-            onClick={() => setFilter('PUBLISHED')}
-            className={filter === 'PUBLISHED' ? styles.filterActive : styles.filter}
-          >
-            Published
-          </button>
-          <button
-            onClick={() => setFilter('DRAFT')}
-            className={filter === 'DRAFT' ? styles.filterActive : styles.filter}
-          >
-            Drafts
-          </button>
-          <button
-            onClick={() => setFilter('ARCHIVED')}
-            className={filter === 'ARCHIVED' ? styles.filterActive : styles.filter}
-          >
-            Archived
-          </button>
+        {/* Stats */}
+        <div className={styles.statsGrid}>
+          <div className={styles.statCard}>
+            <div className={styles.statIcon}>📄</div>
+            <div className={styles.statContent}>
+              <h3>Total Pages</h3>
+              <p className={styles.statNumber}>{pages.length}</p>
+            </div>
+          </div>
+          <div className={styles.statCard}>
+            <div className={styles.statIcon}>✅</div>
+            <div className={styles.statContent}>
+              <h3>Published</h3>
+              <p className={styles.statNumber}>
+                {pages.filter(p => p.status === 'PUBLISHED').length}
+              </p>
+            </div>
+          </div>
+          <div className={styles.statCard}>
+            <div className={styles.statIcon}>📝</div>
+            <div className={styles.statContent}>
+              <h3>Drafts</h3>
+              <p className={styles.statNumber}>
+                {pages.filter(p => p.status === 'DRAFT').length}
+              </p>
+            </div>
+          </div>
         </div>
 
-        {pages.length === 0 ? (
-          <div className={styles.empty}>
-            <p>No pages found with the selected filter.</p>
-            <Link href="/admin/pages/new" className={styles.addButton}>
-              + Create New Page
-            </Link>
+        {/* Filters */}
+        <div className={styles.controls}>
+          <div className={styles.filters}>
+            <button
+              className={statusFilter === 'all' ? styles.filterActive : styles.filterButton}
+              onClick={() => setStatusFilter('all')}
+            >
+              All
+            </button>
+            <button
+              className={statusFilter === 'PUBLISHED' ? styles.filterActive : styles.filterButton}
+              onClick={() => setStatusFilter('PUBLISHED')}
+            >
+              Published
+            </button>
+            <button
+              className={statusFilter === 'DRAFT' ? styles.filterActive : styles.filterButton}
+              onClick={() => setStatusFilter('DRAFT')}
+            >
+              Drafts
+            </button>
           </div>
-        ) : (
-          <div className={styles.tableContainer}>
+          <div className={styles.searchBox}>
+            <input
+              type="text"
+              placeholder="Search pages..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className={styles.searchInput}
+            />
+          </div>
+        </div>
+
+        {/* Pages Table */}
+        <div className={styles.tableContainer}>
+          {filteredPages.length === 0 ? (
+            <div className={styles.emptyState}>
+              <p>No pages found</p>
+            </div>
+          ) : (
             <table className={styles.table}>
               <thead>
                 <tr>
                   <th>Title</th>
-                  <th>Author</th>
+                  <th>Slug</th>
                   <th>Status</th>
                   <th>Last Modified</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {pages.map((page) => (
+                {filteredPages.map((page) => (
                   <tr key={page.id}>
-                    <td className={styles.titleCell}>
-                      <div className={styles.titleContent}>
-                        <Link href={`/admin/pages/${page.id}/edit`}>
-                          <span>{page.title}</span>
-                        </Link>
-                        <span className={styles.slug}>/{page.slug}</span>
-                      </div>
-                    </td>
-                    <td>{session?.user?.name || 'Admin'}</td>
                     <td>
-                      <span className={`${styles.status} ${styles[`status-${page.status.toLowerCase()}`]}`}>
-                        {page.status.toLowerCase()}
-                      </span>
-                    </td>
-                    <td>
-                      <div className={styles.dateInfo}>
-                        <div>{new Date(page.updatedAt).toLocaleDateString()}</div>
-                        <small>{new Date(page.updatedAt).toLocaleTimeString()}</small>
-                      </div>
-                    </td>
-                    <td className={styles.actions}>
-                      <Link
-                        href={`/admin/pages/${page.id}/edit`}
-                        className={styles.editButton}
-                      >
-                        Edit
+                      <Link href={`/admin/pages/${page.id}`} className={styles.postTitle}>
+                        {page.title}
                       </Link>
-                      {page.status === 'PUBLISHED' && (
-                        <a
-                          href={`/${page.slug}`}
-                          className={styles.viewButton}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          View Live
-                        </a>
+                    </td>
+                    <td>
+                      <code className={styles.slug}>/{page.slug}</code>
+                    </td>
+                    <td>
+                      {page.status === 'PUBLISHED' ? (
+                        <span className={styles.badgePublished}>Published</span>
+                      ) : (
+                        <span className={styles.badgeDraft}>Draft</span>
                       )}
-                      <button onClick={() => handleDelete(page.id)} className={styles.deleteButton}>
-                        Delete
-                      </button>
+                    </td>
+                    <td>
+                      {new Date(page.updatedAt).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric',
+                      })}
+                    </td>
+                    <td>
+                      <div className={styles.actions}>
+                        <Link
+                          href={`/admin/pages/${page.id}`}
+                          className={styles.actionButton}
+                        >
+                          Edit
+                        </Link>
+                        <button
+                          onClick={() => handleDelete(page.id, page.title)}
+                          className={styles.deleteButton}
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </AdminLayout>
   );
 }
 
-// Force SSR to prevent NextRouter errors during build
-export async function getServerSideProps() {
-  return {
-    props: {},
-  };
-}
+// Server-side authentication check
+export const getServerSideProps = requireAdminAuth;

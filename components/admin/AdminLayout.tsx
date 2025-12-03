@@ -255,21 +255,25 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                   style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
                 >
                   <span>{section.title}</span>
-                  <span className={styles.chevron}>{isExpanded ? '▼' : '▶'}</span>
+                  <span className={styles.chevron} style={{ transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)' }}>
+                    ▶
+                  </span>
                 </div>
-                {isExpanded && section.items.map((item) => {
-                  const isActive = router.pathname === item.href || router.pathname.startsWith(item.href + '/');
-                  return (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      className={`${styles.navItem} ${isActive ? styles.navItemActive : ''}`}
-                    >
-                      <span className={styles.navIcon}>{item.icon}</span>
-                      <span>{item.name}</span>
-                    </Link>
-                  );
-                })}
+                <div className={`${styles.navSectionItems} ${isExpanded ? styles.expanded : ''}`}>
+                  {section.items.map((item) => {
+                    const isActive = router.pathname === item.href || router.pathname.startsWith(item.href + '/');
+                    return (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className={`${styles.navItem} ${isActive ? styles.navItemActive : ''}`}
+                      >
+                        <span className={styles.navIcon}>{item.icon}</span>
+                        <span>{item.name}</span>
+                      </Link>
+                    );
+                  })}
+                </div>
               </div>
             );
           })}

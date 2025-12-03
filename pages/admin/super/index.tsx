@@ -2,6 +2,7 @@ import { withDepartmentAccess } from '@/lib/auth/withDepartmentAccess';
 import AdminLayout from '@/components/admin/AdminLayout';
 import Link from 'next/link';
 import styles from './SuperAdmin.module.css';
+import { requireAdminAuth } from '../../lib/adminAuth';
 
 function SuperAdminDashboard() {
   return (
@@ -70,8 +71,5 @@ export default withDepartmentAccess(SuperAdminDashboard, {
   department: 'SUPER_ADMIN',
 });
 
-export async function getServerSideProps() {
-  return {
-    props: {},
-  };
-}
+// Server-side authentication check
+export const getServerSideProps = requireAdminAuth;

@@ -84,11 +84,19 @@ model campaigns {
   totalSent         Int                 @default(0)
   totalOpened       Int                 @default(0)
   totalClicked      Int                 @default(0)
+  sentCount         Int                 @default(0)
+  deliveredCount    Int                 @default(0)
+  openedCount       Int                 @default(0)
+  clickedCount      Int                 @default(0)
+  bouncedCount      Int                 @default(0)
+  failedCount       Int                 @default(0)
+  sendErrors        Json?
   createdAt         DateTime            @default(now())
   updatedAt         DateTime
   campaign_contacts campaign_contacts[]
   email_templates   email_templates?    @relation(fields: [templateId], references: [id])
   drip_emails       drip_emails[]
+  email_events      email_events[]
 }
 
 model categories {
@@ -143,10 +151,12 @@ model contacts {
   source            String?
   notes             String?
   lastContactedAt   DateTime?
+  emailEngagementScore Int              @default(0)
   createdAt         DateTime            @default(now())
   updatedAt         DateTime
   campaign_contacts campaign_contacts[]
   email_logs        email_logs[]
+  email_events      email_events[]
 
   @@index([email])
   @@index([status])
@@ -187,6 +197,22 @@ model drip_emails {
   createdAt  DateTime  @default(now())
   updatedAt  DateTime
   campaigns  campaigns @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+}
+
+model email_events {
+  id           String   @id
+  campaignId   String
+  contactId    String
+  emailAddress String
+  event        String
+  eventData    Json?
+  createdAt    DateTime @default(now())
+  campaigns    campaigns @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  contacts     contacts  @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  @@index([campaignId])
+  @@index([contactId])
+  @@index([event])
 }
 
 model editorial_calendar {
@@ -311,32 +337,48 @@ model order_items {
 }
 
 model orders {
-  id              String            @id
-  orderNumber     String            @unique
-  memberId        String            // Changed from userId to memberId
-  userName        String
-  userEmail       String
-  total           Decimal           @db.Decimal(10, 2)
-  subtotal        Decimal           @db.Decimal(10, 2)
-  tax             Decimal           @default(0) @db.Decimal(10, 2)
-  shipping        Decimal           @default(0) @db.Decimal(10, 2)
-  discount        Decimal           @default(0) @db.Decimal(10, 2)
-  status          OrderStatus       @default(PENDING)
-  paymentMethod   String
-  paymentId       String?
-  shippingAddress String?
-  billingAddress  String?
-  notes           String?
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime
-  order_items     order_items[]
-  member          members           @relation(fields: [memberId], references: [id], onDelete: Cascade)
-  refund_disputes refund_disputes[]
+  id                  String            @id
+  orderNumber         String            @unique
+  memberId            String            // Changed from userId to memberId
+  userName            String
+  userEmail           String
+  total               Decimal           @db.Decimal(10, 2)
+  subtotal            Decimal           @db.Decimal(10, 2)
+  tax                 Decimal           @default(0) @db.Decimal(10, 2)
+  shipping            Decimal           @default(0) @db.Decimal(10, 2)
+  discount            Decimal           @default(0) @db.Decimal(10, 2)
+  status              OrderStatus       @default(PENDING)
+  paymentMethod       String
+  paymentId           String?
+  shippingAddress     String?
+  billingAddress      String?
+  notes               String?
+  orderSource         String            @default("InHouse")
+  woocommerceOrderId  String?
+  fulfillmentStatus   String            @default("UNFULFILLED")
+  fulfilledAt         DateTime?
+  fulfilledBy         String?
+  trackingNumber      String?
+  trackingCarrier     String?
+  trackingUrl         String?
+  shippedDate         DateTime?
+  deliveredDate       DateTime?
+  packingSlipPrinted  Boolean           @default(false)
+  internalNotes       String?
+  customerNotes       String?
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime
+  order_items         order_items[]
+  member              members           @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  refund_disputes     refund_disputes[]
 
   @@index([createdAt])
   @@index([orderNumber])
   @@index([status])
   @@index([memberId])
+  @@index([fulfillmentStatus])
+  @@index([orderSource])
+  @@index([woocommerceOrderId])
 }
 
 model page_views {
@@ -383,20 +425,22 @@ model pay_links {
 }
 
 model pages {
-  id             String     @id
-  title          String
-  slug           String     @unique
-  content        String
-  status         PostStatus @default(DRAFT)
-  publishedAt    DateTime?
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
-  seoTitle       String?
-  seoDescription String?
-  wordpressId    Int?       @unique
-  template       String?
-  parentId       String?
-  order          Int        @default(0)
+  id                String     @id
+  title             String
+  slug              String     @unique
+  content           String
+  status            PostStatus @default(DRAFT)
+  publishedAt       DateTime?
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  seoTitle          String?
+  seoDescription    String?
+  featuredImage     String?
+  featuredImageAlt  String?
+  wordpressId       Int?       @unique
+  template          String?
+  parentId          String?
+  order             Int        @default(0)
 
   @@index([slug])
   @@index([wordpressId])
@@ -870,18 +914,22 @@ model invite_codes {
 }
 
 model videos {
-  id          String     @id
-  title       String
-  slug        String     @unique
-  description String?
-  videoUrl    String
-  thumbnail   String?
-  duration    Int?
-  status      PostStatus @default(DRAFT)
-  publishedAt DateTime?
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  wordpressId Int?       @unique
+  id               String     @id
+  title            String
+  slug             String     @unique
+  description      String?
+  videoUrl         String
+  thumbnail        String?
+  duration         Int?
+  status           PostStatus @default(DRAFT)
+  publishedAt      DateTime?
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+  seoTitle         String?
+  seoDescription   String?
+  featuredImage    String?
+  featuredImageAlt String?
+  wordpressId      Int?       @unique
 
   @@index([slug])
   @@index([wordpressId])

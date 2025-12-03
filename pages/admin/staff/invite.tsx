@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import AdminLayout from '../../../components/admin/AdminLayout';
 import styles from './StaffInvite.module.css';
+import { requireAdminAuth } from '../../lib/adminAuth';
 
 type Department =
   | 'SUPER_ADMIN'
@@ -340,8 +341,5 @@ export default function StaffInvite() {
   );
 }
 
-export async function getServerSideProps() {
-  return {
-    props: {},
-  };
-}
+// Server-side authentication check
+export const getServerSideProps = requireAdminAuth;
