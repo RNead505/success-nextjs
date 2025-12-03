@@ -145,7 +145,7 @@ export default function ConfirmationModal({
           <button
             className={getButtonClass()}
             onClick={handleConfirm}
-            disabled={isConfirmDisabled}
+            disabled={!!isConfirmDisabled}
           >
             {showSecondConfirmation ? 'Yes, I\'m Sure' : confirmText}
           </button>
