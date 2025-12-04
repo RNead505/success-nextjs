@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import AdminLayout from '../../components/admin/AdminLayout';
 import styles from './Revenue.module.css';
 import dynamic from 'next/dynamic';
-import { requireAdminAuth } from '../lib/adminAuth';
+import { requireAdminAuth } from '../../lib/adminAuth';
 
 // Dynamically import jsPDF and html2canvas to avoid SSR issues
 const jsPDF = dynamic(() => import('jspdf').then(mod => mod.jsPDF), { ssr: false });

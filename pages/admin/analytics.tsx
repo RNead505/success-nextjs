@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import AdminLayout from '../../components/admin/AdminLayout';
 import styles from './Analytics.module.css';
-import { requireAdminAuth } from '../lib/adminAuth';
+import { requireAdminAuth } from '../../lib/adminAuth';
 
 interface AnalyticsData {
   pageViews: number;
