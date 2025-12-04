@@ -1,11 +1,13 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
+import { getDepartmentFromPath } from '@/lib/auth/departmentAccess';
+import { isPremiumRoute } from '@/lib/access-control';
 
 /**
  * Next.js Middleware for:
  * 1. Route protection (admin/dashboard)
- * 2. First-login password reset enforcement
+ * 2. Premium content access control
  * 3. WordPress URL redirects
  */
 
@@ -25,7 +27,45 @@ export async function middleware(request: NextRequest) {
 
   // AUTHENTICATION & AUTHORIZATION
   const protectedRoutes = ['/admin', '/dashboard'];
-  const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route));
+  const publicAuthRoutes = ['/admin/login', '/login', '/register', '/forgot-password'];
+
+  // Check if route requires premium access (magazine, courses, etc.)
+  const requiresPremiumAccess = isPremiumRoute(pathname);
+
+  if (requiresPremiumAccess) {
+    try {
+      const token = await getToken({
+        req: request,
+        secret: process.env.NEXTAUTH_SECRET,
+      });
+
+      // Premium routes require login
+      if (!token) {
+        const loginUrl = new URL('/login', request.url);
+        loginUrl.searchParams.set('callbackUrl', pathname);
+        return NextResponse.redirect(loginUrl);
+      }
+
+      // Check if user has premium access
+      // This is a lightweight check - detailed validation happens on the page
+      const isPaidMember = token.membershipTier && token.membershipTier !== 'FREE' && token.membershipTier !== 'free';
+
+      if (!isPaidMember) {
+        // Redirect free users to upgrade page
+        const upgradeUrl = new URL('/subscribe', request.url);
+        upgradeUrl.searchParams.set('required', 'true');
+        upgradeUrl.searchParams.set('returnTo', pathname);
+        return NextResponse.redirect(upgradeUrl);
+      }
+    } catch (error) {
+      console.error('Middleware premium access error:', error);
+      return NextResponse.redirect(new URL('/subscribe', request.url));
+    }
+  }
+
+  // Check if route is protected (but exclude public auth routes)
+  const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route)) &&
+                           !publicAuthRoutes.some(route => pathname === route);
 
   if (isProtectedRoute) {
     try {
@@ -41,20 +81,14 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(loginUrl);
       }
 
-      // Check if user needs to change default password
-      const requiresPasswordChange = !token.hasChangedDefaultPassword;
-      const isChangePasswordPage = pathname === '/admin/change-password';
-
-      if (requiresPasswordChange && !isChangePasswordPage) {
-        // Force redirect to password change page
-        const changePasswordUrl = new URL('/admin/change-password', request.url);
-        changePasswordUrl.searchParams.set('required', 'true');
-        return NextResponse.redirect(changePasswordUrl);
-      }
-
-      // User has changed password but is on change-password page - allow access to admin
-      if (!requiresPasswordChange && isChangePasswordPage && request.nextUrl.searchParams.get('required') === 'true') {
-        return NextResponse.redirect(new URL('/admin', request.url));
+      // Check department access for department-specific routes
+      const department = getDepartmentFromPath(pathname);
+      if (department) {
+        // We'll check department access via API route
+        // Pass the department in the request headers for the page to verify
+        const response = NextResponse.next();
+        response.headers.set('x-required-department', department);
+        return response;
       }
 
     } catch (error) {
@@ -202,12 +236,13 @@ export const config = {
   matcher: [
     /*
      * Match all request paths except:
-     * - api routes (handled separately)
+     * - api routes (all API routes including auth)
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      * - public folder files
+     * - auth pages (login, register, forgot-password)
      */
-    '/((?!api/auth|_next/static|_next/image|favicon.ico|.*\\.(?:jpg|jpeg|png|gif|svg|ico|webp)$).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|login|register|forgot-password|admin/login|admin/change-password|.*\\.(?:jpg|jpeg|png|gif|svg|ico|webp)$).*)',
   ],
 };

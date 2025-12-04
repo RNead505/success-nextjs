@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import AdminLayout from '../../components/admin/AdminLayout';
 import styles from './EmailManager.module.css';
+import { requireAdminAuth } from '../lib/adminAuth';
 
 interface Subscriber {
   id: string;
@@ -422,8 +423,6 @@ export default function EmailManager() {
 }
 
 // Force SSR to prevent NextRouter errors during build
-export async function getServerSideProps() {
-  return {
-    props: {},
-  };
-}
+
+// Server-side authentication check
+export const getServerSideProps = requireAdminAuth;

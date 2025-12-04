@@ -68,7 +68,7 @@ export default function PostsListWithFilters() {
   const fetchPosts = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/wordpress/posts?per_page=100&_embed=true');
+      const res = await fetch('/api/posts?per_page=100&_embed=true&status=all');
       if (res.ok) {
         const data = await res.json();
         setPosts(data);
@@ -82,7 +82,7 @@ export default function PostsListWithFilters() {
 
   const fetchAuthors = async () => {
     try {
-      const res = await fetch('/api/wordpress/users?per_page=100');
+      const res = await fetch('/api/users?per_page=100&role=ADMIN,EDITOR,AUTHOR');
       if (res.ok) {
         const data = await res.json();
         setAuthors(data);
@@ -94,8 +94,7 @@ export default function PostsListWithFilters() {
 
   const fetchCategories = async () => {
     try {
-      const wpApiUrl = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || 'https://www.success.com/wp-json/wp/v2';
-      const res = await fetch(`${wpApiUrl}/categories?per_page=100`);
+      const res = await fetch('/api/categories?per_page=100');
       if (res.ok) {
         const data = await res.json();
         setCategories(data);

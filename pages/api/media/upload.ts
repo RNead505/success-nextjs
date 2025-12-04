@@ -49,6 +49,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ error: 'No file uploaded' });
     }
 
+    // 🔒 SECURITY: Validate file type and size
+    const validation = validateImageFile({
+      name: uploadedFile.originalFilename || 'upload.jpg',
+      type: uploadedFile.mimetype || '',
+      size: uploadedFile.size,
+    }, {
+      maxSize: 10 * 1024 * 1024, // 10MB
+      allowedTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/gif'],
+    });
+
+    if (!validation.valid) {
+      fs.unlinkSync(uploadedFile.filepath); // Clean up temp file
+      return res.status(400).json({ error: validation.error });
+    }
+
     // Read file buffer
     const fileBuffer = fs.readFileSync(uploadedFile.filepath);
 

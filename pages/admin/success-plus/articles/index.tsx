@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import AdminLayout from '../../../../components/admin/AdminLayout';
 import styles from '../../posts/AdminPosts.module.css';
+import { requireAdminAuth } from '../../../lib/adminAuth';
 
 interface Article {
   id: string;
@@ -202,8 +203,6 @@ export default function ExclusiveArticles() {
 }
 
 // Force SSR to prevent NextRouter errors during build
-export async function getServerSideProps() {
-  return {
-    props: {},
-  };
-}
+
+// Server-side authentication check
+export const getServerSideProps = requireAdminAuth;

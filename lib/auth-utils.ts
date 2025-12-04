@@ -87,7 +87,7 @@ export async function validateInviteCode(code: string, email?: string) {
 /**
  * Mark invite code as used
  */
-export async function useInviteCode(code: string, userId: string) {
+export async function markInviteCodeAsUsed(code: string, userId: string) {
   const invite = await prisma.invite_codes.findUnique({
     where: { code },
   });

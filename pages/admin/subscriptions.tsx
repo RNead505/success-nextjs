@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import AdminLayout from '../../components/admin/AdminLayout';
 import styles from './Subscriptions.module.css';
+import { requireAdminAuth } from '../lib/adminAuth';
 
 interface Subscription {
   id: string;
@@ -54,7 +55,7 @@ export default function AdminSubscriptions() {
   };
 
   const handleCancelSubscription = async (id: string) => {
-    if (!confirm('Are you sure you want to cancel this subscription?')) return;
+    if (!confirm('Are you sure you want to cancel this subscription? It will remain active until the end of the billing period.')) return;
 
     try {
       const res = await fetch(`/api/subscriptions/${id}`, {
@@ -62,28 +63,81 @@ export default function AdminSubscriptions() {
       });
 
       if (res.ok) {
+        const data = await res.json();
+        alert(data.message);
         fetchSubscriptions();
       } else {
-        throw new Error('Failed to cancel subscription');
+        const error = await res.json();
+        throw new Error(error.message || 'Failed to cancel subscription');
       }
     } catch (error) {
       console.error('Error canceling subscription:', error);
-      alert('Failed to cancel subscription');
+      alert(`Failed to cancel subscription: ${error.message}`);
+    }
+  };
+
+  const handlePauseSubscription = async (id: string) => {
+    if (!confirm('Pause this subscription? Customer will not be charged until resumed.')) return;
+
+    try {
+      const res = await fetch(`/api/subscriptions/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'pause' }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        alert(data.message);
+        fetchSubscriptions();
+      } else {
+        const error = await res.json();
+        throw new Error(error.message || 'Failed to pause subscription');
+      }
+    } catch (error) {
+      console.error('Error pausing subscription:', error);
+      alert(`Failed to pause subscription: ${error.message}`);
+    }
+  };
+
+  const handleResumeSubscription = async (id: string) => {
+    if (!confirm('Resume this subscription? Customer will be charged on next billing cycle.')) return;
+
+    try {
+      const res = await fetch(`/api/subscriptions/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'resume' }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        alert(data.message);
+        fetchSubscriptions();
+      } else {
+        const error = await res.json();
+        throw new Error(error.message || 'Failed to resume subscription');
+      }
+    } catch (error) {
+      console.error('Error resuming subscription:', error);
+      alert(`Failed to resume subscription: ${error.message}`);
     }
   };
 
   const getStatusBadge = (status: string) => {
     const statusClasses: Record<string, string> = {
       ACTIVE: styles.statusActive,
+      active: styles.statusActive,
       INACTIVE: styles.statusInactive,
       PAST_DUE: styles.statusPastDue,
       CANCELED: styles.statusCanceled,
       TRIALING: styles.statusTrialing,
+      paused: styles.statusPastDue, // Use past due styling for paused
     };
 
     return (
       <span className={`${styles.statusBadge} ${statusClasses[status] || ''}`}>
-        {status.replace('_', ' ')}
+        {status.replace('_', ' ').toUpperCase()}
       </span>
     );
   };
@@ -204,14 +258,32 @@ export default function AdminSubscriptions() {
                     </td>
                     <td>{new Date(subscription.createdAt).toLocaleDateString()}</td>
                     <td className={styles.actions}>
-                      {subscription.status === 'ACTIVE' && (
+                      {subscription.status === 'ACTIVE' || subscription.status === 'active' ? (
+                        <>
+                          <button
+                            onClick={() => handlePauseSubscription(subscription.id)}
+                            className={styles.pauseButton}
+                            title="Pause billing temporarily"
+                          >
+                            Pause
+                          </button>
+                          <button
+                            onClick={() => handleCancelSubscription(subscription.id)}
+                            className={styles.cancelButton}
+                            title="Cancel at end of billing period"
+                          >
+                            Cancel
+                          </button>
+                        </>
+                      ) : subscription.status === 'paused' ? (
                         <button
-                          onClick={() => handleCancelSubscription(subscription.id)}
-                          className={styles.cancelButton}
+                          onClick={() => handleResumeSubscription(subscription.id)}
+                          className={styles.resumeButton}
+                          title="Resume billing"
                         >
-                          Cancel
+                          Resume
                         </button>
-                      )}
+                      ) : null}
                     </td>
                   </tr>
                 ))}
@@ -225,8 +297,6 @@ export default function AdminSubscriptions() {
 }
 
 // Force SSR to prevent NextRouter errors during build
-export async function getServerSideProps() {
-  return {
-    props: {},
-  };
-}
+
+// Server-side authentication check
+export const getServerSideProps = requireAdminAuth;

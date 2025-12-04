@@ -5,6 +5,7 @@ import Link from 'next/link';
 import AdminLayout from '../../components/admin/AdminLayout';
 import DashboardStats from '../../components/admin/DashboardStats';
 import styles from './Dashboard.module.css';
+import { requireAdminAuth } from '../lib/adminAuth';
 
 export default function AdminDashboard() {
   const { data: session, status } = useSession();
@@ -54,9 +55,9 @@ export default function AdminDashboard() {
     { label: 'Editorial Calendar', href: '/admin/editorial-calendar', icon: '📅', color: '#8b5cf6' },
     { label: 'SEO Manager', href: '/admin/seo', icon: '🎯', color: '#10b981' },
     { label: 'SUCCESS+ Members', href: '/admin/members', icon: '⭐', color: '#d32f2f' },
-    { label: 'WordPress Sync', href: '/admin/wordpress-sync', icon: '🔄', color: '#43e97b' },
     { label: 'Media Library', href: '/admin/media', icon: '🖼️', color: '#f093fb' },
     { label: 'Analytics', href: '/admin/analytics', icon: '📈', color: '#4facfe' },
+    { label: 'Site Monitor', href: '/admin/site-monitor', icon: '🔍', color: '#ff6b6b' },
   ];
 
   return (
@@ -165,8 +166,6 @@ export default function AdminDashboard() {
 }
 
 // Force SSR to prevent NextRouter errors during build
-export async function getServerSideProps() {
-  return {
-    props: {},
-  };
-}
+
+// Server-side authentication check
+export const getServerSideProps = requireAdminAuth;

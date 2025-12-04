@@ -1,25 +1,22 @@
 import { useState } from 'react';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './Header.module.css';
 
 const navItems = [
   { label: 'MAGAZINE', path: '/magazine' },
+  { label: 'COACHING', path: 'https://coaching.success.com/', external: true },
   { label: 'SUCCESS+', path: '/success-plus' },
-  { label: 'BUSINESS', path: '/category/business' },
-  { label: 'MONEY', path: '/category/money' },
-  { label: 'LIFESTYLE', path: '/category/lifestyle' },
-  { label: 'ENTERTAINMENT', path: '/category/entertainment' },
-  { label: 'HEALTH & WELLNESS', path: '/category/health' },
-  { label: 'FUTURE OF WORK', path: '/category/future-of-work' },
-  { label: 'VIDEOS', path: '/videos' },
-  { label: 'PODCASTS', path: '/podcasts' },
-  { label: 'BESTSELLERS', path: '/bestsellers' },
+  { label: 'PROFESSIONAL GROWTH', path: '/category/professional-growth' },
+  { label: 'AI & TECHNOLOGY', path: '/category/ai-technology' },
+  { label: 'BUSINESS & BRANDING', path: '/category/business-branding' },
   { label: 'STORE', path: '/store' },
 ];
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { data: session } = useSession();
 
   return (
     <header className={styles.header}>
@@ -35,12 +32,20 @@ export default function Header() {
                 <path d="M9 17A8 8 0 1 0 9 1a8 8 0 0 0 0 16zM19 19l-4.35-4.35" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </Link>
-            <Link href="/login" className={styles.signInButton}>
-              SIGN IN
-            </Link>
-            <Link href="/subscribe" className={styles.subscribeButton}>
-              SUBSCRIBE
-            </Link>
+            {session ? (
+              <Link href="/dashboard" className={styles.dashboardButton}>
+                MY DASHBOARD
+              </Link>
+            ) : (
+              <>
+                <Link href="/login" className={styles.signInButton}>
+                  SIGN IN
+                </Link>
+                <Link href="/subscribe" className={styles.subscribeButton}>
+                  SUBSCRIBE
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>

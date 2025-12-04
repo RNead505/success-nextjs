@@ -27,9 +27,12 @@ async function getPosts(req, res) {
     const skip = (parseInt(page) - 1) * parseInt(per_page);
     const take = parseInt(per_page);
 
-    const where = {
-      status: status.toUpperCase(),
-    };
+    const where = {};
+
+    // Only filter by status if not 'all'
+    if (status && status !== 'all') {
+      where.status = status.toUpperCase();
+    }
 
     if (search) {
       where.OR = [

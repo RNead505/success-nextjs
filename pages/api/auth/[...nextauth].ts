@@ -12,37 +12,52 @@ export const authOptions: AuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
+        console.log('🔐 Login attempt:', credentials?.email);
+
         if (!credentials?.email || !credentials?.password) {
+          console.log('❌ Missing credentials');
           throw new Error('Email and password required');
         }
 
-        const user = await prisma.users.findUnique({
-          where: { email: credentials.email },
-        });
+        // Use raw query to avoid schema mismatch
+        const users = await prisma.$queryRaw<any[]>`
+          SELECT id, email, name, password, role, avatar,
+                 "hasChangedDefaultPassword", "lastLoginAt"
+          FROM users
+          WHERE email = ${credentials.email}
+        `;
+
+        console.log('📊 Query returned', users.length, 'users');
+
+        const user = users[0];
 
         if (!user) {
+          console.log('❌ User not found:', credentials.email);
           throw new Error('Invalid credentials');
         }
+
+        console.log('✅ User found:', user.email, 'Role:', user.role);
 
         const isPasswordValid = await bcrypt.compare(
           credentials.password,
           user.password
         );
 
+        console.log('🔑 Password valid:', isPasswordValid);
+
         if (!isPasswordValid) {
+          console.log('❌ Invalid password for:', credentials.email);
           throw new Error('Invalid credentials');
         }
 
-        console.log('User authenticated:', { email: user.email, role: user.role });
+        console.log('✅ User authenticated:', { email: user.email, role: user.role });
 
-        // Update last login timestamp
-        await prisma.users.update({
-          where: { id: user.id },
-          data: {
-            lastLoginAt: new Date(),
-            updatedAt: new Date(),
-          },
-        });
+        // Update last login timestamp with raw query
+        await prisma.$executeRaw`
+          UPDATE users
+          SET "lastLoginAt" = ${new Date()}, "updatedAt" = ${new Date()}
+          WHERE id = ${user.id}
+        `;
 
         return {
           id: user.id,
@@ -50,8 +65,8 @@ export const authOptions: AuthOptions = {
           name: user.name,
           role: user.role,
           avatar: user.avatar,
-          hasChangedDefaultPassword: user.hasChangedDefaultPassword,
-          membershipTier: user.membershipTier,
+          hasChangedDefaultPassword: user.hasChangedDefaultPassword || false,
+          membershipTier: 'FREE', // Default for now
         };
       },
     }),
@@ -85,6 +100,10 @@ export const authOptions: AuthOptions = {
   },
   session: {
     strategy: 'jwt' as const,
+    maxAge: 8 * 60 * 60, // 🔒 SECURITY: 8 hours - session expires
+  },
+  jwt: {
+    maxAge: 8 * 60 * 60, // 🔒 SECURITY: 8 hours - token expires
   },
   secret: process.env.NEXTAUTH_SECRET,
 };

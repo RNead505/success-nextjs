@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import AdminLayout from '../../../components/admin/AdminLayout';
 import styles from './realtime.module.css';
+import { requireAdminAuth } from '../../lib/adminAuth';
 
 export default function RealtimeAnalytics() {
   const { data: session, status } = useSession();
@@ -231,8 +232,6 @@ export default function RealtimeAnalytics() {
 }
 
 // Force SSR to prevent NextRouter errors during build
-export async function getServerSideProps() {
-  return {
-    props: {},
-  };
-}
+
+// Server-side authentication check
+export const getServerSideProps = requireAdminAuth;

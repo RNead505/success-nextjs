@@ -20,7 +20,7 @@ async function setAdminPassword() {
       where: { email },
       data: {
         password: hashedPassword,
-        hasChangedDefaultPassword: false, // Allow them to change it
+        hasChangedDefaultPassword: true, // Skip forced password change
         updatedAt: new Date(),
       },
     });
@@ -30,7 +30,7 @@ async function setAdminPassword() {
     console.log(`Password: ${newPassword}`);
     console.log(`Role: ${user.role}`);
     console.log(`\n🔑 Login at: https://success-nextjs.vercel.app/admin/login`);
-    console.log(`\n⚠️  The user will be prompted to change this password on first login.`);
+    console.log(`\n✅  Password change will NOT be required on login.`);
   } catch (error: any) {
     console.error('❌ Error updating password:', error.message);
     process.exit(1);

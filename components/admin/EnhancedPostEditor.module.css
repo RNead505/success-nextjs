@@ -154,7 +154,7 @@
 .toolbar {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
   padding: 12px 48px;
   border-bottom: 1px solid #e0e0e0;
   background: #fafafa;
@@ -163,23 +163,28 @@
 
 .toolbarGroup {
   display: flex;
-  gap: 2px;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .toolbarButton, .toolbarButtonActive {
-  width: 36px;
+  min-width: 36px;
   height: 36px;
+  padding: 0 8px;
   border: 1px solid #d0d0d0;
   background: #fff;
   border-radius: 2px;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   font-size: 14px;
   font-weight: 600;
   transition: all 0.2s;
   color: #1a1a1a;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .toolbarButton:hover {
@@ -455,6 +460,45 @@
 
   .toolbar {
     padding: 12px 24px;
+    gap: 6px;
+  }
+
+  .toolbarGroup {
+    gap: 6px;
+  }
+
+  .toolbarButton, .toolbarButtonActive {
+    font-size: 12px;
+    min-width: 32px;
+    height: 32px;
+    padding: 0 6px;
+  }
+
+  .toolbarDivider {
+    margin: 0 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .toolbar {
+    padding: 8px 12px;
+    gap: 6px;
+  }
+
+  .toolbarGroup {
+    gap: 4px;
+  }
+
+  .toolbarButton, .toolbarButtonActive {
+    font-size: 11px;
+    min-width: 30px;
+    height: 30px;
+    padding: 0 5px;
+  }
+
+  .toolbarDivider {
+    margin: 0 4px;
+    height: 20px;
   }
 }
 

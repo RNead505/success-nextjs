@@ -16,7 +16,7 @@
   color: white;
   display: flex;
   flex-direction: column;
-  position: sticky;
+  position: fixed;
   top: 0;
   left: 0;
   height: 100vh;
@@ -25,6 +25,31 @@
   border-right: 1px solid #1a1a1a;
   z-index: 100;
   box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for sidebar */
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Firefox scrollbar */
+.sidebar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 }
 
 .sidebarHeader {
@@ -65,6 +90,35 @@
   letter-spacing: 1px;
   color: #666;
   margin-bottom: 0.25rem;
+  user-select: none;
+  transition: color 0.2s;
+  border-radius: 4px;
+}
+
+.navSectionTitle:hover {
+  color: #999;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.chevron {
+  font-size: 0.625rem;
+  color: #666;
+  transition: all 0.3s ease;
+  display: inline-block;
+  margin-left: 8px;
+}
+
+/* Items container for smooth collapse animation */
+.navSectionItems {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  opacity: 0;
+}
+
+.navSectionItems.expanded {
+  max-height: 1000px; /* Large enough to fit all items */
+  opacity: 1;
 }
 
 .navItem {
@@ -173,6 +227,7 @@
   position: relative;
   overflow-x: auto;
   box-sizing: border-box;
+  margin-left: 280px; /* Match sidebar width for fixed positioning */
   width: calc(100% - 280px);
   max-width: calc(100vw - 280px);
 }
@@ -195,6 +250,9 @@
   }
 
   .main {
+    margin-left: 0; /* Remove left margin on mobile */
+    width: 100%;
+    max-width: 100vw;
     padding: 1rem;
   }
 }

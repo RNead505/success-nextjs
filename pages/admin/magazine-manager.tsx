@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import AdminLayout from '../../components/admin/AdminLayout';
-import { exportMagazineCoverToPDF, exportMagazinePrintPDF } from '../../lib/pdfExport';
 import { decodeHtmlEntities } from '../../lib/htmlDecode';
 import styles from './MagazineManager.module.css';
+import { requireAdminAuth } from '../lib/adminAuth';
 
 interface Magazine {
   id: number;
@@ -109,55 +109,6 @@ export default function MagazineManager() {
     }
   };
 
-  const handleDownloadPDF = async (magazine: Magazine, printReady: boolean = false) => {
-    const coverUrl = magazine.meta_data?.['image-for-listing-page']?.[0] ||
-                     magazine._embedded?.['wp:featuredmedia']?.[0]?.source_url;
-
-    if (!coverUrl) {
-      alert('No cover image available');
-      return;
-    }
-
-    const issueInfo = magazine.meta_data?.['magazine-published-text']?.[0] ||
-                      new Date(magazine.date).toLocaleDateString();
-
-    try {
-      await exportMagazineCoverToPDF(
-        coverUrl,
-        magazine.title.rendered,
-        issueInfo,
-        printReady
-      );
-    } catch (error) {
-      console.error('Error exporting PDF:', error);
-      alert('Failed to export PDF');
-    }
-  };
-
-  const handlePrintVersion = async (magazine: Magazine) => {
-    const coverUrl = magazine.meta_data?.['image-for-listing-page']?.[0] ||
-                     magazine._embedded?.['wp:featuredmedia']?.[0]?.source_url;
-
-    if (!coverUrl) {
-      alert('No cover image available');
-      return;
-    }
-
-    const issueDate = magazine.meta_data?.['magazine-published-text']?.[0] ||
-                      new Date(magazine.date).toLocaleDateString();
-
-    try {
-      await exportMagazinePrintPDF(
-        coverUrl,
-        magazine.title.rendered,
-        issueDate,
-        [] // Articles would come from WordPress if available
-      );
-    } catch (error) {
-      console.error('Error exporting print PDF:', error);
-      alert('Failed to export print PDF');
-    }
-  };
 
   const getMagazineStatus = (index: number) => {
     if (index === 0) return 'Current Issue';
@@ -189,11 +140,12 @@ export default function MagazineManager() {
         body: formData,
       });
 
+      const result = await response.json();
+
       if (!response.ok) {
-        throw new Error('Upload failed');
+        throw new Error(result.message || result.error || 'Upload failed');
       }
 
-      const result = await response.json();
       alert('Magazine issue uploaded successfully!');
 
       // Reset form
@@ -208,7 +160,7 @@ export default function MagazineManager() {
       fetchMagazines();
     } catch (error) {
       console.error('Error uploading magazine:', error);
-      alert('Failed to upload magazine issue');
+      alert(`Failed to upload magazine issue: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setUploadingPDF(false);
     }
@@ -307,20 +259,6 @@ export default function MagazineManager() {
                       >
                         👁 Preview
                       </button>
-                      <button
-                        onClick={() => handleDownloadPDF(magazine, false)}
-                        className={styles.downloadButton}
-                        title="Download digital PDF"
-                      >
-                        📄 Digital PDF
-                      </button>
-                      <button
-                        onClick={() => handleDownloadPDF(magazine, true)}
-                        className={styles.printButton}
-                        title="Download print-ready PDF with bleed and crop marks"
-                      >
-                        🖨️ Print-Ready
-                      </button>
                       {magazine.meta_data?.['flip_version']?.[0] && (
                         <a
                           href={magazine.meta_data['flip_version'][0]}
@@ -387,24 +325,6 @@ export default function MagazineManager() {
                   )}
 
                   <div className={styles.previewActions}>
-                    <button
-                      onClick={() => handleDownloadPDF(selectedMagazine, false)}
-                      className={styles.downloadButtonLarge}
-                    >
-                      📄 Digital PDF
-                    </button>
-                    <button
-                      onClick={() => handleDownloadPDF(selectedMagazine, true)}
-                      className={styles.printButtonLarge}
-                    >
-                      🖨️ Print-Ready PDF
-                    </button>
-                    <button
-                      onClick={() => handlePrintVersion(selectedMagazine)}
-                      className={styles.fullPrintButtonLarge}
-                    >
-                      📚 Full Print Package
-                    </button>
                     {selectedMagazine.meta_data?.['flip_version']?.[0] && (
                       <a
                         href={selectedMagazine.meta_data['flip_version'][0]}
@@ -689,8 +609,6 @@ export default function MagazineManager() {
 }
 
 // Force SSR to prevent NextRouter errors during build
-export async function getServerSideProps() {
-  return {
-    props: {},
-  };
-}
+
+// Server-side authentication check
+export const getServerSideProps = requireAdminAuth;

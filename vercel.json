@@ -12,6 +12,9 @@
     "pages/api/**/*.js": {
       "maxDuration": 30
     },
+    "pages/api/magazines/upload.js": {
+      "maxDuration": 60
+    },
     "pages/api/cron/**/*.js": {
       "maxDuration": 60
     }

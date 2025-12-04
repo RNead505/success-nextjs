@@ -4,6 +4,7 @@ import MagazineHero from '../components/MagazineHero';
 import Bestsellers from '../components/Bestsellers';
 import PostCard from '../components/PostCard';
 import Trending from '../components/Trending';
+import UpsellAd from '../components/UpsellAd';
 import styles from './Home.module.css';
 import { fetchWordPressData } from '../lib/wordpress';
 
@@ -12,19 +13,18 @@ type HomePageProps = {
   secondaryPosts: any[];
   trendingPosts: any[];
   latestPosts: any[];
+  aiTechPosts: any[];
   businessPosts: any[];
   lifestylePosts: any[];
   moneyPosts: any[];
   futureOfWorkPosts: any[];
   healthPosts: any[];
   entertainmentPosts: any[];
-  videos: any[];
-  podcasts: any[];
   latestMagazine: any;
   bestsellers: any[];
 };
 
-function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, businessPosts, lifestylePosts, moneyPosts, futureOfWorkPosts, healthPosts, entertainmentPosts, videos, podcasts, latestMagazine, bestsellers }: HomePageProps) {
+function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, aiTechPosts, businessPosts, lifestylePosts, moneyPosts, futureOfWorkPosts, healthPosts, entertainmentPosts, latestMagazine, bestsellers }: HomePageProps) {
   if (!featuredPost) {
     return <Layout><p>Loading...</p></Layout>;
   }
@@ -60,6 +60,21 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, bu
       {/* Bestsellers Section */}
       <Bestsellers books={bestsellers} />
 
+      {/* AI & Technology Section - NEW */}
+      <section className={styles.categorySection}>
+        <div className={styles.sectionContainer}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>AI & Technology</h2>
+            <a href="/category/ai-technology" className={styles.viewAllLink}>View All →</a>
+          </div>
+          <div className={styles.postsGrid}>
+            {aiTechPosts.map((post: any) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Join the Inner Circle CTA */}
       <section className={styles.innerCircleCTA}>
         <div className={styles.innerCircleContent}>
@@ -90,8 +105,8 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, bu
       <section className={styles.categorySection}>
         <div className={styles.sectionContainer}>
           <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Business</h2>
-            <a href="/category/business" className={styles.viewAllLink}>View All →</a>
+            <h2 className={styles.sectionTitle}>Business & Branding</h2>
+            <a href="/category/business-branding" className={styles.viewAllLink}>View All →</a>
           </div>
           <div className={styles.postsGrid}>
             {businessPosts.map((post: any) => (
@@ -100,6 +115,15 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, bu
           </div>
         </div>
       </section>
+
+      {/* SUCCESS+ Upsell Ad #1 */}
+      <UpsellAd
+        variant="secondary"
+        title="Level Up Your Success Journey"
+        description="Join 50,000+ high achievers with exclusive SUCCESS+ membership"
+        ctaText="Get Started Free"
+        ctaLink="/success-plus"
+      />
 
       {/* Future of Work Section */}
       <section className={styles.categorySectionGray}>
@@ -145,6 +169,15 @@ function HomePage({ featuredPost, secondaryPosts, trendingPosts, latestPosts, bu
           </div>
         </div>
       </section>
+
+      {/* SUCCESS+ Upsell Ad #2 - Primary Banner */}
+      <UpsellAd
+        variant="primary"
+        title="Transform Your Success with Expert Guidance"
+        description="Access premium content, exclusive courses, and personalized coaching from industry leaders"
+        ctaText="Start Your 14-Day Free Trial"
+        ctaLink="/success-plus"
+      />
 
       {/* Personal Development Section */}
       <section className={styles.categorySection}>
@@ -281,16 +314,13 @@ export async function getServerSideProps() {
   const latestPosts = posts.slice(8, 14); // 6 more posts
 
   // Fetch category-specific posts
+  const aiTechPosts = await fetchWordPressData('posts?categories=14681&_embed&per_page=3');
   const businessPosts = await fetchWordPressData('posts?categories=4&_embed&per_page=3');
   const lifestylePosts = await fetchWordPressData('posts?categories=14056&_embed&per_page=3');
   const moneyPosts = await fetchWordPressData('posts?categories=14060&_embed&per_page=3');
   const futureOfWorkPosts = await fetchWordPressData('posts?categories=14061&_embed&per_page=3');
   const healthPosts = await fetchWordPressData('posts?categories=14059&_embed&per_page=3');
   const entertainmentPosts = await fetchWordPressData('posts?categories=14382&_embed&per_page=3');
-
-  // Fetch custom post types
-  const videos = await fetchWordPressData('videos?_embed&per_page=3');
-  const podcasts = await fetchWordPressData('podcasts?_embed&per_page=3');
 
   // Fetch latest magazine issue
   const magazines = await fetchWordPressData('magazines?per_page=1&_embed');
@@ -305,14 +335,13 @@ export async function getServerSideProps() {
       secondaryPosts,
       trendingPosts,
       latestPosts,
+      aiTechPosts: aiTechPosts || [],
       businessPosts,
       lifestylePosts,
       moneyPosts,
       futureOfWorkPosts,
       healthPosts,
       entertainmentPosts,
-      videos: videos || [],
-      podcasts: podcasts || [],
       latestMagazine,
       bestsellers: bestsellers || [],
     }

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import AdminLayout from '../../../components/admin/AdminLayout';
 import Link from 'next/link';
 import styles from './PayLinks.module.css';
+import { requireAdminAuth } from '../../lib/adminAuth';
 
 interface PayLink {
   id: string;
@@ -471,8 +472,6 @@ export default function AdminPayLinks() {
 }
 
 // Force SSR to prevent NextRouter errors during build
-export async function getServerSideProps() {
-  return {
-    props: {},
-  };
-}
+
+// Server-side authentication check
+export const getServerSideProps = requireAdminAuth;

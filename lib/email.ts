@@ -277,3 +277,98 @@ export function getContactFormAdminNotificationHTML(data: {
     </html>
   `;
 }
+
+/**
+ * CRM Campaign Email Template Variable Replacement
+ */
+
+interface Contact {
+  email: string;
+  firstName?: string | null;
+  lastName?: string | null;
+  company?: string | null;
+  [key: string]: any;
+}
+
+/**
+ * Replace template variables in email HTML with contact data
+ * Supports: {{firstName}}, {{lastName}}, {{email}}, {{companyName}}, {{unsubscribeUrl}}
+ */
+export function replaceTemplateVariables(html: string, contact: Contact): string {
+  const unsubscribeUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/unsubscribe?email=${encodeURIComponent(contact.email)}`;
+
+  let replaced = html;
+
+  // Replace variables with contact data (or empty string if undefined)
+  replaced = replaced.replace(/\{\{firstName\}\}/g, contact.firstName || '');
+  replaced = replaced.replace(/\{\{lastName\}\}/g, contact.lastName || '');
+  replaced = replaced.replace(/\{\{email\}\}/g, contact.email || '');
+  replaced = replaced.replace(/\{\{companyName\}\}/g, contact.company || '');
+  replaced = replaced.replace(/\{\{unsubscribeUrl\}\}/g, unsubscribeUrl);
+
+  return replaced;
+}
+
+/**
+ * Send campaign email to a single contact
+ */
+export async function sendCampaignEmail(
+  contact: Contact,
+  subject: string,
+  htmlTemplate: string
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const personalizedHtml = replaceTemplateVariables(htmlTemplate, contact);
+    const success = await sendEmail({
+      to: contact.email,
+      subject,
+      html: personalizedHtml,
+    });
+
+    return { success };
+  } catch (error: any) {
+    console.error(`Failed to send email to ${contact.email}:`, error);
+    return { success: false, error: error.message };
+  }
+}
+
+/**
+ * Send emails in batches with delay
+ * @param emails Array of email sending promises
+ * @param batchSize Number of emails to send in each batch
+ * @param delayMs Delay in milliseconds between batches
+ */
+export async function sendEmailBatch(
+  emails: Array<() => Promise<any>>,
+  batchSize: number = 100,
+  delayMs: number = 1000
+): Promise<{sentCount: number; failedCount: number; errors: any[]}> {
+  let sentCount = 0;
+  let failedCount = 0;
+  const errors: any[] = [];
+
+  for (let i = 0; i < emails.length; i += batchSize) {
+    const batch = emails.slice(i, i + batchSize);
+
+    const results = await Promise.allSettled(batch.map(fn => fn()));
+
+    results.forEach((result, idx) => {
+      if (result.status === 'fulfilled' && result.value.success) {
+        sentCount++;
+      } else {
+        failedCount++;
+        errors.push({
+          index: i + idx,
+          error: result.status === 'rejected' ? result.reason : result.value.error
+        });
+      }
+    });
+
+    // Delay between batches (except for the last batch)
+    if (i + batchSize < emails.length) {
+      await new Promise(resolve => setTimeout(resolve, delayMs));
+    }
+  }
+
+  return { sentCount, failedCount, errors };
+}

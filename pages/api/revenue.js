@@ -1,6 +1,15 @@
 import { prisma } from '../../lib/prisma';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from './auth/[...nextauth]';
 
 export default async function handler(req, res) {
+  // ⚠️ SECURITY: Require admin authentication
+  const session = await getServerSession(req, res, authOptions);
+
+  if (!session || !['ADMIN', 'SUPER_ADMIN'].includes(session.user.role)) {
+    return res.status(401).json({ error: 'Unauthorized - Admin access required' });
+  }
+
   const { method } = req;
 
   if (method !== 'GET') {
