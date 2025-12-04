@@ -19,43 +19,38 @@ export const authOptions: AuthOptions = {
           throw new Error('Email and password required');
         }
 
-        try {
-          // Use raw query to avoid schema mismatch
-          const users = await prisma.$queryRaw<any[]>`
-            SELECT id, email, name, password, role, avatar,
-                   "hasChangedDefaultPassword", "lastLoginAt"
-            FROM users
-            WHERE email = ${credentials.email}
-          `;
+        // Use raw query to avoid schema mismatch
+        const users = await prisma.$queryRaw<any[]>`
+          SELECT id, email, name, password, role, avatar,
+                 "hasChangedDefaultPassword", "lastLoginAt"
+          FROM users
+          WHERE email = ${credentials.email}
+        `;
 
-          console.log('📊 Query returned', users.length, 'users');
+        console.log('📊 Query returned', users.length, 'users');
 
-          const user = users[0];
+        const user = users[0];
 
-          if (!user) {
-            console.log('❌ User not found:', credentials.email);
-            throw new Error('Invalid credentials');
-          }
-
-          console.log('✅ User found:', user.email, 'Role:', user.role);
-
-          const isPasswordValid = await bcrypt.compare(
-            credentials.password,
-            user.password
-          );
-
-          console.log('🔑 Password valid:', isPasswordValid);
-
-          if (!isPasswordValid) {
-            console.log('❌ Invalid password for:', credentials.email);
-            throw new Error('Invalid credentials');
-          }
-
-          console.log('✅ User authenticated:', { email: user.email, role: user.role });
-        } catch (error) {
-          console.error('❌ Auth error:', error);
-          throw error;
+        if (!user) {
+          console.log('❌ User not found:', credentials.email);
+          throw new Error('Invalid credentials');
         }
+
+        console.log('✅ User found:', user.email, 'Role:', user.role);
+
+        const isPasswordValid = await bcrypt.compare(
+          credentials.password,
+          user.password
+        );
+
+        console.log('🔑 Password valid:', isPasswordValid);
+
+        if (!isPasswordValid) {
+          console.log('❌ Invalid password for:', credentials.email);
+          throw new Error('Invalid credentials');
+        }
+
+        console.log('✅ User authenticated:', { email: user.email, role: user.role });
 
         // Update last login timestamp with raw query
         await prisma.$executeRaw`
