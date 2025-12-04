@@ -93,7 +93,7 @@ export async function getUserTier(userId: string): Promise<MembershipTier> {
 
   const user = await prisma.users.findUnique({
     where: { id: userId },
-    include: { member: { include: { subscriptions: true } } },
+    include: { subscriptions: true },
   });
 
   if (!user) {
@@ -105,14 +105,16 @@ export async function getUserTier(userId: string): Promise<MembershipTier> {
     return MembershipTier.INSIDER;
   }
 
-  if (!user.member?.subscriptions || user.member.subscriptions.length === 0) {
+  if (!user.subscriptions) {
     return MembershipTier.FREE;
   }
 
-  const subscription = user.member.subscriptions[0];
+  const subscription = user.subscriptions;
 
   // Check if subscription is active
-  const isActive = subscription.status === 'active';
+  const isActive =
+    subscription.status === 'active' &&
+    user.subscriptionStatus === SubscriptionStatus.ACTIVE;
 
   if (!isActive) {
     return MembershipTier.FREE;
@@ -327,15 +329,17 @@ export async function trackArticleView(
 export async function hasActiveSubscription(userId: string): Promise<boolean> {
   const user = await prisma.users.findUnique({
     where: { id: userId },
-    include: { member: { include: { subscriptions: true } } },
+    include: { subscriptions: true },
   });
 
-  if (!user || !user.member?.subscriptions || user.member.subscriptions.length === 0) {
+  if (!user || !user.subscriptions) {
     return false;
   }
 
-  const subscription = user.member.subscriptions[0];
-  return subscription.status === 'active';
+  return (
+    user.subscriptionStatus === SubscriptionStatus.ACTIVE &&
+    user.subscriptions.status === 'active'
+  );
 }
 
 /**
@@ -344,14 +348,14 @@ export async function hasActiveSubscription(userId: string): Promise<boolean> {
 export async function getSubscriptionDetails(userId: string) {
   const user = await prisma.users.findUnique({
     where: { id: userId },
-    include: { member: { include: { subscriptions: true } } },
+    include: { subscriptions: true },
   });
 
-  if (!user || !user.member?.subscriptions || user.member.subscriptions.length === 0) {
+  if (!user || !user.subscriptions) {
     return null;
   }
 
-  const subscription = user.member.subscriptions[0];
+  const subscription = user.subscriptions;
   const tier = await getUserTier(userId);
 
   return {
