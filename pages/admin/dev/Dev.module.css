@@ -233,114 +233,213 @@
   margin-bottom: 1rem;
 }
 
-/* Publications List */
-.publicationsList {
+/* Health Card */
+.healthCard {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  border: 1px solid #e5e7eb;
+  margin-bottom: 1.5rem;
+}
+
+.healthHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.healthHeader h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.healthIndicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  color: white;
+  font-weight: 700;
+  font-size: 0.875rem;
+}
+
+.healthIcon {
+  font-size: 1.25rem;
+}
+
+.healthText {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Deployments List */
+.deploymentsList {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.publicationItem {
+.deploymentItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 0.5rem;
+}
+
+.deploymentStatus {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.statusSUCCESS {
+  color: #10b981;
+}
+
+.statusFAILED {
+  color: #ef4444;
+}
+
+.statusIN_PROGRESS {
+  color: #3b82f6;
+}
+
+.deploymentContent {
+  flex: 1;
+}
+
+.deploymentVersion {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.25rem;
+}
+
+.deploymentMeta {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+/* Errors List */
+.errorsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.errorItem {
   display: flex;
   align-items: flex-start;
   gap: 1rem;
   padding: 1rem;
   background: #f9fafb;
   border-radius: 0.5rem;
-  transition: all 0.2s;
-  border-left: 4px solid #3b82f6;
+  border-left: 4px solid #e5e7eb;
 }
 
-.publicationItem:hover {
-  background: #f3f4f6;
-  transform: translateX(4px);
-}
-
-.publicationDate {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: #3b82f6;
-  color: white;
-  border-radius: 0.5rem;
-  padding: 0.5rem;
-  min-width: 50px;
+.severityBadge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
   flex-shrink: 0;
 }
 
-.dateDay {
-  font-size: 1.5rem;
-  font-weight: 700;
-  line-height: 1;
+.severitycritical,
+.severityhigh {
+  background: #fee2e2;
+  color: #991b1b;
+  border-left-color: #ef4444;
 }
 
-.dateMonth {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  font-weight: 600;
+.severitymedium {
+  background: #fef3c7;
+  color: #92400e;
+  border-left-color: #f59e0b;
 }
 
-.publicationContent {
+.severitylow {
+  background: #dbeafe;
+  color: #1e40af;
+  border-left-color: #3b82f6;
+}
+
+.errorContent {
   flex: 1;
 }
 
-.publicationTitle {
+.errorType {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #ef4444;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.errorMessage {
+  font-size: 0.875rem;
+  color: #111827;
+  margin-bottom: 0.25rem;
+}
+
+.errorMeta {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+/* Services Grid */
+.servicesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.serviceCard {
+  padding: 1.5rem;
+  background: #f9fafb;
+  border-radius: 0.75rem;
+  text-align: center;
+  border: 2px solid #e5e7eb;
+  transition: all 0.2s;
+}
+
+.serviceCard:hover {
+  border-color: #3b82f6;
+  transform: translateY(-2px);
+}
+
+.serviceIcon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.serviceName {
   font-size: 0.875rem;
   font-weight: 600;
   color: #111827;
   margin-bottom: 0.5rem;
 }
 
-.publicationMeta {
+.serviceStatus {
   display: flex;
-  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   font-size: 0.75rem;
   color: #6b7280;
 }
 
-.publicationAuthor {
-  font-weight: 500;
-}
-
-.publicationCategory {
-  padding: 0.125rem 0.5rem;
-  background: #e5e7eb;
-  border-radius: 0.25rem;
-}
-
-/* Highlight for pending review */
-.statCardHighlight {
-  border-color: #8b5cf6;
-  background: #f5f3ff;
-}
-
-/* Mini Stats Grid */
-.miniStatsGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1.5rem;
-}
-
-.miniStat {
-  text-align: center;
-  padding: 1rem;
-  background: #f9fafb;
-  border-radius: 0.5rem;
-}
-
-.miniStatValue {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #111827;
-  margin-bottom: 0.25rem;
-}
-
-.miniStatLabel {
-  font-size: 0.75rem;
-  color: #6b7280;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
 }
 
 /* Responsive */
@@ -357,7 +456,7 @@
     grid-template-columns: 1fr;
   }
 
-  .miniStatsGrid {
-    grid-template-columns: repeat(2, 1fr);
+  .servicesGrid {
+    grid-template-columns: 1fr;
   }
 }
