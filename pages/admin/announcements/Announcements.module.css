@@ -1,0 +1,99 @@
+.container {
+  max-width: 900px;
+}
+
+.loading,
+.empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #6b7280;
+  background: white;
+  border-radius: 0.75rem;
+  border: 1px solid #e5e7eb;
+}
+
+.emptyIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.announcementsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.announcementCard {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s;
+}
+
+.announcementCard:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+.badgeActive {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.badgeInactive {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.badgeExpired {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.content {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #374151;
+  margin-bottom: 1rem;
+}
+
+.content p {
+  margin: 0 0 0.75rem 0;
+}
+
+.content p:last-child {
+  margin-bottom: 0;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: #9ca3af;
+}

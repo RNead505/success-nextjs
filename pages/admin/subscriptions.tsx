@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import AdminLayout from '../../components/admin/AdminLayout';
 import styles from './Subscriptions.module.css';
-import { requireAdminAuth } from '../../lib/adminAuth';
+import { requireAdminAuth } from '@/lib/adminAuth';
 
 interface Subscription {
   id: string;
@@ -72,7 +72,7 @@ export default function AdminSubscriptions() {
       }
     } catch (error) {
       console.error('Error canceling subscription:', error);
-      alert(`Failed to cancel subscription: ${error.message}`);
+      alert(`Failed to cancel subscription: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   };
 
@@ -96,7 +96,7 @@ export default function AdminSubscriptions() {
       }
     } catch (error) {
       console.error('Error pausing subscription:', error);
-      alert(`Failed to pause subscription: ${error.message}`);
+      alert(`Failed to pause subscription: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   };
 
@@ -120,7 +120,7 @@ export default function AdminSubscriptions() {
       }
     } catch (error) {
       console.error('Error resuming subscription:', error);
-      alert(`Failed to resume subscription: ${error.message}`);
+      alert(`Failed to resume subscription: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   };
 

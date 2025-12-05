@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import AdminLayout from '../../components/admin/AdminLayout';
 import { decodeHtmlEntities } from '../../lib/htmlDecode';
 import styles from './MagazineManager.module.css';
-import { requireAdminAuth } from '../../lib/adminAuth';
+import { requireAdminAuth } from '@/lib/adminAuth';
 
 interface Magazine {
   id: number;

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import AdminLayout from '../../../components/admin/AdminLayout';
 import ConfirmationModal from '../../../components/admin/ConfirmationModal';
 import styles from './SafeTools.module.css';
-import { requireAdminAuth } from '../../lib/adminAuth';
+import { requireAdminAuth } from '@/lib/adminAuth';
 
 export default function SafeToolsPage() {
   const { data: session } = useSession();

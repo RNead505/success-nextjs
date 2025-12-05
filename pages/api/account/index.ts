@@ -20,7 +20,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const user = await prisma.users.findUnique({
       where: { id: session.user.id },
       include: {
-        subscriptions: true,
+        member: {
+          include: {
+            subscriptions: true,
+          },
+        },
         bookmarks: {
           take: 5,
           orderBy: { createdAt: 'desc' },
@@ -40,7 +44,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         role: user.role,
         createdAt: user.createdAt,
       },
-      subscription: user.subscriptions || null,
+      subscription: user.member?.subscriptions?.[0] || null,
       bookmarksCount: user.bookmarks.length,
     });
   } catch (error) {

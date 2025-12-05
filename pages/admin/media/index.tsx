@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import AdminLayout from '../../../components/admin/AdminLayout';
 import { exportImageToPDF } from '../../../lib/pdfExport';
 import styles from './AdminMedia.module.css';
-import { requireAdminAuth } from '../../lib/adminAuth';
+import { requireAdminAuth } from '@/lib/adminAuth';
 
 interface MediaItem {
   id: string;

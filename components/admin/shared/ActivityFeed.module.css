@@ -1,0 +1,78 @@
+.activityFeed {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.filters {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 0.75rem;
+  border: 1px solid #e5e7eb;
+}
+
+.filterSelect {
+  padding: 0.5rem 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  color: #111827;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filterSelect:hover {
+  border-color: #3b82f6;
+}
+
+.filterSelect:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.loading,
+.empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #6b7280;
+  background: white;
+  border-radius: 0.75rem;
+  border: 1px solid #e5e7eb;
+}
+
+.emptyIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.groupedActivities {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.periodGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.periodTitle {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+  padding: 0 1rem;
+}
+
+.activitiesList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}

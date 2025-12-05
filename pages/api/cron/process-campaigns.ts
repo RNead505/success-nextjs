@@ -55,7 +55,8 @@ export default async function handler(
           continue;
         }
 
-        const contacts = campaign.campaign_contacts.map(cc => cc.contacts);
+        type CampaignContact = typeof campaign.campaign_contacts[number];
+        const contacts = campaign.campaign_contacts.map((cc: CampaignContact) => cc.contacts);
 
         if (contacts.length === 0) {
           console.error(`Campaign ${campaign.id} has no contacts`);
@@ -66,7 +67,8 @@ export default async function handler(
         const subject = campaign.subject;
 
         // Create email sending tasks
-        const emailTasks = contacts.map((contact) => {
+        type Contact = NonNullable<typeof contacts[number]>;
+        const emailTasks = contacts.map((contact: Contact) => {
           return async () => {
             const result = await sendCampaignEmail(contact, subject, htmlTemplate);
 

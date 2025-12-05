@@ -428,7 +428,7 @@ export async function getServerSideProps({ params, req, res }: any) {
 
     let hasAccess = true; // Default to true for free content
 
-    if (isPremium && session?.user) {
+    if (isPremium && session?.user && session.user.email) {
       hasAccess = await canAccessContent(
         { id: session.user.id, email: session.user.email, membershipTier: session.user.membershipTier },
         { isPremium: true, requiredTier: requiredTier as 'collective' | 'insider' }

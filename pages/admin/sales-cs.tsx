@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import AdminLayout from '../../components/admin/AdminLayout';
 import Link from 'next/link';
 import styles from './SalesCS.module.css';
-import { requireAdminAuth } from '../../lib/adminAuth';
+import { requireAdminAuth } from '@/lib/adminAuth';
 
 interface DashboardStats {
   totalRevenue: number;

@@ -37,8 +37,8 @@ export default async function handler(
     await auditLog(
       {
         userId: session.user.id,
-        userEmail: session.user.email,
-        userName: session.user.name,
+        userEmail: session.user.email || '',
+        userName: session.user.name || '',
         action: 'system_alert.resolved',
         entityType: 'SystemAlert',
         entityId: alert.id,

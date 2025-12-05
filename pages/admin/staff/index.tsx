@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import AdminLayout from '../../../components/admin/AdminLayout';
 import BulkStaffOperations from '../../../components/admin/BulkStaffOperations';
 import styles from './Staff.module.css';
-import { requireAdminAuth } from '../../lib/adminAuth';
+import { requireAdminAuth } from '@/lib/adminAuth';
 
 interface StaffMember {
   id: string;
