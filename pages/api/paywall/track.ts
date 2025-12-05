@@ -21,13 +21,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const freeArticleLimit = config?.freeArticleLimit || 3;
     const resetPeriodDays = config?.resetPeriodDays || 30;
 
-    // Check if user has active subscription
+    // Check if user has active subscription through member
     if (session?.user) {
-      const subscription = await prisma.subscriptions.findUnique({
-        where: { userId: session.user.id }
+      const user = await prisma.users.findUnique({
+        where: { id: session.user.id },
+        include: { member: { include: { subscriptions: true } } }
       });
+      const subscription = user?.member?.subscriptions?.find(s => s.status === 'ACTIVE');
 
-      if (subscription && subscription.status === 'ACTIVE') {
+      if (subscription) {
         // Subscriber - track but don't count against limit
         await prisma.page_views.create({
           data: {

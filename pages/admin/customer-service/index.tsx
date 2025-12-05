@@ -3,7 +3,7 @@ import AdminLayout from '@/components/admin/AdminLayout';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styles from './CustomerService.module.css';
-import { requireAdminAuth } from '../../lib/adminAuth';
+import { requireAdminAuth } from '@/lib/adminAuth';
 
 function CustomerServiceDashboard() {
   const router = useRouter();

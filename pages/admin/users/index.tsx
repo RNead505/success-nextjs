@@ -5,7 +5,7 @@ import AdminLayout from '../../../components/admin/AdminLayout';
 import RoleBadges from '../../../components/admin/RoleBadges';
 import Link from 'next/link';
 import styles from './AdminUsers.module.css';
-import { requireAdminAuth } from '../../lib/adminAuth';
+import { requireAdminAuth } from '@/lib/adminAuth';
 
 type UserRole = 'SUPER_ADMIN' | 'ADMIN' | 'EDITOR' | 'AUTHOR' | 'STAFF';
 type MembershipTier = 'Free' | 'Customer' | 'SUCCESSPlus' | 'VIP' | 'Enterprise';

@@ -2,7 +2,7 @@ import { withDepartmentAccess } from '@/lib/auth/withDepartmentAccess';
 import AdminLayout from '@/components/admin/AdminLayout';
 import Link from 'next/link';
 import styles from './Editorial.module.css';
-import { requireAdminAuth } from '../../lib/adminAuth';
+import { requireAdminAuth } from '@/lib/adminAuth';
 
 function EditorialDashboard() {
   return (

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import AdminLayout from '../../components/admin/AdminLayout';
 import DashboardStats from '../../components/admin/DashboardStats';
 import styles from './Dashboard.module.css';
-import { requireAdminAuth } from '../../lib/adminAuth';
+import { requireAdminAuth } from '@/lib/adminAuth';
 
 export default function AdminDashboard() {
   const { data: session, status } = useSession();

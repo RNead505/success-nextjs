@@ -91,15 +91,17 @@ export default async function handler(
       }
 
       // Transform data for frontend
+      type MemberTransaction = typeof member.transactions[number];
+      type MemberOrder = typeof member.orders[number];
       const transformedMember = {
         ...member,
         totalSpent: member.totalSpent.toNumber(),
         lifetimeValue: member.lifetimeValue.toNumber(),
-        transactions: member.transactions.map((t) => ({
+        transactions: member.transactions.map((t: MemberTransaction) => ({
           ...t,
           amount: t.amount.toNumber(),
         })),
-        orders: member.orders.map((o) => ({
+        orders: member.orders.map((o: MemberOrder) => ({
           ...o,
           total: o.total.toNumber(),
         })),

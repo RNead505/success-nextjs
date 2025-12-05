@@ -90,14 +90,16 @@ export default async function handler(
       const total = await prisma.orders.count({ where });
 
       // Transform data
-      const transformedOrders = orders.map((order) => ({
+      type OrderWithItems = typeof orders[number];
+      type OrderItem = OrderWithItems['order_items'][number];
+      const transformedOrders = orders.map((order: OrderWithItems) => ({
         ...order,
         total: order.total.toNumber(),
         subtotal: order.subtotal.toNumber(),
         tax: order.tax.toNumber(),
         shipping: order.shipping.toNumber(),
         discount: order.discount.toNumber(),
-        order_items: order.order_items.map((item) => ({
+        order_items: order.order_items.map((item: OrderItem) => ({
           ...item,
           price: item.price.toNumber(),
           total: item.total.toNumber(),

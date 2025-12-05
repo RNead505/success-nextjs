@@ -16,7 +16,7 @@ import ProjectCard from '../../components/admin/ProjectCard';
 import ProjectColumn from '../../components/admin/ProjectColumn';
 import ProjectModal from '../../components/admin/ProjectModal';
 import styles from './Projects.module.css';
-import { requireAdminAuth } from '../../lib/adminAuth';
+import { requireAdminAuth } from '@/lib/adminAuth';
 
 interface Project {
   id: string;

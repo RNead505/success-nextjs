@@ -16,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const user = await prisma.users.findUnique({
       where: { email: session.user.email! },
-      include: { subscriptions: true },
+      include: { member: { include: { subscriptions: true } } },
     });
 
     if (!user) {
@@ -25,6 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (req.method === 'GET') {
       // Get user profile and settings
+      const activeSubscription = user.member?.subscriptions?.find(s => s.status === 'ACTIVE');
       return res.status(200).json({
         id: user.id,
         name: user.name,
@@ -32,10 +33,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         bio: user.bio,
         avatar: user.avatar,
         interests: user.interests,
-        membershipTier: user.membershipTier,
-        subscriptionStatus: user.subscriptions?.status || 'inactive',
-        subscriptionTier: user.subscriptions?.tier,
-        currentPeriodEnd: user.subscriptions?.currentPeriodEnd,
+        membershipTier: user.member?.membershipTier || 'Free',
+        subscriptionStatus: activeSubscription?.status || 'inactive',
+        subscriptionTier: activeSubscription?.tier,
+        currentPeriodEnd: activeSubscription?.currentPeriodEnd,
         jobTitle: user.jobTitle,
         website: user.website,
         socialTwitter: user.socialTwitter,

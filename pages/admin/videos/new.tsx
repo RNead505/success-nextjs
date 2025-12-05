@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import AdminLayout from '../../../components/admin/AdminLayout';
 import VideoEditor from '../../../components/admin/VideoEditor';
-import { requireAdminAuth } from '../../lib/adminAuth';
+import { requireAdminAuth } from '@/lib/adminAuth';
 
 export default function NewVideo() {
   const { data: session, status } = useSession();

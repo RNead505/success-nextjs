@@ -64,7 +64,8 @@ export default async function handler(
       });
 
       // Transform data for frontend
-      const transformedMembers = members.map((member) => ({
+      type Member = typeof members[number];
+      const transformedMembers = members.map((member: Member) => ({
         id: member.id,
         name: `${member.firstName} ${member.lastName}`.trim(),
         firstName: member.firstName,

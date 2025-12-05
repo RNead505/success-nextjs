@@ -13,6 +13,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method === 'POST') {
     try {
       const adminEmail = session.user.email;
+      if (!adminEmail) {
+        return res.status(400).json({ error: 'User email not found' });
+      }
       const adminName = session.user.name || 'Admin';
 
       console.log(`Test email requested by ${adminName} (${adminEmail})`);

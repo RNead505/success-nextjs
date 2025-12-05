@@ -3,7 +3,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import AdminLayout from '../../../../../components/admin/AdminLayout';
 import styles from '../../CRM.module.css';
-import { requireAdminAuth } from '../../../../lib/adminAuth';
+import { requireAdminAuth } from '@/lib/adminAuth';
 
 type Campaign = {
   id: string;

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import AdminLayout from '../../components/admin/AdminLayout';
 import styles from './ContentViewer.module.css';
 import { decodeHtmlEntities } from '../../lib/htmlDecode';
-import { requireAdminAuth } from '../../lib/adminAuth';
+import { requireAdminAuth } from '@/lib/adminAuth';
 
 interface ContentItem {
   id: number;

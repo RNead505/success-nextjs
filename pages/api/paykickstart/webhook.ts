@@ -151,7 +151,7 @@ async function handleSubscriptionCreated(event: any) {
   const currentPeriodEnd = data.current_period_end ? new Date(data.current_period_end * 1000) : null;
 
   // Find or create user by email
-  let user = await prisma.users.findUnique({ where: { email } });
+  let user = await prisma.users.findUnique({ where: { email }, include: { member: true } });
 
   if (!user) {
     // Create a basic user account
@@ -166,50 +166,81 @@ async function handleSubscriptionCreated(event: any) {
         password: hashedPassword,
         role: 'EDITOR',
         emailVerified: true,
-        subscriptionStatus: mapSubscriptionStatus(status),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      include: { member: true },
+    });
+  }
+
+  // Find or create member for subscription
+  let member = user.member;
+  if (!member) {
+    member = await prisma.members.create({
+      data: {
+        id: generateId(),
+        email,
+        firstName: (data.customer_name || '').split(' ')[0] || email.split('@')[0],
+        lastName: (data.customer_name || '').split(' ').slice(1).join(' ') || '',
+        membershipTier: 'Customer',
+        membershipStatus: 'Active',
+        totalSpent: 0,
+        lifetimeValue: 0,
+        paykickstartCustomerId: customerId,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
     });
+    // Link member to user
+    await prisma.users.update({
+      where: { id: user.id },
+      data: { memberId: member.id },
+    });
   }
 
-  // Create subscription record
-  const subscription = await prisma.subscriptions.upsert({
-    where: { userId: user.id },
-    create: {
-      id: generateId(),
-      userId: user.id,
-      paykickstartCustomerId: customerId,
-      paykickstartSubscriptionId: subscriptionId,
-      provider: 'paykickstart',
-      status: mapSubscriptionStatus(status),
-      tier: mapSubscriptionTier(productName),
-      billingCycle: billingCycle.toLowerCase(),
-      currentPeriodStart,
-      currentPeriodEnd,
-      cancelAtPeriodEnd: false,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    update: {
-      paykickstartCustomerId: customerId,
-      paykickstartSubscriptionId: subscriptionId,
-      provider: 'paykickstart',
-      status: mapSubscriptionStatus(status),
-      tier: mapSubscriptionTier(productName),
-      billingCycle: billingCycle.toLowerCase(),
-      currentPeriodStart,
-      currentPeriodEnd,
-      updatedAt: new Date(),
-    },
+  // Create subscription record - use paykickstartSubscriptionId for unique lookup
+  const existingSubscription = await prisma.subscriptions.findUnique({
+    where: { paykickstartSubscriptionId: subscriptionId },
   });
 
-  // Update user subscription status
-  await prisma.users.update({
-    where: { id: user.id },
+  const subscription = existingSubscription
+    ? await prisma.subscriptions.update({
+        where: { id: existingSubscription.id },
+        data: {
+          paykickstartCustomerId: customerId,
+          provider: 'paykickstart',
+          status: mapSubscriptionStatus(status),
+          tier: mapSubscriptionTier(productName),
+          billingCycle: billingCycle.toLowerCase(),
+          currentPeriodStart,
+          currentPeriodEnd,
+          updatedAt: new Date(),
+        },
+      })
+    : await prisma.subscriptions.create({
+        data: {
+          id: generateId(),
+          memberId: member.id,
+          paykickstartCustomerId: customerId,
+          paykickstartSubscriptionId: subscriptionId,
+          provider: 'paykickstart',
+          status: mapSubscriptionStatus(status),
+          tier: mapSubscriptionTier(productName),
+          billingCycle: billingCycle.toLowerCase(),
+          currentPeriodStart,
+          currentPeriodEnd,
+          cancelAtPeriodEnd: false,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      });
+
+  // Update member status based on subscription
+  await prisma.members.update({
+    where: { id: member.id },
     data: {
-      subscriptionStatus: mapSubscriptionStatus(status),
-      subscriptionExpiry: currentPeriodEnd,
+      membershipStatus: mapSubscriptionStatus(status) === 'ACTIVE' ? 'Active' : 'Inactive',
+      updatedAt: new Date(),
     },
   });
 
@@ -245,7 +276,7 @@ async function handleSubscriptionUpdated(event: any) {
   // Find subscription by PayKickstart subscription ID
   const subscription = await prisma.subscriptions.findFirst({
     where: { paykickstartSubscriptionId: subscriptionId },
-    include: { users: true },
+    include: { member: true },
   });
 
   if (!subscription) {
@@ -265,23 +296,26 @@ async function handleSubscriptionUpdated(event: any) {
     },
   });
 
-  // Update user subscription status
-  if (subscription.userId) {
-    await prisma.users.update({
-      where: { id: subscription.userId },
+  // Update member status
+  if (subscription.memberId) {
+    await prisma.members.update({
+      where: { id: subscription.memberId },
       data: {
-        subscriptionStatus: mapSubscriptionStatus(status),
-        subscriptionExpiry: currentPeriodEnd || subscription.currentPeriodEnd,
+        membershipStatus: mapSubscriptionStatus(status) === 'ACTIVE' ? 'Active' : 'Inactive',
+        updatedAt: new Date(),
       },
     });
   }
 
-  // Log activity
-  if (subscription.userId) {
+  // Log activity - find user through member's platformUser
+  const linkedUser = await prisma.users.findFirst({
+    where: { memberId: subscription.memberId },
+  });
+  if (linkedUser) {
     await prisma.activity_logs.create({
       data: {
         id: generateId(),
-        userId: subscription.userId,
+        userId: linkedUser.id,
         action: 'SUBSCRIPTION_UPDATED',
         entity: 'subscription',
         entityId: subscription.id,
@@ -324,22 +358,26 @@ async function handleSubscriptionCancelled(event: any) {
     },
   });
 
-  // Update user status if cancelled immediately
-  if (!cancelAtPeriodEnd && subscription.userId) {
-    await prisma.users.update({
-      where: { id: subscription.userId },
+  // Update member status if cancelled immediately
+  if (!cancelAtPeriodEnd && subscription.memberId) {
+    await prisma.members.update({
+      where: { id: subscription.memberId },
       data: {
-        subscriptionStatus: SubscriptionStatus.CANCELED,
+        membershipStatus: 'Inactive',
+        updatedAt: new Date(),
       },
     });
   }
 
-  // Log activity
-  if (subscription.userId) {
+  // Log activity - find linked user through member
+  const cancelledUser = await prisma.users.findFirst({
+    where: { memberId: subscription.memberId },
+  });
+  if (cancelledUser) {
     await prisma.activity_logs.create({
       data: {
         id: generateId(),
-        userId: subscription.userId,
+        userId: cancelledUser.id,
         action: 'SUBSCRIPTION_CANCELLED',
         entity: 'subscription',
         entityId: subscription.id,
@@ -384,31 +422,37 @@ async function handlePaymentFailed(event: any) {
     },
   });
 
-  // Update user status
-  if (subscription.userId) {
-    await prisma.users.update({
-      where: { id: subscription.userId },
+  // Update member status
+  if (subscription.memberId) {
+    await prisma.members.update({
+      where: { id: subscription.memberId },
       data: {
-        subscriptionStatus: 'PAST_DUE',
+        membershipStatus: 'Inactive',
+        updatedAt: new Date(),
       },
     });
 
-    // Log activity
-    await prisma.activity_logs.create({
-      data: {
-        id: generateId(),
-        userId: subscription.userId,
-        action: 'PAYMENT_FAILED',
-        entity: 'subscription',
-        entityId: subscription.id,
-        details: JSON.stringify({
-          provider: 'paykickstart',
-          subscriptionId,
-          reason: data.failure_message || 'Payment failed',
-        }),
-        createdAt: new Date(),
-      },
+    // Log activity - find linked user
+    const failedUser = await prisma.users.findFirst({
+      where: { memberId: subscription.memberId },
     });
+    if (failedUser) {
+      await prisma.activity_logs.create({
+        data: {
+          id: generateId(),
+          userId: failedUser.id,
+          action: 'PAYMENT_FAILED',
+          entity: 'subscription',
+          entityId: subscription.id,
+          details: JSON.stringify({
+            provider: 'paykickstart',
+            subscriptionId,
+            reason: data.failure_message || 'Payment failed',
+          }),
+          createdAt: new Date(),
+        },
+      });
+    }
   }
 
   console.log(`Payment failed for subscription: ${subscriptionId}`);
@@ -440,30 +484,36 @@ async function handlePaymentSucceeded(event: any) {
     },
   });
 
-  // Update user status
-  if (subscription.userId) {
-    await prisma.users.update({
-      where: { id: subscription.userId },
+  // Update member status
+  if (subscription.memberId) {
+    await prisma.members.update({
+      where: { id: subscription.memberId },
       data: {
-        subscriptionStatus: 'ACTIVE',
+        membershipStatus: 'Active',
+        updatedAt: new Date(),
       },
     });
 
-    // Log activity
-    await prisma.activity_logs.create({
-      data: {
-        id: generateId(),
-        userId: subscription.userId,
-        action: 'PAYMENT_SUCCEEDED',
-        entity: 'subscription',
-        entityId: subscription.id,
-        details: JSON.stringify({
-          provider: 'paykickstart',
-          subscriptionId,
-        }),
-        createdAt: new Date(),
-      },
+    // Log activity - find linked user
+    const succeededUser = await prisma.users.findFirst({
+      where: { memberId: subscription.memberId },
     });
+    if (succeededUser) {
+      await prisma.activity_logs.create({
+        data: {
+          id: generateId(),
+          userId: succeededUser.id,
+          action: 'PAYMENT_SUCCEEDED',
+          entity: 'subscription',
+          entityId: subscription.id,
+          details: JSON.stringify({
+            provider: 'paykickstart',
+            subscriptionId,
+          }),
+          createdAt: new Date(),
+        },
+      });
+    }
   }
 
   console.log(`Payment succeeded, subscription reactivated: ${subscriptionId}`);

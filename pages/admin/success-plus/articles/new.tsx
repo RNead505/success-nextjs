@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { requireAdminAuth } from '../../../lib/adminAuth';
+import { requireAdminAuth } from '@/lib/adminAuth';
 
 export default function NewExclusiveArticle() {
   const router = useRouter();
