@@ -1,99 +1,203 @@
-import { withDepartmentAccess } from '@/lib/auth/withDepartmentAccess';
-import AdminLayout from '@/components/admin/AdminLayout';
+import { useEffect, useState } from 'react';
+import { Department } from '@prisma/client';
+import DepartmentLayout from '@/components/admin/shared/DepartmentLayout';
+import { requireDepartmentAuth } from '@/lib/departmentAuth';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import styles from './CustomerService.module.css';
-import { requireAdminAuth } from '@/lib/adminAuth';
 
-function CustomerServiceDashboard() {
-  const router = useRouter();
+interface DashboardStats {
+  activeSubscriptions: number;
+  openTickets: number;
+  refundsToday: number;
+  failedPayments: number;
+  recentActivity: Array<{
+    id: string;
+    type: string;
+    description: string;
+    timestamp: string;
+    user?: string;
+  }>;
+  pendingItems: Array<{
+    id: string;
+    type: string;
+    description: string;
+    priority: 'high' | 'medium' | 'low';
+  }>;
+}
 
-  const quickLinks = [
-    {
-      title: 'Sales & Transactions',
-      description: 'View all sales, orders, and transaction history',
-      href: '/admin/sales',
-      icon: '💰',
-    },
-    {
-      title: 'Members',
-      description: 'Manage SUCCESS+ members and member accounts',
-      href: '/admin/members',
-      icon: '⭐',
-    },
-    {
-      title: 'Subscribers',
-      description: 'View and manage all newsletter subscribers',
-      href: '/admin/subscribers',
-      icon: '👥',
-    },
-    {
-      title: 'Subscriptions',
-      description: 'Manage SUCCESS+ and magazine subscriptions',
-      href: '/admin/subscriptions',
-      icon: '💳',
-    },
-    {
-      title: 'Revenue Analytics',
-      description: 'View revenue reports and financial analytics',
-      href: '/admin/revenue',
-      icon: '📊',
-    },
-    {
-      title: 'User Management',
-      description: 'Search users, reset passwords, update emails',
-      href: '/admin/users',
-      icon: '👤',
-    },
-  ];
+export default function CustomerServiceDashboard() {
+  const [stats, setStats] = useState<DashboardStats>({
+    activeSubscriptions: 0,
+    openTickets: 0,
+    refundsToday: 0,
+    failedPayments: 0,
+    recentActivity: [],
+    pendingItems: [],
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/admin/customer-service/dashboard-stats')
+      .then((res) => res.json())
+      .then((data) => {
+        setStats(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error('Failed to fetch dashboard stats:', error);
+        setLoading(false);
+      });
+  }, []);
 
   return (
-    <AdminLayout>
-      <div className={styles.container}>
-        <div className={styles.header}>
-          <h1>Sales & Customer Service Dashboard</h1>
-          <p>Manage all customer interactions, sales, and subscriptions</p>
-        </div>
-
-        <div className={styles.grid}>
-          {quickLinks.map((link) => (
-            <div key={link.href} className={styles.card} onClick={() => router.push(link.href)}>
-              <div className={styles.cardIcon}>{link.icon}</div>
-              <h3>{link.title}</h3>
-              <p>{link.description}</p>
-              <Link href={link.href} className={styles.cardButton}>
-                Open →
-              </Link>
-            </div>
-          ))}
-        </div>
-
+    <DepartmentLayout
+      currentDepartment={Department.CUSTOMER_SERVICE}
+      pageTitle="Customer Service Dashboard"
+      description="Subscription management and customer support"
+    >
+      <div className={styles.dashboard}>
+        {/* Quick Stats */}
         <div className={styles.statsGrid}>
-          <div className={styles.stat}>
-            <div className={styles.statValue}>0</div>
-            <div className={styles.statLabel}>Open Tickets</div>
+          <div className={styles.statCard}>
+            <div className={styles.statIcon}>💎</div>
+            <div className={styles.statContent}>
+              <div className={styles.statLabel}>Active Subscriptions</div>
+              <div className={styles.statValue}>
+                {loading ? '...' : stats.activeSubscriptions.toLocaleString()}
+              </div>
+            </div>
           </div>
-          <div className={styles.stat}>
-            <div className={styles.statValue}>0</div>
-            <div className={styles.statLabel}>Active Subscriptions</div>
+
+          <div className={styles.statCard}>
+            <div className={styles.statIcon}>🎫</div>
+            <div className={styles.statContent}>
+              <div className={styles.statLabel}>Open Tickets</div>
+              <div className={styles.statValue}>
+                {loading ? '...' : stats.openTickets}
+              </div>
+            </div>
           </div>
-          <div className={styles.stat}>
-            <div className={styles.statValue}>0</div>
-            <div className={styles.statLabel}>Pending Refunds</div>
+
+          <div className={styles.statCard}>
+            <div className={styles.statIcon}>💵</div>
+            <div className={styles.statContent}>
+              <div className={styles.statLabel}>Refunds Today</div>
+              <div className={styles.statValue}>
+                {loading ? '...' : stats.refundsToday}
+              </div>
+            </div>
           </div>
-          <div className={styles.stat}>
-            <div className={styles.statValue}>$0</div>
-            <div className={styles.statLabel}>Monthly Revenue</div>
+
+          <div className={`${styles.statCard} ${stats.failedPayments > 0 ? styles.statCardWarning : ''}`}>
+            <div className={styles.statIcon}>⚠️</div>
+            <div className={styles.statContent}>
+              <div className={styles.statLabel}>Failed Payments</div>
+              <div className={styles.statValue}>
+                {loading ? '...' : stats.failedPayments}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Quick Actions */}
+        <div className={styles.section}>
+          <h2 className={styles.sectionTitle}>Quick Actions</h2>
+          <div className={styles.actionsGrid}>
+            <Link href="/admin/members" className={styles.actionCard}>
+              <div className={styles.actionIcon}>🔍</div>
+              <div className={styles.actionTitle}>Search User</div>
+              <div className={styles.actionDescription}>
+                Look up user by email or name
+              </div>
+            </Link>
+
+            <Link href="/admin/subscriptions" className={styles.actionCard}>
+              <div className={styles.actionIcon}>💳</div>
+              <div className={styles.actionTitle}>Manage Subscriptions</div>
+              <div className={styles.actionDescription}>
+                View and modify subscriptions
+              </div>
+            </Link>
+
+            <Link href="/admin/refunds" className={styles.actionCard}>
+              <div className={styles.actionIcon}>💵</div>
+              <div className={styles.actionTitle}>Process Refund</div>
+              <div className={styles.actionDescription}>
+                Issue full or partial refund
+              </div>
+            </Link>
+
+            <Link href="/admin/sales" className={styles.actionCard}>
+              <div className={styles.actionIcon}>📊</div>
+              <div className={styles.actionTitle}>Sales & Orders</div>
+              <div className={styles.actionDescription}>
+                View all orders and transactions
+              </div>
+            </Link>
+          </div>
+        </div>
+
+        <div className={styles.twoColumn}>
+          {/* Recent Activity */}
+          <div className={styles.section}>
+            <h2 className={styles.sectionTitle}>Recent Activity</h2>
+            <div className={styles.activityList}>
+              {loading ? (
+                <div className={styles.emptyState}>Loading...</div>
+              ) : stats.recentActivity.length === 0 ? (
+                <div className={styles.emptyState}>No recent activity</div>
+              ) : (
+                stats.recentActivity.map((activity) => (
+                  <div key={activity.id} className={styles.activityItem}>
+                    <div className={styles.activityIcon}>
+                      {activity.type === 'subscription' ? '💎' :
+                       activity.type === 'refund' ? '💵' :
+                       activity.type === 'payment' ? '💳' : '📝'}
+                    </div>
+                    <div className={styles.activityContent}>
+                      <div className={styles.activityTitle}>{activity.description}</div>
+                      <div className={styles.activityMeta}>
+                        {activity.user && `${activity.user} • `}
+                        {new Date(activity.timestamp).toLocaleString()}
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+
+          {/* Pending Items */}
+          <div className={styles.section}>
+            <h2 className={styles.sectionTitle}>Pending Items</h2>
+            <div className={styles.pendingList}>
+              {loading ? (
+                <div className={styles.emptyState}>Loading...</div>
+              ) : stats.pendingItems.length === 0 ? (
+                <div className={styles.emptyState}>
+                  <div className={styles.emptyIcon}>✅</div>
+                  <div>All caught up!</div>
+                </div>
+              ) : (
+                stats.pendingItems.map((item) => (
+                  <div key={item.id} className={styles.pendingItem}>
+                    <div className={`${styles.priorityBadge} ${styles[`priority${item.priority.charAt(0).toUpperCase() + item.priority.slice(1)}`]}`}>
+                      {item.priority}
+                    </div>
+                    <div className={styles.pendingContent}>
+                      <div className={styles.pendingType}>{item.type}</div>
+                      <div className={styles.pendingDescription}>{item.description}</div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </AdminLayout>
+    </DepartmentLayout>
   );
 }
 
-export default withDepartmentAccess(CustomerServiceDashboard, {
-  department: 'CUSTOMER_SERVICE',
-});
-
 // Server-side authentication check
-export const getServerSideProps = requireAdminAuth;
+export const getServerSideProps = requireDepartmentAuth(Department.CUSTOMER_SERVICE);
