@@ -740,6 +740,9 @@ model users {
   onboardingCompleted       Boolean              @default(false)
   interests                 String[]
 
+  // Department assignment for staff users
+  primaryDepartment         Department?
+
   // Link to Member if this user is ALSO a customer
   memberId                  String?              @unique
   member                    members?             @relation("UserMemberLink", fields: [memberId], references: [id], onDelete: SetNull)
@@ -2092,4 +2095,72 @@ model system_settings {
   value String @db.Text
   updatedAt DateTime @updatedAt
   updatedBy String?
+}
+
+// ============================================
+// ROLE-BASED ADMIN DASHBOARD SYSTEM
+// ============================================
+
+// Staff announcements (company-wide news from Super Admin)
+model staff_announcements {
+  id              String                    @id @default(uuid())
+  title           String
+  content         String                    @db.Text
+  createdBy       String
+  createdByEmail  String
+  isActive        Boolean                   @default(true)
+  priority        AnnouncementPriority      @default(NORMAL)
+  expiresAt       DateTime?
+  createdAt       DateTime                  @default(now())
+  updatedAt       DateTime                  @updatedAt
+
+  @@index([isActive])
+  @@index([createdAt])
+  @@index([priority])
+}
+
+// Staff activity feed (cross-department activity log)
+model staff_activity_feed {
+  id          String   @id @default(uuid())
+  userId      String?
+  userEmail   String
+  userName    String?
+  department  String?
+  action      String
+  entityType  String?
+  entityId    String?
+  entityName  String?
+  description String?  @db.Text
+  metadata    Json?
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@index([department])
+  @@index([createdAt])
+  @@index([action])
+}
+
+// Department access log (track which staff access which dashboards)
+model department_access_log {
+  id         String   @id @default(uuid())
+  userId     String
+  userEmail  String
+  department String
+  pagePath   String
+  action     String
+  ipAddress  String?
+  userAgent  String?  @db.Text
+  createdAt  DateTime @default(now())
+
+  @@index([userId])
+  @@index([department])
+  @@index([createdAt])
+  @@index([pagePath])
+}
+
+enum AnnouncementPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
 }
