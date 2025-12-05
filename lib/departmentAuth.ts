@@ -29,7 +29,7 @@ const SUPER_ADMIN_FULL_ACCESS = true;
 /**
  * Check if a user has access to a specific department
  */
-export function hasDepart ment Access(
+export function hasDepartmentAccess(
   userRole: UserRole,
   userDepartment: Department | null | undefined,
   targetDepartment: Department
