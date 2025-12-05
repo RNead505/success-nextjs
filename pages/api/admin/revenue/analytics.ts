@@ -2,6 +2,14 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../auth/[...nextauth]';
 import { prisma } from '../../../../lib/prisma';
+import { Prisma } from '@prisma/client';
+
+// Type definitions for Prisma results
+type Transaction = Prisma.transactionsGetPayload<{ include: { member: true } }>;
+type TransactionSimple = Prisma.transactionsGetPayload<{}>;
+type Order = Prisma.ordersGetPayload<{ include: { member: true; order_items: { include: { products: true } } } }>;
+type OrderSimple = Prisma.ordersGetPayload<{}>;
+type HistoricalItem = { memberId: string; createdAt: Date };
 
 /**
  * Comprehensive Revenue Analytics API
@@ -164,12 +172,12 @@ export default async function handler(
     // ==========================================
 
     // Total Revenue
-    const transactionRevenue = transactions.reduce((sum, t) => sum + parseFloat(t.amount.toString()), 0);
-    const orderRevenue = orders.reduce((sum, o) => sum + parseFloat(o.total.toString()), 0);
+    const transactionRevenue = transactions.reduce((sum: number, t: Transaction) => sum + parseFloat(t.amount.toString()), 0);
+    const orderRevenue = orders.reduce((sum: number, o: Order) => sum + parseFloat(o.total.toString()), 0);
     const totalRevenue = transactionRevenue + orderRevenue;
 
-    const prevTransactionRevenue = prevTransactions.reduce((sum, t) => sum + parseFloat(t.amount.toString()), 0);
-    const prevOrderRevenue = prevOrders.reduce((sum, o) => sum + parseFloat(o.total.toString()), 0);
+    const prevTransactionRevenue = prevTransactions.reduce((sum: number, t: TransactionSimple) => sum + parseFloat(t.amount.toString()), 0);
+    const prevOrderRevenue = prevOrders.reduce((sum: number, o: OrderSimple) => sum + parseFloat(o.total.toString()), 0);
     const prevTotalRevenue = prevTransactionRevenue + prevOrderRevenue;
 
     const revenueGrowth = prevTotalRevenue > 0
@@ -195,8 +203,8 @@ export default async function handler(
     const mrr = activeSubscriptions * subscriptionPrice;
 
     // Refund amounts
-    const refundAmount = refunds.reduce((sum, r) => sum + Math.abs(parseFloat(r.amount.toString())), 0);
-    const prevRefundAmount = prevRefunds.reduce((sum, r) => sum + Math.abs(parseFloat(r.amount.toString())), 0);
+    const refundAmount = refunds.reduce((sum: number, r: TransactionSimple) => sum + Math.abs(parseFloat(r.amount.toString())), 0);
+    const prevRefundAmount = prevRefunds.reduce((sum: number, r: TransactionSimple) => sum + Math.abs(parseFloat(r.amount.toString())), 0);
 
     // Refund Rate
     const refundRate = totalRevenue > 0 ? (refundAmount / totalRevenue) * 100 : 0;
@@ -215,7 +223,7 @@ export default async function handler(
       Other: 0,
     };
 
-    transactions.forEach(t => {
+    transactions.forEach((t: Transaction) => {
       const provider = t.provider || 'Other';
       const key = provider === 'stripe' ? 'Stripe'
                 : provider === 'paykickstart' ? 'PayKickstart'
@@ -224,7 +232,7 @@ export default async function handler(
       revenueByProvider[key] += parseFloat(t.amount.toString());
     });
 
-    orders.forEach(o => {
+    orders.forEach((o: Order) => {
       const source = o.orderSource || 'InHouse';
       const key = source === 'WooCommerce' ? 'WooCommerce'
                 : source === 'Stripe' ? 'Stripe'
@@ -245,20 +253,20 @@ export default async function handler(
 
     // Subscriptions are SUCCESS+
     const successPlusRevenue = transactions
-      .filter(t => t.type === 'subscription')
-      .reduce((sum, t) => sum + parseFloat(t.amount.toString()), 0);
+      .filter((t: Transaction) => t.type === 'subscription')
+      .reduce((sum: number, t: Transaction) => sum + parseFloat(t.amount.toString()), 0);
     revenueByProductType['SUCCESS+'] = successPlusRevenue;
 
     // Orders from WooCommerce store
     const storeRevenue = orders
-      .filter(o => o.orderSource === 'WooCommerce')
-      .reduce((sum, o) => sum + parseFloat(o.total.toString()), 0);
+      .filter((o: Order) => o.orderSource === 'WooCommerce')
+      .reduce((sum: number, o: Order) => sum + parseFloat(o.total.toString()), 0);
     revenueByProductType['Store'] = storeRevenue;
 
     // Other transactions
     const otherRevenue = transactions
-      .filter(t => t.type !== 'subscription')
-      .reduce((sum, t) => sum + parseFloat(t.amount.toString()), 0);
+      .filter((t: Transaction) => t.type !== 'subscription')
+      .reduce((sum: number, t: Transaction) => sum + parseFloat(t.amount.toString()), 0);
     revenueByProductType['Other'] = otherRevenue;
 
     // ==========================================
@@ -280,7 +288,7 @@ export default async function handler(
     });
 
     // Build map of first purchase dates
-    [...allHistoricalTransactions, ...allHistoricalOrders].forEach(item => {
+    [...allHistoricalTransactions, ...allHistoricalOrders].forEach((item: HistoricalItem) => {
       if (!customerFirstPurchase.has(item.memberId)) {
         customerFirstPurchase.set(item.memberId, item.createdAt);
       }
@@ -289,7 +297,7 @@ export default async function handler(
     let newCustomerRevenue = 0;
     let returningCustomerRevenue = 0;
 
-    transactions.forEach(t => {
+    transactions.forEach((t: Transaction) => {
       const firstPurchase = customerFirstPurchase.get(t.memberId);
       const isNew = firstPurchase && firstPurchase >= startDate && firstPurchase <= endDate;
       const amount = parseFloat(t.amount.toString());
@@ -300,7 +308,7 @@ export default async function handler(
       }
     });
 
-    orders.forEach(o => {
+    orders.forEach((o: Order) => {
       const firstPurchase = customerFirstPurchase.get(o.memberId);
       const isNew = firstPurchase && firstPurchase >= startDate && firstPurchase <= endDate;
       const amount = parseFloat(o.total.toString());
@@ -315,8 +323,8 @@ export default async function handler(
     // CUSTOMER LIFETIME VALUE (CLV)
     // ==========================================
     const memberIds = new Set([
-      ...transactions.map(t => t.memberId),
-      ...orders.map(o => o.memberId),
+      ...transactions.map((t: Transaction) => t.memberId),
+      ...orders.map((o: Order) => o.memberId),
     ]);
 
     const memberLifetimeValues = await Promise.all(
@@ -334,14 +342,14 @@ export default async function handler(
           },
         });
         const totalValue =
-          memberTransactions.reduce((sum, t) => sum + parseFloat(t.amount.toString()), 0) +
-          memberOrders.reduce((sum, o) => sum + parseFloat(o.total.toString()), 0);
+          memberTransactions.reduce((sum: number, t: TransactionSimple) => sum + parseFloat(t.amount.toString()), 0) +
+          memberOrders.reduce((sum: number, o: OrderSimple) => sum + parseFloat(o.total.toString()), 0);
         return totalValue;
       })
     );
 
     const averageClv = memberLifetimeValues.length > 0
-      ? memberLifetimeValues.reduce((sum, v) => sum + v, 0) / memberLifetimeValues.length
+      ? memberLifetimeValues.reduce((sum: number, v: number) => sum + v, 0) / memberLifetimeValues.length
       : 0;
 
     // ==========================================
@@ -357,19 +365,19 @@ export default async function handler(
       dayEnd.setHours(23, 59, 59, 999);
 
       const dayTransactions = transactions.filter(
-        t => t.createdAt >= dayStart && t.createdAt <= dayEnd
+        (t: Transaction) => t.createdAt >= dayStart && t.createdAt <= dayEnd
       );
       const dayOrders = orders.filter(
-        o => o.createdAt >= dayStart && o.createdAt <= dayEnd
+        (o: Order) => o.createdAt >= dayStart && o.createdAt <= dayEnd
       );
       const dayRefunds = refunds.filter(
-        r => r.createdAt >= dayStart && r.createdAt <= dayEnd
+        (r: TransactionSimple) => r.createdAt >= dayStart && r.createdAt <= dayEnd
       );
 
       const dayRevenue =
-        dayTransactions.reduce((sum, t) => sum + parseFloat(t.amount.toString()), 0) +
-        dayOrders.reduce((sum, o) => sum + parseFloat(o.total.toString()), 0);
-      const dayRefundAmount = dayRefunds.reduce((sum, r) => sum + Math.abs(parseFloat(r.amount.toString())), 0);
+        dayTransactions.reduce((sum: number, t: Transaction) => sum + parseFloat(t.amount.toString()), 0) +
+        dayOrders.reduce((sum: number, o: Order) => sum + parseFloat(o.total.toString()), 0);
+      const dayRefundAmount = dayRefunds.reduce((sum: number, r: TransactionSimple) => sum + Math.abs(parseFloat(r.amount.toString())), 0);
 
       dailyRevenue.push({
         date: currentDate.toISOString().split('T')[0],
@@ -427,8 +435,9 @@ export default async function handler(
       refundCount: refunds.length,
       refundAmount,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error fetching revenue analytics:', error);
-    return res.status(500).json({ error: error.message || 'Internal server error' });
+    const errorMessage = error instanceof Error ? error.message : 'Internal server error';
+    return res.status(500).json({ error: errorMessage });
   }
 }

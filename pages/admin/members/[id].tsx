@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import AdminLayout from '../../../components/admin/AdminLayout';
 import styles from './MemberDetail.module.css';
-import { requireAdminAuth } from '../../lib/adminAuth';
+import { requireAdminAuth } from '@/lib/adminAuth';
 
 type PriorityLevel = 'Standard' | 'High' | 'VIP' | 'Enterprise';
 

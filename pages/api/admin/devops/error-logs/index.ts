@@ -32,7 +32,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         LIMIT 100
       `;
 
-      const logs = alerts.map(alert => ({
+      type AlertRow = { id: string; timestamp: string; severity: string; message: string; page?: string; userAgent?: string; stack?: string };
+      const logs = alerts.map((alert: AlertRow) => ({
         id: alert.id,
         timestamp: alert.timestamp,
         severity: alert.severity,

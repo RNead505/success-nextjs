@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import AdminLayout from '../../../components/admin/AdminLayout';
 import Link from 'next/link';
 import styles from './TransactionDetail.module.css';
-import { requireAdminAuth } from '../../lib/adminAuth';
+import { requireAdminAuth } from '@/lib/adminAuth';
 
 interface TransactionDetail {
   id: string;

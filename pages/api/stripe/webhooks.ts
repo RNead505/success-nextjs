@@ -128,6 +128,33 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           const billingCycle = session.metadata?.billingCycle || 'monthly';
           const userId = session.metadata?.userId;
 
+          // Find or create member for subscription
+          let member = await prisma.members.findFirst({
+            where: { stripeCustomerId: customer.id },
+          });
+          if (!member && customer.email) {
+            member = await prisma.members.findFirst({
+              where: { email: customer.email },
+            });
+          }
+          if (!member && customer.email) {
+            member = await prisma.members.create({
+              data: {
+                id: randomUUID(),
+                email: customer.email,
+                firstName: customer.name?.split(' ')[0] || customer.email.split('@')[0],
+                lastName: customer.name?.split(' ').slice(1).join(' ') || '',
+                stripeCustomerId: customer.id,
+                membershipTier: 'Customer',
+                membershipStatus: 'Active',
+                totalSpent: 0,
+                lifetimeValue: 0,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+              },
+            });
+          }
+
           // Create or update subscription in database
           const subscriptionAny = subscription as any;
           const currentPeriodStart = subscriptionAny.current_period_start
@@ -149,7 +176,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             },
             create: {
               id: randomUUID(),
-              userId: userId && userId !== 'guest' ? userId : undefined,
+              memberId: member!.id,
               stripeCustomerId: customer.id,
               stripeSubscriptionId: subscription.id,
               tier,
@@ -320,17 +347,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             where: { stripeSubscriptionId: invoice.subscription as string },
           });
 
-          if (dbSub?.userId) {
-            await prisma.activity_logs.create({
-              data: {
-                id: randomUUID(),
-                userId: dbSub.userId,
-                action: 'SUBSCRIPTION_PAYMENT_SUCCEEDED',
-                entity: 'subscription',
-                details: `Amount: $${(invoice.amount_paid / 100).toFixed(2)}`,
-                ipAddress: '',
-              },
+          if (dbSub?.memberId) {
+            // Find user linked to this member
+            const linkedUser = await prisma.users.findFirst({
+              where: { memberId: dbSub.memberId },
             });
+            if (linkedUser) {
+              await prisma.activity_logs.create({
+                data: {
+                  id: randomUUID(),
+                  userId: linkedUser.id,
+                  action: 'SUBSCRIPTION_PAYMENT_SUCCEEDED',
+                  entity: 'subscription',
+                  details: `Amount: $${(invoice.amount_paid / 100).toFixed(2)}`,
+                  ipAddress: '',
+                },
+              });
+            }
           }
         }
         break;
@@ -345,17 +378,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             where: { stripeSubscriptionId: invoice.subscription as string },
           });
 
-          if (dbSub?.userId) {
-            await prisma.activity_logs.create({
-              data: {
-                id: randomUUID(),
-                userId: dbSub.userId,
-                action: 'SUBSCRIPTION_PAYMENT_FAILED',
-                entity: 'subscription',
-                details: `Amount: $${(invoice.amount_due / 100).toFixed(2)}`,
-                ipAddress: '',
-              },
+          if (dbSub?.memberId) {
+            // Find user linked to this member
+            const linkedUser = await prisma.users.findFirst({
+              where: { memberId: dbSub.memberId },
             });
+            if (linkedUser) {
+              await prisma.activity_logs.create({
+                data: {
+                  id: randomUUID(),
+                  userId: linkedUser.id,
+                  action: 'SUBSCRIPTION_PAYMENT_FAILED',
+                  entity: 'subscription',
+                  details: `Amount: $${(invoice.amount_due / 100).toFixed(2)}`,
+                  ipAddress: '',
+                },
+              });
+            }
           }
 
           // TODO: Send payment failed email to customer

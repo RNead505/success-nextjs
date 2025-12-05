@@ -16,14 +16,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Check if user has SUCCESS+ subscription
     const user = await prisma.users.findUnique({
       where: { email: session.user.email! },
-      include: { subscriptions: true },
+      include: { member: { include: { subscriptions: true } } },
     });
 
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    const hasActiveSubscription = user.subscriptions?.status === 'active';
+    const hasActiveSubscription = user.member?.subscriptions?.some(s => s.status === 'ACTIVE');
 
     if (!hasActiveSubscription) {
       return res.status(403).json({ error: 'SUCCESS+ subscription required' });

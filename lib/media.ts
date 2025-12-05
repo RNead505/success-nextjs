@@ -195,7 +195,7 @@ export function generatePictureHTML(
  * Validate image file
  */
 export function validateImageFile(
-  file: File,
+  file: { name?: string; type: string; size: number },
   options: {
     maxSize?: number; // in bytes
     allowedTypes?: string[];
