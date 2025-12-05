@@ -75,6 +75,7 @@ export default async function handler(
     const response = {
       subscriptions: subscriptions.map(sub => ({
         id: sub.id,
+        userId: sub.userId,
         userName: sub.users?.name || 'Unknown',
         userEmail: sub.users?.email || 'Unknown',
         planName: sub.planType || 'Unknown Plan',

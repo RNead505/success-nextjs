@@ -7,6 +7,7 @@ import styles from './Subscriptions.module.css';
 
 interface Subscription {
   id: string;
+  userId: string;
   userName: string;
   userEmail: string;
   planName: string;
@@ -16,8 +17,22 @@ interface Subscription {
   interval: string;
 }
 
+interface UserWithSubscriptions {
+  userId: string;
+  userName: string;
+  userEmail: string;
+  subscriptions: Array<{
+    id: string;
+    planName: string;
+    status: string;
+  }>;
+  totalAmount: number;
+  nextBillingDate?: string;
+}
+
 export default function SubscriptionsPage() {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
+  const [groupedUsers, setGroupedUsers] = useState<UserWithSubscriptions[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
@@ -39,7 +54,33 @@ export default function SubscriptionsPage() {
 
       const res = await fetch(`/api/admin/customer-service/subscriptions?${params}`);
       const data = await res.json();
-      setSubscriptions(data.subscriptions || []);
+      const subs = data.subscriptions || [];
+      setSubscriptions(subs);
+
+      // Group subscriptions by user
+      const userMap = new Map<string, UserWithSubscriptions>();
+      subs.forEach((sub: Subscription) => {
+        const userId = sub.userId || sub.userEmail;
+        if (!userMap.has(userId)) {
+          userMap.set(userId, {
+            userId,
+            userName: sub.userName,
+            userEmail: sub.userEmail,
+            subscriptions: [],
+            totalAmount: 0,
+            nextBillingDate: sub.nextBillingDate,
+          });
+        }
+        const user = userMap.get(userId)!;
+        user.subscriptions.push({
+          id: sub.id,
+          planName: sub.planName,
+          status: sub.status,
+        });
+        user.totalAmount += sub.amount;
+      });
+
+      setGroupedUsers(Array.from(userMap.values()));
       setTotalPages(data.pagination?.totalPages || 1);
     } catch (error) {
       console.error('Failed to fetch subscriptions:', error);
@@ -116,7 +157,7 @@ export default function SubscriptionsPage() {
             <div className={styles.loading}>Loading subscriptions...</div>
           ) : subscriptions.length === 0 ? (
             <div className={styles.empty}>
-              <div className={styles.emptyIcon}>=³</div>
+              <div className={styles.emptyIcon}>=ï¿½</div>
               <div>No subscriptions found</div>
             </div>
           ) : (
@@ -125,34 +166,50 @@ export default function SubscriptionsPage() {
                 <tr>
                   <th>User</th>
                   <th>Email</th>
-                  <th>Plan</th>
-                  <th>Status</th>
+                  <th>Subscriptions</th>
                   <th>Next Billing</th>
-                  <th>Amount</th>
+                  <th>Total Amount</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {subscriptions.map((sub) => (
-                  <tr key={sub.id}>
-                    <td>{sub.userName}</td>
-                    <td>{sub.userEmail}</td>
-                    <td>{sub.planName}</td>
-                    <td>{getStatusBadge(sub.status)}</td>
+                {groupedUsers.map((user) => (
+                  <tr key={user.userId}>
+                    <td>{user.userName}</td>
+                    <td>{user.userEmail}</td>
                     <td>
-                      {sub.nextBillingDate
-                        ? new Date(sub.nextBillingDate).toLocaleDateString()
-                        : 'N/A'}
+                      <div className={styles.subscriptionTags}>
+                        {user.subscriptions.map((sub) => (
+                          <span
+                            key={sub.id}
+                            className={`${styles.subscriptionTag} ${
+                              sub.status === 'active'
+                                ? styles.tagActive
+                                : sub.status === 'cancelled'
+                                ? styles.tagCancelled
+                                : styles.tagPaused
+                            }`}
+                            title={`Status: ${sub.status}`}
+                          >
+                            {sub.planName}
+                          </span>
+                        ))}
+                      </div>
                     </td>
                     <td>
-                      ${sub.amount.toFixed(2)}/{sub.interval}
+                      {user.nextBillingDate
+                        ? new Date(user.nextBillingDate).toLocaleDateString()
+                        : 'N/A'}
+                    </td>
+                    <td className={styles.totalAmount}>
+                      ${user.totalAmount.toFixed(2)}/mo
                     </td>
                     <td>
                       <Link
-                        href={`/admin/customer-service/subscriptions/${sub.id}`}
+                        href={`/admin/customer-service/users/${user.userId}`}
                         className={styles.actionButton}
                       >
-                        View Details
+                        View User
                       </Link>
                     </td>
                   </tr>

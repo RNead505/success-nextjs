@@ -152,6 +152,45 @@
   color: #991b1b;
 }
 
+.subscriptionTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.subscriptionTag {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tagActive {
+  background: #d1fae5;
+  color: #065f46;
+  border: 1px solid #10b981;
+}
+
+.tagPaused {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #f59e0b;
+}
+
+.tagCancelled {
+  background: #f3f4f6;
+  color: #6b7280;
+  border: 1px solid #d1d5db;
+}
+
+.totalAmount {
+  font-weight: 700;
+  color: #111827;
+  font-size: 0.9375rem;
+}
+
 .actionButton {
   padding: 0.5rem 1rem;
   background: #3b82f6;
