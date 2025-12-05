@@ -134,6 +134,22 @@ export default function CustomerServiceDashboard() {
                 View all orders and transactions
               </div>
             </Link>
+
+            <Link href="/admin/customer-service/disputes" className={styles.actionCard}>
+              <div className={styles.actionIcon}>⚖️</div>
+              <div className={styles.actionTitle}>Disputes & Chargebacks</div>
+              <div className={styles.actionDescription}>
+                Track and respond to payment disputes
+              </div>
+            </Link>
+
+            <Link href="/admin/customer-service/subscriptions" className={styles.actionCard}>
+              <div className={styles.actionIcon}>💎</div>
+              <div className={styles.actionTitle}>View Subscriptions</div>
+              <div className={styles.actionDescription}>
+                Browse all active subscriptions
+              </div>
+            </Link>
           </div>
         </div>
 
