@@ -28,7 +28,16 @@ export async function requireAdminAuth(context: GetServerSidePropsContext) {
     };
   }
 
-  return { props: { session } };
+  // Ensure all session fields are serializable (no undefined values)
+  const serializableSession = {
+    ...session,
+    user: {
+      ...session.user,
+      image: session.user.image || null,
+    },
+  };
+
+  return { props: { session: serializableSession } };
 }
 
 /**
@@ -55,5 +64,14 @@ export async function requireSuperAdminAuth(context: GetServerSidePropsContext) 
     };
   }
 
-  return { props: { session } };
+  // Ensure all session fields are serializable (no undefined values)
+  const serializableSession = {
+    ...session,
+    user: {
+      ...session.user,
+      image: session.user.image || null,
+    },
+  };
+
+  return { props: { session: serializableSession } };
 }

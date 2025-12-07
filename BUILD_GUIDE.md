@@ -739,4 +739,4 @@ Good luck! 🚀
 
 ---
 
-**Questions?** Read the codebase comments, check the commit history, or reach out to the community. You've got this!
+**Questions?** Read the codebase comments, check the commit history, or reach out to the community. You've got t

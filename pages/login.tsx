@@ -162,13 +162,22 @@ export default function MemberLogin() {
             </ul>
           </div>
 
+          {/* Divider */}
+          <div className={styles.divider}>
+            <span>OR</span>
+          </div>
+
           {/* Staff Login - Direct link to admin login page */}
-          <div className={styles.adminLink}>
-            <p style={{ margin: '0 0 1rem 0', color: '#666', fontSize: '0.875rem' }}>
-              Are you a staff member?
+          <div className={styles.staffSection}>
+            <h3 className={styles.staffTitle}>Staff Member?</h3>
+            <p className={styles.staffDescription}>
+              If you're a SUCCESS Magazine staff member, use the staff login portal
             </p>
-            <Link href="/admin/login" className={styles.staffLoginLink}>
-              Staff Login →
+            <Link href="/admin/login" className={styles.staffLoginButton}>
+              <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+              Staff Login
             </Link>
           </div>
         </div>
