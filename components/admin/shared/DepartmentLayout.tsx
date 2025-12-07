@@ -1,4 +1,4 @@
-import { useSession } from 'next-auth/react';
+﻿import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { ReactNode, useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -62,23 +62,23 @@ export default function DepartmentLayout({
   // Shared features available in all departments
   const sharedFeatures = [
     {
-      icon: '📋',
+      icon: 'ðŸ“‹',
       label: 'Kanban Board',
       href: `/admin/${currentDepartment.toLowerCase().replace('_', '-')}/kanban`,
     },
     {
-      icon: '📰',
+      icon: 'ðŸ“°',
       label: 'Activity Feed',
       href: `/admin/${currentDepartment.toLowerCase().replace('_', '-')}/activity`,
     },
     {
-      icon: '🔔',
+      icon: 'ðŸ””',
       label: 'Notifications',
       href: `/admin/${currentDepartment.toLowerCase().replace('_', '-')}/notifications`,
       badge: notificationCount,
     },
     {
-      icon: '📢',
+      icon: 'ðŸ“¢',
       label: 'Announcements',
       href: `/admin/${currentDepartment.toLowerCase().replace('_', '-')}/announcements`,
     },
@@ -94,8 +94,8 @@ export default function DepartmentLayout({
         <div className={styles.sidebarHeader}>
           <Link href="/admin">
             <div className={styles.logo}>
-              <span className={styles.logoIcon}>✨</span>
-              <span className={styles.logoText}>SUCCESS</span>
+              <span className={styles.logoIcon}>âœ¨</span>
+              <span className={styles.logoText} style={{ color: "white" }}>SUCCESS</span>
             </div>
           </Link>
         </div>
@@ -178,7 +178,7 @@ export default function DepartmentLayout({
             </div>
           </div>
           <Link href="/api/auth/signout" className={styles.signOutButton}>
-            <span>🚪</span>
+            <span>ðŸšª</span>
             <span>Sign Out</span>
           </Link>
         </div>
@@ -193,7 +193,7 @@ export default function DepartmentLayout({
             className={styles.sidebarToggle}
             aria-label="Toggle sidebar"
           >
-            ☰
+            â˜°
           </button>
           <div className={styles.headerContent}>
             <div>
@@ -214,57 +214,57 @@ export default function DepartmentLayout({
 function getDepartmentNavigation(department: Department) {
   const navConfigs: Record<Department, Array<{ icon: string; label: string; href: string }>> = {
     SUPER_ADMIN: [
-      { icon: '👥', label: 'User & Role Management', href: '/admin/super/users' },
-      { icon: '🔐', label: 'Permissions', href: '/admin/super/permissions' },
-      { icon: '⚙️', label: 'System Configuration', href: '/admin/super/config' },
-      { icon: '📊', label: 'Audit Logs', href: '/admin/super/audit-logs' },
-      { icon: '🎯', label: 'Cross-Dashboard Access', href: '/admin/super/access' },
+      { icon: 'ðŸ‘¥', label: 'User & Role Management', href: '/admin/super/users' },
+      { icon: 'ðŸ”', label: 'Permissions', href: '/admin/super/permissions' },
+      { icon: 'âš™ï¸', label: 'System Configuration', href: '/admin/super/config' },
+      { icon: 'ðŸ“Š', label: 'Audit Logs', href: '/admin/super/audit-logs' },
+      { icon: 'ðŸŽ¯', label: 'Cross-Dashboard Access', href: '/admin/super/access' },
     ],
     CUSTOMER_SERVICE: [
-      { icon: '💳', label: 'Subscriptions', href: '/admin/customer-service/subscriptions' },
-      { icon: '🛒', label: 'Orders & Billing', href: '/admin/customer-service/orders' },
-      { icon: '💰', label: 'Refunds & Disputes', href: '/admin/customer-service/refunds' },
-      { icon: '⚖️', label: 'Disputes', href: '/admin/customer-service/disputes' },
-      { icon: '👤', label: 'User Accounts', href: '/admin/customer-service/users' },
-      { icon: '💬', label: 'Support Tools', href: '/admin/customer-service/support' },
-      { icon: '⚠️', label: 'Error Resolution', href: '/admin/customer-service/errors' },
+      { icon: 'ðŸ’³', label: 'Subscriptions', href: '/admin/customer-service/subscriptions' },
+      { icon: 'ðŸ›’', label: 'Orders & Billing', href: '/admin/customer-service/orders' },
+      { icon: 'ðŸ’°', label: 'Refunds & Disputes', href: '/admin/customer-service/refunds' },
+      { icon: 'âš–ï¸', label: 'Disputes', href: '/admin/customer-service/disputes' },
+      { icon: 'ðŸ‘¤', label: 'User Accounts', href: '/admin/customer-service/users' },
+      { icon: 'ðŸ’¬', label: 'Support Tools', href: '/admin/customer-service/support' },
+      { icon: 'âš ï¸', label: 'Error Resolution', href: '/admin/customer-service/errors' },
     ],
     EDITORIAL: [
-      { icon: '📝', label: 'Articles', href: '/admin/editorial/articles' },
-      { icon: '✍️', label: 'Authors', href: '/admin/editorial/authors' },
-      { icon: '🏷️', label: 'Categories & Tags', href: '/admin/editorial/taxonomy' },
-      { icon: '📁', label: 'Media Library', href: '/admin/editorial/media' },
-      { icon: '🔍', label: 'SEO Controls', href: '/admin/editorial/seo' },
-      { icon: '📅', label: 'Publishing Queue', href: '/admin/editorial/queue' },
+      { icon: 'ðŸ“', label: 'Articles', href: '/admin/editorial/articles' },
+      { icon: 'âœï¸', label: 'Authors', href: '/admin/editorial/authors' },
+      { icon: 'ðŸ·ï¸', label: 'Categories & Tags', href: '/admin/editorial/taxonomy' },
+      { icon: 'ðŸ“', label: 'Media Library', href: '/admin/editorial/media' },
+      { icon: 'ðŸ”', label: 'SEO Controls', href: '/admin/editorial/seo' },
+      { icon: 'ðŸ“…', label: 'Publishing Queue', href: '/admin/editorial/queue' },
     ],
     SUCCESS_PLUS: [
-      { icon: '💎', label: 'Product Management', href: '/admin/success-plus/products' },
-      { icon: '👥', label: 'Members', href: '/admin/success-plus/members' },
-      { icon: '🔒', label: 'Content Access', href: '/admin/success-plus/access' },
-      { icon: '📧', label: 'Communications', href: '/admin/success-plus/communications' },
-      { icon: '📈', label: 'Analytics', href: '/admin/success-plus/analytics' },
+      { icon: 'ðŸ’Ž', label: 'Product Management', href: '/admin/success-plus/products' },
+      { icon: 'ðŸ‘¥', label: 'Members', href: '/admin/success-plus/members' },
+      { icon: 'ðŸ”’', label: 'Content Access', href: '/admin/success-plus/access' },
+      { icon: 'ðŸ“§', label: 'Communications', href: '/admin/success-plus/communications' },
+      { icon: 'ðŸ“ˆ', label: 'Analytics', href: '/admin/success-plus/analytics' },
     ],
     DEV: [
-      { icon: '🛠️', label: 'Dev Board', href: '/admin/dev/board' },
-      { icon: '📊', label: 'System Monitoring', href: '/admin/dev/monitoring' },
-      { icon: '🚀', label: 'Deployments', href: '/admin/dev/deployments' },
-      { icon: '🔧', label: 'Technical Tools', href: '/admin/dev/tools' },
-      { icon: '📚', label: 'Documentation', href: '/admin/dev/docs' },
+      { icon: 'ðŸ› ï¸', label: 'Dev Board', href: '/admin/dev/board' },
+      { icon: 'ðŸ“Š', label: 'System Monitoring', href: '/admin/dev/monitoring' },
+      { icon: 'ðŸš€', label: 'Deployments', href: '/admin/dev/deployments' },
+      { icon: 'ðŸ”§', label: 'Technical Tools', href: '/admin/dev/tools' },
+      { icon: 'ðŸ“š', label: 'Documentation', href: '/admin/dev/docs' },
     ],
     MARKETING: [
-      { icon: '📢', label: 'Campaigns', href: '/admin/marketing/campaigns' },
-      { icon: '🎨', label: 'Landing Pages', href: '/admin/marketing/landing-pages' },
-      { icon: '✉️', label: 'Email Marketing', href: '/admin/marketing/email' },
-      { icon: '📊', label: 'Analytics', href: '/admin/marketing/analytics' },
-      { icon: '🎁', label: 'Promotions', href: '/admin/marketing/promotions' },
+      { icon: 'ðŸ“¢', label: 'Campaigns', href: '/admin/marketing/campaigns' },
+      { icon: 'ðŸŽ¨', label: 'Landing Pages', href: '/admin/marketing/landing-pages' },
+      { icon: 'âœ‰ï¸', label: 'Email Marketing', href: '/admin/marketing/email' },
+      { icon: 'ðŸ“Š', label: 'Analytics', href: '/admin/marketing/analytics' },
+      { icon: 'ðŸŽ', label: 'Promotions', href: '/admin/marketing/promotions' },
     ],
     COACHING: [
-      { icon: '🎓', label: 'Programs', href: '/admin/coaching/programs' },
-      { icon: '👨‍🏫', label: 'Coaches', href: '/admin/coaching/coaches' },
-      { icon: '👤', label: 'Clients', href: '/admin/coaching/clients' },
-      { icon: '📅', label: 'Session Scheduling', href: '/admin/coaching/scheduling' },
-      { icon: '📚', label: 'Content Management', href: '/admin/coaching/content' },
-      { icon: '💬', label: 'Communications', href: '/admin/coaching/communications' },
+      { icon: 'ðŸŽ“', label: 'Programs', href: '/admin/coaching/programs' },
+      { icon: 'ðŸ‘¨â€ðŸ«', label: 'Coaches', href: '/admin/coaching/coaches' },
+      { icon: 'ðŸ‘¤', label: 'Clients', href: '/admin/coaching/clients' },
+      { icon: 'ðŸ“…', label: 'Session Scheduling', href: '/admin/coaching/scheduling' },
+      { icon: 'ðŸ“š', label: 'Content Management', href: '/admin/coaching/content' },
+      { icon: 'ðŸ’¬', label: 'Communications', href: '/admin/coaching/communications' },
     ],
   };
 
@@ -274,13 +274,13 @@ function getDepartmentNavigation(department: Department) {
 // Department icons
 function getDepartmentIcon(department: Department): string {
   const icons: Record<Department, string> = {
-    SUPER_ADMIN: '⚡',
-    CUSTOMER_SERVICE: '🎧',
-    EDITORIAL: '✍️',
-    SUCCESS_PLUS: '💎',
-    DEV: '⚙️',
-    MARKETING: '📈',
-    COACHING: '🎓',
+    SUPER_ADMIN: 'âš¡',
+    CUSTOMER_SERVICE: 'ðŸŽ§',
+    EDITORIAL: 'âœï¸',
+    SUCCESS_PLUS: 'ðŸ’Ž',
+    DEV: 'âš™ï¸',
+    MARKETING: 'ðŸ“ˆ',
+    COACHING: 'ðŸŽ“',
   };
   return icons[department];
 }
