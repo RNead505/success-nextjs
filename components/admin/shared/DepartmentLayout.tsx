@@ -223,6 +223,8 @@ function getDepartmentNavigation(department: Department) {
     CUSTOMER_SERVICE: [
       { icon: '💳', label: 'Subscriptions', href: '/admin/customer-service/subscriptions' },
       { icon: '🛒', label: 'Orders & Billing', href: '/admin/customer-service/orders' },
+      { icon: '💰', label: 'Refunds & Disputes', href: '/admin/customer-service/refunds' },
+      { icon: '⚖️', label: 'Disputes', href: '/admin/customer-service/disputes' },
       { icon: '👤', label: 'User Accounts', href: '/admin/customer-service/users' },
       { icon: '💬', label: 'Support Tools', href: '/admin/customer-service/support' },
       { icon: '⚠️', label: 'Error Resolution', href: '/admin/customer-service/errors' },

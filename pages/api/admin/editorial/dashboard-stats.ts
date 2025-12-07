@@ -86,8 +86,7 @@ export default async function handler(
         where: {
           role: {
             in: ['AUTHOR', 'EDITOR']
-          },
-          isActive: true
+          }
         }
       }),
 

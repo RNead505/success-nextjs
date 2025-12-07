@@ -760,6 +760,8 @@ model users {
   created_projects          projects[]           @relation("CreatedProjects")
   course_enrollments        course_enrollments[]
   staff_departments         staff_departments[]
+  refunds                   refunds[]            @relation("RefundsToUsers")
+  disputes                  disputes[]           @relation("DisputesToUsers")
 
   @@index([email])
   @@index([inviteCode])
@@ -895,6 +897,59 @@ model refund_disputes {
   @@index([memberId])
   @@index([status])
   @@index([type])
+  @@index([createdAt])
+}
+
+model refunds {
+  id             String    @id
+  userId         String
+  paymentId      String
+  originalAmount Decimal   @db.Decimal(10, 2)
+  amount         Decimal   @db.Decimal(10, 2)
+  reason         String
+  notes          String?   @db.Text
+  status         String    @default("pending")
+  processedBy    String
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  users          users     @relation("RefundsToUsers", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model disputes {
+  id               String    @id
+  userId           String
+  chargeId         String
+  amount           Decimal   @db.Decimal(10, 2)
+  reason           String
+  status           String    @default("needs_response")
+  dueDate          DateTime?
+  notes            String?   @db.Text
+  stripeDisputeId  String?
+  createdBy        String
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  users            users     @relation("DisputesToUsers", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model dispute_status_history {
+  id         String   @id
+  disputeId  String
+  status     String
+  changedBy  String
+  notes      String?  @db.Text
+  createdAt  DateTime @default(now())
+
+  @@index([disputeId])
   @@index([createdAt])
 }
 

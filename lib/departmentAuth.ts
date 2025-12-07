@@ -88,10 +88,18 @@ export function requireDepartmentAuth(
       };
     }
 
-    // Pass session to page props
+    // Pass session to page props - ensure all fields are serializable
+    const serializableSession = {
+      ...session,
+      user: {
+        ...session.user,
+        image: session.user.image || null,
+      },
+    };
+
     return {
       props: {
-        session,
+        session: serializableSession,
       },
     };
   };

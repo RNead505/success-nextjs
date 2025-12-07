@@ -24,7 +24,7 @@ export default async function handler(
     const { id } = req.query;
 
     if (req.method === 'GET') {
-      const dispute = await prisma.disputes.findUnique({
+      const refund = await prisma.refunds.findUnique({
         where: { id: id as string },
         include: {
           users: {
@@ -36,35 +36,23 @@ export default async function handler(
         },
       });
 
-      if (!dispute) {
-        return res.status(404).json({ error: 'Dispute not found' });
+      if (!refund) {
+        return res.status(404).json({ error: 'Refund not found' });
       }
 
-      // Get status history (if you have a separate table for it)
-      const statusHistory = await prisma.dispute_status_history.findMany({
-        where: { disputeId: id as string },
-        orderBy: { createdAt: 'desc' },
-      }).catch(() => []);
-
       return res.status(200).json({
-        dispute: {
-          id: dispute.id,
-          customerName: dispute.users?.name || 'Unknown',
-          customerEmail: dispute.users?.email || 'Unknown',
-          amount: dispute.amount || 0,
-          reason: dispute.reason || 'Unknown',
-          status: dispute.status || 'pending',
-          createdAt: dispute.createdAt.toISOString(),
-          dueDate: dispute.dueDate?.toISOString(),
-          chargeId: dispute.chargeId,
-          notes: dispute.notes,
-          stripeDisputeId: dispute.stripeDisputeId,
-          statusHistory: statusHistory.map(h => ({
-            status: h.status,
-            changedAt: h.createdAt.toISOString(),
-            changedBy: h.changedBy,
-            notes: h.notes,
-          })),
+        refund: {
+          id: refund.id,
+          customerName: refund.users?.name || 'Unknown',
+          customerEmail: refund.users?.email || 'Unknown',
+          originalAmount: refund.originalAmount || 0,
+          refundAmount: refund.amount || 0,
+          reason: refund.reason || 'Not specified',
+          status: refund.status || 'pending',
+          createdAt: refund.createdAt.toISOString(),
+          processedBy: refund.processedBy || 'System',
+          paymentId: refund.paymentId,
+          notes: refund.notes,
         },
       });
     }
@@ -76,7 +64,7 @@ export default async function handler(
       if (status) updateData.status = status;
       if (notes) {
         // Append notes to existing notes
-        const existing = await prisma.disputes.findUnique({
+        const existing = await prisma.refunds.findUnique({
           where: { id: id as string },
           select: { notes: true },
         });
@@ -85,25 +73,10 @@ export default async function handler(
           : notes;
       }
 
-      const dispute = await prisma.disputes.update({
+      const refund = await prisma.refunds.update({
         where: { id: id as string },
         data: updateData,
       });
-
-      // Create status history entry if status changed
-      if (status) {
-        await prisma.dispute_status_history.create({
-          data: {
-            id: `history_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-            disputeId: id as string,
-            status,
-            changedBy: session.user.email,
-            notes,
-          },
-        }).catch((err) => {
-          console.error('Failed to create status history:', err);
-        });
-      }
 
       // Log activity
       await prisma.staff_activity_feed.create({
@@ -112,21 +85,21 @@ export default async function handler(
           userId: session.user.id,
           userName: session.user.name || session.user.email,
           userEmail: session.user.email,
-          action: status ? 'DISPUTE_STATUS_UPDATED' : 'DISPUTE_NOTES_ADDED',
+          action: status ? 'REFUND_STATUS_UPDATED' : 'REFUND_NOTES_ADDED',
           description: status
-            ? `Updated dispute status to ${status}`
-            : 'Added notes to dispute',
-          entityType: 'dispute',
+            ? `Updated refund status to ${status}`
+            : 'Added notes to refund',
+          entityType: 'refund',
           entityId: id as string,
           department: 'CUSTOMER_SERVICE',
         },
       });
 
       return res.status(200).json({
-        dispute: {
-          id: dispute.id,
-          status: dispute.status,
-          notes: dispute.notes,
+        refund: {
+          id: refund.id,
+          status: refund.status,
+          notes: refund.notes,
         },
       });
     }
@@ -134,7 +107,7 @@ export default async function handler(
     return res.status(405).json({ error: 'Method not allowed' });
 
   } catch (error) {
-    console.error('Error handling dispute:', error);
+    console.error('Error handling refund:', error);
     return res.status(500).json({ error: 'Internal server error' });
   } finally {
     await prisma.$disconnect();

@@ -4,50 +4,44 @@ import { Department } from '@prisma/client';
 import DepartmentLayout from '@/components/admin/shared/DepartmentLayout';
 import { requireDepartmentAuth } from '@/lib/departmentAuth';
 import Link from 'next/link';
-import styles from './Disputes.module.css';
+import styles from './Refunds.module.css';
 
-interface DisputeDetail {
+interface RefundDetail {
   id: string;
   customerName: string;
   customerEmail: string;
-  amount: number;
+  originalAmount: number;
+  refundAmount: number;
   reason: string;
   status: string;
   createdAt: string;
-  dueDate?: string;
-  chargeId: string;
+  processedBy: string;
+  paymentId: string;
   notes?: string;
-  stripeDisputeId?: string;
-  statusHistory: Array<{
-    status: string;
-    changedAt: string;
-    changedBy: string;
-    notes?: string;
-  }>;
 }
 
-export default function DisputeDetailPage() {
+export default function RefundDetailPage() {
   const router = useRouter();
   const { id } = router.query;
-  const [dispute, setDispute] = useState<DisputeDetail | null>(null);
+  const [refund, setRefund] = useState<RefundDetail | null>(null);
   const [loading, setLoading] = useState(true);
-  const [showStatusModal, setShowStatusModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [showNotesModal, setShowNotesModal] = useState(false);
 
   useEffect(() => {
     if (id) {
-      fetchDispute();
+      fetchRefund();
     }
   }, [id]);
 
-  const fetchDispute = async () => {
+  const fetchRefund = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/admin/customer-service/disputes/${id}`);
+      const res = await fetch(`/api/admin/customer-service/refunds/${id}`);
       const data = await res.json();
-      setDispute(data.dispute);
+      setRefund(data.refund);
     } catch (error) {
-      console.error('Failed to fetch dispute:', error);
+      console.error('Failed to fetch refund:', error);
     } finally {
       setLoading(false);
     }
@@ -55,13 +49,10 @@ export default function DisputeDetailPage() {
 
   const getStatusBadge = (status: string) => {
     const statusConfig: Record<string, { class: string; label: string }> = {
-      warning_needs_response: { class: styles.statusWarning, label: 'Needs Response' },
-      needs_response: { class: styles.statusDanger, label: 'Needs Response' },
-      under_review: { class: styles.statusInfo, label: 'Under Review' },
+      completed: { class: styles.statusSuccess, label: 'Completed' },
       pending: { class: styles.statusWarning, label: 'Pending' },
-      resolved: { class: styles.statusSuccess, label: 'Resolved' },
-      won: { class: styles.statusSuccess, label: 'Won' },
-      lost: { class: styles.statusDanger, label: 'Lost' },
+      failed: { class: styles.statusDanger, label: 'Failed' },
+      processing: { class: styles.statusInfo, label: 'Processing' },
     };
 
     const config = statusConfig[status.toLowerCase()] || { class: styles.statusNeutral, label: status };
@@ -77,22 +68,22 @@ export default function DisputeDetailPage() {
     return (
       <DepartmentLayout
         currentDepartment={Department.CUSTOMER_SERVICE}
-        pageTitle="Dispute Details"
+        pageTitle="Refund Details"
         description="Loading..."
       >
-        <div className={styles.loading}>Loading dispute details...</div>
+        <div className={styles.loading}>Loading refund details...</div>
       </DepartmentLayout>
     );
   }
 
-  if (!dispute) {
+  if (!refund) {
     return (
       <DepartmentLayout
         currentDepartment={Department.CUSTOMER_SERVICE}
-        pageTitle="Dispute Not Found"
+        pageTitle="Refund Not Found"
         description="Error"
       >
-        <div className={styles.empty}>Dispute not found</div>
+        <div className={styles.empty}>Refund not found</div>
       </DepartmentLayout>
     );
   }
@@ -100,55 +91,57 @@ export default function DisputeDetailPage() {
   return (
     <DepartmentLayout
       currentDepartment={Department.CUSTOMER_SERVICE}
-      pageTitle={`Dispute #${dispute.id.slice(-8)}`}
-      description="Dispute details and history"
+      pageTitle={`Refund #${refund.id.slice(-8)}`}
+      description="Refund details and history"
     >
       <div className={styles.detailContainer}>
         <div className={styles.backLink}>
-          <Link href="/admin/customer-service/disputes">� Back to Disputes</Link>
+          <Link href="/admin/customer-service/refunds">← Back to Refunds</Link>
         </div>
 
-        {/* Dispute Info Card */}
+        {/* Refund Info Card */}
         <div className={styles.card}>
           <div className={styles.cardHeader}>
-            <h2>Dispute Information</h2>
-            {getStatusBadge(dispute.status)}
+            <h2>Refund Information</h2>
+            {getStatusBadge(refund.status)}
           </div>
           <div className={styles.cardBody}>
             <div className={styles.infoGrid}>
               <div className={styles.infoItem}>
                 <label>Customer</label>
                 <div className={styles.infoValue}>
-                  <div>{dispute.customerName}</div>
-                  <div className={styles.infoSubtext}>{dispute.customerEmail}</div>
+                  <div>{refund.customerName}</div>
+                  <div className={styles.infoSubtext}>{refund.customerEmail}</div>
                 </div>
               </div>
               <div className={styles.infoItem}>
-                <label>Amount</label>
-                <div className={styles.infoValue}>${dispute.amount.toFixed(2)}</div>
+                <label>Original Amount</label>
+                <div className={styles.infoValue}>${refund.originalAmount.toFixed(2)}</div>
+              </div>
+              <div className={styles.infoItem}>
+                <label>Refund Amount</label>
+                <div className={styles.infoValue} style={{ color: '#ef4444' }}>
+                  -${refund.refundAmount.toFixed(2)}
+                </div>
               </div>
               <div className={styles.infoItem}>
                 <label>Reason</label>
-                <div className={styles.infoValue}>{dispute.reason}</div>
+                <div className={styles.infoValue}>{refund.reason}</div>
               </div>
               <div className={styles.infoItem}>
-                <label>Charge ID</label>
-                <div className={styles.infoValue}>{dispute.chargeId}</div>
+                <label>Payment ID</label>
+                <div className={styles.infoValue}>{refund.paymentId}</div>
               </div>
               <div className={styles.infoItem}>
                 <label>Created</label>
                 <div className={styles.infoValue}>
-                  {new Date(dispute.createdAt).toLocaleDateString()}
+                  {new Date(refund.createdAt).toLocaleString()}
                 </div>
               </div>
-              {dispute.dueDate && (
-                <div className={styles.infoItem}>
-                  <label>Response Due</label>
-                  <div className={styles.infoValue}>
-                    {new Date(dispute.dueDate).toLocaleDateString()}
-                  </div>
-                </div>
-              )}
+              <div className={styles.infoItem}>
+                <label>Processed By</label>
+                <div className={styles.infoValue}>{refund.processedBy}</div>
+              </div>
             </div>
           </div>
         </div>
@@ -161,7 +154,7 @@ export default function DisputeDetailPage() {
           <div className={styles.cardBody}>
             <div className={styles.actionButtons}>
               <button
-                onClick={() => setShowStatusModal(true)}
+                onClick={() => setShowEditModal(true)}
                 className={styles.primaryButton}
               >
                 Update Status
@@ -177,55 +170,26 @@ export default function DisputeDetailPage() {
         </div>
 
         {/* Notes */}
-        {dispute.notes && (
+        {refund.notes && (
           <div className={styles.card}>
             <div className={styles.cardHeader}>
               <h2>Internal Notes</h2>
             </div>
             <div className={styles.cardBody}>
-              <div className={styles.notes}>{dispute.notes}</div>
-            </div>
-          </div>
-        )}
-
-        {/* Status History */}
-        {dispute.statusHistory && dispute.statusHistory.length > 0 && (
-          <div className={styles.card}>
-            <div className={styles.cardHeader}>
-              <h2>Status History</h2>
-            </div>
-            <div className={styles.cardBody}>
-              <div className={styles.timeline}>
-                {dispute.statusHistory.map((history, index) => (
-                  <div key={index} className={styles.timelineItem}>
-                    <div className={styles.timelineDot}></div>
-                    <div className={styles.timelineContent}>
-                      <div className={styles.timelineStatus}>
-                        {getStatusBadge(history.status)}
-                      </div>
-                      <div className={styles.timelineMeta}>
-                        {history.changedBy} " {new Date(history.changedAt).toLocaleString()}
-                      </div>
-                      {history.notes && (
-                        <div className={styles.timelineNotes}>{history.notes}</div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <div className={styles.notes}>{refund.notes}</div>
             </div>
           </div>
         )}
 
         {/* Update Status Modal */}
-        {showStatusModal && (
+        {showEditModal && (
           <UpdateStatusModal
-            disputeId={dispute.id}
-            currentStatus={dispute.status}
-            onClose={() => setShowStatusModal(false)}
+            refundId={refund.id}
+            currentStatus={refund.status}
+            onClose={() => setShowEditModal(false)}
             onSuccess={() => {
-              setShowStatusModal(false);
-              fetchDispute();
+              setShowEditModal(false);
+              fetchRefund();
             }}
           />
         )}
@@ -233,11 +197,11 @@ export default function DisputeDetailPage() {
         {/* Add Notes Modal */}
         {showNotesModal && (
           <AddNotesModal
-            disputeId={dispute.id}
+            refundId={refund.id}
             onClose={() => setShowNotesModal(false)}
             onSuccess={() => {
               setShowNotesModal(false);
-              fetchDispute();
+              fetchRefund();
             }}
           />
         )}
@@ -247,12 +211,12 @@ export default function DisputeDetailPage() {
 }
 
 function UpdateStatusModal({
-  disputeId,
+  refundId,
   currentStatus,
   onClose,
   onSuccess,
 }: {
-  disputeId: string;
+  refundId: string;
   currentStatus: string;
   onClose: () => void;
   onSuccess: () => void;
@@ -266,7 +230,7 @@ function UpdateStatusModal({
     setSubmitting(true);
 
     try {
-      const res = await fetch(`/api/admin/customer-service/disputes/${disputeId}`, {
+      const res = await fetch(`/api/admin/customer-service/refunds/${refundId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status, notes }),
@@ -290,8 +254,8 @@ function UpdateStatusModal({
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <div className={styles.modalHeader}>
-          <h2>Update Dispute Status</h2>
-          <button onClick={onClose} className={styles.closeButton}></button>
+          <h2>Update Refund Status</h2>
+          <button onClick={onClose} className={styles.closeButton}>×</button>
         </div>
 
         <form onSubmit={handleSubmit} className={styles.modalForm}>
@@ -299,11 +263,9 @@ function UpdateStatusModal({
             <label>New Status *</label>
             <select value={status} onChange={(e) => setStatus(e.target.value)}>
               <option value="pending">Pending</option>
-              <option value="needs_response">Needs Response</option>
-              <option value="under_review">Under Review</option>
-              <option value="resolved">Resolved</option>
-              <option value="won">Won</option>
-              <option value="lost">Lost</option>
+              <option value="processing">Processing</option>
+              <option value="completed">Completed</option>
+              <option value="failed">Failed</option>
             </select>
           </div>
 
@@ -332,11 +294,11 @@ function UpdateStatusModal({
 }
 
 function AddNotesModal({
-  disputeId,
+  refundId,
   onClose,
   onSuccess,
 }: {
-  disputeId: string;
+  refundId: string;
   onClose: () => void;
   onSuccess: () => void;
 }) {
@@ -348,7 +310,7 @@ function AddNotesModal({
     setSubmitting(true);
 
     try {
-      const res = await fetch(`/api/admin/customer-service/disputes/${disputeId}`, {
+      const res = await fetch(`/api/admin/customer-service/refunds/${refundId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ notes }),
@@ -373,7 +335,7 @@ function AddNotesModal({
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <div className={styles.modalHeader}>
           <h2>Add Notes</h2>
-          <button onClick={onClose} className={styles.closeButton}></button>
+          <button onClick={onClose} className={styles.closeButton}>×</button>
         </div>
 
         <form onSubmit={handleSubmit} className={styles.modalForm}>
@@ -384,7 +346,7 @@ function AddNotesModal({
               required
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              placeholder="Add internal notes about this dispute..."
+              placeholder="Add internal notes about this refund..."
             />
           </div>
 
