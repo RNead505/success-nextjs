@@ -20,13 +20,11 @@
   gap: 1rem;
   border: 1px solid #e5e7eb;
   transition: all 0.2s;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .statCard:hover {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   transform: translateY(-2px);
-  border-color: #d1d5db;
 }
 
 .statCardWarning {
@@ -47,7 +45,6 @@
   font-size: 0.875rem;
   color: #6b7280;
   margin-bottom: 0.25rem;
-  font-weight: 600;
 }
 
 .statValue {
@@ -62,7 +59,6 @@
   border-radius: 0.75rem;
   padding: 1.5rem;
   border: 1px solid #e5e7eb;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .sectionTitle {
@@ -89,15 +85,12 @@
   flex-direction: column;
   gap: 0.75rem;
   cursor: pointer;
-  background: white;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .actionCard:hover {
   border-color: #3b82f6;
-  box-shadow: 0 4px 6px rgba(59, 130, 246, 0.15);
+  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.1);
   transform: translateY(-2px);
-  background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
 }
 
 .actionIcon {
@@ -238,123 +231,215 @@
 .emptyIcon {
   font-size: 3rem;
   margin-bottom: 1rem;
-  opacity: 0.5;
 }
 
-/* Publications List */
-.publicationsList {
+/* Health Card */
+.healthCard {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  border: 1px solid #e5e7eb;
+  margin-bottom: 1.5rem;
+}
+
+.healthHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.healthHeader h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.healthIndicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  color: white;
+  font-weight: 700;
+  font-size: 0.875rem;
+}
+
+.healthIcon {
+  font-size: 1.25rem;
+}
+
+.healthText {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Deployments List */
+.deploymentsList {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.publicationItem {
+.deploymentItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 0.5rem;
+}
+
+.deploymentStatus {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.statusSUCCESS {
+  color: #10b981;
+}
+
+.statusFAILED {
+  color: #ef4444;
+}
+
+.statusIN_PROGRESS {
+  color: #3b82f6;
+}
+
+.deploymentContent {
+  flex: 1;
+}
+
+.deploymentVersion {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.25rem;
+}
+
+.deploymentMeta {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+/* Errors List */
+.errorsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.errorItem {
   display: flex;
   align-items: flex-start;
   gap: 1rem;
   padding: 1rem;
   background: #f9fafb;
   border-radius: 0.5rem;
-  transition: all 0.2s;
-  border-left: 4px solid #3b82f6;
+  border-left: 4px solid #e5e7eb;
 }
 
-.publicationItem:hover {
-  background: #f3f4f6;
-  transform: translateX(4px);
-}
-
-.publicationDate {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: white;
-  border-radius: 0.5rem;
-  padding: 0.5rem;
-  min-width: 50px;
-  flex-shrink: 0;
-  border: 2px solid #e5e7eb;
-}
-
-.dateDay {
-  font-size: 1.5rem;
-  font-weight: 700;
-  line-height: 1;
-  color: #111827;
-}
-
-.dateMonth {
+.severityBadge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
   font-size: 0.75rem;
+  font-weight: 700;
   text-transform: uppercase;
-  font-weight: 600;
-  color: #6b7280;
+  flex-shrink: 0;
 }
 
-.publicationContent {
+.severitycritical,
+.severityhigh {
+  background: #fee2e2;
+  color: #991b1b;
+  border-left-color: #ef4444;
+}
+
+.severitymedium {
+  background: #fef3c7;
+  color: #92400e;
+  border-left-color: #f59e0b;
+}
+
+.severitylow {
+  background: #dbeafe;
+  color: #1e40af;
+  border-left-color: #3b82f6;
+}
+
+.errorContent {
   flex: 1;
 }
 
-.publicationTitle {
+.errorType {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #ef4444;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.errorMessage {
+  font-size: 0.875rem;
+  color: #111827;
+  margin-bottom: 0.25rem;
+}
+
+.errorMeta {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+/* Services Grid */
+.servicesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.serviceCard {
+  padding: 1.5rem;
+  background: #f9fafb;
+  border-radius: 0.75rem;
+  text-align: center;
+  border: 2px solid #e5e7eb;
+  transition: all 0.2s;
+}
+
+.serviceCard:hover {
+  border-color: #3b82f6;
+  transform: translateY(-2px);
+}
+
+.serviceIcon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.serviceName {
   font-size: 0.875rem;
   font-weight: 600;
   color: #111827;
   margin-bottom: 0.5rem;
 }
 
-.publicationMeta {
+.serviceStatus {
   display: flex;
-  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   font-size: 0.75rem;
   color: #6b7280;
 }
 
-.publicationAuthor {
-  font-weight: 500;
-}
-
-.publicationCategory {
-  padding: 0.125rem 0.5rem;
-  background: #e0e7ff;
-  color: #3730a3;
-  border-radius: 9999px;
-  font-weight: 600;
-}
-
-/* Highlight for pending review */
-.statCardHighlight {
-  border-color: #8b5cf6;
-  background: linear-gradient(135deg, #ffffff 0%, #f5f3ff 100%);
-}
-
-/* Mini Stats Grid */
-.miniStatsGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1.5rem;
-}
-
-.miniStat {
-  text-align: center;
-  padding: 1.5rem;
-  background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
-  border-radius: 0.5rem;
-  border: 1px solid #e5e7eb;
-}
-
-.miniStatValue {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #3b82f6;
-  margin-bottom: 0.5rem;
-}
-
-.miniStatLabel {
-  font-size: 0.75rem;
-  color: #6b7280;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-weight: 600;
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
 }
 
 /* Responsive */
@@ -371,7 +456,7 @@
     grid-template-columns: 1fr;
   }
 
-  .miniStatsGrid {
-    grid-template-columns: repeat(2, 1fr);
+  .servicesGrid {
+    grid-template-columns: 1fr;
   }
 }

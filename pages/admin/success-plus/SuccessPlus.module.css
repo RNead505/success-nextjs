@@ -20,13 +20,11 @@
   gap: 1rem;
   border: 1px solid #e5e7eb;
   transition: all 0.2s;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .statCard:hover {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   transform: translateY(-2px);
-  border-color: #d1d5db;
 }
 
 .statCardWarning {
@@ -61,7 +59,6 @@
   border-radius: 0.75rem;
   padding: 1.5rem;
   border: 1px solid #e5e7eb;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .sectionTitle {
@@ -88,15 +85,12 @@
   flex-direction: column;
   gap: 0.75rem;
   cursor: pointer;
-  background: white;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .actionCard:hover {
   border-color: #3b82f6;
-  box-shadow: 0 4px 6px rgba(59, 130, 246, 0.15);
+  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.1);
   transform: translateY(-2px);
-  background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
 }
 
 .actionIcon {
@@ -114,13 +108,6 @@
   font-size: 0.875rem;
   color: #6b7280;
   margin: 0;
-}
-
-/* Two Column Layout */
-.twoColumn {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
 }
 
 /* Activity List */
@@ -165,68 +152,6 @@
   color: #6b7280;
 }
 
-/* Pending Items */
-.pendingList {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.pendingItem {
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  padding: 1rem;
-  background: #f9fafb;
-  border-radius: 0.5rem;
-  border-left: 4px solid #e5e7eb;
-}
-
-.priorityBadge {
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  flex-shrink: 0;
-}
-
-.priorityHigh {
-  background: #fee2e2;
-  color: #991b1b;
-  border-left-color: #ef4444;
-}
-
-.priorityMedium {
-  background: #fef3c7;
-  color: #92400e;
-  border-left-color: #f59e0b;
-}
-
-.priorityLow {
-  background: #dbeafe;
-  color: #1e40af;
-  border-left-color: #3b82f6;
-}
-
-.pendingContent {
-  flex: 1;
-}
-
-.pendingType {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: #6b7280;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 0.25rem;
-}
-
-.pendingDescription {
-  font-size: 0.875rem;
-  color: #111827;
-}
-
 /* Empty State */
 .emptyState {
   text-align: center;
@@ -246,10 +171,6 @@
   }
 
   .actionsGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .twoColumn {
     grid-template-columns: 1fr;
   }
 }
